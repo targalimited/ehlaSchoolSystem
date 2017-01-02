@@ -1,0 +1,44 @@
+<div class="doc-page material-docs layout-docs doc-template page-layout simple fullwidth ng-scope layout-column"
+     layout="column">
+
+  <div ncy-breadcrumb></div>
+
+
+
+  <div class="content">
+    <md-tabs md-dynamic-height>
+
+      <md-tab label="3E">
+        <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100" layout-wrap="">
+          <ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="50" flex-gt-md="33" ng-repeat="item in vm.items"
+                     class="ms-widget ng-isolate-scope layout-column flex-gt-xs-50 flex-gt-md-25 flex-100">
+            <ms-card template="'app/main/homework/subjects/assignment/templates/assignment-item.html'"
+                     ng-model="item"></ms-card>
+          </ms-widget>
+        </div>
+      </md-tab>
+
+      <md-tab label="3F">
+        <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100" layout-wrap="">
+          <ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="50" flex-gt-md="33" ng-repeat="item in vm.items"
+                     class="ms-widget ng-isolate-scope layout-column flex-gt-xs-50 flex-gt-md-25 flex-100">
+            <ms-card template="'app/main/homework/subjects/assignment/templates/assignment-item.html'"
+                     ng-model="item"></ms-card>
+          </ms-widget>
+        </div>
+      </md-tab>
+
+
+      <md-tab label="5A">
+        <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100" layout-wrap="">
+          <ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="50" flex-gt-md="33" ng-repeat="item in vm.items"
+                     class="ms-widget ng-isolate-scope layout-column flex-gt-xs-50 flex-gt-md-25 flex-100">
+            <ms-card template="'app/main/homework/subjects/assignment/templates/assignment-item.html'"
+                     ng-model="item"></ms-card>
+          </ms-widget>
+        </div>
+      </md-tab>
+
+    </md-tabs>
+  </div>
+</div>

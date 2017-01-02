@@ -1,0 +1,32 @@
+<div class="assignment-item" ui-sref="{{card['ui-sref']}}" style="cursor: pointer">
+  <div class="content pv-24 ph-16">
+    <div class="h3" ng-if="card.title">
+
+      <span style="position: absolute;right: 0;top: 15px; margin-right: -1px;">
+        <i class="icon s20 icon-table-edit" style="padding: 15px;background-color: #d8dfe9; color: white;"></i>
+        </span>
+
+
+      <span style="border-bottom: 4px solid #eee; padding: 5px 0">{{card.title}}</span>
+      </span>
+    </div>
+
+
+    <div layout="row" class="text pt-16 left" style="padding-top: 20px;">
+      <div flex="initial"><i flex class="icon s20 icon-clock"></i></div>
+      <div flex><span>{{card.deadline ? card.deadline : 'No deadline'}}</span></div>
+    </div>
+
+
+    <div layout="row" class="text pt-14 left">
+      <div flex="initial"><i flex class="icon s20 icon-border-color"></i></div>
+      <div flex><span>{{card.questions ? card.questions : 'No question have assigned'}}</span></div>
+    </div>
+
+
+    <div layout="row" class="text pt-14 left">
+      <div flex="initial"><i flex class="icon s20 icon-information"></i></div>
+      <div flex><span>{{card.remark ? card.remark : 'No Remark'}}</span></div>
+    </div>
+  </div>
+</div>

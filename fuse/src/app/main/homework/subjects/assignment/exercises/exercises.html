@@ -1,0 +1,60 @@
+<div class="doc-page material-docs layout-docs doc-template page-layout simple fullwidth ng-scope layout-column"
+     layout="column">
+
+  <div ncy-breadcrumb></div>
+
+
+
+  <div class="content">
+    <!-- <div class="md-title mb-32">Zero Configuration</div> -->
+    <div class="white-bg md-whiteframe-4dp">
+      <button>Create Exercise</button>
+      <table class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions">
+        <thead>
+        <tr>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Name</span>
+            </div>
+          </th>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Position</span>
+            </div>
+          </th>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Office</span>
+            </div>
+          </th>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Age</span>
+            </div>
+          </th>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Start Date</span>
+            </div>
+          </th>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Salary</span>
+            </div>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="employee in ::vm.employees" ng-click="vm.viewExerciseDetail(employee)">
+          <td>{{ employee.name }}</td>
+          <td>{{ employee.position }}</td>
+          <td>{{ employee.office }}</td>
+          <td>{{ employee.age }}</td>
+          <td>{{ employee.startDate }}</td>
+          <td>{{ employee.salary }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
