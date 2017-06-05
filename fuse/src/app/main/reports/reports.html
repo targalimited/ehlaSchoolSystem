@@ -1,0 +1,100 @@
+<div
+  class="doc-page ehla-blue-bg material-docs layout-docs doc-template page-layout simple tabbed ng-scope layout-column"
+  layout="column">
+
+  <div ncy-breadcrumb></div>
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="start center">
+    <div class="white-fg" layout="row" layout-align="start center" flex>
+      <div layout="row" layout-align="start center">
+        <div layout="column" layout-align="start start">
+          <div class="h2">
+            Consolidated Report
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div ng-if="section === 'unassigned'">
+      <md-button class="md-raised md-background" ng-disabled="!vm.isAnyUnassignedSelected()">
+        <span>Publish</span>
+      </md-button>
+    </div>
+    <div ng-if="section === 'assigned'">
+      <md-button class="md-raised md-background">
+        <span>Save</span>
+      </md-button>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <div class="content videos-content">
+    <md-tabs md-dynamic-height>
+      <md-tab label="{{class}}" md-on-select="vm.switchClass(class)" ng-repeat="class in vm.classes">
+        <div class="white-bg md-whiteframe-4dp">
+          <table class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions">
+            <thead>
+            <tr>
+              <th class="secondary-text">
+                <div class="table-header">
+                  <span class="column-title">Weakness</span>
+                </div>
+              </th>
+              <th class="secondary-text">
+                <div class="table-header">
+                  <span class="column-title">Error Rate</span>
+                </div>
+              </th>
+              <th class="secondary-text">
+                <div class="table-header">
+                  <span class="column-title">Frequency</span>
+                </div>
+              </th>
+              <th class="secondary-text">
+                <div class="table-header">
+                  <span class="column-title">Action</span>
+                </div>
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="weakness in vm.weaknesses">
+              <td>{{ weakness.name }}</td>
+              <td>
+                <span flex>{{ weakness.history[0].correct }}/{{ weakness.history[0].total }}</span>
+                <md-menu md-position-mode="target-right target" >
+                  <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                    <md-icon md-font-icon="icon-magnify"
+                             class="icon s18 md-default-theme md-font material-icons icon-magnify"
+                             aria-hidden="true"></md-icon>
+                  </md-button>
+                  <md-menu-content width="2">
+                    <div ng-repeat="item in weakness.history">
+                      <md-menu-item >
+                        <div layout="row" flex>
+                          <p flex>{{item.correct}}/{{item.total}}</p>
+                        </div>
+                      </md-menu-item>
+                      <md-divider class="ng-scope md-default-theme" ng-if="!$last && weakness.history.length > 1"></md-divider>
+                    </div>
+                  </md-menu-content>
+                </md-menu>
+              </td>
+              <td>
+                {{ weakness.correct}}/{{ weakness.total }}
+              </td>
+              <td>
+                <md-icon md-font-icon="icon-dots-vertical" ng-click="vm.viewClass(weakness)"
+                         class="icon s18 md-default-theme md-font material-icons"
+                         aria-hidden="true"></md-icon>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </md-tab>
+
+    </md-tabs>
+  </div>
+</div>

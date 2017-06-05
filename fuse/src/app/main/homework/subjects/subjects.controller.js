@@ -1,5 +1,4 @@
-(function ()
-{
+(function () {
     'use strict';
 
     angular
@@ -7,45 +6,13 @@
         .controller('SubjectsController', SubjectsController);
 
     /** @ngInject */
-    function SubjectsController(SubjectsData)
-    {
+    function SubjectsController($rootScope, breadcrumbs, Restangular) {
         var vm = this;
 
-        // Data
-      vm.subjects = [
-        {
-          "title": "Chinese",
-          "subtitle": "中國語文",
-          "media": {
-            "image": {
-              "src": "assets/images/etc/early-sunrise.jpg",
-              "alt": "EHL ACADEMY"
-            }
-          },
-          "button-ui-sref": "app.homework.subjects.assignment({ subject: 'chinese' })",
-        },
-        {
-          "title": "English",
-          "subtitle": "英國語文",
-          "media": {
-            "image": {
-              "src": "assets/images/etc/early-sunrise.jpg",
-              "alt": "EHL ACADEMY"
-            }
-          },
-          "button-ui-sref": "app.homework.subjects.assignment({ subject: 'english' })",
-        },
-        {
-          "title": "Mathematics",
-          "subtitle": "數學",
-          "media": {
-            "image": {
-              "src": "assets/images/etc/early-sunrise.jpg",
-              "alt": "EHL ACADEMY"
-            }
-          },
-          "button-ui-sref": "app.homework.subjects.assignment({ subject: 'mathematics' })",
-        },
-      ];
+        vm.init = function () {
+            vm.subjects = breadcrumbs.subjects;
+        };
+
+        vm.init();
     }
 })();

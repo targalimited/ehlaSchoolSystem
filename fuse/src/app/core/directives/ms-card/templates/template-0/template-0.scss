@@ -1,0 +1,30 @@
+.ms-card {
+
+  .template-1 {
+
+    .media {
+
+      .image {
+        width: 100%;
+        border-radius: 2px 2px 0 0;
+      }
+    }
+
+    .content {
+        text-align: center;
+    }
+
+    .md-button.primary {
+      width: 100px;
+      border-radius: 15px 15px 15px 15px;
+      border: 1px solid #348EFF;
+      color: #348EFF;
+    }
+    .md-button.primary:hover{
+      background-color: #348EFF;
+      color: white;
+    }
+  }
+}
+
+

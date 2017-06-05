@@ -1,0 +1,163 @@
+<div class="md-background-bg md-whiteframe-1dp ehla-table-list-wrapper ehla-table-list-undragable" style="width:100%">
+    <div>
+        <ul class="ehla-table-list ehla-table-list-header" style="border:none">
+            <li style="width: 20%; border-bottom: none">
+                <span style="padding-left: 25px"></span>
+            </li>
+            <li style="width: 40%; text-align: center; border-top: 2px solid red;">
+                Accumulated Error Record in Terms of Students
+            </li>
+            <li style="width: 10%; text-align: center; border-bottom: none">
+            </li>
+            <li style="width: 10%; text-align: center; border-bottom: none"></li>
+            <li style="width: 10%; text-align: center; border-bottom: none"></li>
+            <li style="width: 10%; text-align: center; border-bottom: none"></li>
+        </ul>
+    </div>
+    <div>
+        <ul class="ehla-table-list ehla-table-list-header">
+            <li style="width: 20%">
+                <a class="btn btn-xs"
+                   data-nodrag
+                   ng-click="toggleExpandAll()">
+                                      <span class="icon s20" ng-class="{
+                                          'icon-plus': isAllExpanded() !== 2,
+                                          'icon-minus': isAllExpanded() === 2
+                                          }">
+                                      </span>
+                </a>
+                <span>Learning Point</span>
+            </li>
+            <li style="width: 8%; text-align: center; border-bottom: 2px solid red">
+                100% Error
+            </li>
+            <li style="width: 8%; text-align: center; border-bottom: 2px solid red">
+                ≥75% Error
+            </li>
+            <li style="width: 8%; text-align: center; border-bottom: 2px solid red">
+                ≥50% Error
+            </li>
+            <li style="width: 8%; text-align: center; border-bottom: 2px solid red">
+                ≥25% Error
+            </li>
+            <li style="width: 8%; text-align: center; border-bottom: 2px solid red">
+                >0% (0%) Error
+            </li>
+            <li style="width: 10%; text-align: center">
+                <div style="line-height: 1.8">Historical Error</div><div style="line-height: 1.8">Record by Student</div>
+            </li>
+            <li style="width: 10%; text-align: center">
+                <div style="line-height: 1.8">Latest Batch Error</div><div style="line-height: 1.8">Record by Frequency</div>
+            </li>
+            <li style="width: 10%; text-align: center"><div style="line-height: 1.8">Historical Error</div><div style="line-height: 1.8">Record by Frequency</div></li>
+            <li style="width: 10%; text-align: center"><div style="line-height: 1.8">View by</div><div style="line-height: 1.8">Individual Student</div></li>
+        </ul>
+    </div>
+    <div ng-show="!vm.data.length && loading" class="ehla-table-empty">Loading</div>
+    <div ng-show="!vm.data.length && !loading" class="ehla-table-empty">No Data</div>
+    <div ui-tree="treeOptions" ng-if="vm.data.length"
+         ui-tree-nodes
+         data-drag-enabled="false"
+         ng-model="vm.data">
+        <div ng-repeat="node in vm.data"
+             ui-tree-node
+             ng-hide="!node._visible_"
+             ng-include="'nodes_renderer'">
+        </div>
+    </div>
+</div>
+</div>
+<script type="text/ng-template" id="nodes_renderer">
+    <ul class="ehla-table-list" ui-tree-handle>
+        <li style="width: 20%">
+            <div ng-style="{'margin-left': 20*(depth()-1) + 'px'}" style="padding: 0 5px;">
+                <a class="btn btn-xs" ng-if="node.child && node.child.length > 0"
+                   data-nodrag ng-init="expanded[node.id] = true"
+                   ng-click="expanded[node.id] = !expanded[node.id];">
+                                      <span class="icon s20" ng-class="{
+                                          'icon-plus': !expanded[node.id],
+                                          'icon-minus': expanded[node.id]
+                                          }">
+                                      </span>
+                </a>
+                <a class="btn btn-xs ng-scope" style="visibility: hidden"
+                   ng-if="!node.child || !node.child.length">
+                                            <span class="icon icon-plus">
+                                      </span></a>
+                <span>{{ node.name_en || node.name_zh }}</span>
+            </div>
+        </li>
+
+        <li style="width: 8%; text-align: center;">
+            <span ng-if="!node.child.length">{{node.studentErrorDistributions[100]}}</span>
+
+        </li>
+        <li style="width: 8%; text-align: center;">
+            <span ng-if="!node.child.length">{{node.studentErrorDistributions[75]}}</span>
+
+        </li>
+        <li style="width: 8%; text-align: center;">
+            <span ng-if="!node.child.length">{{node.studentErrorDistributions[50]}}</span>
+
+        </li>
+        <li style="width: 8%; text-align: center;">
+            <span ng-if="!node.child.length">{{node.studentErrorDistributions[25]}}</span>
+
+        </li>
+        <li style="width: 8%; text-align: center;">
+            <span ng-if="!node.child.length">
+                {{node.studentErrorDistributions[1]}} ({{node.studentErrorDistributions[0]}})
+            </span>
+
+        </li>
+
+        <li style="width: 10%; text-align: center;">
+            <div ng-if="!node.child.length">
+                <md-icon md-font-icon="icon-chart-bar"
+                         ng-click="vm.showGraph($event, node, node.history, 'student')"
+                         class="icon s18 md-default-theme md-font material-icons"
+                         aria-hidden="true"></md-icon>
+            </div>
+        </li>
+
+        <li style="width: 10%; text-align: center;">
+            <div ng-if="!node.child.length">
+                <span>
+                <span style="color:red">{{ node.latest.total - node.latest.correct || '-' }}</span>/<span>{{ node.latest.total || '-' }}</span>
+                </span>
+            </div>
+
+        </li>
+        <li style="width: 10%; text-align: center;">
+            <div ng-if="!node.child.length">
+                <span>
+                <span style="color:red">{{ node.total - node.correct || '-' }}</span>/<span>{{ node.total || '-' }}</span>
+            </span>
+                <md-icon md-font-icon="icon-chart-bar"
+                         ng-click="vm.showGraph($event, node, node.history)"
+                         class="icon s18 md-default-theme md-font material-icons"
+                         aria-hidden="true"></md-icon>
+
+            </div>
+        </li>
+        <li style="width: 10%; text-align: center">
+            <div ng-if="!node.child.length">
+                <md-icon md-font-icon="icon-people" ng-click="vm.viewStudents(node)"
+                         class="icon s18 md-default-theme md-font material-icons"
+                         aria-hidden="true"></md-icon>
+            </div>
+        </li>
+    </ul>
+    <div ng-if="node.child && node.child.length > 0 && expanded.hasOwnProperty(node.id)"
+         ng-show="expanded[node.id]"
+         ui-tree-nodes=""
+         ng-model="node.child"
+         style="background: white; "
+    >
+        <div ng-repeat="node in node.child"
+             ui-tree-node
+             ng-hide="!node._visible_"
+             ng-include="'nodes_renderer'"></div>
+    </div>
+
+</script>

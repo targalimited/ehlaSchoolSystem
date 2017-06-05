@@ -21,7 +21,8 @@
           HomeData: function (msApi) {
             return msApi.resolve('home@get');
           }
-        }
+        },
+        authenticate: true,
       });
 
     // Translation

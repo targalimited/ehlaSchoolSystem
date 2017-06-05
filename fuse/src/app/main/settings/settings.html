@@ -1,3 +1,114 @@
-<h1>
-    This is settings page
-</h1>
+<div
+        class="doc-page ehla-blue-bg material-docs layout-docs doc-template page-layout simple tabbed ng-scope layout-column"
+        layout="column">
+
+    <div ncy-breadcrumb></div>
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="start center">
+        <div class="white-fg" layout="row" layout-align="start center" flex>
+            <div layout="row" layout-align="start center">
+                <div layout="column" layout-align="start start">
+                    <div class="h2">
+                        Settings
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <md-button class="md-raised md-accent md-background" ng-show="vm.section === 'academic'" ng-click="vm.editYear($event)">
+                <span>Add Academic Year</span>
+            </md-button>
+
+            <md-button class="md-raised md-accent md-background" ng-show="vm.section === 'import'" ng-click="vm.viewExerciseDetail({ id: 'create' })">
+                <span>Import</span>
+            </md-button>
+        </div>
+    </div>
+    <!-- / HEADER -->
+
+
+    <div class="content videos-content">
+        <md-tabs md-dynamic-height>
+
+            <md-tab label="Academic Year" md-on-select="vm.switchSection('academic')">
+                <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100"
+                     layout-wrap="">
+                    <div class="content-card white-bg md-whiteframe-4dp" layout="column" flex>
+
+                        <table class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions">
+                            <thead>
+                            <tr>
+                                <th class="secondary-text">
+                                    <div class="table-header">
+                                        <span class="column-title">Year</span>
+                                    </div>
+                                </th>
+                                <th class="secondary-text">
+                                    <div class="table-header">
+                                        <span class="column-title">Semester</span>
+                                    </div>
+                                </th>
+
+                                <th class="secondary-text">
+                                    <div class="table-header">
+                                        <span class="column-title">Current Semester</span>
+                                    </div>
+                                </th>
+                                <th class="secondary-text" style="text-align: center">
+                                    <div class="table-header">
+                                        <span class="column-title">Actions</span>
+                                    </div>
+                                </th>
+
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-if="loading">
+                                <td></td>
+                                <td style="text-align: center">Loading...</td>
+                                <td></td>
+                            </tr>
+                            <tr ng-repeat="year in vm.data"
+                                ng-show="!loading" > <!-- ng-class="{ 'year-selected': year.current_sem }"-->
+                                <td>{{ year.display_name }}</td>
+                                <td>{{ year.semester }}</td>
+                                <td>
+                                    <i flex class="icon s20 icon-check" ng-if="year.current_sem === 1"></i>
+                                    <!-- <i flex class="icon s20 icon-close" ng-if="year.current_sem !== 1"></i> -->
+                                </td>
+                                <td class="year-icons">
+                                    <md-icon md-font-icon="blue-600-fg icon-border-color"
+                                             ng-click="vm.editYear($event, year)"
+                                             class="s18"></md-icon>
+
+                                    <md-icon md-font-icon="blue-600-fg icon-library-books"
+                                             ng-click="vm.viewWeakness($event, year)"
+                                             class="s18"></md-icon>
+
+                                    <md-icon md-font-icon="red-600-fg icon-delete"
+                                             ng-click="vm.deleteYear($event, year)"
+                                             class="s18"></md-icon>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </md-tab>
+
+
+            <md-tab label="Import" md-on-select="vm.switchSection('import')">
+                <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100"
+                     layout-wrap="">
+                    <div class="content-card white-bg md-whiteframe-4dp" layout="column" flex>
+                        semester settings
+                    </div>
+                </div>
+            </md-tab>
+
+        </md-tabs>
+
+    </div>
+</div>

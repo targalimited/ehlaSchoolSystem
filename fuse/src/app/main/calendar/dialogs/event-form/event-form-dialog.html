@@ -1,0 +1,125 @@
+<md-dialog class="event-form-dialog" aria-label="New Message">
+    <form name="eventForm" class="md-inline-form" novalidate>
+        <md-toolbar class="md-accent md-hue-2">
+            <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+                <span class="title">{{vm.dialogTitle}}</span>
+                <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Close dialog" translate
+                           translate-attr-aria-label="CALENDAR.CLOSE_DIALOG">
+                    <md-icon md-font-icon="icon-close"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content ms-scroll>
+            <md-input-container class="md-block">
+                <label translate="CALENDAR.TITLE">Name</label>
+                <input name="name" ng-model="vm.calendarEvent.name" required md-autofocus  ng-disabled="vm.calendarEvent.isOther">
+                <div ng-messages="eventForm.name.$error" ng-show="eventForm.name.$touched" role="alert">
+                    <div ng-message="required">
+                        <span translate="CALENDAR.ERRORS.TITLE_REQUIRED">Name field is required</span>
+                    </div>
+                </div>
+            </md-input-container>
+
+            <div layout="row" class="date-now">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>From Date Time</label>
+                    <input mdc-datetime-picker="" date="true" time="true" type="text" id="starttime"
+                           placeholder="Pick a Date" show-todays-date="" min-date="date"  ng-disabled="vm.calendarEvent.isOther"
+                           ng-model="vm.calendarEvent.start_time" class="md-input" required="true"
+                           readonly="readonly">
+                </md-input-container>
+            </div>
+
+            <div layout="row" class="date-now">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Until Date Time</label>
+                    <input mdc-datetime-picker="" date="true" time="true" type="text" id="endtime"
+                           placeholder="Pick a Date" show-todays-date="" min-date="date"  ng-disabled="vm.calendarEvent.isOther"
+                           ng-model="vm.calendarEvent.end_time" class="md-input" required="true"
+                           readonly="readonly">
+                </md-input-container>
+            </div>
+
+            <div class="notifications" layout="column">
+                <div class="title">Classes</div>
+                <div>
+                    <div class="notification-inputs">
+                        <md-input-container>
+                            <md-select ng-model="vm.calendarEvent.class_ids" multiple  ng-disabled="vm.calendarEvent.isOther || vm.calendarEvent.type !== 'private'">
+                                <md-option value="-1">All Classes
+                                </md-option>
+                                <md-option ng-repeat="class in vm.classes" value="{{class.id}}">{{class.c_name}}
+                                </md-option>
+                            </md-select>
+
+                        </md-input-container>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="notifications" layout="column">
+                <div class="title">Notification / Reminder</div>
+
+                <div>
+                    <div class="notification-inputs">
+                        <md-input-container>
+                            <md-select ng-model="vm.calendarEvent.notificationType"  ng-disabled="vm.calendarEvent.isOther">
+                                <md-option ng-repeat="type in vm.notificationTypes" value="{{type.value}}">{{type.name}}
+                                </md-option>
+                            </md-select>
+
+                        </md-input-container>
+                        <md-input-container>
+                            <input style="width: 100px; text-align: center" ng-model="vm.calendarEvent.period"  ng-disabled="vm.calendarEvent.isOther">
+                        </md-input-container>
+                        <md-input-container>
+                            <md-select ng-model="vm.calendarEvent.period_type" ng-disabled="vm.calendarEvent.isOther">
+                                <md-option ng-repeat="opt in vm.notificationTimeUnit" value="{{opt}}">{{opt}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container>
+                            <span>Before</span>
+                        </md-input-container>
+                    </div>
+                </div>
+            </div>
+
+            <md-input-container flex class="md-block textarea-container">
+                <label>Description</label>
+                <textarea ng-model="vm.calendarEvent.description" md-maxlength="250" max-rows="4" ng-disabled="vm.calendarEvent.isOther"></textarea>
+            </md-input-container>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row" layout-align="space-between center">
+            <div>
+                <md-button ng-click="vm.saveEvent()" class="save-button md-accent md-raised" aria-label="SAVE"
+                           ng-disabled="eventForm.$invalid" ng-if="!vm.calendarEvent.isOther"
+                           translate="CALENDAR.SAVE"
+                           translate-attr-aria-label="CALENDAR.SAVE">
+                    SAVE
+                </md-button>
+                <md-button ng-click="vm.closeDialog()" class="save-button">
+                    CANCEL
+                </md-button>
+            </div>
+
+
+            <!--
+            <md-button class="md-icon-button" ng-click="vm.viewAssignment($event)" aria-label="Delete" translate ng-if="vm.calendarEvent.type === 'assignment'">
+                <md-icon md-font-icon="icon-magnify"></md-icon>
+                <md-tooltip><span translate="CALENDAR.DELETE">View Assignment Details</span></md-tooltip>
+            </md-button>
+            -->
+
+            <md-button class="md-icon-button" ng-click="vm.removeEvent($event)" aria-label="Delete" translate
+                       ng-if="vm.type !== 'add' && vm.calendarEvent.type !== 'assignment'"
+                       translate-attr-aria-label="CALENDAR.DELETE">
+                <md-icon md-font-icon="icon-delete"></md-icon>
+                <md-tooltip><span translate="CALENDAR.DELETE">Delete</span></md-tooltip>
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

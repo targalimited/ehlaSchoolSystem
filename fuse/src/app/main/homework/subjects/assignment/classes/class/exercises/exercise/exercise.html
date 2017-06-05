@@ -1,0 +1,227 @@
+<div id="exercise-content"
+     class="doc-page ehla-blue-bg material-docs layout-docs doc-template page-layout simple tabbed ng-scope layout-column"
+     layout="column">
+
+    <div ncy-breadcrumb></div>
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="start center">
+        <div class="white-fg" layout="row" layout-align="start center" flex>
+            <div layout="row" layout-align="start center">
+                <div layout="column" layout-align="start start">
+                    <div class="h2">
+                        {{action}} {{titleSingular}}
+                        <span ng-if="action === 'Edit' || action === 'View'"> - {{loading ? 'Loading...' : assignment.name}}
+                        <span ng-if="!_.isUndefined(condition)"> {{condition}}</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <md-button class="md-raised md-accent md-background" ng-click="createAssignment()" ng-disabled="loading"
+                       ng-if="action !== 'View'">
+                <span ng-if="action === 'Create'">Create</span>
+                <span ng-if="action === 'Edit'">Save</span>
+            </md-button>
+            <md-button class="md-raised md-accent md-background" ng-click="createAssignment()" ng-disabled="loading"
+                       ng-if="action !== 'View'">
+                <span>Push Now</span>
+            </md-button>
+            <md-button class="md-raised md-background" ng-click="back()">
+                <span>Cancel</span>
+            </md-button>
+        </div>
+    </div>
+    <!-- / HEADER -->
+
+    <div class="content exercise-content">
+
+        <md-tabs md-dynamic-height>
+
+            <md-tab label="Basic Info">
+                <md-tab-body>
+                    <div class="exercise-detail-form-container md-background-bg md-whiteframe-1dp">
+                        <form class="md-inline-form">
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>Batch Name</label>
+                                <input ng-model="assignment.name" required="true" ng-disabled="vm.isDisableEdit()">
+                            </md-input-container>
+
+                            <md-input-container class="md-block">
+                                <label>Description</label>
+                                <textarea ng-model="assignment.description" md-maxlength="150" rows="3"
+                                          ng-disabled="vm.isDisableEdit()"
+                                          md-select-on-focus></textarea>
+                            </md-input-container>
+
+
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>Publish Date</label>
+                                <input mdc-datetime-picker="" date="true" time="true" type="text" id="starttime"
+                                       placeholder="Pick a Date" show-todays-date="" min-date="date"
+                                       ng-model="assignment.start_date" class="md-input" required="true"
+                                       ng-disabled="vm.isDisableEdit()"
+                                       readonly="readonly">
+                            </md-input-container>
+
+
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>Deadline</label>
+                                <input mdc-datetime-picker="" date="true" time="true" type="text" id="endtime"
+                                       placeholder="Pick a Date" show-todays-date="" min-date="date"
+                                       ng-model="assignment.end_date" class="md-input" required="true"
+                                       ng-disabled="vm.isDisableEdit()"
+                                       readonly="readonly">
+                            </md-input-container>
+
+
+                            <div class="notifications" layout="column"  style="margin-bottom: 20px">
+                                <div class="title">Semester</div>
+                                <md-input-container>
+                                    <md-select ng-model="assignment.academic_id" ng-disabled="vm.isDisableEdit()"
+                                               class="normal" placeholder="Academic Year">
+                                        <md-optgroup label="Academic Year">
+                                            <md-option ng-repeat="year in vm.academicYears" value="{{year.id}}">
+                                                {{year.semester}}
+                                            </md-option>
+                                        </md-optgroup>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+
+                            <div class="notifications" layout="column">
+                                <div class="title">Notification / Reminder</div>
+
+                                <div>
+                                    <div class="notification-inputs">
+                                        <md-input-container>
+                                            <md-select ng-model="assignment.notificationType"
+                                                       ng-disabled="vm.isDisableEdit()" class="normal">
+                                                <md-option ng-repeat="type in vm.notificationTypes"
+                                                           value="{{type.value}}">{{type.name}}
+                                                </md-option>
+                                            </md-select>
+
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <input style="width: 100px; text-align: center"
+                                                   ng-disabled="vm.isDisableEdit()" ng-model="assignment.period">
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <md-select ng-model="assignment.period_type"
+                                                       ng-disabled="vm.isDisableEdit()" class="normal">
+                                                <md-option ng-repeat="opt in vm.notificationTimeUnit" value="{{opt}}">
+                                                    {{opt}}
+                                                </md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                        <md-input-container>
+                                            <span>Before</span>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p>Compulsory Setting
+                                <span>
+                                <md-tooltip
+                                        md-direction="top">
+                                    Compulsory setting requires every student to complete the {{assignmentName}}
+                                </md-tooltip>
+                                <md-icon md-font-icon="icon-alert-circle" style="margin-left: 5px;margin-right: 10px;"
+                                         class="icon s18 md-default-theme md-font material-icons"
+                                         aria-hidden="true"></md-icon>
+                                </span>
+                            </p>
+                            <md-radio-group ng-model="assignment.compulsory" layout-align="space-between"
+                                            ng-disabled="vm.isDisableEdit()">
+                                <md-radio-button ng-disabled="vm.isDisableEdit()" value="1" selected
+                                                 style="margin-left: 20px">Compulsory
+                                </md-radio-button>
+                                <md-radio-button ng-disabled="vm.isDisableEdit()" value="0" style="margin-left: 20px">
+                                    Non-Compulsory
+                                </md-radio-button>
+                            </md-radio-group>
+
+                            <p>Question Setting</p>
+                            <md-radio-group ng-model="assignment.question_type" layout-align="space-between"
+                                            ng-disabled="isExamination || vm.isDisableEdit()">
+                                <md-radio-button ng-disabled="vm.isDisableEdit()" value="random" selected
+                                                 style="margin-left: 20px">Random question for every student
+                                </md-radio-button>
+                                <md-radio-button ng-disabled="vm.isDisableEdit()" value="preset"
+                                                 style="margin-left: 20px">Same question for every student
+                                </md-radio-button>
+                            </md-radio-group>
+
+                        </form>
+                    </div>
+                </md-tab-body>
+            </md-tab>
+
+            <md-tab label="Learning Points">
+                <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100"
+                     layout-wrap="">
+                    <div class="content-card" layout="column" flex>
+
+                        <!-- CONTENT TOOLBAR -->
+                        <div class="toolbar" layout="row" layout-align="space-between center">
+
+                            <div class="md-toolbar-tools md-toolbar-tools-bottom">
+                                <div class="search-wrapper md-whiteframe-1dp layout-align-start-center layout-row flex"
+                                     layout="row"
+                                     layout-align="start center" flex="">
+                                    <div class="search layout-align-start-center layout-row flex" flex=""
+                                         layout="row"
+                                         layout-align="start center">
+                                        <md-icon md-font-icon="icon-magnify"
+                                                 class="icon s18 md-default-theme md-font material-icons icon-magnify"
+                                                 aria-hidden="true"></md-icon>
+                                        <input flex="" ng-model="vm.topicsSearch" type="text"
+                                               placeholder="Search or start new chat"
+                                               translate="" translate-attr-placeholder="Search"
+                                               ng-keyup="applyFilter()"
+                                               class="ng-pristine ng-valid ng-scope flex ng-empty ng-touched"
+                                               aria-invalid="false" style="">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <md-input-container>
+                                <md-select ng-model="vm.selectedCategories"
+                                           ng-change="applyFilter()"
+                                           multiple>
+                                    <md-optgroup label="Categories">
+                                        <md-option ng-value="-1">All Categories</md-option>
+                                        <md-option ng-value="category.id" ng-repeat="category in vm.categories">
+                                            {{category.name_en || category.name_zh}}
+                                        </md-option>
+                                    </md-optgroup>
+                                </md-select>
+                            </md-input-container>
+
+                            <div layout="row" layout-align="start center">
+                                <md-select class="simplified" ng-model="vm.statusFilter" placeholder="All Status"
+                                           ng-change="applyFilter()">
+                                    <md-option value="all" translate="All Status">All Status</md-option>
+                                    <md-option value="checked" translate="Checked">Checked</md-option>
+                                    <md-option value="unchecked" translate="Unchecked">Unchecked</md-option>
+                                </md-select>
+                            </div>
+
+                        </div>
+                        <!-- / CONTENT TOOLBAR -->
+                        <div class="content" layout="row" flex
+                             ng-include="'app/main/homework/subjects/assignment/classes/class/exercises/exercise/templates/topics-selection.html'"></div>
+
+                    </div>
+                </div>
+            </md-tab>
+
+
+        </md-tabs>
+
+    </div>
+</div>

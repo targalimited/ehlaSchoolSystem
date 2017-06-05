@@ -7,23 +7,94 @@
         .factory('msUtils', msUtils);
 
     /** @ngInject */
-    function msUtils($window)
+    function msUtils($window, breadcrumb)
     {
         // Private variables
         var mobileDetect = new MobileDetect($window.navigator.userAgent),
             browserInfo = null;
 
+        var levels = [
+            {id: 'p1', name: 'P1'},
+            {id: 'p2', name: 'P2'},
+            {id: 'p3', name: 'P3'},
+            {id: 'p4', name: 'P4'},
+            {id: 'p5', name: 'P5'},
+            {id: 'p6', name: 'P6'},
+            {id: 'ks1', name: 'KS1'},
+            {id: 'ks2', name: 'KS2'},
+            {id: 'ks3', name: 'KS3'},
+            {id: 'ks4', name: 'KS4'},
+            {id: 'ks5', name: 'KS5'},
+            {id: 'ks6', name: 'KS6'},
+            {id: 's1', name: 'S1'},
+            {id: 's2', name: 'S2'},
+            {id: 's3', name: 'S3'},
+            {id: 's4', name: 'S4'},
+            {id: 's5', name: 'S5'},
+            {id: 's6', name: 'S6'},
+        ];
+
         var service = {
+            levels: levels,
             exists       : exists,
             detectBrowser: detectBrowser,
             guidGenerator: guidGenerator,
             isMobile     : isMobile,
-            toggleInArray: toggleInArray
+            toggleInArray: toggleInArray,
+            displayEHLALevels: displayEHLALevels,
+            displaySchoolLevels: displaySchoolLevels,
+            displayLanguage: displayLanguage,
         };
 
         return service;
 
         //////////
+
+        function displayLanguage(langType) {
+            langType =  _.parseInt(langType)
+            switch(true) {
+                case langType === 2:
+                    return 'Cantonese';
+                case langType === 1:
+                    return 'English';
+            }
+
+            return '-';
+        }
+
+        function displayEHLALevels(lvls) {
+            if (!lvls || !lvls.length) {
+                return '';
+            }
+            if (_.isString(lvls)) {
+                lvls = lvls.split(',');
+            }
+
+            return _.trimEnd(_.reduce(lvls.sort(), function (result, level) {
+                var foundLevel = _.find(levels, function (l) {
+                    return l.id === level;
+                });
+                if (foundLevel) {
+                    result += foundLevel.name + ', ';
+                }
+                return result;
+            }, ''), ', ');
+        }
+
+        function displaySchoolLevels(lvls) {
+            if (!lvls || !lvls.length) {
+                return '';
+            }
+            return _.trimEnd(_.reduce(lvls.sort(), function (result, level) {
+                var foundLevel = _.find(breadcrumb.values.levels, function (l) {
+                    return l.id === level;
+                });
+                if (foundLevel) {
+                    result += foundLevel.name + ', ';
+                }
+                return result;
+            }, ''), ', ');
+        }
 
         /**
          * Check if item exists in a list

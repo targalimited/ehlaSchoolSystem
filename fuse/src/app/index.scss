@@ -11,3 +11,193 @@
  */
 // injector
 // endinjector
+ms-navigation {
+  font-size: 130% !important;;
+}
+
+input, button, textarea, select {
+  font-size: 130% !important;;
+}
+
+div.header *, div.content {
+  font-size: 120% !important;;
+}
+
+md-tabs-wrapper {
+  zoom: 1.3 !important;;
+}
+
+md-dialog form {
+  font-size: 140% !important;;
+}
+
+md-toolbar {
+  font-size: 110%;
+}
+
+div.breadcrumb a span {
+  font-size: 130%;
+}
+
+.ms-card * {
+  font-size: 105% !important;
+}
+
+div#calendarView {
+  font-size: 140%;
+}
+
+.fc-day-grid-event .fc-content {
+  font-size: 140% !important;
+}
+
+.qtip-fixed, .qtip-fixed h3, md-tooltip {
+  font-size: 140% !important;
+}
+
+.ehla-table-list {
+  md-icon {
+    margin-top: -3px !important;
+    padding: 0 25px 0 10px !important
+  }
+}
+
+.datatable-loading {
+  text-align: center;
+  padding: 30px;
+}
+
+.loading-cell {
+  position: absolute;
+  /* left: 50%; */
+  width: 100%;
+  /* border-bottom: 1px solid; */
+  left: 0;
+  text-align: center;
+  font-size: 120%;
+}
+
+.loading-screen {
+  position: fixed;
+  background-color: white;
+  opacity: 0.6;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+
+.ehla-blue-bg {
+  .header {
+    height: 120px !important;
+    min-height: 120px !important;
+    max-height: 120px !important;
+  }
+}
+
+
+.datatables-buttons-explicit {
+  position: absolute;
+  margin: 10px;
+  z-index: 2;
+}
+
+/**
+From angular-ui-tree
+**/
+div.ehla-table-list-wrapper {
+  width: 100%;
+  border: 1px solid #eee;
+  border-bottom: none;
+}
+
+
+div.ehla-table-list-undragable .ehla-table-list:hover {
+  cursor: pointer !important;
+}
+
+ul.ehla-table-list {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  padding: 5px 0;
+  margin: 0;
+  border-bottom: 1px solid #eee;
+}
+
+ul.ehla-table-list md-checkbox {
+  margin: 0;
+}
+
+ul.ehla-table-list-header {
+  padding: 0 5px;
+  font-weight: 600;
+  line-height:40px;
+}
+
+ul.ehla-table-list li {
+  display: table-cell;
+  min-height: 40px;
+  height: 40px;
+  padding: 0 5px;
+  vertical-align: middle;
+  overflow:hidden;
+  font-weight:300;
+}
+
+ul.ehla-table-list li.amount-padding{
+  padding-right: 15px;
+  text-align: right;
+}
+
+ul.ehla-table-list:hover {
+  background-color: #eee;
+}
+
+.angular-ui-tree-nodes .angular-ui-tree-nodes {
+  padding: 0;
+  margin: 0
+}
+
+md-toast.md-error-toast-theme div.md-toast-content{
+  color: white !important;
+  background-color: red !important;
+}
+
+md-toast.md-success-toast-theme div.md-toast-content{
+  color: white !important;
+  background-color: green !important;
+}
+
+md-toast {
+  left: 50%;
+  width: 304px;
+  margin-left: -152px;
+}
+
+.ehla-table-empty {
+  text-align: center;
+  font-size: 18px;
+  padding: 20px;
+}
+
+md-dialog md-dialog-content.dtp-content {
+  padding: 0;
+}
+
+md-dialog md-dialog-actions.dtp-buttons .md-button {
+  margin: 0 3px;
+}
+
+#vertical-navigation {
+  width: 220px;
+  min-width: 220px;
+  max-width: 220px;
+}
+
+#vertical-navigation .navigation-header {
+  padding: 0 8px;
+}
+
+md-ink-bar {
+  height: 5px;
+}

@@ -1,0 +1,100 @@
+<md-dialog class="task-dialog no-padding-margin" aria-label="New Task">
+    <form name="taskForm" class="md-inline-form" novalidate>
+        <md-toolbar class="md-accent md-hue-2">
+            <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+                <span class="title">Weakness question difficulty settings - {{vm.weakness.name_en || vm.weakness.name_zh}}</span>
+                <md-button class="md-icon-button" ng-click="vm.closeDialog()">
+                    <md-icon md-font-icon="icon-close" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content ms-scroll>
+            <div>
+                <ul class="ehla-table-list ehla-table-list-header">
+                    <li style="width: 20%">
+                        <span>Difficulty</span>
+                    </li>
+                    <li style="width: 20%">
+                        <span>Type</span>
+                    </li>
+                    <li style="width: 20%; text-align: center" ng-if="vm.isExamination || vm.isExercise">Marks</li>
+                    <li style="width: 20%; text-align: center">
+                        No. Questions
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul class="ehla-table-list" ng-repeat="f in vm.form">
+                    <li style="width: 20%" >
+                        <md-input-container class="ehla-question-input">
+                            <span ng-if="vm.isDisableEdit()">{{f.difficulty || '0'}}</span>
+                            <md-select ng-model="f.difficulty" placeholder="Select"  ng-if="!vm.isDisableEdit()">
+                                <md-option ng-value="difficulty.value"  ng-repeat="difficulty in vm.difficulties">{{ difficulty.name }}</md-option>
+                            </md-select>
+                        </md-input-container>
+                    </li>
+
+                    <li style="width: 20%" >
+                        <md-input-container class="ehla-question-input">
+                            <span ng-if="vm.isDisableEdit()">{{f.question_type || '0'}}</span>
+                            <md-select ng-model="f.question_type" placeholder="Select"  ng-if="!vm.isDisableEdit()">
+                                <md-option ng-value="type.value"  ng-repeat="type in vm.types">{{ type.name }}</md-option>
+                            </md-select>
+                        </md-input-container>
+                    </li>
+
+                    <li style="width: 20%; text-align: center;" ng-if="vm.isExamination || vm.isExercise">
+                        <span ng-if="vm.isDisableEdit()">{{f.marks || '-'}}</span>
+                        <md-input-container class="ehla-question-input">
+                            <input style="text-align: center" ng-model="f.marks" ng-if="!vm.isDisableEdit()">
+                        </md-input-container>
+                    </li>
+
+                    <li style="width: 20%; text-align: center;">
+                        <md-input-container class="ehla-question-input">
+                            <span ng-if="vm.isDisableEdit()">{{f.questions || '0'}}</span>
+                            <md-select ng-model="f.questions" placeholder="Select"  ng-if="!vm.isDisableEdit()">
+                                <md-option ng-value="i" ng-repeat="i in vm.assignmentQuestionRange">{{ i }}</md-option>
+                            </md-select>
+                        </md-input-container>
+                    </li>
+                </ul>
+            </div>
+
+            <div layout="row" layout-align="end center" style="width: 100%; margin-top: 20px" ng-if="!vm.isDisableEdit()">
+                <div>
+                    <button class="md-fab contacts-button md-button ng-scope md-default-theme md-ink-ripple" type="button" ng-click="vm.addQuestion()" aria-label="contacts button">
+                        <md-icon md-font-icon="icon-plus" class="ng-scope md-default-theme md-font material-icons" aria-hidden="true"></md-icon>
+                    </button>
+                </div>
+                <div>
+                    <button class="md-fab contacts-button md-warn md-button ng-scope md-ink-ripple" type="button" ng-click="vm.removeQuestion()" aria-label="contacts button">
+                        <md-icon md-font-icon="icon-minus" class="ng-scope md-font material-icons" aria-hidden="true"></md-icon>
+                    </button>
+                </div>
+            </div>
+
+        </md-dialog-content>
+
+        <md-dialog-actions>
+            <div layout="row" layout-align="end center" style="width: 100%">
+                <div>
+                    <md-button type="submit" ng-click="vm.save()"
+                               class="send-button md-accent md-raised"  ng-if="!vm.isDisableEdit()"
+                               aria-label="SAVE">
+                        Save
+                    </md-button>
+                </div>
+                <div>
+                    <md-button type="submit" ng-click="vm.cancel()"
+                               class="send-button md-raised"
+                               aria-label="Cancel">
+                        Cancel
+                    </md-button>
+                </div>
+            </div>
+
+        </md-dialog-actions>
+    </form>
+</md-dialog>

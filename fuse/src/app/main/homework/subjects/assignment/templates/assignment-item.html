@@ -1,9 +1,18 @@
-<div class="assignment-item" ui-sref="{{card['ui-sref']}}" style="cursor: pointer">
+<div class="assignment-item" ng-click="card.ngClick()" style="cursor: pointer; position: relative; background-size: cover" ng-style="{'background-image':'url('+card.background+')'}">
+  <div class="loading-screen" style="position: absolute" ng-show="card.deadline === 'Loading' && card.questions === 'Resources' && card.remark === 'Please be patient'">
+    <div style="position: absolute; top: 50%; left: 50%; ">
+      <md-progress-circular id="toolbar-progress" class="md-accent" style="margin-left: -25px; margin-top: -25px;"
+                            md-mode="indeterminate" md-diameter="50">
+      </md-progress-circular>
+    </div>
+  </div>
+
+
   <div class="content pv-24 ph-16">
     <div class="h3" ng-if="card.title">
 
       <span style="position: absolute;right: 0;top: 15px; margin-right: -1px;">
-        <i class="icon s20 icon-table-edit" style="padding: 15px;background-color: #d8dfe9; color: white;"></i>
+        <i class="icon s20" ng-class="card.icon" style="padding: 15px;background-color: #a9a9a9; color: white;"></i>
         </span>
 
 
@@ -11,22 +20,37 @@
       </span>
     </div>
 
-
-    <div layout="row" class="text pt-16 left" style="padding-top: 20px;">
-      <div flex="initial"><i flex class="icon s20 icon-clock"></i></div>
-      <div flex><span>{{card.deadline ? card.deadline : 'No deadline'}}</span></div>
+    <div ng-if="card.deadline === '-' && card.questions === '-' && card.remark === '-'">
+      <div layout="row" class="text pt-16 left" style="padding-top: 20px;">
+        <div flex="initial"><i flex class="icon s20 icon-information"></i></div>
+        <div flex><span>To be assigned</span></div>
+      </div>
     </div>
 
+    <div ng-if="card.deadline !== '-' || card.questions !== '-' || card.remark !== '-'">
+      <div layout="row" class="text pt-16 left" style="padding-top: 20px;" ng-hide="card.deadline === 'hide'">
+        <div flex="initial"><i flex class="icon s20 icon-clock"></i></div>
+        <div flex><span>{{card.deadline ? card.deadline : '-'}}</span></div>
+      </div>
 
-    <div layout="row" class="text pt-14 left">
-      <div flex="initial"><i flex class="icon s20 icon-border-color"></i></div>
-      <div flex><span>{{card.questions ? card.questions : 'No question have assigned'}}</span></div>
+
+      <div layout="row" class="text pt-14 left" ng-hide="card.questions === 'hide'">
+        <div flex="initial"><i flex class="icon s20 icon-border-color"></i></div>
+        <div flex><span>{{card.questions ? card.questions : '-'}}</span></div>
+      </div>
+
+
+      <div layout="row" class="text pt-14 left" ng-hide="card.remark === 'hide'">
+        <div flex="initial"><i flex class="icon s20 icon-information"></i></div>
+        <div flex><span>{{card.remark ? card.remark : '-'}}</span></div>
+      </div>
+
+
+      <div layout="row" class="text pt-14 left" ng-repeat="p in card.placeholder">
+        <div flex="initial"><i flex class="icon s20 icon-information" style="visibility: hidden"></i></div>
+        <div flex>&nbsp;</div>
+      </div>
     </div>
 
-
-    <div layout="row" class="text pt-14 left">
-      <div flex="initial"><i flex class="icon s20 icon-information"></i></div>
-      <div flex><span>{{card.remark ? card.remark : 'No Remark'}}</span></div>
-    </div>
   </div>
 </div>

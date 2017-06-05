@@ -1,44 +1,33 @@
-<div class="doc-page material-docs layout-docs doc-template page-layout simple fullwidth ng-scope layout-column"
+<div class="doc-page material-docs ehla-blue-bg layout-docs doc-template page-layout simple tabbed ng-scope layout-column"
      layout="column">
 
   <div ncy-breadcrumb></div>
 
-
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="start center">
+    <div class="white-fg" layout="row" layout-align="start center" flex>
+      <div layout="row" layout-align="start center">
+        <div layout="column" layout-align="start start">
+          <div class="h2">
+            {{breadcrumbs.subject.s_name_en}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- / HEADER -->
 
   <div class="content">
     <md-tabs md-dynamic-height>
-
-      <md-tab label="3E">
+      <md-tab ng-repeat="class in vm.classes" label="{{class.c_name}}" md-on-select="vm.switchClass(class)" md-active="class.id === chosenClass.id">
         <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100" layout-wrap="">
-          <ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="50" flex-gt-md="33" ng-repeat="item in vm.items"
+          <ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="50" flex-gt-md="33" ng-repeat="item in vm.getItems()"
                      class="ms-widget ng-isolate-scope layout-column flex-gt-xs-50 flex-gt-md-25 flex-100">
             <ms-card template="'app/main/homework/subjects/assignment/templates/assignment-item.html'"
                      ng-model="item"></ms-card>
           </ms-widget>
         </div>
       </md-tab>
-
-      <md-tab label="3F">
-        <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100" layout-wrap="">
-          <ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="50" flex-gt-md="33" ng-repeat="item in vm.items"
-                     class="ms-widget ng-isolate-scope layout-column flex-gt-xs-50 flex-gt-md-25 flex-100">
-            <ms-card template="'app/main/homework/subjects/assignment/templates/assignment-item.html'"
-                     ng-model="item"></ms-card>
-          </ms-widget>
-        </div>
-      </md-tab>
-
-
-      <md-tab label="5A">
-        <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100" layout-wrap="">
-          <ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="50" flex-gt-md="33" ng-repeat="item in vm.items"
-                     class="ms-widget ng-isolate-scope layout-column flex-gt-xs-50 flex-gt-md-25 flex-100">
-            <ms-card template="'app/main/homework/subjects/assignment/templates/assignment-item.html'"
-                     ng-model="item"></ms-card>
-          </ms-widget>
-        </div>
-      </md-tab>
-
     </md-tabs>
   </div>
 </div>

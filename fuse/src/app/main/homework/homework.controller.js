@@ -7,18 +7,21 @@
         .controller('HomeworkController', HomeworkController);
 
     /** @ngInject */
-    function HomeworkController(HomeworkData)
+    function HomeworkController()
     {
+
+
+
         var vm = this;
 
         // Data
         vm.cards = [
           {
-            "title": "EHL ACADEMY",
-            "subtitle": "博立教育",
+            "title": "EHLA i-Education",
+            "subtitle": "博立智能教育",
             "media": {
               "image": {
-                "src": "assets/images/etc/early-sunrise.jpg",
+                "src": "assets/images/menu/ehla-course.jpeg",
                 "alt": "EHL ACADEMY"
               }
             },

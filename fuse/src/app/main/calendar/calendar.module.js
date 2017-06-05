@@ -3,35 +3,39 @@
     'use strict';
 
     angular
-        .module('app.calendar', [])
+        .module('app.calendar',
+            [
+                // 3rd Party Dependencies
+                'ui.calendar'
+            ]
+        )
         .config(config);
 
     /** @ngInject */
-    function config($stateProvider, $translatePartialLoaderProvider, msApiProvider, msNavigationServiceProvider)
+    function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider
-            .state('app.calendar', {
-                url    : '/calendar',
-                views  : {
-                    'content@app': {
-                        templateUrl: 'app/main/calendar/calendar.html',
-                        controller : 'CalendarController as vm'
-                    }
-                },
-                resolve: {
-                    CalendarData: function (msApi)
-                    {
-                        return msApi.resolve('calendar@get');
-                    }
+        $stateProvider.state('app.calendar', {
+            url      : '/calendar',
+            views    : {
+                'content@app': {
+                    templateUrl: 'app/main/calendar/calendar.html',
+                    controller : 'CalendarController as vm'
                 }
-            });
+            },
+            resolve: {
+                breadcrumbs: function (breadcrumb, $stateParams) {
+                    return breadcrumb.getBreadCrumbs($stateParams);
+                },
+            },
+            ncyBreadcrumb: {
+                label: 'Calendar'
+            },
+            bodyClass: 'calendar'
+        });
 
         // Translation
         $translatePartialLoaderProvider.addPart('app/main/calendar');
-
-        // Api
-        msApiProvider.register('calendar', ['app/data/calendar/calendar.json']);
 
         // Navigation
 

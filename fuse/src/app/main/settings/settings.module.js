@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.settings', [])
+        .module('app.settings', ['app.settings.curriculums'])
         .config(config);
 
     /** @ngInject */
@@ -20,18 +20,18 @@
                     }
                 },
                 resolve: {
-                    SettingsData: function (msApi)
-                    {
-                        return msApi.resolve('settings@get');
-                    }
-                }
+                    breadcrumbs: function (breadcrumb, $stateParams) {
+                        return breadcrumb.getBreadCrumbs($stateParams);
+                    },
+                },
+                ncyBreadcrumb: {
+                    label: 'Settings'
+                },
             });
 
         // Translation
         $translatePartialLoaderProvider.addPart('app/main/settings');
 
-        // Api
-        msApiProvider.register('settings', ['app/data/settings/settings.json']);
 
         // Navigation
 

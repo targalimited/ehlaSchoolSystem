@@ -1,0 +1,95 @@
+<div class="md-background-bg md-whiteframe-1dp ehla-table-list-wrapper ehla-table-list-undragable" style="width:100%">
+    <div>
+        <ul class="ehla-table-list ehla-table-list-header">
+            <li style="width: 70%">
+                <md-checkbox
+                        ng-checked="isAllChecked() === 2"
+                             md-indeterminate="isAllChecked() === 1"
+                             ng-click="toggleCheckAll()">
+                </md-checkbox>
+                <a class="btn btn-xs"
+                   data-nodrag
+                   ng-click="toggleExpandAll()">
+                                      <span class="icon s20" ng-class="{
+                                          'icon-plus': isAllExpanded() !== 2,
+                                          'icon-minus': isAllExpanded() === 2
+                                          }">
+                                      </span>
+                </a>
+
+                <span>Learning Point</span>
+                <span>
+                    <md-tooltip class="special"
+                                  md-direction="top">
+                          <div>
+                              <div><md-checkbox style="margin: 5px;" ng-checked="true"> Learning point taught</md-checkbox></div>
+                              <div><md-checkbox style="margin: 5px;"
+                                                ng-checked="false"> Learning point to be taught</md-checkbox></div>
+                          </div>
+                    </md-tooltip>
+                    <md-icon md-font-icon="icon-alert-circle" style="margin-left: 5px;margin-right: 10px;"
+                             class="icon s18 md-default-theme md-font material-icons"
+                             aria-hidden="true"></md-icon>
+                </span>
+            </li>
+            <li style="width: 30%;">
+                <span>School Tailored Level</span>
+            </li>
+        </ul>
+    </div>
+    <div ng-show="!vm.data.length && loading" class="ehla-table-empty">Loading</div>
+    <div ng-show="!vm.data.length && !loading" class="ehla-table-empty">No Data</div>
+    <div ui-tree="treeOptions"
+         ui-tree-nodes
+         data-drag-enabled="false"
+         ng-model="vm.data">
+        <div ng-repeat="node in vm.data"
+             ui-tree-node
+             ng-hide="!node._visible_"
+             ng-include="'nodes_renderer'">
+        </div>
+    </div>
+</div>
+</div>
+<script type="text/ng-template" id="nodes_renderer">
+    <ul class="ehla-table-list" ui-tree-handle>
+        <li style="width: 70%">
+            <div ng-style="{'margin-left': 20*(depth()-1) + 'px'}" style="padding: 0 5px;"
+                 ng-init="expanded[node.id] = true">
+                <md-checkbox ng-checked="node.checkStatus==='checked'"
+                             md-indeterminate="node.checkStatus==='partlyChecked'"
+                             ng-click="toggleCheck(node)">
+                </md-checkbox>
+                <a class="btn btn-xs" ng-if="node.child && node.child.length > 0"
+                   data-nodrag
+                   ng-click="expanded[node.id] = !expanded[node.id];">
+                                      <span class="icon s20" ng-class="{
+                                          'icon-plus': !expanded[node.id],
+                                          'icon-minus': expanded[node.id]
+                                          }">
+                                      </span>
+                </a>
+                <a class="btn btn-xs ng-scope" style="visibility: hidden"
+                   ng-if="!node.child || !node.child.length">
+                                            <span class="icon icon-plus">
+                                      </span></a>
+                <span>{{ node.name_en || node.name_zh }}</span>
+            </div>
+        </li>
+        <li style="width: 30%;">
+            <span>{{vm.displaySchoolLevels(node.assignedLevels)}}</span>
+        </li>
+    </ul>
+    <div ng-if="node.child && node.child.length > 0 && expanded.hasOwnProperty(node.id)"
+         ng-show="expanded[node.id]"
+         ui-tree-nodes=""
+         ng-model="node.child"
+         style="background: white; "
+    >
+        <div ng-repeat="node in node.child"
+             ui-tree-node
+             ng-hide="!node._visible_"
+             ng-include="'nodes_renderer'"></div>
+    </div>
+
+</script>

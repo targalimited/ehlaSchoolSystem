@@ -1,0 +1,153 @@
+<div
+  class="doc-page ehla-blue-bg material-docs layout-docs doc-template page-layout simple tabbed ng-scope layout-column"
+  layout="column">
+
+  <div ncy-breadcrumb></div>
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="start center">
+    <div class="white-fg" layout="row" layout-align="start center" flex>
+      <div layout="row" layout-align="start center">
+        <div layout="column" layout-align="start start">
+          <div class="h2">
+            Videos
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div ng-if="section === 'unassigned'">
+      <md-button class="md-raised md-accent md-background" ng-disabled="!vm.isAnyUnassignedSelected()">
+        <span>Publish</span>
+      </md-button>
+    </div>
+    <div ng-if="section === 'assigned'">
+      <md-button class="md-raised md-accent md-background">
+        <span>Save</span>
+      </md-button>
+    </div>
+
+    <div>
+      <md-button class="md-raised md-background" ng-click="vm.back()">
+        <span>Back</span>
+      </md-button>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <div class="content videos-content">
+    <md-tabs md-dynamic-height>
+
+      <md-tab label="To Assign" md-on-select="vm.switchSection('unassigned')">
+        <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100" layout-wrap="">
+          <div class="content-card" layout="column" flex>
+
+            <!-- CONTENT TOOLBAR -->
+            <div class="toolbar" layout="row" layout-align="space-between center">
+              <div class="md-toolbar-tools md-toolbar-tools-bottom">
+                <div class="search-wrapper md-whiteframe-1dp layout-align-start-center layout-row flex" layout="row"
+                     layout-align="start center" flex="">
+                  <div class="search layout-align-start-center layout-row flex" flex="" layout="row"
+                       layout-align="start center">
+                    <md-icon md-font-icon="icon-magnify"
+                             class="icon s18 md-default-theme md-font material-icons icon-magnify"
+                             aria-hidden="true"></md-icon>
+                    <input flex="" ng-model="vm.unassigned.topicsSearch" type="text" placeholder="Search or start new chat"
+                           translate="" translate-attr-placeholder="Search"
+                           ng-keyup="applyFilterUnassigned()"
+                           class="ng-pristine ng-valid ng-scope flex ng-empty ng-touched" aria-invalid="false" style="">
+                  </div>
+                </div>
+              </div>
+
+              <md-input-container>
+
+                <md-select ng-model="vm.unassigned.selectedCategories"
+                           ng-change="applyFilterUnassigned()"
+                           multiple>
+                  <md-optgroup label="Categories">
+                    <md-option ng-value="-1">All Categories</md-option>
+                    <md-option ng-value="category.id" ng-repeat="category in vm.unassigned.categories">
+                      {{category.name_en || category.name_zh}}
+                    </md-option>
+                  </md-optgroup>
+                </md-select>
+
+              </md-input-container>
+
+              <div layout="row" layout-align="start center">
+                <md-select class="simplified" ng-model="vm.unassigned.statusFilter" placeholder="All Status"
+                           ng-change="applyFilterUnassigned()">
+                  <md-option value="all" translate="All Status">All Status</md-option>
+                  <md-option value="checked" translate="Checked">Checked</md-option>
+                  <md-option value="unchecked" translate="Unchecked">Unchecked</md-option>
+                </md-select>
+              </div>
+
+            </div>
+            <!-- / CONTENT TOOLBAR -->
+            <div class="content" layout="row" flex
+                 ng-include="'app/main/homework/subjects/assignment/classes/class/videos/templates/unassigned-selection.html'"></div>
+
+          </div>
+        </div>
+      </md-tab>
+
+      <md-tab label="Assigned" md-on-select="vm.switchSection('assigned')">
+        <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100" layout-wrap="">
+          <div class="content-card" layout="column" flex>
+
+            <!-- CONTENT TOOLBAR -->
+            <div class="toolbar" layout="row" layout-align="space-between center">
+
+              <div class="md-toolbar-tools md-toolbar-tools-bottom">
+                <div class="search-wrapper md-whiteframe-1dp layout-align-start-center layout-row flex" layout="row"
+                     layout-align="start center" flex="">
+                  <div class="search layout-align-start-center layout-row flex" flex="" layout="row"
+                       layout-align="start center">
+                    <md-icon md-font-icon="icon-magnify"
+                             class="icon s18 md-default-theme md-font material-icons icon-magnify"
+                             aria-hidden="true"></md-icon>
+                    <input flex="" ng-model="vm.assigned.topicsSearch" type="text" placeholder="Search or start new chat"
+                           translate="" translate-attr-placeholder="Search"
+                           ng-keyup="applyFilterAssigned()"
+                           class="ng-pristine ng-valid ng-scope flex ng-empty ng-touched" aria-invalid="false" style="">
+                  </div>
+                </div>
+              </div>
+
+              <md-input-container>
+                <md-select ng-model="vm.assigned.selectedCategories"
+                           ng-change="applyFilterAssigned()"
+                           multiple>
+                  <md-optgroup label="Categories">
+                    <md-option ng-value="-1">All Categories</md-option>
+                    <md-option ng-value="category.id" ng-repeat="category in vm.assigned.categories">
+                      {{category.name_en || category.name_zh}}
+                    </md-option>
+                  </md-optgroup>
+                </md-select>
+              </md-input-container>
+
+              <div layout="row" layout-align="start center">
+                <md-select class="simplified" ng-model="vm.assigned.statusFilter" placeholder="All Status"
+                           ng-change="applyFilterAssigned()">
+                  <md-option value="all" translate="All Status">All Status</md-option>
+                  <md-option value="checked" translate="Checked">Checked</md-option>
+                  <md-option value="unchecked" translate="Unchecked">Unchecked</md-option>
+                </md-select>
+              </div>
+
+            </div>
+            <!-- / CONTENT TOOLBAR -->
+            <div class="content" layout="row" flex
+                 ng-include="'app/main/homework/subjects/assignment/classes/class/videos/templates/assigned-selection.html'"></div>
+
+          </div>
+        </div>
+      </md-tab>
+
+
+    </md-tabs>
+  </div>
+</div>

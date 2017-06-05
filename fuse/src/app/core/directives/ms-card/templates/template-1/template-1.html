@@ -1,15 +1,15 @@
 <div class="template-1">
     <div class="media">
-        <img class="image" ng-src="{{card.media.image.src}}" alt="{{card.media.image.alt}}" ng-show="card.media.image">
+        <img class="image" ng-src="assets/images/subjects/{{card.s_name_en}}.jpeg" alt="{{card.media.image.alt}}">
     </div>
 
     <div class="content pv-24 ph-16">
-        <div class="title h3" ng-if="card.title">
-            {{card.title}}
+        <div class="title h3" ng-if="card.s_name_en">
+            {{card.s_name_en}}
         </div>
 
-        <div class="subtitle h3" ng-if="card.subtitle">
-            {{card.subtitle}}
+        <div class="subtitle h3" ng-if="card.s_name_zh">
+            {{card.s_name_zh}}
         </div>
 
         <div class="text pt-16" ng-if="card.text">
@@ -18,7 +18,7 @@
     </div>
 
     <div style="margin-bottom: 15px; text-align: center">
-      <a class="primary md-button md-ink-ripple" ui-sref="{{card['button-ui-sref']}}">
+      <a class="primary md-button md-ink-ripple" ui-sref="app.homework.subjects.assignment({ subjectId: card.id })">
         <span class="ng-scope">Enter</span><div class="md-ripple-container"></div>
       </a>
     </div>

@@ -1,0 +1,123 @@
+<div class="md-background-bg md-whiteframe-1dp ehla-table-list-wrapper ehla-table-list-undragable" style="width:100%">
+    <div>
+        <ul class="ehla-table-list ehla-table-list-header">
+            <li style="width: 25%">
+                <md-checkbox
+                        ng-checked="isAllCheckedUnassigned() === 2"
+                        md-indeterminate="isAllCheckedUnassigned() === 1"
+                        ng-click="toggleCheckAllUnassigned()">
+                </md-checkbox>
+                <a class="btn btn-xs"
+                   data-nodrag
+                   ng-click="toggleExpandAllUnassigned()">
+                                      <span class="icon s20" ng-class="{
+                                          'icon-plus': isAllExpandedUnassigned() !== 2,
+                                          'icon-minus': isAllExpandedUnassigned() === 2
+                                          }">
+                                      </span>
+                </a>
+                <span>Learning Point</span>
+            </li>
+            <li style="width: 15%">
+                Starting Time
+            </li>
+            <li style="width: 15%">
+                Deadline
+            </li>
+            <li style="width: 25%; text-align: center">
+                Video
+            </li>
+            <li style="width: 20%">
+                Remark to Students
+            </li>
+        </ul>
+    </div>
+    <div ng-show="!vm.unassigned.data.length && loading" class="ehla-table-empty">Loading</div>
+    <div ng-show="!vm.unassigned.data.length && !loading" class="ehla-table-empty">No Data</div>
+    <div ui-tree="treeOptionsUnassigned" ng-if="vm.unassigned.data.length"
+         ui-tree-nodes
+         data-drag-enabled="false"
+         ng-model="vm.unassigned.data">
+        <div ng-repeat="node in vm.unassigned.data"
+             ui-tree-node
+             ng-hide="!node._visible_"
+             ng-include="'nodes_renderer_unassigned'">
+        </div>
+    </div>
+</div>
+</div>
+<script type="text/ng-template" id="nodes_renderer_unassigned">
+    <ul class="ehla-table-list" ui-tree-handle>
+        <li style="width: 25%">
+            <div ng-style="{'margin-left': 20*(depth()-1) + 'px'}" style="padding: 0 5px;">
+                <md-checkbox ng-checked="node.checkStatus==='checked'"
+                             md-indeterminate="node.checkStatus==='partlyChecked'"
+                             ng-click="toggleCheckUnassigned(node)">
+                </md-checkbox>
+                <a class="btn btn-xs" ng-if="node.child && node.child.length > 0"
+                   data-nodrag
+                   ng-click="expandedUnassigned[node.id] = !expandedUnassigned[node.id];">
+                                      <span class="icon s20" ng-class="{
+                                          'icon-plus': !expandedUnassigned[node.id],
+                                          'icon-minus': expandedUnassigned[node.id]
+                                          }">
+                                      </span>
+                </a>
+                <a class="btn btn-xs ng-scope" style="visibility: hidden"
+                   ng-if="!node.child || !node.child.length">
+                                            <span class="icon icon-plus">
+                                      </span></a>
+                <span>{{ node.name_en || node.name_zh }}</span>
+            </div>
+        </li>
+        <li style="width: 15%">
+            <md-input-container class="md-block" flex-gt-sm ng-if="node.child.length === 0">
+
+                <input mdc-datetime-picker="" date="true" time="true" type="text" id="starttime" style="max-width: 90%;"
+                       show-todays-date="" min-date="date"
+                       ng-model="node.start_date" class="md-input" required="true"
+                       readonly="readonly">
+            </md-input-container>
+        </li>
+        <li style="width: 15%">
+            <md-input-container class="md-block" flex-gt-sm ng-if="node.child.length === 0">
+
+                <input mdc-datetime-picker="" date="true" time="true" type="text" id="endtime" style="max-width: 90%;"
+                       show-todays-date="" min-date="date"
+                       ng-model="node.end_date" class="md-input" required="true"
+                       readonly="readonly">
+            </md-input-container>
+        </li>
+        <li style="width: 25%; text-align: center">
+            <div  ng-if="node.child.length === 0" >
+                <span ng-click="vm.selectVideo($event, node)" style="cursor: pointer">
+                    <md-icon md-font-icon="icon-video"
+                             class="icon s18 md-default-theme md-font material-icons"
+                             aria-hidden="true"></md-icon>
+                <span>{{vm.displayAssigned(node)}}</span>
+                </span>
+
+            </div>
+
+
+        </li>
+        <li style="width: 20%">
+            <md-input-container ng-if="node.child.length === 0" style="width: 100%;">
+                <input type="text" ng-model="node.remark" style="width: 90%;">
+            </md-input-container>
+        </li>
+    </ul>
+    <div
+            ng-if="node.child && node.child.length > 0 && expandedUnassigned.hasOwnProperty(node.id)"
+            ng-show="expandedUnassigned[node.id]"
+            ui-tree-nodes=""
+            ng-model="node.child"
+            style="background: white; "
+    >
+        <div ng-repeat="node in node.child"
+             ui-tree-node
+             ng-hide="!node._visible_"
+             ng-include="'nodes_renderer_unassigned'"></div>
+    </div>
+
+</script>

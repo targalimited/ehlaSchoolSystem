@@ -1,0 +1,56 @@
+<div
+  class="doc-page ehla-blue-bg material-docs layout-docs doc-template page-layout simple tabbed ng-scope layout-column"
+  layout="column">
+
+  <div ncy-breadcrumb></div>
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="start center">
+    <div class="white-fg" layout="row" layout-align="start center" flex>
+      <div layout="row" layout-align="start center">
+        <div layout="column" layout-align="start start">
+          <div class="h2">
+            Class Name - Students
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+  <!-- / HEADER -->
+
+  <div class="content">
+    <md-content layout="column">
+      <div ng-if="isLoading">
+        <div layout="row" layout-margin>
+          <md-toolbar class="md-accent md-default-theme">
+            <h2 class="md-toolbar-tools" layout="row" layout-align="center center">
+              <span>Loading icon here</span>
+            </h2>
+          </md-toolbar>
+        </div>
+      </div>
+      <div ng-if="!isLoading && vm.students.length === 0">
+        <div layout="row" layout-margin>
+          <md-toolbar class="md-accent md-default-theme">
+            <h2 class="md-toolbar-tools" layout="row" layout-align="center center">
+              <span>No product is found for this brand</span>
+            </h2>
+          </md-toolbar>
+        </div>
+      </div>
+      <div ng-if="!isLoading && vm.students.length > 0" layout-margin>
+        <div layout="row" layout-wrap>
+          <md-content style="cursor: pointer" flex-xl="10" flex-lg="20" flex-md="25" flex-sm="33" flex-xs="50" ng-repeat="student in vm.students" ng-click="vm.viewPersonalReport(student)">
+            <md-card>
+              <content layout-margin>
+                <div>{{student.name}}</div>
+              </content>
+            </md-card>
+          </md-content>
+        </div>
+      </div>
+    </md-content>
+  </div>
+</div>

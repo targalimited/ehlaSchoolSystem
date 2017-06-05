@@ -1,0 +1,106 @@
+<div
+  class="doc-page material-docs ehla-blue-bg layout-docs doc-template page-layout simple tabbed fullwidth ng-scope layout-column"
+  layout="column">
+
+  <div ncy-breadcrumb></div>
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="start center">
+    <div class="white-fg" layout="row" layout-align="start center" flex>
+      <div layout="row" layout-align="start center">
+        <div layout="column" layout-align="start start">
+          <div class="h2">
+            {{title}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <md-button class="md-raised md-accent md-background" ng-click="vm.viewExerciseDetail({ id: 'create' })">
+        <span>Create {{titleSingular}}</span>
+      </md-button>
+    </div>
+
+    <md-button class="md-raised md-background" ng-click="back()">
+      <span>Back</span>
+    </md-button>
+  </div>
+  <!-- / HEADER -->
+
+
+  <div class="content">
+    <!-- <div class="md-title mb-32">Zero Configuration</div> -->
+    <div class="white-bg md-whiteframe-4dp">
+      <table class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions">
+        <thead>
+        <tr>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Batch Name</span>
+            </div>
+          </th>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Compulsory?</span>
+            </div>
+          </th>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Random Question?</span>
+            </div>
+          </th>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Starting Time</span>
+            </div>
+          </th>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Deadline</span>
+            </div>
+          </th>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Updating Time</span>
+            </div>
+          </th>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Action</span>
+            </div>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-if="loading">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td style="text-align: center">Loading...</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr ng-repeat="assignment in vm.data" ng-click="vm.viewExerciseDetail(assignment)" ng-show="!loading">
+          <td>{{ assignment.name }}</td>
+          <td>
+            <i flex class="icon s20 icon-check" ng-if="assignment.compulsory === 1"></i>
+            <i flex class="icon s20 icon-close" ng-if="assignment.compulsory === 0"></i>
+          </td>
+          <td>
+            <i flex class="icon s20 icon-check" ng-if="assignment.question_type === 'random'"></i>
+            <i flex class="icon s20 icon-close" ng-if="assignment.question_type !== 'random'"></i>
+          </td>
+          <td>{{ assignment.start_date }}</td>
+          <td>{{ assignment.end_date }}</td>
+          <td>{{ assignment.updated_at }}</td>
+          <td ng-click="$event.preventDefault(); $event.stopPropagation();">
+            <md-icon md-font-icon="red-600-fg icon-delete" ng-click="vm.deleteAssignment($event, assignment)"
+                     class="s18"></md-icon>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

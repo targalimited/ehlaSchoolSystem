@@ -13,10 +13,12 @@ var gutil = require('gulp-util');
  */
 exports.paths = {
     src : 'src',
-    dist: 'dist',
+    dist: '../backend/public/school',
     tmp : '.tmp',
     e2e : 'e2e'
 };
+
+exports.serverApiUrl = 'sample-env-1.pgmm7edpeg.ap-southeast-1.elasticbeanstalk.com/v1/';
 
 /**
  *  Wiredep is the lib which inject bower dependencies in your project

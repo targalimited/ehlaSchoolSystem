@@ -1,0 +1,142 @@
+{
+  "assigned": [
+    {
+      "categoryId": 1,
+      "name": "Test 1",
+      "errorRate": 5,
+      "frequency": 11,
+      "questions": 12,
+      "child": [
+        {
+          "categoryId": 2,
+          "name": "Test 2",
+          "errorRate": 5,
+          "frequency": 11,
+          "questions": 12,
+          "child": [
+            {
+              "categoryId": 3,
+              "name": "Test 3",
+              "errorRate": 5,
+              "frequency": 11,
+              "questions": 12,
+              "child": []
+            },
+            {
+              "categoryId": 4,
+              "name": "Test 4",
+              "errorRate": 5,
+              "frequency": 11,
+              "questions": 12,
+              "child": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "categoryId": 5,
+      "name": "Cat 5",
+      "errorRate": 5,
+      "frequency": 11,
+      "questions": 12,
+      "child": [
+        {
+          "categoryId": 6,
+          "name": "Cat 6",
+          "errorRate": 5,
+          "frequency": 11,
+          "questions": 12,
+          "child": [
+            {
+              "categoryId": 7,
+              "name": "Cat 7",
+              "errorRate": 5,
+              "frequency": 11,
+              "questions": 12,
+              "child": []
+            },
+            {
+              "categoryId": 8,
+              "name": "Cat 8",
+              "errorRate": 5,
+              "frequency": 11,
+              "questions": 12,
+              "child": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "unassigned": [
+    {
+      "categoryId": 1,
+      "name": "Test 1",
+      "errorRate": 5,
+      "frequency": 11,
+      "questions": 12,
+      "child": [
+        {
+          "categoryId": 2,
+          "name": "Test 2",
+          "errorRate": 5,
+          "frequency": 11,
+          "questions": 12,
+          "child": [
+            {
+              "categoryId": 3,
+              "name": "Test 3",
+              "errorRate": 5,
+              "frequency": 11,
+              "questions": 12,
+              "child": []
+            },
+            {
+              "categoryId": 4,
+              "name": "Test 4",
+              "errorRate": 5,
+              "frequency": 11,
+              "questions": 12,
+              "child": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "categoryId": 5,
+      "name": "Cat 5",
+      "errorRate": 5,
+      "frequency": 11,
+      "questions": 12,
+      "child": [
+        {
+          "categoryId": 6,
+          "name": "Cat 6",
+          "errorRate": 5,
+          "frequency": 11,
+          "questions": 12,
+          "child": [
+            {
+              "categoryId": 7,
+              "name": "Cat 7",
+              "errorRate": 5,
+              "frequency": 11,
+              "questions": 12,
+              "child": []
+            },
+            {
+              "categoryId": 8,
+              "name": "Cat 8",
+              "errorRate": 5,
+              "frequency": 11,
+              "questions": 12,
+              "child": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

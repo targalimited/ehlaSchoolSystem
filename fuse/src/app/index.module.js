@@ -19,17 +19,17 @@
       // Quick Panel
       'app.quick-panel',
 
+      // Login
+      'app.login',
+
       // Home
       'app.home',
 
       // Homework
       'app.homework',
 
-      // Examination
-      'app.examination',
-
       // Report
-      'app.report',
+      // 'app.reports',
 
       // Calendar
       'app.calendar',

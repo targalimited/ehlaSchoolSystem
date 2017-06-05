@@ -28,7 +28,7 @@
                                      class="icon status s16">
                             </md-icon>
                         </div>
-                        <span class="username" hide show-gt-sm>John Doe</span>
+                        <span class="username" hide show-gt-sm>{{user.username}}</span>
                         <md-icon md-font-icon="icon-chevron-down"
                                  class="icon s16" hide-xs></md-icon>
                     </div>
@@ -40,6 +40,7 @@
                         <md-button>My Profile</md-button>
                     </md-menu-item>
 
+                  <!--
                     <md-menu-item class="md-indent" ui-sref="app.mail">
                         <md-icon md-font-icon="icon-email" class="icon"></md-icon>
                         <md-button>Inbox</md-button>
@@ -65,6 +66,7 @@
                             </md-menu-content>
                         </md-menu>
                     </md-menu-item>
+                    -->
 
                     <md-menu-divider></md-menu-divider>
 
@@ -86,7 +88,7 @@
             <md-button class="language-button" ng-click="$mdOpenMenu()"
                        aria-label="Language" md-menu-origin md-menu-align-target>
                 <div layout="row" layout-align="center center">
-                    <img class="flag" ng-src="assets/images/flags/{{vm.selectedLanguage.flag}}.png">
+                    <img class="flag" style="width: 24px;" ng-src="assets/images/flags/{{vm.selectedLanguage.flag}}.png">
                     <span class="iso">{{vm.selectedLanguage.code}}</span>
                 </div>
             </md-button>
@@ -96,7 +98,7 @@
                     <md-button ng-click="vm.changeLanguage(lang)" aria-label="{{lang.title}}" translate
                                translate-attr-aria-label="{{lang.title}}">
                         <span layout="row" layout-align="start center">
-                            <img class="flag" ng-src="assets/images/flags/{{lang.flag}}.png">
+                            <img class="flag" style="width: 24px;" ng-src="assets/images/flags/{{lang.flag}}.png">
                             <span translate="{{lang.translation}}">{{lang.title}}</span>
                         </span>
                     </md-button>

@@ -1,0 +1,90 @@
+<md-dialog class="event-form-dialog" aria-label="New Message">
+    <form name="eventForm" class="md-inline-form" novalidate>
+        <md-toolbar class="md-accent md-hue-2">
+            <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+                <span class="title">{{vm.dialogTitle}}</span>
+                <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Close dialog" translate
+                           translate-attr-aria-label="CALENDAR.CLOSE_DIALOG">
+                    <md-icon md-font-icon="icon-close"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content ms-scroll>
+            <div layout="column" style="padding-bottom: 20px">
+                <div class="title">Academic Year Range</div>
+                <div>
+                    <div class="notification-inputs">
+                        <md-input-container>
+                            <span>From</span>
+                        </md-input-container>
+                        <md-input-container>
+                            <md-select ng-model="vm.year.year_start">
+                                <md-option ng-repeat="opt in vm.years" value="{{opt}}">{{opt}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container>
+                            <span>To</span>
+                        </md-input-container>
+                        <md-input-container>
+                            <md-select ng-model="vm.year.year_end">
+                                <md-option ng-repeat="opt in vm.years" value="{{opt}}">{{opt}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" style="margin-top: 20px">
+                            <label>Academic Year Display Name</label>
+                            <input name="name" ng-model="vm.year.display_name" required>
+                            <div ng-messages="eventForm.name.$error" ng-show="eventForm.name.$touched" role="alert">
+                                <div ng-message="required">
+                                    <span>Academic Year Display Name field is required</span>
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <md-input-container class="md-block">
+                <label>Semester</label>
+                <input name="semester" ng-model="vm.year.semester" required>
+                <div ng-messages="eventForm.semester.$error" ng-show="eventForm.semester.$touched" role="alert">
+                    <div ng-message="required">
+                        <span>Semester field is required</span>
+                    </div>
+                </div>
+            </md-input-container>
+
+
+            <div layout="row">
+                <md-checkbox name="tos" ng-model="vm.year.current_sem" ng-true-value="1">
+                    Current Semester
+                </md-checkbox>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions>
+            <div layout="row" layout-align="end center" style="width: 100%">
+                <div>
+                    <md-button ng-click="vm.save()" class="save-button md-accent md-raised" aria-label="SAVE"
+                               ng-disabled="eventForm.$invalid"
+                               translate-attr-aria-label="CALENDAR.SAVE">
+                        {{vm.type === 'edit' ? 'SAVE': 'CREATE'}}
+                    </md-button>
+                </div>
+
+                <div>
+                    <md-button ng-click="vm.closeDialog()" class="save-button md-raised"
+                               translate-attr-aria-label="CALENDAR.SAVE">
+                        CANCEL
+                    </md-button>
+                </div>
+            </div>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

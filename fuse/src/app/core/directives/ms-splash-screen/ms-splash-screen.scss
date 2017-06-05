@@ -31,11 +31,12 @@
         line-height: 96px;
         margin: 0 auto;
         font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-        font-size: 56px;
+        font-size: 76px;
+        font-weight: 700;
         text-align: center;
         border-radius: 2px;
-        background-color: #039BE5;
-        color: #FFFFFF;
+        background-color: white;
+        color: #39c2f6;
         box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.22);
     }
 
@@ -112,7 +113,7 @@
                 }
             }
         }
-        
+
         @keyframes outer-rotate {
             0% {
                 transform: rotate(0deg) scale(0.5);

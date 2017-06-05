@@ -1,3 +1,176 @@
-<h1>
-    This is calendar page
-</h1>
+<div id="calendar" class="page-layout simple right-sidenav" layout="column">
+
+    <!-- HEADER -->
+    <div class="header" ng-class="vm.currentMonthShort">
+
+        <div class="header-content" layout="column" layout-align="space-between">
+
+            <div class="header-top" layout="row" layout-align="space-between center" layout-xs="column">
+                <div class="logo" layout="row" layout-align="start center">
+                    <span class="logo-icon">
+                        <md-icon md-font-icon="icon-calendar-today"></md-icon>
+                    </span>
+
+                    <span class="logo-text" translate="CALENDAR.CALENDAR">Calendar</span>
+                </div>
+
+                <!-- TOOLBAR -->
+                <div class="toolbar" layout="row" layout-align="start center">
+                    <md-button class="md-icon-button" ng-click="vm.calendar.today()" aria-label="Today" translate
+                               translate-attr-aria-label="CALENDAR.TODAY">
+                        <md-icon md-font-icon="icon-calendar-today"></md-icon>
+                        <md-tooltip><span translate="CALENDAR.TODAY">Today</span></md-tooltip>
+                    </md-button>
+
+                    <md-button class="md-icon-button" ng-click="vm.calendar.changeView('agendaDay')" aria-label="Day"
+                               translate translate-attr-aria-label="CALENDAR.DAY">
+                        <md-icon md-font-icon="icon-view-day"></md-icon>
+                        <md-tooltip><span translate="CALENDAR.DAY">Day</span></md-tooltip>
+                    </md-button>
+
+                    <md-button class="md-icon-button" ng-click="vm.calendar.changeView('agendaWeek')" aria-label="Week"
+                               translate translate-attr-aria-label="CALENDAR.WEEK">
+                        <md-icon md-font-icon="icon-view-week"></md-icon>
+                        <md-tooltip><span translate="CALENDAR.WEEK">Week</span></md-tooltip>
+                    </md-button>
+
+                    <md-button class="md-icon-button" ng-click="vm.calendar.changeView('month')" aria-label="Month"
+                               translate translate-attr-aria-label="CALENDAR.MONTH">
+                        <md-icon md-font-icon="icon-view-module"></md-icon>
+                        <md-tooltip><span translate="CALENDAR.MONTH">Month</span></md-tooltip>
+                    </md-button>
+                </div>
+            </div>
+            <!-- / TOOLBAR -->
+
+            <!-- HEADER BOTTOM -->
+            <div class="header-bottom" layout="row" layout-align="center center">
+                <md-button class="md-icon-button arrow" ng-click="vm.calendar.prev()" aria-label="Previous"
+                           translate translate-attr-aria-label="CALENDAR.PREVIOUS">
+                    <md-icon md-font-icon="icon-chevron-left"></md-icon>
+                </md-button>
+
+                <div class="title">
+                    {{vm.calendarView.title}}
+                </div>
+
+                <md-button class="md-icon-button arrow" ng-click="vm.calendar.next()" aria-label="Next" translate
+                           translate-attr-aria-label="CALENDAR.NEXT">
+                    <md-icon md-font-icon="icon-chevron-right"></md-icon>
+                </md-button>
+            </div>
+            <!-- / HEADER BOTTOM -->
+        </div>
+
+        <!-- ADD EVENT BUTTON -->
+        <md-button class="add-event-button md-fab md-warn" ng-click="vm.addEvent($event)"
+                   aria-label="Add event" translate translate-attr-aria-label="CALENDAR.ADD_EVENT">
+            <md-icon md-font-icon="icon-plus"></md-icon>
+        </md-button>
+        <!--
+        <md-button class="filter-event-button md-fab md-default-theme" ng-click="vm.filterEvent($event)"
+                   ng-popover="event-filter-panel"
+                   title="Event Types"
+                   placement="left"
+                   maximize="true"
+                   init='initPopover()'
+                   overlayClasses="test-class-1 test-class-2"
+                   aria-label="Filter event" translate translate-attr-aria-label="CALENDAR.FILTER_EVENT">
+            <md-icon md-font-icon="icon-view-headline"></md-icon>
+        </md-button>
+-->
+        <!-- / ADD EVENT BUTTON -->
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+
+    <div layout="row">
+
+        <div layout="column" id="class-types-header">
+            <div class="item subheader event">
+                Event Types
+            </div>
+
+            <md-button class="event item"
+                       ng-click="vm.toggleFilter(type.type)" ng-repeat="type in vm.eventTypes">
+                <md-icon md-font-icon="icon-label" class="s16"
+                         ng-style="{'color' : events[type.type].isVisible ? type.color : type.disableColor}"></md-icon>
+                <span class="title">{{type.name}}</span>
+            </md-button>
+
+            <div class="item subheader event">
+                Classes
+            </div>
+
+            <md-button class="event item" name="classFilter[]"
+                       ng-click="vm.toggleFilter()" ng-repeat="class in vm.classes">
+                <md-checkbox ng-model="vm.chosenClasses[class.id]">{{class.c_name}}</md-checkbox>
+            </md-button>
+        </div>
+
+
+        <div class="content" layout="column" >
+            <div id="calendarView" ng-if="!loading" ms-scroll ui-calendar="vm.calendarUiConfig.calendar" ng-model="vm.events"
+                 calendar="main"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="event-detail-template">
+<div class="event-detail-dialog" aria-label="New Message">
+    <md-toolbar class="md-accent md-hue-2">
+        <div class="md-toolbar-tools">
+            <span class="title">{{vm.calendarEvent.title}}</span>
+            <span flex></span>
+            <md-button class="edit-event-button md-fab md-warn"
+                       ng-click="vm.editEvent(vm.calendarEvent)" aria-label="Edit event"
+                       translate translate-attr-aria-label="CALENDAR.EDIT_EVENT">
+                <md-icon md-font-icon="icon-pencil"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content ms-scroll>
+
+        <div class="event-details" layout="column">
+
+            <div class="event-detail-row" layout="row" layout-align="start start">
+                <md-icon md-font-icon="icon-clock"></md-icon>
+                <div layout="column" flex>
+                    <span class="h4">{{vm.calendarEvent.start.format('MMMM Do YYYY, h:mm:ss a')}} <span
+                            ng-if="vm.calendarEvent.end">-</span> {{vm.calendarEvent.end.format('MMMM Do YYYY, h:mm:ss a')}}</span>
+                    <span class="secondary-text">{{vm.calendarEvent.repeat || 'Does not repeat'}}</span>
+                </div>
+            </div>
+
+            <div class="event-detail-row" layout="row" layout-align="start start">
+                <md-icon md-font-icon="icon-bell-ring-outline"></md-icon>
+                <div layout="column" flex>
+                    <span class="h4" translate="CALENDAR.30_MIN_BEFORE">30 minutes before</span>
+                    <span class="h4" translate="CALENDAR.15_MIN_BEFORE">15 minutes before</span>
+                    <span class="h4" translate="CALENDAR.30_MIN_LATER">30 minutes later</span>
+                </div>
+            </div>
+
+            <div class="event-detail-row" layout="row" layout-align="start start">
+                <md-icon md-font-icon="icon-map-marker"></md-icon>
+                <div layout="column" flex>
+                    <span class="h4">Istanbul, Turkey</span>
+                </div>
+            </div>
+
+            <div class="event-detail-row" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-account"></md-icon>
+                <div layout="row" flex>
+                    <img src="assets/images/avatars/alice.jpg" class="avatar" alt="alice"/>
+                    <img src="assets/images/avatars/joyce.jpg" class="avatar" alt="joyce"/>
+                    <img src="assets/images/avatars/vincent.jpg" class="avatar" alt="vincent"/>
+                </div>
+            </div>
+
+        </div>
+
+    </md-dialog-content>
+</div>
+    </script>

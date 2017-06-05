@@ -20,21 +20,17 @@
                     }
                 },
                 resolve: {
-                    SubjectsData: function (msApi)
-                    {
-                        return msApi.resolve('subjects@get');
-                    }
+                    breadcrumbs: function (breadcrumb, $stateParams) {
+                        return breadcrumb.getBreadCrumbs($stateParams);
+                    },
                 },
                 ncyBreadcrumb: {
                   label: 'Subjects'
-                }
+                },
+                authenticate: true,
             });
 
         // Translation
         $translatePartialLoaderProvider.addPart('app/main/homework/subjects');
-
-        // Api
-        msApiProvider.register('subjects', ['app/data/subjects/subjects.json']);
-
     }
 })();
