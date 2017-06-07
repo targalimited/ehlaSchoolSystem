@@ -8,7 +8,17 @@ use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
-    //
+    public function postSubjects(Request $request){
+
+       // dd($request->all());
+
+        Subject::insert($request->subjects);
+
+
+        return return_success();
+
+    }
+
     public function getSubjects(Request $request){
 
         $teacher_id = $request->teacher_id;

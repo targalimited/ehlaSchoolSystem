@@ -10,6 +10,7 @@ class Subject extends Model
 
     const CREATED_AT = 'create_ts';
     const UPDATED_AT = 'update_ts';
+    protected $guarded = ['id'];
 
     public function school_classes()
     {
