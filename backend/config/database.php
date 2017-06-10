@@ -53,6 +53,20 @@ return [
             'engine' => null,
         ],
 
+        'school_testing' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST_SCHOOL_TESTING', 'db-test.ckjfdmyszhad.ap-southeast-1.rds.amazonaws.com'),
+            'port' => env('DB_PORT_SCHOOL_TESTING', '13310'),
+            'database' => env('DB_DATABASE_SCHOOL_TESTING', 'ehl_user'),
+            'username' => env('DB_USERNAME_SCHOOL_TESTING', 'billchan'),
+            'password' => env('DB_PASSWORD_SCHOOL_TESTING', '4&CdMY-6a9<J934P'),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => env('DB_PREFIX', 'school_'),
+            'strict' => true,
+            'engine' => null,
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),

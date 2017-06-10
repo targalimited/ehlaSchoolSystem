@@ -75,6 +75,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('levels', 'LevelController@getLevel');
         Route::post('levels', 'LevelController@postLevel');
 
+        Route::post('subjects', 'SubjectController@postSubjects');
+
         Route::group(['prefix' => 'teachers/{teacher_id?}/subjects/{subject_id?}/classes/{class_id?}'], function () {
             //update students, bind to class and subject
             Route::post('updateStudentSubject', 'TeacherController@updateStudentSubject');

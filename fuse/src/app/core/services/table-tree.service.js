@@ -112,7 +112,7 @@
           (propagateCheckFromParent(vm))(node.child, node.checkStatus);
         }
 
-        (verifyAllParentsCheckStatus(vm))(vm.data);
+        (verifyAllParentsCheckStatus(vm))(node);
       }
     }
 
@@ -131,21 +131,29 @@
     //starting from the root node, check all folders recursively to see
     //if their children are all click, all unclicked or mixed
     function verifyAllParentsCheckStatus(vm) {
-      return function (nodes) {
-        var retVal = "";
-        for (var i = 0; i < nodes.length; ++i) {
-          var node = nodes[i];
-          console.log(node.title);
-          if (node.child && node.child.length > 0)
-            node.checkStatus = (verifyAllParentsCheckStatus(vm))(node.child);
-          if (retVal === "") {
-            retVal = node.checkStatus;
-            console.log("set ret");
+      return function (node) {
+        var parent = node;
+        do {
+          parent = parent.parentNode;
+          var partlyCheckedCount = 0;
+          var checkedCount = 0;
+          _.each(parent.child, function (child) {
+            if (child.checkStatus === 'partlyChecked') {
+              partlyCheckedCount++;
+            }
+            if (child.checkStatus === 'checked') {
+              partlyCheckedCount++;
+              checkedCount++;
+            }
+          });
+          if (checkedCount === parent.child.length) {
+            parent.checkStatus = 'checked';
+          } else if (partlyCheckedCount > 0) {
+            parent.checkStatus = 'partlyChecked';
+          } else {
+            parent.checkStatus = 'unchecked';
           }
-          if (retVal != node.checkStatus)
-            return "partlyChecked";
-        }
-        return retVal;
+        } while (parent);
       }
     }
 
@@ -154,6 +162,7 @@
         (function filter(nodes, parent) {
           var isAnyVisible = false;
           _.each(nodes, function (node) {
+            node.parentNode = parent;
             var text = _.trim(vm.topicsSearch);
             var isSearchTextMatch = text === '' || new RegExp(text, 'gi').test(node.name_en) || new RegExp(text, 'gi').test(node.name_zh);
             var catIds = vm.selectedCategories || [-1];

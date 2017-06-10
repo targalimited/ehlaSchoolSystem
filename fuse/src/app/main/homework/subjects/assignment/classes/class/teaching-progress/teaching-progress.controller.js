@@ -64,12 +64,15 @@
                                 var result = prepare(weakness.child);
                                 if (result.checkedIds && result.checkedIds.length > 0) {
                                     $scope.expanded[weakness.id] = true;
-                                    if (result.checkedIds.length === weakness.child.length) {
-                                        weakness.checkStatus = 'checked';
-                                    } else {
+                                    if (_.some(result.checkedIds, function (status) {
+                                          return status === 'partlyChecked';
+                                      }) || result.checkedIds.length !== weakness.child.length) {
                                         weakness.checkStatus = 'partlyChecked';
+                                        data.checkedIds.push('partlyChecked');
+                                    } else {
+                                        weakness.checkStatus = 'checked';
+                                        data.checkedIds.push('checked');
                                     }
-                                    data.checkedIds.push(weakness.id);
                                 }
                             } else {
                                 var a = _.some(progress, function (p) {
@@ -77,7 +80,7 @@
                                 });
 
                                 if (a) {
-                                    data.checkedIds.push(weakness.id);
+                                    data.checkedIds.push('checked');
                                     weakness.checkStatus = 'checked';
                                     weakness.question_qty = a.question_qty;
                                 }

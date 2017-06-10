@@ -43,7 +43,7 @@
     "perfect-scrollbar": "0.6.11",
     "Sortable": "1.4.2",
     "textAngular": "1.5.1",
-    "angular-breadcrumb": "^0.4.1",
+    "angular-breadcrumb": "kyofight/angular-breadcrumb#^0.5.0",
     "lodash": "^4.16.4",
     "restangular": "^1.6.1",
     "ng-material-datetimepicker": "^1.5.10",
@@ -55,7 +55,8 @@
   "resolutions": {
     "angular": "1.5.8",
     "d3": "3.5.14",
-    "moment": "^2.17.1"
+    "moment": "^2.17.1",
+    "angular-material": "1.1.1"
   },
   "overrides": {
     "angular-material": {
