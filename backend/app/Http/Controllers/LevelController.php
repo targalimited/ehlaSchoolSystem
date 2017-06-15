@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Level;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Validator;
 
 class LevelController extends Controller
 {
@@ -15,6 +16,9 @@ class LevelController extends Controller
     }
 
     public function postLevel(Request $request){
+
+
+
         Level::truncate();
         Level::insert($request->levels);
         return return_success();
