@@ -145,6 +145,7 @@
         $scope.isAllChecked = tableTree.isAllChecked(vm);
         $scope.toggleCheckAll = tableTree.toggleCheckAll(vm);
         $scope.isAllExpanded = tableTree.isAllExpanded(vm, $scope.expanded);
+        $scope.toggleExpand = tableTree.toggleExpand(vm, $scope.expanded);
         $scope.toggleExpandAll = tableTree.toggleExpandAll(vm, $scope.expanded);
         $scope.propagateCheckFromParent = tableTree.propagateCheckFromParent(vm);
         $scope.verifyAllParentsCheckStatus = tableTree.verifyAllParentsCheckStatus(vm);

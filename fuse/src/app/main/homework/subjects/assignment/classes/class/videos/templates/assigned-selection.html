@@ -61,7 +61,7 @@
         -->
         <a class="btn btn-xs" ng-if="node.child && node.child.length > 0"
            data-nodrag
-           ng-click="expandedAssigned[node.id] = !expandedAssigned[node.id];">
+           ng-click="toggleExpandAssigned(node)">
                                       <span class="icon s20" ng-class="{
                                           'icon-plus': !expandedAssigned[node.id],
                                           'icon-minus': expandedAssigned[node.id]

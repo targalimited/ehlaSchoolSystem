@@ -73,7 +73,7 @@
             <div ng-style="{'margin-left': 20*(depth()-1) + 'px'}" style="padding: 0 5px;">
                 <a class="btn btn-xs" ng-if="node.child && node.child.length > 0"
                    data-nodrag ng-init="expanded[node.id] = true"
-                   ng-click="expanded[node.id] = !expanded[node.id];">
+                   ng-click="toggleExpand(node)">
                                       <span class="icon s20" ng-class="{
                                           'icon-plus': !expanded[node.id],
                                           'icon-minus': expanded[node.id]

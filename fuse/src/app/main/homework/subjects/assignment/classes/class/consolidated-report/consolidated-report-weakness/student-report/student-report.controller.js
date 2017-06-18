@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.homework.subjects.assignment.classes.class.consolidated-report.weakness.students', [])
+        .module('app.homework.subjects.assignment.classes.class.consolidated-report.consolidated-report-weakness.student-report', [])
         .config(config);
 
     /** @ngInject */
@@ -11,12 +11,12 @@
     {
         // State
         $stateProvider
-            .state('app.homework.subjects.assignment.classes.class.consolidated-report.weakness.students', {
-                url    : '/students',
+            .state('app.homework.subjects.assignment.classes.class.consolidated-report.consolidated-report-weakness.student-report', {
+                url    : '/student-report',
                 views  : {
                     'content@app': {
-                        templateUrl: 'app/main/homework/subjects/assignment/classes/class/consolidated-report/weakness/students/students.html',
-                        controller : 'StudentsController as vm'
+                        templateUrl: 'app/main/homework/subjects/assignment/classes/class/consolidated-report/consolidated-report-weakness/student-report/student-report.html',
+                        controller : 'StudentReportController as vm'
                     }
                 },
                 resolve: {
@@ -29,13 +29,13 @@
                     }
                 },
                 ncyBreadcrumb: {
-                    label: 'Weakness Report'
+                    label: 'Students Report'
                 },
                 authenticate: true,
             });
 
         // Translation
-        $translatePartialLoaderProvider.addPart('app/main/homework/subjects/assignment/classes/class/consolidated-report/weakness/students');
+        $translatePartialLoaderProvider.addPart('app/main/homework/subjects/assignment/classes/class/consolidated-report/consolidated-report-weakness/student-report');
 
         // Api
         msApiProvider.register('students', ['app/data/students/students.json']);
@@ -49,11 +49,11 @@
     'use strict';
 
     angular
-        .module('app.homework.subjects.assignment.classes.class.consolidated-report.weakness.students')
-        .controller('StudentsController', StudentsController);
+        .module('app.homework.subjects.assignment.classes.class.consolidated-report.consolidated-report-weakness.student-report')
+        .controller('StudentReportController', StudentReportController);
 
     /** @ngInject */
-    function StudentsController($state, StudentsData, breadcrumbs, $scope)
+    function StudentReportController($state, StudentsData, breadcrumbs, $scope)
     {
         var vm = this;
 

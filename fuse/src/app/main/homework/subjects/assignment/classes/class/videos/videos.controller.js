@@ -4,7 +4,7 @@
     angular
         .module('app.homework.subjects.assignment.classes.class.videos', [
             'ui.tree',
-            'app.homework.subjects.assignment.classes.class.videos.video'
+            'app.homework.subjects.assignment.classes.class.videos.video-weakness'
         ])
         .config(config);
 
@@ -45,7 +45,7 @@
         .controller('VideosController', VideosController);
 
     /** @ngInject */
-    function VideosController(breadcrumb, breadcrumbs, msUtils, tableTree, loadingScreen, Restangular, $scope, $state, $mdDialog) {
+    function VideosController($rootScope, breadcrumb, breadcrumbs, msUtils, tableTree, loadingScreen, Restangular, $scope, $state, $mdDialog) {
         var vm = this;
         $scope.breadcrumbs = breadcrumbs;
         $scope.currentDate = new Date();
@@ -226,6 +226,7 @@
         $scope.isAllCheckedAssigned = tableTree.isAllChecked(vm.assigned);
         $scope.toggleCheckAllAssigned = tableTree.toggleCheckAll(vm.assigned);
         $scope.isAllExpandedAssigned = tableTree.isAllExpanded(vm.assigned, $scope.expandedAssigned);
+        $scope.toggleExpandAssigned = tableTree.toggleExpand(vm, $scope.expandedAssigned);
         $scope.toggleExpandAllAssigned = tableTree.toggleExpandAll(vm.assigned, $scope.expandedAssigned);
         $scope.propagateCheckFromParentAssigned = tableTree.propagateCheckFromParent(vm.assigned);
         $scope.verifyAllParentsCheckStatusAssigned = tableTree.verifyAllParentsCheckStatus(vm.assigned);
@@ -235,6 +236,7 @@
         $scope.isAllCheckedUnassigned = tableTree.isAllChecked(vm.unassigned);
         $scope.toggleCheckAllUnassigned = tableTree.toggleCheckAll(vm.unassigned);
         $scope.isAllExpandedUnassigned = tableTree.isAllExpanded(vm.unassigned, $scope.expandedUnassigned);
+        $scope.toggleExpandUnassigned = tableTree.toggleExpand(vm, $scope.expandedUnassigned);
         $scope.toggleExpandAllUnassigned = tableTree.toggleExpandAll(vm.unassigned, $scope.expandedUnassigned);
         $scope.propagateCheckFromParentUnassigned = tableTree.propagateCheckFromParent(vm.unassigned);
         $scope.verifyAllParentsCheckStatusUnassigned = tableTree.verifyAllParentsCheckStatus(vm.unassigned);
@@ -260,6 +262,7 @@
 
         vm.switchSection = function (section) {
             $scope.section = section;
+            $rootScope.chosenVideoSection = section;
         }
 
         vm.back = function () {
@@ -267,7 +270,7 @@
         }
 
         vm.viewVideoDetails = function (video) {
-            $state.go('app.homework.subjects.assignment.classes.class.videos.video', {videoId: video.categoryId})
+            $state.go('app.homework.subjects.assignment.classes.class.videos.video-weakness.video-progress', {weaknessId: video.id})
         };
     }
 })();

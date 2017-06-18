@@ -56,7 +56,7 @@
                 </md-checkbox>
                 <a class="btn btn-xs" ng-if="node.child && node.child.length > 0"
                    data-nodrag
-                   ng-click="expandedUnassigned[node.id] = !expandedUnassigned[node.id];">
+                   ng-click="toggleExpandUnassigned(node)">
                                       <span class="icon s20" ng-class="{
                                           'icon-plus': !expandedUnassigned[node.id],
                                           'icon-minus': expandedUnassigned[node.id]
