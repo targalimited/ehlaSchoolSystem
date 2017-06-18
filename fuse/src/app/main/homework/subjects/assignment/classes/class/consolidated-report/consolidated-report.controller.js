@@ -93,7 +93,7 @@
         // Methods
 
         vm.viewStudents = function (item) {
-            $state.go('app.homework.subjects.assignment.classes.class.consolidated-report-weakness.student-report', {
+            $state.go('app.homework.subjects.assignment.classes.class.consolidated-report.consolidated-report-weakness.student-report', {
                 weaknessId: item.id
             });
         }
