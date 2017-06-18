@@ -6,29 +6,59 @@
         .controller('SettingsController', SettingsController);
 
     /** @ngInject */
-    function SettingsController($state, $mdDialog, $document, Restangular, generalMessage, loadingScreen) {
+    function SettingsController($state, $mdDialog, $document, msUtils, Restangular, generalMessage, loadingScreen) {
         var vm = this;
+        vm.levels = msUtils.levels;
+        vm.section = 'academic';
 
         vm.init = function () {
-            vm.section = 'academic';
-            loadingScreen.showLoadingScreen();
-            Restangular.one('academicSettings').get()
-                .then(function (results) {
-                    vm.data = results.plain().data;
-                })
-                .catch(function (err) {
-                    console.error('Cannot login', err);
-                })
-                .finally((function () {
-                    loadingScreen.hideLoadingScreen();
-                }));
-
+            if (vm.section === 'academic') {
+                loadingScreen.showLoadingScreen();
+                Restangular.one('academicSettings').get()
+                  .then(function (results) {
+                      vm.academicData = results.plain().data;
+                  })
+                  .catch(function (err) {
+                      console.error('Cannot login', err);
+                  })
+                  .finally((function () {
+                      loadingScreen.hideLoadingScreen();
+                  }));
+            } else if (vm.section === 'level') {
+                loadingScreen.showLoadingScreen();
+                Restangular.one('levels').get()
+                  .then(function (results) {
+                      var data = results.plain().data;
+                      vm.levelData = [];
+                      _.each(data, function (level) {
+                          var lv = _.find(vm.levelData, function (lv) {
+                              return lv.name === level.name;
+                          })
+                          if (lv) {
+                              lv.ehlaLevels.push(level.level)
+                          } else {
+                              vm.levelData.push({
+                                  name: level.name,
+                                  ehlaLevels: [level.level],
+                              });
+                          }
+                      });
+                      console.log(vm.levelData);
+                  })
+                  .catch(function (err) {
+                      console.error('Cannot login', err);
+                  })
+                  .finally((function () {
+                      loadingScreen.hideLoadingScreen();
+                  }));
+            }
         }
 
         vm.init();
 
         vm.switchSection = function (section) {
             vm.section = section;
+            vm.init();
         }
 
         // Methods
@@ -165,6 +195,44 @@
             });
         }
 
+
+        vm.addLevel = function () {
+            vm.levelData.push({});
+        }
+
+        vm.deleteLevel = function (event, node) {
+            _.remove(vm.levelData, function (lv) {
+                return lv.name === node.name;
+            });
+        }
+
+        vm.saveLevel = function () {
+            // school level name should be unique
+            loadingScreen.showLoadingScreen();
+            var postData = [];
+            _.each(vm.levelData, function (level) {
+                if (_.trim(level.name) !== '' && level.ehlaLevels.length) {
+                    _.each(level.ehlaLevels, function (lv) {
+                        postData.push({
+                            name: _.trim(level.name),
+                            level: lv,
+                        })
+                    })
+                }
+            });
+            Restangular.service('levels').post({ levels: postData })
+              .then(function (results) {
+                  console.log(results);
+                  generalMessage.showMessageToast('success', 'Level Settings Update save successfully.')
+              })
+              .catch(function (err) {
+                  console.error('Cannot login', err);
+                  generalMessage.showMessageToast('error', 'Level Settings save unsuccessfully.')
+              })
+              .finally((function () {
+                  loadingScreen.hideLoadingScreen();
+              }));
+        }
         //////////
     }
 })();

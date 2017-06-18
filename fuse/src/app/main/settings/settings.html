@@ -16,11 +16,20 @@
         </div>
 
         <div>
-            <md-button class="md-raised md-accent md-background" ng-show="vm.section === 'academic'" ng-click="vm.editYear($event)">
+            <md-button class="md-raised md-background" ng-show="vm.section === 'academic'" ng-click="vm.editYear($event)">
                 <span>Add Academic Year</span>
             </md-button>
 
-            <md-button class="md-raised md-accent md-background" ng-show="vm.section === 'import'" ng-click="vm.viewExerciseDetail({ id: 'create' })">
+            <div ng-show="vm.section === 'level'">
+                <md-button class="md-raised md-background" ng-click="vm.addLevel($event)">
+                    <span>Add Level</span>
+                </md-button>
+                <md-button class="md-raised md-accent md-background" ng-click="vm.saveLevel($event)">
+                    <span>Save</span>
+                </md-button>
+            </div>
+
+            <md-button class="md-raised md-background" ng-show="vm.section === 'import'" ng-click="vm.viewExerciseDetail({ id: 'create' })">
                 <span>Import</span>
             </md-button>
         </div>
@@ -70,7 +79,7 @@
                                 <td style="text-align: center">Loading...</td>
                                 <td></td>
                             </tr>
-                            <tr ng-repeat="year in vm.data"
+                            <tr ng-repeat="year in vm.academicData"
                                 ng-show="!loading" > <!-- ng-class="{ 'year-selected': year.current_sem }"-->
                                 <td>{{ year.display_name }}</td>
                                 <td>{{ year.semester }}</td>
@@ -98,6 +107,16 @@
                 </div>
             </md-tab>
 
+
+            <md-tab label="Level" md-on-select="vm.switchSection('level')">
+                <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100"
+                     layout-wrap="">
+                    <div class="content-card white-bg md-whiteframe-4dp" layout="column" flex>
+                        <div class="content" layout="row" flex
+                             ng-include="'app/main/settings/templates/level-assignment.html'"></div>
+                    </div>
+                </div>
+            </md-tab>
 
             <md-tab label="Import" md-on-select="vm.switchSection('import')">
                 <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100"
