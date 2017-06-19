@@ -5,7 +5,7 @@
 
     angular
         .module('app.homework.subjects.assignment.classes.class.consolidated-report',
-            ['app.homework.subjects.assignment.classes.class.consolidated-report.weakness', 'nvd3', 'datatables', 'datatables.buttons'])
+            ['app.homework.subjects.assignment.classes.class.consolidated-report.consolidated-report-weakness', 'nvd3', 'datatables', 'datatables.buttons'])
         .config(config);
 
     /** @ngInject */

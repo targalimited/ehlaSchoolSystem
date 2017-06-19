@@ -36382,7 +36382,7 @@ CREATE TABLE `school_curriculum_settings` (
   `weakness_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `level` json DEFAULT NULL,
+  `level` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -36391,17 +36391,17 @@ LOCK TABLES `school_curriculum_settings` WRITE;
 
 INSERT INTO `school_curriculum_settings` (`id`, `subject_id`, `weakness_id`, `created_at`, `updated_at`, `level`)
 VALUES
-	(56,1,416,'2017-05-17 15:42:38','2017-05-17 15:42:38',X'5B312C20325D'),
-	(57,1,449,'2017-05-17 15:42:38','2017-05-17 15:42:38',X'5B312C20335D'),
-	(58,1,435,'2017-05-17 15:42:38','2017-05-17 15:42:38',X'5B312C20335D'),
-	(59,1,439,'2017-05-17 15:42:38','2017-05-17 15:42:38',X'5B312C20325D'),
-	(60,1,452,'2017-05-17 15:42:38','2017-05-17 15:42:38',X'5B312C20335D'),
-	(61,1,1942,'2017-05-17 15:42:38','2017-05-17 15:42:38',X'5B312C20335D'),
-	(62,1,1943,'2017-05-17 15:42:38','2017-05-17 15:42:38',X'5B312C20335D'),
-	(63,1,5430,'2017-05-17 15:42:38','2017-05-17 15:42:38',X'5B312C20335D'),
-	(64,1,5492,'2017-05-17 15:42:38','2017-05-17 15:42:38',X'5B312C20335D'),
-	(65,1,1953,'2017-05-17 15:42:38','2017-05-17 15:42:38',X'5B312C20335D'),
-	(66,1,424,'2017-05-17 15:42:38','2017-05-17 15:42:38',X'5B312C20335D');
+	(56,1,416,'2017-05-17 15:42:38','2017-05-17 15:42:38','[]'),
+	(57,1,449,'2017-05-17 15:42:38','2017-05-17 15:42:38','[]'),
+	(58,1,435,'2017-05-17 15:42:38','2017-05-17 15:42:38','[]'),
+	(59,1,439,'2017-05-17 15:42:38','2017-05-17 15:42:38','[]'),
+	(60,1,452,'2017-05-17 15:42:38','2017-05-17 15:42:38','[]'),
+	(61,1,1942,'2017-05-17 15:42:38','2017-05-17 15:42:38','[]'),
+	(62,1,1943,'2017-05-17 15:42:38','2017-05-17 15:42:38','[]'),
+	(63,1,5430,'2017-05-17 15:42:38','2017-05-17 15:42:38','[]'),
+	(64,1,5492,'2017-05-17 15:42:38','2017-05-17 15:42:38','[]'),
+	(65,1,1953,'2017-05-17 15:42:38','2017-05-17 15:42:38','[]'),
+	(66,1,424,'2017-05-17 15:42:38','2017-05-17 15:42:38','[]');
 
 /*!40000 ALTER TABLE `school_curriculum_settings` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -36491,9 +36491,7 @@ CREATE TABLE `school_permission_role` (
   `permission_id` int(10) unsigned NOT NULL,
   `role_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`permission_id`,`role_id`),
-  KEY `school_permission_role_role_id_foreign` (`role_id`),
-  CONSTRAINT `school_permission_role_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `school_permissions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `school_permission_role_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `school_roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `school_permission_role_role_id_foreign` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 LOCK TABLES `school_permission_role` WRITE;
@@ -36519,8 +36517,7 @@ CREATE TABLE `school_permissions` (
   `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `school_permissions_name_unique` (`name`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 LOCK TABLES `school_permissions` WRITE;
@@ -36542,10 +36539,7 @@ DROP TABLE IF EXISTS `school_role_user`;
 CREATE TABLE `school_role_user` (
   `user_id` int(10) unsigned NOT NULL,
   `role_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`user_id`,`role_id`),
-  KEY `school_role_user_role_id_foreign` (`role_id`),
-  CONSTRAINT `school_role_user_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `school_roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `school_role_user_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `school_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`user_id`,`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 LOCK TABLES `school_role_user` WRITE;
@@ -36571,8 +36565,7 @@ CREATE TABLE `school_roles` (
   `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `school_roles_name_unique` (`name`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 LOCK TABLES `school_roles` WRITE;
@@ -37429,7 +37422,7 @@ CREATE TABLE `school_video_settings` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `weakness_id` int(11) DEFAULT NULL,
   `video_id` int(11) DEFAULT NULL,
-  `level` json DEFAULT NULL,
+  `level` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -37438,12 +37431,12 @@ LOCK TABLES `school_video_settings` WRITE;
 
 INSERT INTO `school_video_settings` (`id`, `weakness_id`, `video_id`, `level`)
 VALUES
-	(1,424,1,X'5B322C20335D'),
-	(2,424,2,X'5B312C20325D'),
-	(5,485,1,X'5B322C20335D'),
-	(6,485,2,X'5B312C20325D'),
-	(11,416,1,X'5B322C20335D'),
-	(12,416,2,X'5B312C20325D');
+	(1,424,1,'[]'),
+	(2,424,2,'[]'),
+	(5,485,1,'[]'),
+	(6,485,2,'[]'),
+	(11,416,1,'[]'),
+	(12,416,2,'[]');
 
 /*!40000 ALTER TABLE `school_video_settings` ENABLE KEYS */;
 UNLOCK TABLES;

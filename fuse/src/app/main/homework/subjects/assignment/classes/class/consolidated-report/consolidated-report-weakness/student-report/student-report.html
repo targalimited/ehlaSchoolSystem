@@ -1,0 +1,82 @@
+<div
+        class="doc-page material-docs ehla-blue-bg layout-docs doc-template page-layout simple tabbed fullwidth ng-scope layout-column"
+        layout="column">
+
+  <div ncy-breadcrumb></div>
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="start center">
+    <div class="white-fg" layout="row" layout-align="start center" flex>
+      <div layout="row" layout-align="start center">
+        <div layout="column" layout-align="start start">
+          <div class="h2">
+            Weakness Report - {{breadcrumbs.weakness.name_en}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <md-button class="md-raised md-background" ng-click="vm.back()">
+        <span>Back</span>
+      </md-button>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <div class="content">
+    <div class="white-bg md-whiteframe-4dp">
+      <table class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions">
+        <thead>
+        <tr>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Student Name</span>
+            </div>
+          </th>
+            <th class="secondary-text">
+                <div class="table-header">
+                    <span class="column-title">Latest Results</span>
+                </div>
+            </th>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Grade</span>
+            </div>
+          </th>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Results History</span>
+            </div>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-if="loading">
+          <td></td>
+          <td style="text-align: right">Loading...</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr ng-repeat="student in vm.students" ng-show="!loading">
+          <td>{{ student.name }}</td>
+          <td>
+            <span>
+              <i flex class="icon s20" ng-class="[result.correct ? 'icon-check color-green-icon' : 'icon-close color-red-icon']" ng-repeat="result in student.results | limitTo : 5"></i>
+            </span>
+
+          </td>
+          <td>
+            <i flex class="icon s25" title="{{vm.getGradeTitle(student)}}" ng-class="vm.getGradeIconClass(student)"></i>
+          </td>
+          <td>
+            <md-icon md-font-icon="icon-magnify" ng-click="vm.showResultsHistory($event, student.results)"
+                     class="icon s20 icon-magnify"
+                     aria-hidden="true"></md-icon>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

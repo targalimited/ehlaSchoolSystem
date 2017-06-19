@@ -14,6 +14,7 @@
       isAllChecked: isAllChecked,
       toggleCheckAll: toggleCheckAll,
       isAllExpanded: isAllExpanded,
+      toggleExpand: toggleExpand,
       toggleExpandAll: toggleExpandAll,
       propagateCheckFromParent: propagateCheckFromParent,
       verifyAllParentsCheckStatus: verifyAllParentsCheckStatus,
@@ -59,7 +60,6 @@
       }
     }
 
-
     function isAllExpanded(vm, expandList) {
       return function () {
         var expanded = 0;
@@ -80,6 +80,17 @@
 
         return expanded === totalExpandable ? 2 : (expanded > 0 ? 1 : 0);
       };
+    }
+
+    function toggleExpand(vm, expanded) {
+      return function expand(node, isExpand) {
+        expanded[node.id] = _.isUndefined(isExpand) ? !expanded[node.id] : isExpand;
+        if (node.child && node.child.length) {
+          _.each(node.child, function (child) {
+            expand(child, expanded[node.id]);
+          });
+        }
+      }
     }
 
     function toggleExpandAll(vm, expandList) {

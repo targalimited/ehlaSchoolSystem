@@ -53,6 +53,8 @@
         function displayLanguage(langType) {
             langType =  _.parseInt(langType)
             switch(true) {
+                case langType === 3:
+                    return 'Mandarin';
                 case langType === 2:
                     return 'Cantonese';
                 case langType === 1:

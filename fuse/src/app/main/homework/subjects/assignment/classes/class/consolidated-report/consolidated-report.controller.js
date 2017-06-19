@@ -83,6 +83,7 @@
         $scope.isAllChecked = tableTree.isAllChecked(vm);
         $scope.toggleCheckAll = tableTree.toggleCheckAll(vm);
         $scope.isAllExpanded = tableTree.isAllExpanded(vm, $scope.expanded);
+        $scope.toggleExpand = tableTree.toggleExpand(vm, $scope.expanded);
         $scope.toggleExpandAll = tableTree.toggleExpandAll(vm, $scope.expanded);
         $scope.propagateCheckFromParent = tableTree.propagateCheckFromParent(vm);
         $scope.verifyAllParentsCheckStatus = tableTree.verifyAllParentsCheckStatus(vm);
@@ -92,7 +93,7 @@
         // Methods
 
         vm.viewStudents = function (item) {
-            $state.go('app.homework.subjects.assignment.classes.class.consolidated-report.weakness.students', {
+            $state.go('app.homework.subjects.assignment.classes.class.consolidated-report.consolidated-report-weakness.student-report', {
                 weaknessId: item.id
             });
         }
