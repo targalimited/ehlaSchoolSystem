@@ -20,7 +20,8 @@ class ClassController extends Controller
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'classes.*.level_id' => 'exists:levels,id',
+            'classes.*.c_name' => 'required',
+            'classes.*.level_id' => 'required|exists:levels,id',
         ]);
 
         if ($validator->fails()) {

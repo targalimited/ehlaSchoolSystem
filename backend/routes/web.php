@@ -39,12 +39,11 @@ Route::get('/addStudent',function (Request $request){
 
 
 Route::group(['prefix' => 'v1'], function () {
-
-
-
     Route::group(['middleware' => 'detectDB'], function () {
 
-
+        //User controller
+        Route::post('account_teacher','UserController@postTeacher');
+        Route::post('account_student','UserController@postStudent');
 
         Route::post('userApi/logout', 'LoginController@logout');
         //Subject Controller
