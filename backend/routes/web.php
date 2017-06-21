@@ -130,7 +130,7 @@ Route::group(['prefix' => 'v1'], function () {
 
     });
 
-    Route::any('{api?}/{function?}/{params?}', 'ApiController@api')->where('params', '(.*)');
+    Route::any('{api?}/{function?}/{params?}', 'ApiController@api')->where('params', '(.*)')->middleware('detectDB');
 
 });
 

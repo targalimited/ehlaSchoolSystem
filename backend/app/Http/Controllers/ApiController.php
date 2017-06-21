@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -60,7 +61,7 @@ class ApiController extends Controller
 
            if ($request->function == 'login') {
 
-                $user_session = $data['data'][0]['user_session'];
+//               $user_session = $data['data'][0]['user_session'];
 //                $user_info = $data['data'][0];
 
 //                $session = New Session();
@@ -75,7 +76,17 @@ class ApiController extends Controller
 //                $user->email = $user_info['username'];
 //                $user->save();
 
-                Auth::loginUsingId($user_session['user_id'], true);
+                $user = User::where('email',$data['data'][0]['username'])->first();
+                if(!$user){
+                    $result = [
+                        'status' => false,
+                        'code' => '',
+                        'message' => 'user not found'
+                    ];
+                    return $result;
+                }
+                Auth::loginUsingId($user->id, true);
+
                 //$request->session()->put('access_token',$data['data'][0]['user_session']['access_token']);
 
           }
