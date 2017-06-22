@@ -68,7 +68,6 @@ class UserController extends Controller
                             'code' => '',
                             'message' => $errors
                         ];
-                        dd('hi');
                         return error_json($result);
                     } else {
                         foreach($results[0] as $v){
@@ -142,12 +141,18 @@ class UserController extends Controller
 //                    return Response()->json($result, 500);
 //                }
 
-
+                return return_success();
             });
 
 
         } else {
-            dd('please select excel file to update');
+
+            $result = [
+                'status' => false,
+                'code' => '',
+                'message' => ['please select excel file to update']
+            ];
+            return error_json($result);
         }
 
 
