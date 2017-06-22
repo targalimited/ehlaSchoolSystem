@@ -8,6 +8,7 @@ class TeacherClassSubject extends Model
 {
     //
     protected $table = 'teacher_class_subject';
+    protected $guarded = ['id'];
 
     public function students()
     {
