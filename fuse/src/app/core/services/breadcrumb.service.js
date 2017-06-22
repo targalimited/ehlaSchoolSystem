@@ -457,6 +457,7 @@
             values.weaknessId =_.parseInt(params.weaknessId);
             values.academicId =_.parseInt(params.academicId);
             values.videoId =_.parseInt(params.videoId);
+            values.videoType = params.videoType;
             var curriculums = { 'school-based-curriculum': 'school-based curriculum' }
             values.curriculum = curriculums[params.curriculum];
 
