@@ -13,7 +13,7 @@
     // State
     $stateProvider
       .state('app.homework.subjects.assignment.classes.class.videos', {
-        url: '/:videoType',
+        url: '/video-types/:videoType',
         views: {
           'content@app': {
             templateUrl: 'app/main/homework/subjects/assignment/classes/class/videos/videos.html',
