@@ -6,9 +6,10 @@
         .controller('SettingsController', SettingsController);
 
     /** @ngInject */
-    function SettingsController($state, $mdDialog, $document, msUtils, Restangular, generalMessage, loadingScreen) {
+    function SettingsController(breadcrumbs, $scope, $state, $mdDialog, $document, msUtils, Restangular, generalMessage, loadingScreen) {
         var vm = this;
-        vm.levels = msUtils.levels;
+      $scope.breadcrumbs = breadcrumbs;
+        vm.levels = $scope.breadcrumbs.ehlaLevels;
         vm.section = 'academic';
 
         vm.init = function () {
@@ -32,13 +33,13 @@
                       vm.levelData = [];
                       _.each(data, function (level) {
                           var lv = _.find(vm.levelData, function (lv) {
-                              return lv.name === level.name;
+                              return lv.name_en === level.name_en;
                           })
                           if (lv) {
                               lv.ehlaLevels.push(level.level)
                           } else {
                               vm.levelData.push({
-                                  name: level.name,
+                                  name_en: level.name_en,
                                   ehlaLevels: [level.level],
                               });
                           }
@@ -202,7 +203,7 @@
 
         vm.deleteLevel = function (event, node) {
             _.remove(vm.levelData, function (lv) {
-                return lv.name === node.name;
+                return lv.name === node.name_en;
             });
         }
 
@@ -211,10 +212,11 @@
             loadingScreen.showLoadingScreen();
             var postData = [];
             _.each(vm.levelData, function (level) {
-                if (_.trim(level.name) !== '' && level.ehlaLevels.length) {
+                if (_.trim(level.name_en) !== '' && level.ehlaLevels.length) {
                     _.each(level.ehlaLevels, function (lv) {
                         postData.push({
-                            name: _.trim(level.name),
+                            name_en: _.trim(level.name_en),
+                            name_zh: _.trim(level.name_zh),
                             level: lv,
                         })
                     })

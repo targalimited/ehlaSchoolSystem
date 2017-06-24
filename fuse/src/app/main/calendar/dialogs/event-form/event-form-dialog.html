@@ -46,7 +46,8 @@
                 <div>
                     <div class="notification-inputs">
                         <md-input-container>
-                            <md-select ng-model="vm.calendarEvent.class_ids" multiple  ng-disabled="vm.calendarEvent.isOther || vm.calendarEvent.type !== 'private'">
+                            <md-select ng-model="vm.calendarEvent.class_ids" multiple
+                                       ng-disabled="vm.calendarEvent.isOther || (vm.calendarEvent.type !== 'private' && vm.type !== 'add')">
                                 <md-option value="-1">All Classes
                                 </md-option>
                                 <md-option ng-repeat="class in vm.classes" value="{{class.id}}">{{class.c_name}}

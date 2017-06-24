@@ -92,7 +92,7 @@
                     return l.id === level;
                 });
                 if (foundLevel) {
-                    result += foundLevel.name + ', ';
+                    result += foundLevel.name_en + ', ';
                 }
                 return result;
             }, ''), ', ');
