@@ -29,14 +29,14 @@
     <ul class="ehla-table-list" ui-tree-handle>
         <li style="width: 30%">
             <div ng-style="{'margin-left': 20*(depth()-1) + 'px'}" style="padding: 0 5px;">
-                <md-input-container><input type="text" ng-model="node.name" /></md-input-container>
+                <md-input-container><input type="text" ng-model="node.name_en" /></md-input-container>
             </div>
         </li>
         <li style="width: 50%;" class="ehla-question-input">
             <md-select ng-model="node.ehlaLevels" placeholder="Select Levels" style="margin: 5px 10px 5px 0"
                        multiple>
                 <md-optgroup label="Levels">
-                    <md-option ng-value="level.id" ng-repeat="level in vm.levels">{{level.name}}</md-option>
+                    <md-option ng-value="level.level" ng-repeat="level in vm.levels">{{level.name_en}}</md-option>
                 </md-optgroup>
             </md-select>
         </li>

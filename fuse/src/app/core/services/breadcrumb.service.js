@@ -473,6 +473,19 @@
                     }))
             }
 
+          if (_.isUndefined(values.ehlaLevels)) {
+            promises.push(Restangular.service('levelApi/get_level_list').post({"params":{"username":"hong@gmail.com","password":123456}})
+              .then(function (res) {
+                values.ehlaLevels = res.plain().data;
+              })
+              .catch(function (err) {
+                console.error('Cannot login', err);
+                return err;
+              }))
+          }
+
+
+
             if (!_.isUndefined(values.teacherId)) {
                 promises.push(Restangular.one('classes').one('teachers', values.teacherId).get()
                     .then(function (res) {
