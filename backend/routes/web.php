@@ -15,15 +15,15 @@ use Illuminate\Http\Request;
 
 Route::get('/user', function (Request $request) {
 
-        $this->visit('/register')
-            ->type('Taylor', 'name')
-            ->check('terms')
-            ->press('Register')
-            ->seePageIs('/dashboard');
-
-    //return File::get(public_path() . '/dist/index.html');
-   // Auth::loginUsingId(53,true);
-   // dump(Auth::user());
+//        $this->visit('/register')
+//            ->type('Taylor', 'name')
+//            ->check('terms')
+//            ->press('Register')
+//            ->seePageIs('/dashboard');
+//
+//    //return File::get(public_path() . '/dist/index.html');
+//   // Auth::loginUsingId(53,true);
+    dump(Auth::user());
 });
 
 Route::get('/addStudent',function (Request $request){
@@ -39,12 +39,15 @@ Route::get('/addStudent',function (Request $request){
 
 
 Route::group(['prefix' => 'v1'], function () {
-
-
-
     Route::group(['middleware' => 'detectDB'], function () {
 
+        Route::get('/user', function (Request $request) {
+            dump(Auth::user());
+        });
 
+        //User controller
+        Route::post('account_teacher','UserController@postTeacher');
+        Route::post('account_student','UserController@postStudent');
 
         Route::post('userApi/logout', 'LoginController@logout');
         //Subject Controller
@@ -127,7 +130,7 @@ Route::group(['prefix' => 'v1'], function () {
 
     });
 
-    Route::any('{api?}/{function?}/{params?}', 'ApiController@api')->where('params', '(.*)');
+    Route::any('{api?}/{function?}/{params?}', 'ApiController@api')->where('params', '(.*)')->middleware('detectDB');
 
 });
 

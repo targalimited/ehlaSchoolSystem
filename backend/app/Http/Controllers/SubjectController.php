@@ -5,14 +5,33 @@ namespace App\Http\Controllers;
 use App\SchoolClass;
 use App\Subject;
 use Illuminate\Http\Request;
+use Validator;
 
 class SubjectController extends Controller
 {
     public function postSubjects(Request $request){
 
-       // dd($request->all());
 
-        Subject::insert($request->subjects);
+
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+            'subjects.*.s_name_zh' => 'required',
+            'subjects.*.s_name_en' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $result = [
+                'status' => false,
+                'code' => '',
+                'message' => $validator->errors()
+            ];
+
+            return Response()->json($result, 500);
+        }
+
+
+       // Subject::insert($request->subjects);
 
 
         return return_success();

@@ -2,34 +2,40 @@
   'use strict';
 
   angular
-    .module('app.home', [])
+    .module('app.home',
+      [
+        // 3rd Party Dependencies
+        'nvd3',
+        'datatables'
+      ]
+    )
     .config(config);
 
   /** @ngInject */
-  function config($stateProvider, $translatePartialLoaderProvider, msApiProvider, msNavigationServiceProvider) {
+  function config($stateProvider, msApiProvider, msNavigationServiceProvider, $translatePartialLoaderProvider) {
     // State
-    $stateProvider
-      .state('app.home', {
-        url: '/home',
-        views: {
-          'content@app': {
-            templateUrl: 'app/main/home/home.html',
-            controller: 'HomeController as vm'
-          }
-        },
-        resolve: {
-          HomeData: function (msApi) {
-            return msApi.resolve('home@get');
-          }
-        },
-        authenticate: true,
-      });
+    $stateProvider.state('app.home', {
+      url: '/home',
+      views: {
+        'content@app': {
+          templateUrl: 'app/main/home/home.html',
+          controller: 'HomeController as vm'
+        }
+      },
+      resolve: {
+        DashboardData: function (msApi) {
+          return msApi.resolve('dashboard.project@get');
+        }
+      },
+      bodyClass: 'home',
+      autheticate: true,
+    });
 
     // Translation
     $translatePartialLoaderProvider.addPart('app/main/home');
 
     // Api
-    msApiProvider.register('home', ['app/data/home/home.json']);
+    msApiProvider.register('dashboard.project', ['app/data/dashboard/project/data.json']);
 
     // Navigation
     msNavigationServiceProvider.saveItem('fuse', {
@@ -48,4 +54,5 @@
       weight: 1
     });
   }
+
 })();
