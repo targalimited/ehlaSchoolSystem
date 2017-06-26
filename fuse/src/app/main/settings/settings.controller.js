@@ -68,7 +68,8 @@
         }
 
         vm.deleteYear = function ($event, year) {
-            generalMessage.showConfirm($event, 'Delete Academic Year', 'Are you sure to delete the academic year "' + year.name + '"?').then(function () {
+          // console.log('year', year);
+            generalMessage.showConfirm($event, 'Delete Academic Year', 'Are you sure to delete the academic year "' + year.display_name + '"?').then(function () {
                 loadingScreen.showLoadingScreen();
 
                 Restangular.all('academicSettings/' + year.id).customDELETE()
@@ -203,7 +204,7 @@
 
         vm.deleteLevel = function (event, node) {
             _.remove(vm.levelData, function (lv) {
-                return lv.name === node.name_en;
+                return lv.name_en === node.name_en;
             });
         }
 

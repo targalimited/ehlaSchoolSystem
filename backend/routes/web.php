@@ -58,9 +58,6 @@ Route::group(['prefix' => 'v1'], function () {
         // get all assignments taught by a teacher
         Route::get('teachers/{teacher_id?}/assignments', 'AssignmentController@getAllAssignments');
 
-
-        //subjects
-        Route::get('subjects', 'SubjectController@getAllSubjects');
         //settings
         Route::put('academicYear/{id}/subjects/{subject_id}/curriculumSettings', 'CurriculumSettingController@putSettings');
         Route::get('academicYear/{id}/subjects/{subject_id}/curriculumSettings', 'CurriculumSettingController@getSettings');
@@ -78,7 +75,11 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('levels', 'LevelController@getLevel');
         Route::post('levels', 'LevelController@postLevel');
 
+        //subjects
+        Route::get('subjects', 'SubjectController@getAllSubjects');
         Route::post('subjects', 'SubjectController@postSubjects');
+        //classes
+        Route::get('classes', 'ClassController@getClasses');
         Route::post('classes','ClassController@postClass');
 
         Route::group(['prefix' => 'teachers/{teacher_id?}/subjects/{subject_id?}/classes/{class_id?}'], function () {

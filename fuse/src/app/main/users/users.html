@@ -1,3 +1,90 @@
-<h1>
-    This is users page
-</h1>
+<div
+  class="doc-page material-docs ehla-blue-bg layout-docs doc-template page-layout simple tabbed fullwidth ng-scope layout-column"
+  layout="column">
+
+  <div ncy-breadcrumb></div>
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="start center">
+    <div class="white-fg" layout="row" layout-align="start center" flex>
+      <div layout="row" layout-align="start center">
+        <div layout="column" layout-align="start start">
+          <div class="h2">
+            Users
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <md-button class="md-raised md-accent md-background" ng-click="vm.createUser()">
+        <span>Create User</span>
+      </md-button>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+
+  <div class="content">
+    <!-- <div class="md-title mb-32">Zero Configuration</div> -->
+    <div class="white-bg md-whiteframe-4dp">
+      <table class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions">
+        <thead>
+        <tr>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">ID</span>
+            </div>
+          </th>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Username</span>
+            </div>
+          </th>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Roles</span>
+            </div>
+          </th>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Status</span>
+            </div>
+          </th>
+          <!--
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Action</span>
+            </div>
+          </th>
+          -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-if="loading">
+          <td></td>
+          <td style="text-align: center">Loading...</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr ng-repeat="user in filtered = (vm.data | filter: filterRoles | filter: filterStatus)" ng-click="viewUserDetails(user)" ng-show="!loading">
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>
+            {{vm.displayRoles(user.roles, vm.roles)}}
+          </td>
+          <td>{{ vm.displayUserStatus(user.status) }}</td>
+          <!--
+          <td ng-click="$event.preventDefault(); $event.stopPropagation();">
+            <md-icon ng-if="user.status === 1" md-font-icon="green-800-fg icon-account-check" ng-click="toggleActivation($event, user)"
+                     class="s22"></md-icon>
+
+            <md-icon ng-if="user.status === 0" md-font-icon="red-800-fg icon-account-remove" ng-click="toggleActivation($event, user)"
+                     class="s22"></md-icon>
+          </td>
+          -->
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
