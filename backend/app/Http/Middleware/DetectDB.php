@@ -21,6 +21,7 @@ class DetectDB
     public function handle($request, Closure $next)
     {
 
+
        // $db_name = "school_".Auth::user()->school_id;
         $db_name = "school_1";
         DB::purge('mysql');
