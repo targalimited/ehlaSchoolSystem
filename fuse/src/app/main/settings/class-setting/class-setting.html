@@ -1,0 +1,73 @@
+<div
+  class="doc-page material-docs ehla-blue-bg layout-docs doc-template page-layout simple tabbed fullwidth ng-scope layout-column"
+  layout="column">
+
+  <div ncy-breadcrumb></div>
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="start center">
+    <div class="white-fg" layout="row" layout-align="start center" flex>
+      <div layout="row" layout-align="start center">
+        <div layout="column" layout-align="start start">
+          <div class="h2">
+            Classes
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <md-button class="md-raised md-background" ng-click="vm.editClass($event)">
+        <span>Add Class</span>
+      </md-button>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+
+  <div class="content">
+    <!-- <div class="md-title mb-32">Zero Configuration</div> -->
+    <div class="white-bg md-whiteframe-4dp">
+
+      <table class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions">
+        <thead>
+        <tr>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Class</span>
+            </div>
+          </th>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Level</span>
+            </div>
+          </th>
+          <th class="secondary-text">
+            <div class="table-header">
+              <span class="column-title">Action</span>
+            </div>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-if="loading">
+          <td></td>
+          <td style="text-align: center">Loading...</td>
+          <td></td>
+        </tr>
+        <tr ng-repeat="class in vm.data" ng-click="vm.editClass($event, class)"
+            ng-show="!loading">
+          <td>{{ class.c_name }}</td>
+          <td>{{ vm.displaySchoolLevels([class.level_id]) }}</td>
+          <td ng-click="$event.preventDefault(); $event.stopPropagation();">
+            <md-icon md-font-icon="red-600-fg icon-delete"
+                     ng-click="vm.deleteClass($event, class)"
+                     class="s18"></md-icon>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+</div>

@@ -2,15 +2,15 @@
   'use strict';
 
   angular
-    .module('app.settings.curriculums.curriculum',
-      ['app.settings.curriculums.curriculum.subjects'])
+    .module('app.settings.academic-year.curriculums.curriculum',
+      ['app.settings.academic-year.curriculums.curriculum.subjects'])
     .config(config);
 
   /** @ngInject */
   function config($stateProvider, $translatePartialLoaderProvider, msApiProvider, msNavigationServiceProvider) {
     // State
     $stateProvider
-      .state('app.settings.curriculums.curriculum', {
+      .state('app.settings.academic-year.curriculums.curriculum', {
         abstract: true,
         url: '/:curriculum',
           ncyBreadcrumb: {

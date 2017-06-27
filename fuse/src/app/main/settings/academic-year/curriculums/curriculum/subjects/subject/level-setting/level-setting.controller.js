@@ -2,18 +2,18 @@
   'use strict';
 
   angular
-    .module('app.settings.curriculums.curriculum.subjects.subject.level-setting', ['ui.tree'])
+    .module('app.settings.academic-year.curriculums.curriculum.subjects.subject.level-setting', ['ui.tree'])
     .config(config);
 
   /** @ngInject */
   function config($stateProvider, $translatePartialLoaderProvider, msApiProvider) {
     // State
     $stateProvider
-      .state('app.settings.curriculums.curriculum.subjects.subject.level-setting', {
+      .state('app.settings.academic-year.curriculums.curriculum.subjects.subject.level-setting', {
         url: '/level-setting',
         views: {
           'content@app': {
-            templateUrl: 'app/main/settings/curriculums/curriculum/subjects/subject/level-setting/level-setting.html',
+            templateUrl: 'app/main/settings/academic-year/curriculums/curriculum/subjects/subject/level-setting/level-setting.html',
             controller: 'LevelSettingController as vm'
           }
         },
@@ -29,7 +29,7 @@
       });
 
     // Translation
-    $translatePartialLoaderProvider.addPart('app/main/settings/curriculums/curriculum/subjects/subject/level-setting');
+    $translatePartialLoaderProvider.addPart('app/main/settings/academic-year/curriculums/curriculum/subjects/subject/level-setting');
   }
 })();
 
@@ -38,7 +38,7 @@
   'use strict';
 
   angular
-    .module('app.settings.curriculums.curriculum.subjects.subject.level-setting')
+    .module('app.settings.academic-year.curriculums.curriculum.subjects.subject.level-setting')
     .controller('LevelSettingController', LevelSettingController);
 
   /** @ngInject */
@@ -103,7 +103,7 @@
           }
         },
         controllerAs: 'vm',
-        templateUrl: 'app/main/settings/curriculums/curriculum/subjects/subject/level-setting/templates/assign-video.html',
+        templateUrl: 'app/main/settings/academic-year/curriculums/curriculum/subjects/subject/level-setting/templates/assign-video.html',
         parent: angular.element(document.body),
         targetEvent: ev,
         clickOutsideToClose: true,
@@ -217,7 +217,7 @@
     }
 
     $scope.back = function () {
-      $state.go("app.settings.curriculums.curriculum.subjects");
+      $state.go("app.settings.academic-year.curriculums.curriculum.subjects");
     }
 
 

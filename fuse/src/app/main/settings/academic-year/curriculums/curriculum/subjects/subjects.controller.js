@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.settings.curriculums.curriculum.subjects')
+        .module('app.settings.academic-year.curriculums.curriculum.subjects')
         .controller('CurriculumsSubjectsController', CurriculumsSubjectsController);
 
     /** @ngInject */

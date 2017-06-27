@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.settings.curriculums.curriculum.subjects', [ 'app.settings.curriculums.curriculum.subjects.subject' ])
+        .module('app.settings.academic-year.curriculums.curriculum.subjects', [ 'app.settings.academic-year.curriculums.curriculum.subjects.subject' ])
         .config(config);
 
     /** @ngInject */
@@ -11,11 +11,11 @@
     {
         // State
         $stateProvider
-            .state('app.settings.curriculums.curriculum.subjects', {
+            .state('app.settings.academic-year.curriculums.curriculum.subjects', {
                 url    : '/subjects',
                 views  : {
                     'content@app': {
-                        templateUrl: 'app/main/settings/curriculums/curriculum/subjects/subjects.html',
+                        templateUrl: 'app/main/settings/academic-year/curriculums/curriculum/subjects/subjects.html',
                         controller : 'CurriculumsSubjectsController as vm'
                     }
                 },
@@ -31,6 +31,6 @@
             });
 
         // Translation
-        $translatePartialLoaderProvider.addPart('app/main/settings/curriculums/curriculum/subjects');
+        $translatePartialLoaderProvider.addPart('app/main/settings/academic-year/curriculums/curriculum/subjects');
     }
 })();

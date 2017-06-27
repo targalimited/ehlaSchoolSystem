@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.settings.curriculums')
+        .module('app.settings.academic-year.curriculums')
         .controller('CurriculumsController', CurriculumsController);
 
     /** @ngInject */
@@ -22,7 +22,7 @@
                         "alt": "EHL ACADEMY"
                     }
                 },
-                "button-ui-sref": "app.settings.curriculums.curriculum.subjects({ curriculum: 'school-based-curriculum' })",
+                "button-ui-sref": "app.settings.academic-year.curriculums.curriculum.subjects({ curriculum: 'school-based-curriculum' })",
             },
             {
                 "title": "Supplementary Curriculums",
@@ -33,7 +33,7 @@
                         "alt": "EHL ACADEMY"
                     }
                 },
-                "button-ui-sref": "app.settings.curriculums.curriculum",
+                "button-ui-sref": "app.settings.academic-year.curriculums.curriculum",
             },
         ];
 

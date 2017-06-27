@@ -1,0 +1,55 @@
+<md-dialog class="event-form-dialog" aria-label="New Message">
+  <form name="eventForm" class="md-inline-form" novalidate>
+    <md-toolbar class="md-accent md-hue-2">
+      <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+        <span class="title">{{vm.dialogTitle}}</span>
+        <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Close dialog" translate
+                   translate-attr-aria-label="CALENDAR.CLOSE_DIALOG">
+          <md-icon md-font-icon="icon-close"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content ms-scroll>
+      <div layout="column" style="padding-bottom: 20px">
+        <md-input-container class="md-block" style="margin-top: 20px">
+          <label>Name in English</label>
+          <input name="name_en" ng-model="vm.subject.s_name_en" required>
+          <div ng-messages="eventForm.name_en.$error" ng-show="eventForm.name_en.$touched" role="alert">
+            <div ng-message="required">
+              <span>English Subject Name is required</span>
+            </div>
+          </div>
+        </md-input-container>
+      </div>
+
+      <div layout="column" style="padding-bottom: 20px">
+        <md-input-container class="md-block" style="margin-top: 20px">
+          <label>Name in Chinese</label>
+          <input name="name_zh" ng-model="vm.subject.s_name_zh" required>
+          <div ng-messages="eventForm.name_zh.$error" ng-show="eventForm.name_zh.$touched" role="alert">
+            <div ng-message="required">
+              <span>Chinese Subject Name is required</span>
+            </div>
+          </div>
+        </md-input-container>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions>
+      <div layout="row" layout-align="end center" style="width: 100%">
+        <div>
+          <md-button ng-click="vm.save()" class="save-button md-accent md-raised" aria-label="SAVE"
+                     ng-disabled="eventForm.$invalid">
+            {{vm.type === 'edit' ? 'SAVE': 'CREATE'}}
+          </md-button>
+        </div>
+        <div>
+          <md-button ng-click="vm.closeDialog()" class="save-button md-raised">
+            CANCEL
+          </md-button>
+        </div>
+      </div>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

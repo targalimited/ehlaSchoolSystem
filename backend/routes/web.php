@@ -76,11 +76,16 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('levels', 'LevelController@postLevel');
 
         //subjects
+        Route::put('subjects/{id}', 'SubjectController@putSubjects');
+        Route::delete('subjects/{id}', 'SubjectController@delSubjects');
         Route::get('subjects', 'SubjectController@getAllSubjects');
         Route::post('subjects', 'SubjectController@postSubjects');
+
         //classes
+        Route::put('classes/{id}','ClassController@putClasses');
+        Route::delete('classes/{id}', 'ClassController@delClasses');
         Route::get('classes', 'ClassController@getClasses');
-        Route::post('classes','ClassController@postClass');
+        Route::post('classes','ClassController@postClasses');
 
         Route::group(['prefix' => 'teachers/{teacher_id?}/subjects/{subject_id?}/classes/{class_id?}'], function () {
             //update students, bind to class and subject
