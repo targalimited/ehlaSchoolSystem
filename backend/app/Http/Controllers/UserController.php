@@ -13,8 +13,38 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+
+    public $class;
+    public $subject;
+    public $student;
+    public $teacher_subject_class;
+
+    private function init()
+    {
+
+        foreach (Subject::all() as $v) {
+            $this->subject[$v->id] = strtolower(str_replace(' ', '_', $v->s_name_en));
+        }
+
+        foreach (SchoolClass::all() as $v) {
+            $this->class[$v->id] = $v->c_name;
+        }
+
+        foreach (User::all() as $v) {
+            $this->student[$v->id] = $v->email;
+        }
+
+        foreach (TeacherClassSubject::all() as $k => $v) {
+            $this->teacher_subject_class[$v->id]['class_id'] = $v->class_id;
+            $this->teacher_subject_class[$v->id]['subject_id'] = $v->subject_id;
+        }
+
+
+    }
+
     public function postTeacher(Request $request)
     {
+        $this->init();
 
         if ($request->hasFile('file')) {
             $path = $request->file('file')->getRealPath();
@@ -31,13 +61,6 @@ class UserController extends Controller
                     $email[] = $v['email'];
                 }
 
-                foreach (Subject::all() as $v) {
-                    $subject[$v->id] = $v->s_name_en;
-                }
-
-                foreach (SchoolClass::all() as $v) {
-                    $class[$v->id] = $v->c_name;
-                }
 
                 $i = 0;
                 $errors = [];
@@ -52,11 +75,11 @@ class UserController extends Controller
                         $errors[$i] = 'No this email ' . $v['email'];
                         $i++;
                     }
-                    if (!in_array($v['class'], $class)) {
+                    if (!in_array($v['class'], $this->class)) {
                         $errors[$i] = 'No this class ' . $v['class'];
                         $i++;
                     }
-                    if (!in_array($v['subject'], $subject)) {
+                    if (!in_array($v['subject'], $this->subject)) {
                         $errors[$i] = 'No this subject ' . $v['subject'];
                         $i++;
                     }
@@ -84,8 +107,8 @@ class UserController extends Controller
 
                     foreach ($results[1] as $k => $v) {
                         $new_teacher_set[$k]['teacher_id'] = array_search($v['email'], $user_email);
-                        $new_teacher_set[$k]['class_id'] = array_search($v['class'], $class);
-                        $new_teacher_set[$k]['subject_id'] = array_search($v['subject'], $subject);
+                        $new_teacher_set[$k]['class_id'] = array_search($v['class'], $this->class);
+                        $new_teacher_set[$k]['subject_id'] = array_search($v['subject'], $this->subject);
                         $new_teacher_set[$k]['comment'] = $v['email'] . "," . $v['class'] . "," . $v['subject'];
                     }
 
@@ -159,6 +182,8 @@ class UserController extends Controller
 
     public function postStudent(Request $request)
     {
+        $this->init();
+
         if ($request->hasFile('file')) {
 
             $path = $request->file('file')->getRealPath();
@@ -166,6 +191,7 @@ class UserController extends Controller
 
 
                 $results = $reader->get()->toArray();
+
 
                 if ($results[0]) {
                     foreach (array_keys($results[0]) as $v) {
@@ -193,6 +219,72 @@ class UserController extends Controller
                     ];
                     return error_json($result);
                 } else {
+
+                    //dd($this->subject);
+                    // dd($results);
+
+                    $new_student_list = [[]];
+
+                    $i = 0;
+
+                    foreach ($results as $v) {
+
+//                        foreach ($this->subject as $v1 => $k1){
+//                            if($v[$v1]=='Y'){
+//                                dd($v[$v1]);
+//                            }
+//                        }
+
+
+                        $class_id = '';
+
+                        foreach ($v as $k => $value) {
+
+                            if ($k == 'class')
+                                $class_id = array_search($value, $this->class);
+                            if ($k == 'email')
+                                $user_id = array_search($value, $this->student);
+
+                            if ($value == 'Y') {
+                                $new_student_list[$i]['user_id'] = $user_id;
+
+                                //development
+                                $new_student_list[$i]['class_id'] = $class_id;
+                                $new_student_list[$i]['subject_id'] = array_search($k, $this->subject);
+                                //development
+
+                                // dd($this->teacher_subject_class);
+
+                                foreach ($this->teacher_subject_class as $key => $v) {
+
+                                    if ($v['class_id'] == $class_id && $v['subject_id'] == array_search($k, $this->subject))
+                                        $new_student_list[$i]['teacher_subject_class_id'] = $key;
+
+                                }
+
+                                $i++;
+                            }
+
+
+                        }
+
+
+                        // dd(array_search($v['class'], $this->class));
+
+                    }
+
+                    dd($new_student_list);
+
+                    $teacher_class_subject = TeacherClassSubject::all();
+                    foreach ($teacher_class_subject as $v) {
+                        foreach ($results as $v1) {
+
+                            if ($v->class_id == '' && $v->subject_id == '') {
+
+                            }
+
+                        }
+                    }
 
 
                 }
