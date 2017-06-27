@@ -1,0 +1,164 @@
+<div
+  class="doc-page material-docs ehla-blue-bg layout-docs doc-template page-layout simple tabbed fullwidth ng-scope layout-column"
+  layout="column">
+
+  <div ncy-breadcrumb></div>
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="start center">
+    <div class="white-fg" layout="row" layout-align="start center" flex>
+      <div layout="row" layout-align="start center">
+        <div layout="column" layout-align="start start">
+          <div class="h2">
+            Users
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <md-button class="md-raised md-accent md-background" ng-click="saveUser()" ng-disabled="loading">
+        <span ng-if="isCreate">Create</span>
+        <span ng-if="!isCreate">Save</span>
+      </md-button>
+      <md-button class="md-raised md-background" ng-click="back()">
+        <span>Cancel</span>
+      </md-button>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+
+  <div class="content exercise-content user-detail-form">
+    <!-- <div class="md-title mb-32">Zero Configuration</div> -->
+    <div class="exercise-detail-form-container md-background-bg md-whiteframe-1dp">
+      <form class="md-inline-form" name="userForm">
+        <div layout="row">
+          <div layout="column" flex="20">
+            <md-input-container>
+              <label>Username</label>
+            </md-input-container>
+          </div>
+          <div layout="column" flex="80">
+            <md-input-container>
+              <input ng-model="user.name" required="true">
+            </md-input-container>
+          </div>
+        </div>
+
+        <div layout="row">
+          <div layout="column" flex="20">
+            <md-input-container>
+              <label>Roles</label>
+            </md-input-container>
+          </div>
+          <div layout="column" flex="80">
+            <md-input-container>
+              <md-select ng-model="user.roles" multiple="true" required
+                         class="normal" placeholder="Roles">
+                <md-optgroup label="Roles">
+                  <md-option ng-repeat="role in vm.roles" value="{{role.id}}">
+                    {{role.name}}
+                  </md-option>
+                </md-optgroup>
+              </md-select>
+            </md-input-container>
+          </div>
+        </div>
+
+        <div layout="row">
+          <div layout="column" flex="20">
+            <md-input-container>
+              <label>Classes</label>
+            </md-input-container>
+          </div>
+          <div layout="column" flex="80">
+            <table>
+              <tr>
+                <th>Class</th>
+                <th>Subject</th>
+                <th>Teacher</th>
+                <th></th>
+              </tr>
+              <tr ng-repeat="c in user.classes">
+                <td>
+                  <md-autocomplete
+                    ng-style="{outline: !c.className ? '1px solid red' : ''}"
+                    md-input-name="autocompleteClass"
+                    md-input-minlength="2"
+                    md-input-maxlength="18"
+                    md-selected-item="c.className"
+                    md-search-text="c.searchClassName"
+                    md-items="item in vm.searchTextItems(c.searchClassName, vm.classes)"
+                    md-item-text="item.c_name"
+                    md-require-match>
+                    <md-item-template>
+                      <span md-highlight-text="c.className" md-highlight-flags="^i">{{item.c_name}}</span>
+                    </md-item-template>
+                    <div ng-messages="userForm.autocompleteClass.$error">
+                      <div ng-message="required">Class is required</div>
+                      <div ng-message="md-require-match">Existing class only</div>
+                    </div>
+                  </md-autocomplete>
+                </td>
+                <td>
+                  <md-autocomplete
+                    md-input-name="autocompleteSubject"
+                    ng-style="{outline: !c.subject ? '1px solid red' : ''}"
+                    md-input-minlength="2"
+                    md-input-maxlength="18"
+                    md-selected-item="c.subject"
+                    md-search-text="c.searchSubject"
+                    md-items="item in vm.searchTextItems(c.searchSubject, vm.subjects)"
+                    md-item-text="item.s_name_en"
+                    md-require-match>
+                    <md-item-template>
+                      <span md-highlight-text="c.subject" md-highlight-flags="^i">{{item.s_name_en}}</span>
+                    </md-item-template>
+                  </md-autocomplete>
+                </td>
+                <td>
+                  <md-autocomplete
+                    md-input-name="autocompleteUser"
+                    ng-style="{outline: !c.user ? '1px solid red' : ''}"
+                    md-input-minlength="2"
+                    md-input-maxlength="18"
+                    md-selected-item="c.user"
+                    md-search-text="c.searchUser"
+                    md-items="item in vm.searchTextItems(c.searchUser, vm.users)"
+                    md-item-text="item.name"
+                    md-require-match>
+                    <md-item-template>
+                      <span md-highlight-text="c.user" md-highlight-flags="^i">{{item.name}}</span>
+                    </md-item-template>
+                  </md-autocomplete>
+                </td>
+                <td>
+                  <md-icon md-font-icon="red-600-fg icon-delete" style="padding: 0 10px; cursor: pointer"
+                           ng-click="vm.deleteClass($event, c)"
+                           class="s22"></md-icon>
+                </td>
+              </tr>
+            </table>
+            <div>
+              <md-button class="md-raised md-accent md-background" ng-click="addClass()">
+                <span>Add</span>
+              </md-button>
+            </div>
+          </div>
+        </div>
+
+        <div layout="row">
+          <div layout="column" flex="20">
+            <md-input-container>
+              <label>Status</label>
+            </md-input-container>
+          </div>
+          <div layout="column" flex="80">
+            <md-switch ng-model="user.status" ng-true-value="0">
+            </md-switch>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

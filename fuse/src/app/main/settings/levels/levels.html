@@ -1,0 +1,89 @@
+<div
+  class="doc-page material-docs ehla-blue-bg layout-docs doc-template page-layout simple tabbed fullwidth ng-scope layout-column"
+  layout="column">
+
+  <div ncy-breadcrumb></div>
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="start center">
+    <div class="white-fg" layout="row" layout-align="start center" flex>
+      <div layout="row" layout-align="start center">
+        <div layout="column" layout-align="start start">
+          <div class="h2">
+            Levels
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <md-button class="md-raised md-background" ng-click="vm.addLevel($event)">
+        <span>Add Level</span>
+      </md-button>
+      <md-button class="md-raised md-accent md-background" ng-click="vm.saveLevel($event)">
+        <span>Save</span>
+      </md-button>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+
+  <div class="content videos-content">
+    <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100"
+         layout-wrap="">
+      <div class="content-card white-bg md-whiteframe-4dp" layout="column" flex>
+        <div class="content" layout="row" flex>
+          <div class="md-background-bg md-whiteframe-1dp ehla-table-list-wrapper ehla-table-list-undragable"
+               style="width:100%">
+            <div>
+              <ul class="ehla-table-list ehla-table-list-header">
+                <li style="width: 30%">
+                  <span>School Level</span>
+                </li>
+                <li style="width: 50%;">
+                  <span>EHLA Level</span>
+                </li>
+                <li style="width: 20%;">
+                  <span>Action</span>
+                </li>
+              </ul>
+            </div>
+            <div ng-show="!vm.levelData.length && loading" class="ehla-table-empty">Loading</div>
+            <div ng-show="!vm.levelData.length && !loading" class="ehla-table-empty">No Data</div>
+            <div ui-tree="treeOptions"
+                 ui-tree-nodes
+                 data-drag-enabled="false"
+                 ng-model="vm.levelData">
+              <div ng-repeat="node in vm.levelData"
+                   ui-tree-node
+                   ng-include="'nodes_renderer'">
+              </div>
+            </div>
+          </div>
+        </div>
+        <script type="text/ng-template" id="nodes_renderer">
+          <ul class="ehla-table-list" ui-tree-handle>
+            <li style="width: 30%">
+              <div ng-style="{'margin-left': 20*(depth()-1) + 'px'}" style="padding: 0 5px;">
+                <md-input-container><input type="text" ng-model="node.name_en"/></md-input-container>
+              </div>
+            </li>
+            <li style="width: 50%;" class="ehla-question-input">
+              <md-select ng-model="node.ehlaLevels" placeholder="Select Levels" style="margin: 5px 10px 5px 0"
+                         multiple>
+                <md-optgroup label="Levels">
+                  <md-option ng-value="level.level" ng-repeat="level in vm.levels">{{level.name_en}}</md-option>
+                </md-optgroup>
+              </md-select>
+            </li>
+            <li style="width: 20%;">
+              <md-icon md-font-icon="red-600-fg icon-delete"
+                       ng-click="vm.deleteLevel($event, node)"
+                       class="s18"></md-icon>
+            </li>
+          </ul>
+        </script>
+      </div>
+    </div>
+
+  </div>
+</div>

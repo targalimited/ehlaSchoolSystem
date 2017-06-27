@@ -9,15 +9,15 @@
       <div layout="row" layout-align="start center">
         <div layout="column" layout-align="start start">
           <div class="h2">
-            Users
+            Subjects
           </div>
         </div>
       </div>
     </div>
 
     <div>
-      <md-button class="md-raised md-accent md-background" ng-click="vm.createUser()">
-        <span>Create User</span>
+      <md-button class="md-raised md-background" ng-click="vm.editSubject($event)">
+        <span>Add Subject</span>
       </md-button>
     </div>
   </div>
@@ -27,36 +27,25 @@
   <div class="content">
     <!-- <div class="md-title mb-32">Zero Configuration</div> -->
     <div class="white-bg md-whiteframe-4dp">
+
       <table class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions">
         <thead>
         <tr>
           <th class="secondary-text">
             <div class="table-header">
-              <span class="column-title">ID</span>
+              <span class="column-title">Name in English</span>
             </div>
           </th>
           <th class="secondary-text">
             <div class="table-header">
-              <span class="column-title">Username</span>
+              <span class="column-title">Name in Chinese</span>
             </div>
           </th>
-          <th class="secondary-text">
-            <div class="table-header">
-              <span class="column-title">Roles</span>
-            </div>
-          </th>
-          <th class="secondary-text">
-            <div class="table-header">
-              <span class="column-title">Status</span>
-            </div>
-          </th>
-          <!--
           <th class="secondary-text">
             <div class="table-header">
               <span class="column-title">Action</span>
             </div>
           </th>
-          -->
         </tr>
         </thead>
         <tbody>
@@ -64,27 +53,21 @@
           <td></td>
           <td style="text-align: center">Loading...</td>
           <td></td>
-          <td></td>
         </tr>
-        <tr ng-repeat="user in filtered = (vm.data | filter: filterRoles | filter: filterStatus)" ng-click="viewUserDetails(user)" ng-show="!loading">
-          <td>{{ user.id }}</td>
-          <td>{{ user.name }}</td>
-          <td>
-            {{vm.displayRoles(user.roles, vm.roles)}}
-          </td>
-          <td>{{ vm.displayUserStatus(user.status) }}</td>
-          <!--
+        <tr ng-repeat="subject in vm.data" ng-click="vm.editSubject($event, subject)"
+            ng-show="!loading">
+          <td>{{ subject.s_name_en }}</td>
+          <td>{{ subject.s_name_zh }}</td>
           <td ng-click="$event.preventDefault(); $event.stopPropagation();">
-            <md-icon ng-if="user.status === 1" md-font-icon="green-800-fg icon-account-check" ng-click="toggleActivation($event, user)"
-                     class="s22"></md-icon>
-
-            <md-icon ng-if="user.status === 0" md-font-icon="red-800-fg icon-account-remove" ng-click="toggleActivation($event, user)"
-                     class="s22"></md-icon>
+            <md-icon md-font-icon="red-600-fg icon-delete"
+                     ng-click="vm.deleteSubject($event, subject)"
+                     class="s18"></md-icon>
           </td>
-          -->
         </tr>
         </tbody>
       </table>
+
     </div>
+
   </div>
 </div>

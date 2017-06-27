@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use App\SchoolClass;
 use App\Subject;
 use Illuminate\Http\Request;
-use Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class SubjectController extends Controller
 {
     public function postSubjects(Request $request){
-
-
-
+        /**
         $input = $request->all();
 
         $validator = Validator::make($input, [
@@ -35,7 +34,64 @@ class SubjectController extends Controller
 
 
         return return_success();
+        **/
+        $input = $request->all();
 
+        $validator = Validator::make($input, [
+            's_name_en' => 'required',
+            's_name_zh' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $result = [
+                'status' => false,
+                'code' => '',
+                'message' => $validator->errors()
+            ];
+
+            return Response()->json($result, 500);
+        }
+
+        try {
+            DB::transaction(function () use ($request) {
+                $subject = New Subject();
+                $subject->s_name_en = $request->s_name_en;
+                $subject->s_name_zh = $request->s_name_zh;
+                $subject->save();
+            }, 2);
+        } catch (\Exception $e) {
+            $result = [
+                'status' => false,
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+
+            return Response()->json($result, 500);
+        }
+
+        $result = [
+            'status' => true,
+            'code' => '',
+            'message' => 'success'
+        ];
+
+        return Response()->json($result);
+    }
+
+    public function putSubjects(Request $request){
+      DB::transaction(function () use ($request){
+          $subject = Subject::where('id', $request->id)->first();
+          $subject->s_name_en = $request->s_name_en;
+          $subject->s_name_zh = $request->s_name_zh;
+          $subject->save();
+      });
+    }
+
+    public function delSubjects(Request $request){
+      DB::transaction(function () use ($request){
+          $subject = Subject::where('id', $request->id)->first();
+          $subject->delete();
+      });
     }
 
     public function getSubjects(Request $request){

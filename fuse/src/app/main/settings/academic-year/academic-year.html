@@ -9,15 +9,15 @@
       <div layout="row" layout-align="start center">
         <div layout="column" layout-align="start start">
           <div class="h2">
-            Users
+            Academic Year
           </div>
         </div>
       </div>
     </div>
 
     <div>
-      <md-button class="md-raised md-accent md-background" ng-click="vm.createUser()">
-        <span>Create User</span>
+      <md-button class="md-raised md-background" ng-click="vm.editYear($event)">
+        <span>Add Academic Year</span>
       </md-button>
     </div>
   </div>
@@ -27,36 +27,33 @@
   <div class="content">
     <!-- <div class="md-title mb-32">Zero Configuration</div> -->
     <div class="white-bg md-whiteframe-4dp">
+
       <table class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions">
         <thead>
         <tr>
           <th class="secondary-text">
             <div class="table-header">
-              <span class="column-title">ID</span>
+              <span class="column-title">Year</span>
             </div>
           </th>
           <th class="secondary-text">
             <div class="table-header">
-              <span class="column-title">Username</span>
+              <span class="column-title">Semester</span>
             </div>
           </th>
+
           <th class="secondary-text">
             <div class="table-header">
-              <span class="column-title">Roles</span>
+              <span class="column-title">Current Semester</span>
             </div>
           </th>
-          <th class="secondary-text">
+          <th class="secondary-text" style="text-align: center">
             <div class="table-header">
-              <span class="column-title">Status</span>
+              <span class="column-title">Actions</span>
             </div>
           </th>
-          <!--
-          <th class="secondary-text">
-            <div class="table-header">
-              <span class="column-title">Action</span>
-            </div>
-          </th>
-          -->
+
+
         </tr>
         </thead>
         <tbody>
@@ -64,27 +61,29 @@
           <td></td>
           <td style="text-align: center">Loading...</td>
           <td></td>
-          <td></td>
         </tr>
-        <tr ng-repeat="user in filtered = (vm.data | filter: filterRoles | filter: filterStatus)" ng-click="viewUserDetails(user)" ng-show="!loading">
-          <td>{{ user.id }}</td>
-          <td>{{ user.name }}</td>
+        <tr ng-repeat="year in vm.academicData" ng-click="vm.editYear($event, year)"
+            ng-show="!loading"> <!-- ng-class="{ 'year-selected': year.current_sem }"-->
+          <td>{{ year.display_name }}</td>
+          <td>{{ year.semester }}</td>
           <td>
-            {{vm.displayRoles(user.roles, vm.roles)}}
+            <i flex class="icon s20 icon-check" ng-if="year.current_sem === 1"></i>
+            <!-- <i flex class="icon s20 icon-close" ng-if="year.current_sem !== 1"></i> -->
           </td>
-          <td>{{ vm.displayUserStatus(user.status) }}</td>
-          <!--
-          <td ng-click="$event.preventDefault(); $event.stopPropagation();">
-            <md-icon ng-if="user.status === 1" md-font-icon="green-800-fg icon-account-check" ng-click="toggleActivation($event, user)"
-                     class="s22"></md-icon>
+          <td class="year-icons" ng-click="$event.preventDefault(); $event.stopPropagation();">
+            <md-icon md-font-icon="blue-600-fg icon-library-books"
+                     ng-click="vm.viewWeakness($event, year)"
+                     class="s18"></md-icon>
 
-            <md-icon ng-if="user.status === 0" md-font-icon="red-800-fg icon-account-remove" ng-click="toggleActivation($event, user)"
-                     class="s22"></md-icon>
+            <md-icon md-font-icon="red-600-fg icon-delete"
+                     ng-click="vm.deleteYear($event, year)"
+                     class="s18"></md-icon>
           </td>
-          -->
         </tr>
         </tbody>
       </table>
+
     </div>
+
   </div>
 </div>
