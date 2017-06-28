@@ -1,0 +1,15 @@
+table.extra-learning-table {
+  width: 100%;
+
+  tr {
+    height: 100px;
+
+    td:first-child {
+      width: 100px;
+    }
+
+    td:last-child {
+      width: 100px;
+    }
+  }
+}

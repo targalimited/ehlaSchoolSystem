@@ -13,7 +13,7 @@
     // State
     $stateProvider
       .state('app.homework.subjects.assignment.classes.class.videos', {
-        url: '/video-types/:videoType',
+        url: '/videos',
         views: {
           'content@app': {
             templateUrl: 'app/main/homework/subjects/assignment/classes/class/videos/videos.html',
@@ -26,7 +26,7 @@
           },
         },
         ncyBreadcrumb: {
-          label: '{{breadcrumbs.videoType}}',
+          label: 'Videos',
         },
         authenticate: true,
       });
@@ -48,9 +48,9 @@
   function VideosController($rootScope, breadcrumb, breadcrumbs, msUtils, tableTree, loadingScreen, Restangular, $scope, $state, $mdDialog) {
     var vm = this;
     $scope.breadcrumbs = breadcrumbs;
-    $scope.pageTitle = _.upperFirst($scope.breadcrumbs.videoType);
+    // $scope.pageTitle = _.upperFirst($scope.breadcrumbs.videoType);
     $scope.currentDate = new Date();
-    $scope.isShowExerciseColumn = $scope.breadcrumbs.videoType !== 'videos';
+    $scope.isShowExerciseColumn = false; // $scope.breadcrumbs.videoType !== 'videos';
 
     vm.assigned = {
       categories: [],
