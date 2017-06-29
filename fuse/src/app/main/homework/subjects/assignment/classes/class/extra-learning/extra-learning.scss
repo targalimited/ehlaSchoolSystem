@@ -1,15 +1,80 @@
+.content-card .content .white-bg {
+  width: 100%;
+}
+
 table.extra-learning-table {
   width: 100%;
 
   tr {
-    height: 100px;
+    td {
+      .title {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 1.33;
+      }
+
+      .desc {
+        margin: 8px 0;
+        color: rgba(20, 132, 179, 0.87) !important;
+        font-size: 14px;
+      }
+    }
 
     td:first-child {
-      width: 100px;
+      position: relative;
+      width: 200px;
+      height: 110px;
+
+      div {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 16px 8px;
+        height: 125px;
+        overflow-y: hidden;
+
+        img {
+          max-width: 100%;
+          height: auto;
+        }
+      }
     }
 
     td:last-child {
-      width: 100px;
+      position: relative;
+      width: 200px;
+      height: 110px;
+
+      a {
+        display: block;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        width: 150px;
+        text-align: center;
+        padding: 5px 10px;
+
+        &.access-btn {
+          background-color: orange;
+          border: 1px solid orange;
+          color: white;
+          margin-bottom: 10px;
+        }
+        &.locked-btn {
+          background-color: darkred;
+          border: 1px solid darkred;
+          color: white;
+          margin-bottom: 10px;
+        }
+        &.preview-btn {
+          background-color: white;
+          border: 1px solid rgb(3,155,229);
+        }
+      }
+
+      a:hover {
+        text-decoration: none;
+      }
     }
   }
 }

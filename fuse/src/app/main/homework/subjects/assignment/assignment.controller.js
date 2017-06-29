@@ -44,7 +44,7 @@
         background: 'assets/images/menu/videos.jpeg',
         ngClick: function () {
           // generalMessage.showMessageToast('success', 'Coming Soon');
-          $state.go("app.homework.subjects.assignment.classes.class.videos", { videoType: 'videos', classId: $rootScope.chosenClass.id });
+          $state.go("app.homework.subjects.assignment.classes.class.videos", { classId: $rootScope.chosenClass.id });
         }
       },
       reading: {
@@ -62,7 +62,7 @@
         background: 'assets/images/menu/videos.jpeg',
         ngClick: function () {
           // generalMessage.showMessageToast('success', 'Coming Soon');
-          $state.go("app.homework.subjects.assignment.classes.class.videos", { videoType: 'reading', classId: $rootScope.chosenClass.id });
+          $state.go("app.homework.subjects.assignment.classes.class.extra-learning", { learningType: 'reading', classId: $rootScope.chosenClass.id });
         }
       },
       writing: {
@@ -80,7 +80,7 @@
         background: 'assets/images/menu/videos.jpeg',
         ngClick: function () {
           // generalMessage.showMessageToast('success', 'Coming Soon');
-          $state.go("app.homework.subjects.assignment.classes.class.videos", { videoType: 'writing', classId: $rootScope.chosenClass.id });
+          $state.go("app.homework.subjects.assignment.classes.class.extra-learning", { learningType: 'writing', classId: $rootScope.chosenClass.id });
         }
       },
       teachingProgress: {

@@ -6,6 +6,7 @@
       ['app.homework.subjects.assignment.classes.class.exercises',
         'app.homework.subjects.assignment.classes.class.teaching-progress',
         'app.homework.subjects.assignment.classes.class.videos',
+        'app.homework.subjects.assignment.classes.class.extra-learning',
           'app.homework.subjects.assignment.classes.class.consolidated-report',
           'app.homework.subjects.assignment.classes.class.students'])
     .config(config);

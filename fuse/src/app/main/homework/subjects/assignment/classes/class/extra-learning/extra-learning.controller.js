@@ -4,7 +4,7 @@
   angular
     .module('app.homework.subjects.assignment.classes.class.extra-learning', [
       'ui.tree',
-      'app.homework.subjects.assignment.classes.class.extra-learning.learning-settings'
+      //'app.homework.subjects.assignment.classes.class.extra-learning.learning-settings'
     ])
     .config(config);
 
@@ -48,35 +48,47 @@
   function ExtraLearningController($rootScope, breadcrumb, breadcrumbs, msUtils, tableTree, loadingScreen, Restangular, $scope, $state, $mdDialog) {
     var vm = this;
     $scope.breadcrumbs = breadcrumbs;
-    $scope.pageTitle = _.upperFirst($scope.breadcrumbs.learningType);
-
+    $scope.pageTitle = _.upperFirst(breadcrumbs.learningType);
+    vm.dtOptions = {
+      autoWidth: false,
+      responsive: true,
+    };
     $scope.init = function () {
       $scope.loading = true;
-      breadcrumb.getWeaknessList(breadcrumbs.subjectId)
+      // english reading
+      // post itemApi/get_by_category
+      // {params: {id: "9", page: 1, limit: 10}}
+      // english writing
+      // {params: {id: "15", page: 1, limit: 10}}
+      // chinese writing
+      // {params: {id: "16", page: 1, limit: 10}}
+      // english exam -> english reading exercise
+      // {params: {id: "110", page: 1, limit: 10}}
+      var params = { params: { id: "9", page: 1, limit: 9999 } };
+      if (breadcrumbs.subject.s_name_en.toLowerCase().indexOf('english') === 0) {
+        if (breadcrumbs.learningType === 'reading') {
+          params.params.id = 9;
+        } else if (breadcrumbs.learningType === 'writing') {
+          params.params.id = 15;
+        } else if (breadcrumbs.learningType === 'exam') {
+          params.params.id = 110;
+        }
+      } else if (breadcrumbs.subject.s_name_en.toLowerCase().indexOf('chinese') === 0) {
+        if (breadcrumbs.learningType === 'writing') {
+          params.params.id = 16;
+        }
+      }
+
+      vm.data = {
+        list: [],
+        unassigned: [],
+        assigned: [],
+      };
+
+      Restangular.service('itemApi/get_by_category').post(params)
         .then(function (results) {
-          vm.assigned.data = _.cloneDeep(results.data);
-          (function assign(nodes) {
-            _.each(nodes, function (node) {
-              if (node.child && node.child.length) {
-                assign(node.child);
-              } else {
-                node.selectedExercise = {};
-                node.selectedExercise[Math.floor(Math.random() * 5) + 1] = true;
-                node.selectedVideos = {};
-                node.selectedVideos[node.concept_video_ids[0]] = true;
-                node.start_date = moment().add(-(Math.floor(Math.random() * 10)), 'days').format('YYYY-MM-DD HH:mm:ss');
-                node.end_date = moment().add((Math.ceil(Math.random() * 10)), 'days').format('YYYY-MM-DD HH:mm:ss');
-              }
-            });
-          })(vm.assigned.data);
-          vm.assigned.categories = _.cloneDeep(results.categories);
-
-          vm.unassigned.data = _.cloneDeep(results.data);
-          console.log(vm.unassigned.data)
-          vm.unassigned.categories = _.cloneDeep(results.categories);
-
-          $scope.applyFilterAssigned();
-          $scope.applyFilterUnassigned();
+          vm.data.list = results.plain().data;
+          console.log('vm.data.list', vm.data.list);
         })
         .catch(function (err) {
           console.error('Cannot login', err);
@@ -86,5 +98,65 @@
         }));
     }
 
+    $scope.init();
+
+    $scope.section = 'unassigned';
+    vm.switchSection = function (section) {
+      $scope.section = section;
+      if (!$rootScope.section) {
+        $rootScope.section = {};
+      }
+      $rootScope.section['chosen' + $scope.pageTitle] = section;
+    }
+
+    vm.displayThemes = function (item) {
+      return item.themes && item.themes.length ? _.reduce(item.themes, function (result, i) {
+        return result + ' ' + i.name_en;
+      }, ' | ') : '';
+    }
+
+    vm.previewItem = function (ev, item) {
+      $mdDialog.show({
+        controller: function (node, previewItem, $sce, $mdDialog) {
+          var vm = this;
+          vm.node = node;
+          vm.item = previewItem;
+          console.log('previewItem', previewItem);
+          vm.cancel = vm.closeDialog = function () {
+            $mdDialog.hide();
+          };
+
+          vm.trustSrc = function (src) {
+            // res.result.data[0]['preview_en']
+            return $sce.trustAsHtml(src);
+          };
+        },
+        controllerAs: 'vm',
+        templateUrl: 'app/main/homework/subjects/assignment/classes/class/extra-learning/templates/preview-item.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose: true,
+        escapeToClose: true,
+        resolve: {
+          previewItem: function () {
+            loadingScreen.showLoadingScreen();
+            //.post('/itemApi/getPreview'
+            return Restangular.service('itemApi/get_preview_by_item_id').post({ params: { id: item.id } }).then(function (results) {
+              return results.plain().data;
+            })
+              .catch(function (err) {
+                console.log('err', err);
+              })
+              .finally(function () {
+                loadingScreen.hideLoadingScreen();
+              })
+          }
+        },
+        locals: {
+          node: item,
+          event: ev,
+        }
+      });
+    }
   }
 })();
