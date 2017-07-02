@@ -14,7 +14,7 @@
         abstract: true,
         url: '/:learningId',
         ncyBreadcrumb: {
-          label: '{{breadcrumbs.learningDetail}}',
+          label: '{{breadcrumbs.learningDetail.name_en}}',
         },
       });
   }
