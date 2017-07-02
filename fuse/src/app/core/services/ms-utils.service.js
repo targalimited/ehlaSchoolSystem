@@ -32,8 +32,24 @@
       { id: 's6', name: 'S6' },
     ];
 
+    var exerciseList = [
+      {id: 1, name: 'New Vocabulary Exercise',
+        child: [
+          {id: 10, name: 'Spell the Words'},
+          {id: 11, name: 'Mix and Match'},
+          {id: 12, name: 'Fill in the Box'}
+        ]
+      },
+      {id: 2, name: 'Comprehension Questions'},
+      {id: 3, name: 'Thinking out of the Box'},
+      {id: 4, name: 'Listening Exercise'},
+      {id: 5, name: 'Extended Learning Exercise'},
+      {id: 6, name: 'Audio Recording'},
+    ]
+
     var service = {
       levels: levels,
+      exerciseList: exerciseList,
       exists: exists,
       detectBrowser: detectBrowser,
       guidGenerator: guidGenerator,

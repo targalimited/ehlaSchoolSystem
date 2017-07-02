@@ -4,7 +4,7 @@
   angular
     .module('app.homework.subjects.assignment.classes.class.extra-learning', [
       'ui.tree',
-      //'app.homework.subjects.assignment.classes.class.extra-learning.learning-settings'
+      'app.homework.subjects.assignment.classes.class.extra-learning.assign-status'
     ])
     .config(config);
 
@@ -64,7 +64,7 @@
       // {params: {id: "16", page: 1, limit: 10}}
       // english exam -> english reading exercise
       // {params: {id: "110", page: 1, limit: 10}}
-      var params = { params: { id: "9", page: 1, limit: 9999 } };
+      var params = {params: {id: "9", page: 1, limit: 9999}};
       if (breadcrumbs.subject.s_name_en.toLowerCase().indexOf('english') === 0) {
         if (breadcrumbs.learningType === 'reading') {
           params.params.id = 9;
@@ -141,7 +141,7 @@
           previewItem: function () {
             loadingScreen.showLoadingScreen();
             //.post('/itemApi/getPreview'
-            return Restangular.service('itemApi/get_preview_by_item_id').post({ params: { id: item.id } }).then(function (results) {
+            return Restangular.service('itemApi/get_preview_by_item_id').post({params: {id: item.id}}).then(function (results) {
               return results.plain().data;
             })
               .catch(function (err) {
@@ -157,6 +157,10 @@
           event: ev,
         }
       });
+    }
+
+    vm.viewSettings = function (item, assignStatus) {
+      $state.go('app.homework.subjects.assignment.classes.class.extra-learning.assign-status.learning-detail.learning-setting', { assignStatus: assignStatus, learningId: item.id })
     }
   }
 })();

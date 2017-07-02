@@ -1,160 +1,43 @@
-
-
-<div class="md-background-bg md-whiteframe-1dp ehla-table-list-wrapper ehla-table-list-undragable" style="width:100%">
-  <div>
-    <ul class="ehla-table-list ehla-table-list-header">
-      <li style="width: 20%">
-        <a class="btn btn-xs"
-           data-nodrag
-           ng-click="toggleExpandAllAssigned()">
-                                      <span class="icon s20" ng-class="{
-                                          'icon-plus': isAllExpandedAssigned() !== 2,
-                                          'icon-minus': isAllExpandedAssigned() === 2
-                                          }">
-                                      </span>
-        </a>
-        <span>Learning Point</span>
-      </li>
-      <li style="width: 10%">
-        Starting Time
-      </li>
-      <li style="width: 10%">
-        Deadline
-      </li>
-      <li style="width: 10%; text-align: center" ng-style="{'width': isShowExerciseColumn ? '10%' : '20%'}">
-        Video
-      </li>
-      <li style="width: 10%; text-align: center" ng-show="isShowExerciseColumn">
-        Video
-      </li>
-      <li style="width: 15%">
-        Remark to Students
-      </li>
-      <li style="width: 15%">
-        Completed
-      </li>
-      <li style="width: 10%">
-        Actions
-      </li>
-    </ul>
-  </div>
-  <div ng-show="!vm.assigned.data.length && loading" class="ehla-table-empty">Loading</div>
-  <div ng-show="!vm.assigned.data.length && !loading" class="ehla-table-empty">No Data</div>
-  <div ui-tree="treeOptionsAssigned" ng-if="vm.assigned.data.length"
-       ui-tree-nodes
-       data-drag-enabled="false"
-       ng-model="vm.assigned.data">
-      <div ng-repeat="node in vm.assigned.data"
-           ui-tree-node
-           ng-hide="!node._visible_"
-           ng-include="'nodes_renderer_assigned'">
-      </div>
-    </div>
-  </div>
-</div>
-<script type="text/ng-template" id="nodes_renderer_assigned">
-  <ul class="ehla-table-list" ui-tree-handle>
-    <li style="width: 20%">
-      <div ng-style="{'margin-left': 20*(depth()-1) + 'px'}" style="padding: 0 5px;">
-        <!--
-        <md-checkbox ng-checked="node.checkStatus==='checked'"
-                     md-indeterminate="node.checkStatus==='partlyChecked'"
-                     ng-click="toggleCheckAssigned(node)">
-        </md-checkbox>
-        -->
-        <a class="btn btn-xs" ng-if="node.child && node.child.length > 0"
-           data-nodrag
-           ng-click="toggleExpandAssigned(node)">
-                                      <span class="icon s20" ng-class="{
-                                          'icon-plus': !expandedAssigned[node.id],
-                                          'icon-minus': expandedAssigned[node.id]
-                                          }">
-                                      </span>
-        </a>
-        <a class="btn btn-xs ng-scope" style="visibility: hidden"
-           ng-if="!node.child || !node.child.length">
-                                            <span class="icon icon-plus">
-                                      </span></a>
-        <span>{{ node.name_en || node.name_zh }}</span>
-      </div>
-    </li>
-    <li style="width: 10%">
-      <span ng-if="node.child.length === 0">{{ node.start_date }}</span>
-      <!--
-      <md-input-container class="md-block" flex-gt-sm ng-if="node.child.length === 0">
-
-        <input mdc-datetime-picker="" date="true" time="true" type="text" id="starttime" style="max-width: 70%;"
-               show-todays-date="" min-date="date"
-               ng-model="node.start_date" class="md-input" required="true"
-               readonly="readonly">
-      </md-input-container>
-      -->
-    </li>
-    <li style="width: 10%">
-     <span ng-if="node.child.length === 0">{{ node.end_date }}</span>
-      <!--
-      <md-input-container class="md-block" flex-gt-sm ng-if="node.child.length === 0">
-
-        <input mdc-datetime-picker="" date="true" time="true" type="text" id="endtime" style="max-width: 70%;"
-               show-todays-date="" min-date="date"
-               ng-model="node.end_date" class="md-input" required="true"
-               readonly="readonly">
-      </md-input-container>
-      -->
-    </li>
-    <li style="width: 10%; text-align: center"  ng-style="{'width': isShowExerciseColumn ? '10%' : '20%'}">
-      <div  ng-if="node.child.length === 0" >
-                <span ng-click="vm.selectVideo($event, node, true)" style="cursor: pointer">
-                    <md-icon md-font-icon="icon-video"
-                             class="icon s18 md-default-theme md-font material-icons"
-                             aria-hidden="true"></md-icon>
-                <span>{{vm.displayAssigned(node)}}</span>
-                </span>
-
-      </div>
-    </li>
-    <li style="width: 10%; text-align: center" ng-show="isShowExerciseColumn">
-      <div  ng-if="node.child.length === 0" >
-                <span ng-click="vm.selectExercise($event, node, true)" style="cursor: pointer">
-                    <md-icon md-font-icon="icon-table-edit"
-                             class="icon s18 md-default-theme md-font material-icons"
-                             aria-hidden="true"></md-icon>
-                <span>{{vm.displayAssignedExercise(node)}}</span>
-                </span>
-
-      </div>
-    </li>
-    <li style="width: 15%">
-      <span ng-if="node.child.length === 0">{{ ::'This is the remark' }}</span>
-    </li>
-    <li style="width: 15%">
-      <div style="position: relative; width: 100%; height: 100%;" ng-if="node.child.length === 0" ng-init="vm.randomVideoProgress(node)">
-        <div style="position: absolute; color: white; top: 10px; z-index: 200; left: 5px;">
-          {{node.totalCompleted}}/{{node.totalStudents}} ({{node.progressPercentage}}%)
+<!-- <div class="md-title mb-32">Zero Configuration</div> -->
+<div class="white-bg md-whiteframe-4dp">
+  <table class="dataTable row-border hover extra-learning-table" datatable="ng" dt-options="vm.dtOptions">
+    <thead style="display: none">
+    <tr>
+      <th class="secondary-text">
+        <div class="table-header">
+          <span class="column-title">image</span>
         </div>
-        <md-progress-linear class="ehla-progress" md-mode="determinate" value="{{node.progressPercentage}}">
-        </md-progress-linear>
-      </div>
-
-    </li>
-    <li style="width: 10%">
-      <md-icon ng-if="node.child.length === 0" md-font-icon="blue-600-fg icon-magnify"
-               ng-click="vm.viewVideoDetails(node)"
-               class="s18"></md-icon>
-      <md-icon ng-if="node.child.length === 0" md-font-icon="red-600-fg icon-delete"
-               class="s18"></md-icon>
-    </li>
-  </ul>
-  <div ng-if="node.child && node.child.length > 0 && expandedAssigned.hasOwnProperty(node.id)"
-       ng-show="expandedAssigned[node.id]"
-       ui-tree-nodes=""
-       ng-model="node.child"
-       style="background: white; "
-  >
-    <div ng-repeat="node in node.child"
-         ui-tree-node
-         ng-hide="!node._visible_"
-         ng-include="'nodes_renderer_assigned'"></div>
-  </div>
-
-</script>
+      </th>
+      <th class="secondary-text">
+        <div class="table-header">
+          <span class="column-title">detail</span>
+        </div>
+      </th>
+      <th class="secondary-text">
+        <div class="table-header">
+          <span class="column-title">actions</span>
+        </div>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-if="loading">
+      <td></td>
+      <td style="text-align: center">Loading...</td>
+      <td></td>
+    </tr>
+    <tr ng-repeat="item in vm.data.list" ng-show="!loading">
+      <td><div><img ng-src="{{ item.thumbnail_path }}" title="{{ item.name_en }}" alt="{{ item.name_en }}"/></div></td>
+      <td>
+        <div class="title">{{ item.name_en }} - {{ item.id }}</div>
+        <div class="desc">{{ item.level_desc_en }}{{item.difficulty_en ? ' | ' + item.difficulty_en : '' }}{{vm.displayThemes(item)}}</div>
+      </td>
+      <td>
+        <a ng-if="item.btn_show_open === '1'" class="access-btn" ng-click="vm.viewSettings(item, 'assigned')">Settings</a>
+        <!-- <a ng-if="item.btn_show_open !== '1'" class="locked-btn">Locked</a> -->
+        <a ng-if="item.btn_show_preview === '1'" ng-click="vm.previewItem($event, item)" class="preview-btn">Preview</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

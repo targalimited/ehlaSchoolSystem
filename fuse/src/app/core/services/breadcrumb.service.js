@@ -460,6 +460,8 @@
       values.academicId = _.parseInt(params.academicId);
       values.videoId = _.parseInt(params.videoId);
       values.learningType = params.learningType;
+      values.assignStatus = params.assignStatus;
+      values.learningId = params.learningId;
       var curriculums = { 'school-based-curriculum': 'school-based curriculum' }
       values.curriculum = curriculums[params.curriculum];
       values.user = {
