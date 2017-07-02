@@ -48,6 +48,7 @@ Route::group(['prefix' => 'v1'], function () {
         //User controller
         Route::post('account_teacher','UserController@postTeacher');
         Route::post('account_student','UserController@postStudent');
+        Route::get('exportTeacherExcel','UserController@getTeacherExcel');
 
         Route::post('userApi/logout', 'LoginController@logout');
         //Subject Controller
