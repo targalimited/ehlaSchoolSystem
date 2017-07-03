@@ -60,6 +60,7 @@
                             <md-input-container class="md-block" flex-gt-sm>
                                 <label>Publish Date</label>
                                 <input mdc-datetime-picker="" date="true" time="true" type="text" id="starttime"
+                                       title="{{assignment.start_date | date : 'yyyy-MM-dd HH-mm'}}"
                                        placeholder="Pick a Date" show-todays-date="" min-date="date"
                                        ng-model="assignment.start_date" class="md-input" required="true"
                                        ng-disabled="vm.isDisableEdit()"
@@ -70,6 +71,7 @@
                             <md-input-container class="md-block" flex-gt-sm>
                                 <label>Deadline</label>
                                 <input mdc-datetime-picker="" date="true" time="true" type="text" id="endtime"
+                                       title="{{assignment.end_date | date : 'yyyy-MM-dd HH-mm'}}"
                                        placeholder="Pick a Date" show-todays-date="" min-date="date"
                                        ng-model="assignment.end_date" class="md-input" required="true"
                                        ng-disabled="vm.isDisableEdit()"

@@ -99,8 +99,8 @@
     }
 
     $scope.init();
-
-    $scope.section = 'unassigned';
+    
+    $scope.section = $rootScope.section && $rootScope.section['chosen' + $scope.pageTitle] ? $rootScope.section['chosen' + $scope.pageTitle] : 'unassigned';
     vm.switchSection = function (section) {
       $scope.section = section;
       if (!$rootScope.section) {

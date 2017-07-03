@@ -48,7 +48,9 @@
   function LearningSettingController($q, $sce, $rootScope, breadcrumb, breadcrumbs, msUtils, tableTree, loadingScreen, Restangular, $scope, $state, $mdDialog) {
     var vm = this;
     $scope.breadcrumbs = breadcrumbs;
+    vm.detail = breadcrumbs.learningDetail;
     vm.isEditable = true;
+    $scope.section = 'unassigned';
     vm.data = _.cloneDeep(msUtils.exerciseList);
     vm.topicsSearch = '';
     vm.selectedCategories = ['-1'],
@@ -68,6 +70,10 @@
     $scope.verifyAllParentsCheckStatus = tableTree.verifyAllParentsCheckStatus(vm);
     $scope.applyFilter = tableTree.applyFilter(vm);
     $scope.applyFilter();
+
+    vm.back = function () {
+      $state.go('app.homework.subjects.assignment.classes.class.extra-learning')
+    }
 
     vm.showTutor = function (v) {
       v.isShowTutor = !v.isShowTutor;
@@ -104,18 +110,10 @@
     vm.init = function () {
       loadingScreen.showLoadingScreen();
       //itemApi/get_related_items_by_item_id
-
-      return $q.all([
-        Restangular.service('itemApi/get_by_ids').post({params: {ids: [breadcrumbs.learningId]}}),
-        Restangular.service('itemApi/get_related_items_by_item_id').post({params: {id: breadcrumbs.learningId}}),
-      ]).then(function (results) {
-        var r = results;
-        vm.detail = r[0].plain().data[0];
-        vm.detail.theme_chosen = _.trimStart(_.reduce(vm.detail.theme, function (result, v) {
-          return result + ', ' + v.name_en;
-        }, ''), ', ');
-        breadcrumbs.learningDetail = vm.detail;
-        vm.extendedLearning = r[1].plain().data;
+      return Restangular.service('itemApi/get_related_items_by_item_id').post({params: {id: breadcrumbs.learningId}})
+      .then(function (results) {
+        vm.extendedLearning = results.plain().data;
+        console.log('vm.extendedLearning', vm.extendedLearning);
       })
         .catch(function (err) {
           console.log('err', err);

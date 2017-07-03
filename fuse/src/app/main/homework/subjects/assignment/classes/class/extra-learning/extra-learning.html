@@ -27,7 +27,7 @@
   <div class="content videos-content">
     <md-tabs md-dynamic-height>
 
-      <md-tab label="To Assign" md-on-select="vm.switchSection('unassigned')" md-active="section['chosen' + pageTitle] === 'unassigned'">
+      <md-tab label="To Assign" md-on-select="vm.switchSection('unassigned')" md-active="section === 'unassigned'">
         <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100" layout-wrap="">
           <div class="content-card" layout="column" flex>
             <div class="content" layout="row" flex
@@ -37,7 +37,7 @@
         </div>
       </md-tab>
 
-      <md-tab label="Assigned" md-on-select="vm.switchSection('assigned')" md-active="section['chosen' + pageTitle] === 'assigned'">
+      <md-tab label="Assigned" md-on-select="vm.switchSection('assigned')" md-active="section === 'assigned'">
         <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100" layout-wrap="">
           <div class="content-card" layout="column" flex>
             <!-- / CONTENT TOOLBAR -->
