@@ -78,6 +78,7 @@
 
         <input mdc-datetime-picker="" date="true" time="true" type="text" id="starttime" style="max-width: 90%;"
                show-todays-date="" min-date="date"
+               title="{{node.start_date | date : 'yyyy-MM-dd HH-mm'}}"
                ng-model="node.start_date" class="md-input" required="true"
                readonly="readonly">
       </md-input-container>
@@ -87,6 +88,7 @@
 
         <input mdc-datetime-picker="" date="true" time="true" type="text" id="endtime" style="max-width: 90%;"
                show-todays-date="" min-date="date"
+               title="{{node.end_date | date : 'yyyy-MM-dd HH-mm'}}"
                ng-model="node.end_date" class="md-input" required="true"
                readonly="readonly">
       </md-input-container>

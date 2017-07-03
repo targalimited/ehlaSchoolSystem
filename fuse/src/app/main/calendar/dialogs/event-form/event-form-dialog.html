@@ -27,6 +27,7 @@
                     <input mdc-datetime-picker="" date="true" time="true" type="text" id="starttime"
                            placeholder="Pick a Date" show-todays-date="" min-date="date"  ng-disabled="vm.calendarEvent.isOther"
                            ng-model="vm.calendarEvent.start_time" class="md-input" required="true"
+                           title="{{vm.calendarEvent.start_time | date : 'yyyy-MM-dd HH-mm'}}"
                            readonly="readonly">
                 </md-input-container>
             </div>
@@ -37,6 +38,7 @@
                     <input mdc-datetime-picker="" date="true" time="true" type="text" id="endtime"
                            placeholder="Pick a Date" show-todays-date="" min-date="date"  ng-disabled="vm.calendarEvent.isOther"
                            ng-model="vm.calendarEvent.end_time" class="md-input" required="true"
+                           title="{{vm.calendarEvent.end_time | date : 'yyyy-MM-dd HH-mm'}}"
                            readonly="readonly">
                 </md-input-container>
             </div>

@@ -48,7 +48,7 @@
         }
       },
       reading: {
-        title: 'READING',
+        title: 'READING, LISTENING, EXTENDED LEARNING & TEACHING',
         deadline: 'To be assigned',
         questions: '-',
         remark: '-',
@@ -66,7 +66,7 @@
         }
       },
       writing: {
-        title: 'WRITING',
+        title: 'PROGRESSIVE WRITING',
         deadline: 'To be assigned',
         questions: '-',
         remark: '-',
@@ -81,6 +81,24 @@
         ngClick: function () {
           // generalMessage.showMessageToast('success', 'Coming Soon');
           $state.go("app.homework.subjects.assignment.classes.class.extra-learning", { learningType: 'writing', classId: $rootScope.chosenClass.id });
+        }
+      },
+      examProgramme: {
+        title: 'Examination-oriented Programme',
+        deadline: 'To be assigned',
+        questions: '-',
+        remark: '-',
+        /**
+         deadline: '2017-03-18 14:20:11',
+         questions: 'hide',
+         remark: 'List of student personal reports',
+         placeholder: [1],
+         **/
+        icon: 'icon-pen',
+        background: 'assets/images/menu/videos.jpeg',
+        ngClick: function () {
+          // generalMessage.showMessageToast('success', 'Coming Soon');
+          $state.go("app.homework.subjects.assignment.classes.class.extra-learning", { learningType: 'exam', classId: $rootScope.chosenClass.id });
         }
       },
       teachingProgress: {
