@@ -17,6 +17,7 @@ class UserController extends Controller
     public $class;
     public $subject;
     public $student;
+    public $teacher;
     public $teacher_subject_class;
 
     private function init()
@@ -33,12 +34,39 @@ class UserController extends Controller
         foreach (User::all() as $v) {
             $this->student[$v->id] = $v->email;
         }
+        foreach (User::where('user_group', 3)->get() as $v) {
+            $this->teacher[$v->id]['username'] = $v->username;
+            $this->teacher[$v->id]['email'] = $v->email;
+        }
 
         foreach (TeacherClassSubject::all() as $k => $v) {
             $this->teacher_subject_class[$v->id]['class_id'] = $v->class_id;
             $this->teacher_subject_class[$v->id]['subject_id'] = $v->subject_id;
         }
 
+
+    }
+
+    public function getTeacherExcel(Request $request)
+    {
+
+        $this->init();
+
+
+        foreach (TeacherClassSubject::all() as $k => $v) {
+            //$teacher_subject_class[$k]['username'] = $v->subject_id;
+            $teacher_class_subject[$k]['username'] = $this->teacher[$v['teacher_id']]['username'];
+            $teacher_class_subject[$k]['email'] = $this->teacher[$v['teacher_id']]['email'];
+            $teacher_class_subject[$k]['class'] = $this->class[$v['class_id']];
+            $teacher_class_subject[$k]['subject'] = $this->subject[$v['subject_id']];
+        }
+
+
+        return Excel::create('teacher_list', function ($excel) use ($teacher_class_subject) {
+            $excel->sheet('teacher_class_subject', function ($sheet) use ($teacher_class_subject) {
+                $sheet->fromArray($teacher_class_subject);
+            });
+        })->export('xlsx');
 
     }
 
@@ -50,22 +78,36 @@ class UserController extends Controller
             $path = $request->file('file')->getRealPath();
             Excel::load($path, function ($reader) use ($request) {
 
+
+                foreach ($reader->get() as $v) {
+                    $first_sheet_title = $v->getTitle();
+                    break;
+                }
+
                 $results = $reader->get()->toArray();
+
+                if ($first_sheet_title == 'teacher_list') {
+                    $teacher_sheet = $results[0];
+                    foreach (User::where('user_group', 3)->get() as $v) {
+                        $username[] = $v->username;
+                        $email[] = $v->email;
+                    }
+                } else {
+                    $teacher_sheet = $results[1];
+                    foreach ($results[0] as $v) {
+                        $username[] = $v['username'];
+                        $email[] = $v['email'];
+                    }
+                }
 
 
 //                try {
 
 
-                foreach ($results[0] as $v) {
-                    $username[] = $v['username'];
-                    $email[] = $v['email'];
-                }
-
-
                 $i = 0;
                 $errors = [];
 
-                foreach ($results[1] as $v) {
+                foreach ($teacher_sheet as $v) {
 
                     if (!in_array($v['username'], $username)) {
                         $errors[$i] = 'No this username ' . $v['username'];
@@ -93,25 +135,29 @@ class UserController extends Controller
                     ];
                     return error_json($result);
                 } else {
-                    foreach ($results[0] as $v) {
-                        $user = New User();
-                        $user->username = $v['username'];
-                        $user->email = $v['email'];
-                        $user->password = $v['password'];
-                        $user->save();
-                    }
+
+                    if ($first_sheet_title != 'teacher_list') //first import, if second import skip this step
+                        foreach ($results[0] as $v) {
+                            $user = New User();
+                            $user->username = $v['username'];
+                            $user->email = $v['email'];
+                            $user->password = $v['password'];
+                            $user->save();
+                        }
+
                     $users = User::whereIn('email', $email)->get();
                     foreach ($users as $v) {
-                        $user_email[$v->id] = $v->email;
+                        $teacher_email[$v->id] = $v->email;
                     }
 
-                    foreach ($results[1] as $k => $v) {
-                        $new_teacher_set[$k]['teacher_id'] = array_search($v['email'], $user_email);
+                    foreach ($teacher_sheet as $k => $v) {
+                        $new_teacher_set[$k]['teacher_id'] = array_search($v['email'], $teacher_email);
                         $new_teacher_set[$k]['class_id'] = array_search($v['class'], $this->class);
                         $new_teacher_set[$k]['subject_id'] = array_search($v['subject'], $this->subject);
                         $new_teacher_set[$k]['comment'] = $v['email'] . "," . $v['class'] . "," . $v['subject'];
                     }
 
+                    TeacherClassSubject::truncate();
                     TeacherClassSubject::insert($new_teacher_set);
 
                 }

@@ -1,0 +1,54 @@
+<div
+  class="doc-page ehla-blue-bg material-docs layout-docs doc-template page-layout simple tabbed ng-scope layout-column"
+  layout="column">
+
+  <div ncy-breadcrumb></div>
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="start center">
+    <div class="white-fg" layout="row" layout-align="start center" flex>
+      <div layout="row" layout-align="start center">
+        <div layout="column" layout-align="start start">
+          <div class="h2">
+            {{pageTitle}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <md-button class="md-raised md-background" ng-click="vm.back()">
+        <span>Back</span>
+      </md-button>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <div class="content videos-content">
+    <md-tabs md-dynamic-height>
+
+      <md-tab label="To Assign" md-on-select="vm.switchSection('unassigned')" md-active="section === 'unassigned'">
+        <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100" layout-wrap="">
+          <div class="content-card" layout="column" flex>
+            <div class="content" layout="row" flex
+                 ng-include="'app/main/homework/subjects/assignment/classes/class/extra-learning/templates/unassigned-selection.html'"></div>
+
+          </div>
+        </div>
+      </md-tab>
+
+      <md-tab label="Assigned" md-on-select="vm.switchSection('assigned')" md-active="section === 'assigned'">
+        <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100" layout-wrap="">
+          <div class="content-card" layout="column" flex>
+            <!-- / CONTENT TOOLBAR -->
+            <div class="content" layout="row" flex
+                 ng-include="'app/main/homework/subjects/assignment/classes/class/extra-learning/templates/assigned-selection.html'"></div>
+
+          </div>
+        </div>
+      </md-tab>
+
+
+    </md-tabs>
+  </div>
+</div>

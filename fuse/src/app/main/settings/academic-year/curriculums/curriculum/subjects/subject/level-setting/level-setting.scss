@@ -4,12 +4,18 @@ md-dialog.video-dialog {
 }
 
 .tutor-pic {
+  border-radius: 5px;
+  margin: 10px;
+}
+
+.tutor-img-div {
   -webkit-border-top-left-radius: 15px;
   -webkit-border-bottom-left-radius: 15px;
   -moz-border-radius-topleft: 15px;
   -moz-border-radius-bottomleft: 15px;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
+  background-color: rgb(2,136,209);color: white;
 }
 
 .tutor-desc {

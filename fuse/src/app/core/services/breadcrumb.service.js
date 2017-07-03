@@ -459,7 +459,9 @@
       values.weaknessId = _.parseInt(params.weaknessId);
       values.academicId = _.parseInt(params.academicId);
       values.videoId = _.parseInt(params.videoId);
-      values.videoType = params.videoType;
+      values.learningType = params.learningType;
+      values.assignStatus = params.assignStatus;
+      values.learningId = params.learningId;
       var curriculums = { 'school-based-curriculum': 'school-based curriculum' }
       values.curriculum = curriculums[params.curriculum];
       values.user = {
@@ -473,6 +475,19 @@
         ]
       };
 
+      if (values.learningId) {
+        promises.push(Restangular.service('itemApi/get_by_ids').post({params: {ids: [values.learningId]}})
+          .then(function (res) {
+            values.learningDetail = res.plain().data[0];
+            values.learningDetail.theme_chosen = _.trimStart(_.reduce(values.learningDetail.theme, function (result, v) {
+              return result + ', ' + v.name_en;
+            }, ''), ', ');
+          })
+          .catch(function (err) {
+            console.error('Cannot login', err);
+            return err;
+          }));
+      }
 
       if (_.isUndefined(values.levels)) {
         promises.push(Restangular.one('levels').get()
