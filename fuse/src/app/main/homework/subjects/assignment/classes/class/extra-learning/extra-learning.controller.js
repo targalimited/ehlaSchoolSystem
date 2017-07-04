@@ -110,17 +110,18 @@
     }
 
     vm.displayThemes = function (item) {
-      return item.themes && item.themes.length ? _.reduce(item.themes, function (result, i) {
-        return result + ' ' + i.name_en;
-      }, ' | ') : '';
+      return item.themes && item.themes.length ? _.trimStart(_.reduce(item.themes, function (result, i) {
+        return result + ', ' + i.name_en;
+      }, ' | '), ', ') : '';
     }
 
     vm.previewItem = function (ev, item) {
       $mdDialog.show({
-        controller: function (node, previewItem, $sce, $mdDialog) {
+        controller: function ($timeout, node, previewItem, $sce, $mdDialog) {
           var vm = this;
           vm.node = node;
           vm.item = previewItem;
+          vm.videoList = previewItem[0].videoList;
           console.log('previewItem', previewItem);
           vm.cancel = vm.closeDialog = function () {
             $mdDialog.hide();
@@ -130,6 +131,27 @@
             // res.result.data[0]['preview_en']
             return $sce.trustAsHtml(src);
           };
+
+          $timeout(function () {
+            $('#preview-dialog a[href^="ehla://"]').each(function( i ) {
+              var video = vm.videoList[i];
+              var media = video.media[0];
+              $(this).parent().append('<div id="video'+video.id+'" style="width: 100%;"></div>');
+              video.player = new Clappr.Player({
+                source: media.file_path_hls || media.file_path,
+                parentId: "#video" + video.id,
+                poster: 'assets/images/backgrounds/home_banner.png',
+                width: '100%',
+                height: 500,
+              });
+              // $(elements[i]).removeAttr('href')
+              $(this).click(function (evt) {
+                evt.preventDefault();
+                $(this).hide();
+                video.player.play();
+              })
+            });
+          })
         },
         controllerAs: 'vm',
         templateUrl: 'app/main/homework/subjects/assignment/classes/class/extra-learning/templates/preview-item.html',
@@ -141,9 +163,31 @@
           previewItem: function () {
             loadingScreen.showLoadingScreen();
             //.post('/itemApi/getPreview'
+            var previewItem;
             return Restangular.service('itemApi/get_preview_by_item_id').post({params: {id: item.id}}).then(function (results) {
-              return results.plain().data;
+              function getMatches(string, regex, index) {
+                index || (index = 1); // default to the first capturing group
+                var matches = [];
+                var match;
+                while (match = regex.exec(string)) {
+                  matches.push(match[index]);
+                }
+                return matches;
+              }
+
+              previewItem = results.plain().data;
+              var myString = previewItem[0]['preview_en'];
+              var myRegEx = /<a href="ehla:\/\/playVideo\?itemID=(\d*)">/ig;
+
+
+              var matches = getMatches(myString, myRegEx, 1);
+
+              return Restangular.service('itemApi/get_by_ids').post({ params: { ids: matches } });
             })
+              .then(function (results) {
+                previewItem[0].videoList = results.plain().data;
+                return previewItem;
+              })
               .catch(function (err) {
                 console.log('err', err);
               })
