@@ -85,6 +85,7 @@
           $(this).parent().css('height', 'auto');
           $(this).parent().css('padding', '0');
           $(this).find('.img_video_playicon').css('top', '0');
+          $(this).find('.img_video_img').wrap('<div style="position: relative" class="video-wrapper"></div>')
           var regex = /itemID=(\d*)/ig;
           var href = $(this).attr('href');
           var match = regex.exec(href);
@@ -101,7 +102,7 @@
           }
 
           var media = video.media[0];
-          $(this).prepend('<div id="preview-video' + video.id + '-' + i + '" style="z-index: 1; width: 100%; position: absolute; height: 100%;"></div>');
+          $(this).find('div.video-wrapper').prepend('<div id="preview-video' + video.id + '-' + i + '" style="z-index: 1; width: 100%; position: absolute; height: 100%;"></div>');
           video.player = new Clappr.Player({
             source: media.file_path_hls || media.file_path,
             parentId: "#preview-video" + video.id + '-' + i,
