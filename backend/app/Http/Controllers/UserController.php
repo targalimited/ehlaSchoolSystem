@@ -34,6 +34,7 @@ class UserController extends Controller
 
         foreach (User::all() as $v) {
             $this->student[$v->id] = $v->email;
+            
         }
         foreach (User::where('user_group', 3)->get() as $v) {
             $this->teacher[$v->id]['username'] = $v->username;
@@ -43,6 +44,8 @@ class UserController extends Controller
         foreach (TeacherClassSubject::all() as $k => $v) {
             $this->teacher_subject_class[$v->id]['class_id'] = $v->class_id;
             $this->teacher_subject_class[$v->id]['subject_id'] = $v->subject_id;
+            $this->teacher_subject_class[$v->id]['class_name'] = $this->class[$v->class_id];
+            $this->teacher_subject_class[$v->id]['subject_name'] = $this->subject[$v->subject_id];
         }
 
 
@@ -73,11 +76,17 @@ class UserController extends Controller
     }
 
     public function getStudentExcel(Request $request){
+
+        $this->init();
+
+        //dd($this->teacher_subject_class);
+
         $student_subject = StudentSubject::get();
 
         foreach ($student_subject as $k => $v){
+            $new_student_list[$v->student_id]['class_id'] = $this->teacher_subject_class[$v->teacher_class_subject_id]['class_name'];
             $new_student_list[$v->student_id]['student_id'] = $v->student_id;
-            $new_student_list[$v->student_id][$v->teacher_class_subject_id] = 'Y';
+            $new_student_list[$v->student_id][$this->teacher_subject_class[$v->teacher_class_subject_id]['subject_name']] = 'Y';
         }
             dd($new_student_list);
 
