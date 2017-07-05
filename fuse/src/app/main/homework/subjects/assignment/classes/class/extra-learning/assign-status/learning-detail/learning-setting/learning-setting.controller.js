@@ -75,6 +75,12 @@
       $state.go('app.homework.subjects.assignment.classes.class.extra-learning')
     }
 
+    vm.switchSection = function () {
+      _.each(vm.videoList, function (v) {
+        v.player && v.player.pause();
+      });
+    }
+
     vm.showTutor = function (v) {
       v.isShowTutor = !v.isShowTutor;
       v.tutors = [v.tutor];
@@ -86,6 +92,7 @@
       if (video.isPreview) {
         if (!video.player) {
           var media = video.media[0];
+          console.log('video.media', media);
           video.player = new Clappr.Player({
             source: media.file_path_hls || media.file_path,
             parentId: "#video" + video.id,
@@ -114,7 +121,13 @@
       .then(function (results) {
         vm.extendedLearning = results.plain().data;
         console.log('vm.extendedLearning', vm.extendedLearning);
+        var matches = msUtils.getMatches(vm.detail['preview_en']);
+        return Restangular.service('itemApi/get_by_ids').post({ params: { ids: matches } });
       })
+        .then(function (results) {
+          vm.videoList = results.plain().data;
+          msUtils.fixPreviewVideo(vm.videoList);
+        })
         .catch(function (err) {
           console.log('err', err);
         })
