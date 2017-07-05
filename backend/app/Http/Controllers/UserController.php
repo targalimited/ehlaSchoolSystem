@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\SchoolClass;
+use App\StudentSubject;
 use App\Subject;
 use App\TeacherClassSubject;
 use App\User;
@@ -55,18 +56,30 @@ class UserController extends Controller
 
         foreach (TeacherClassSubject::all() as $k => $v) {
             //$teacher_subject_class[$k]['username'] = $v->subject_id;
-            $teacher_class_subject[$k]['username'] = $this->teacher[$v['teacher_id']]['username'];
-            $teacher_class_subject[$k]['email'] = $this->teacher[$v['teacher_id']]['email'];
-            $teacher_class_subject[$k]['class'] = $this->class[$v['class_id']];
-            $teacher_class_subject[$k]['subject'] = $this->subject[$v['subject_id']];
+            $teacher_class_subject[$v['teacher_id']]['username'] = $this->teacher[$v['teacher_id']]['username'];
+            $teacher_class_subject[$v['teacher_id']]['email'] = $this->teacher[$v['teacher_id']]['email'];
+            $teacher_class_subject[$v['teacher_id']]['class'] = $this->class[$v['class_id']];
+            $teacher_class_subject[$v['teacher_id']]['subject'] = $this->subject[$v['subject_id']];
         }
 
+       // dd($teacher_class_subject);
 
         return Excel::create('teacher_list', function ($excel) use ($teacher_class_subject) {
             $excel->sheet('teacher_class_subject', function ($sheet) use ($teacher_class_subject) {
                 $sheet->fromArray($teacher_class_subject);
             });
         })->export('xlsx');
+
+    }
+
+    public function getStudentExcel(Request $request){
+        $student_subject = StudentSubject::get();
+
+        foreach ($student_subject as $k => $v){
+            $new_student_list[$v->student_id]['student_id'] = $v->student_id;
+            $new_student_list[$v->student_id][$v->teacher_class_subject_id] = 'Y';
+        }
+            dd($new_student_list);
 
     }
 
