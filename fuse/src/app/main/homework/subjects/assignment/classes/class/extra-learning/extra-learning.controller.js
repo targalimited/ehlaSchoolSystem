@@ -99,7 +99,7 @@
     }
 
     $scope.init();
-    
+
     $scope.section = $rootScope.section && $rootScope.section['chosen' + $scope.pageTitle] ? $rootScope.section['chosen' + $scope.pageTitle] : 'unassigned';
     vm.switchSection = function (section) {
       $scope.section = section;
@@ -110,17 +110,18 @@
     }
 
     vm.displayThemes = function (item) {
-      return item.themes && item.themes.length ? _.reduce(item.themes, function (result, i) {
-        return result + ' ' + i.name_en;
-      }, ' | ') : '';
+      return item.themes && item.themes.length ? _.trimStart(_.reduce(item.themes, function (result, i) {
+        return result + ', ' + i.name_en;
+      }, ' | '), ', ') : '';
     }
 
     vm.previewItem = function (ev, item) {
       $mdDialog.show({
-        controller: function (node, previewItem, $sce, $mdDialog) {
+        controller: function ($timeout, node, previewItem, $sce, $mdDialog) {
           var vm = this;
           vm.node = node;
           vm.item = previewItem;
+          vm.videoList = previewItem[0].videoList;
           console.log('previewItem', previewItem);
           vm.cancel = vm.closeDialog = function () {
             $mdDialog.hide();
@@ -130,6 +131,8 @@
             // res.result.data[0]['preview_en']
             return $sce.trustAsHtml(src);
           };
+
+          msUtils.fixPreviewVideo(vm.videoList);
         },
         controllerAs: 'vm',
         templateUrl: 'app/main/homework/subjects/assignment/classes/class/extra-learning/templates/preview-item.html',
@@ -141,9 +144,18 @@
           previewItem: function () {
             loadingScreen.showLoadingScreen();
             //.post('/itemApi/getPreview'
+            var previewItem;
             return Restangular.service('itemApi/get_preview_by_item_id').post({params: {id: item.id}}).then(function (results) {
-              return results.plain().data;
+              previewItem = results.plain().data;
+              var myString = previewItem[0]['preview_en'];
+              var matches = msUtils.getMatches(myString);
+              
+              return Restangular.service('itemApi/get_by_ids').post({ params: { ids: matches } });
             })
+              .then(function (results) {
+                previewItem[0].videoList = results.plain().data;
+                return previewItem;
+              })
               .catch(function (err) {
                 console.log('err', err);
               })

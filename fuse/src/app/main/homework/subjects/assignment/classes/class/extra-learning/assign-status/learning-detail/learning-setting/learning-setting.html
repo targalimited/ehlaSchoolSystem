@@ -36,7 +36,7 @@
 
     <md-tabs md-dynamic-height>
 
-      <md-tab label="Basic Info">
+      <md-tab label="Basic Info" md-on-select="vm.switchSection('info')">
         <md-tab-body>
           <div class="exercise-detail-form-container md-background-bg md-whiteframe-1dp">
             <form class="md-inline-form">
@@ -66,15 +66,15 @@
         </md-tab-body>
       </md-tab>
 
-      <md-tab label="Preview">
+      <md-tab label="Preview" md-on-select="vm.switchSection('preview')">
         <md-tab-body>
-          <div class="exercise-detail-form-container md-background-bg md-whiteframe-1dp"
+          <div id="preview-dialog" class="exercise-detail-form-container md-background-bg md-whiteframe-1dp"
                ng-bind-html="vm.trustSrc(vm.detail['preview_en'])">
           </div>
         </md-tab-body>
       </md-tab>
 
-      <md-tab label="Exercise">
+      <md-tab label="Exercise" md-on-select="vm.switchSection('exercise')">
         <md-tab-body>
           <div class="exercise-detail-form-container md-background-bg md-whiteframe-1dp">
             <div>
@@ -171,7 +171,7 @@
         </md-tab-body>
       </md-tab>
 
-      <md-tab label="Extending Learning">
+      <md-tab label="Extending Learning" md-on-select="vm.switchSection('extended')">
         <md-tab-body>
           <div class="exercise-detail-form-container md-background-bg md-whiteframe-1dp">
             <div>
@@ -282,9 +282,14 @@
                       </div>
 
                       <div style="text-align: right; margin:20px">
-                        <a style="color: burlywood; cursor: pointer" ng-click="tutor.isMore = !tutor.isMore">
-                          <span ng-show="!tutor.isMore">More</span>
-                          <span ng-show="tutor.isMore">Less</span>
+                        <a style="cursor: pointer" ng-click="tutor.isMore = !tutor.isMore">
+                          <!-- icon-magnify-plus-->
+                          <md-icon ng-show="!tutor.isMore" style="color: burlywood;" md-font-icon="icon-magnify-plus"
+                                   class="icon s18 md-default-theme md-font material-icons"
+                                   aria-hidden="true"></md-icon>
+                          <md-icon ng-show="tutor.isMore" style="color: burlywood;" md-font-icon="icon-magnify-minus"
+                                   class="icon s18 md-default-theme md-font material-icons"
+                                   aria-hidden="true"></md-icon>
                         </a>
                       </div>
 

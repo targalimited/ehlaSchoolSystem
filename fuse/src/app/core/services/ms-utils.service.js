@@ -6,7 +6,7 @@
     .factory('msUtils', msUtils);
 
   /** @ngInject */
-  function msUtils($window, breadcrumb) {
+  function msUtils($timeout, $window, breadcrumb) {
     // Private variables
     var mobileDetect = new MobileDetect($window.navigator.userAgent),
       browserInfo = null;
@@ -33,18 +33,19 @@
     ];
 
     var exerciseList = [
-      {id: 1, name: 'New Vocabulary Exercise',
+      {
+        id: 1, name: 'New Vocabulary Exercise',
         child: [
-          {id: 10, name: 'Spell the Words'},
-          {id: 11, name: 'Mix and Match'},
-          {id: 12, name: 'Fill in the Box'}
+          { id: 10, name: 'Spell the Words' },
+          { id: 11, name: 'Mix and Match' },
+          { id: 12, name: 'Fill in the Box' }
         ]
       },
-      {id: 2, name: 'Comprehension Questions'},
-      {id: 3, name: 'Thinking out of the Box'},
-      {id: 4, name: 'Listening Exercise'},
-      {id: 5, name: 'Extended Learning Exercise'},
-      {id: 6, name: 'Audio Recording'},
+      { id: 2, name: 'Comprehension Questions' },
+      { id: 3, name: 'Thinking out of the Box' },
+      { id: 4, name: 'Listening Exercise' },
+      { id: 5, name: 'Extended Learning Exercise' },
+      { id: 6, name: 'Audio Recording' },
     ]
 
     var service = {
@@ -58,12 +59,54 @@
       displayEHLALevels: displayEHLALevels,
       displaySchoolLevels: displaySchoolLevels,
       displayLanguage: displayLanguage,
-      displayRoles: displayRoles
+      displayRoles: displayRoles,
+      getMatches: getMatches,
+      fixPreviewVideo: fixPreviewVideo,
     };
 
     return service;
 
     //////////
+
+    function getMatches(string, regx, index) {
+      index || (index = 1); // default to the first capturing group
+      var matches = [];
+      var match;
+      var regex = regx || /<a href="ehla:\/\/playVideo\?itemID=(\d*)">/ig;
+      while (match = regex.exec(string)) {
+        matches.push(match[index]);
+      }
+      return matches;
+    }
+
+    function fixPreviewVideo(videoList) {
+      $timeout(function () {
+        $('#preview-dialog a[href^="ehla://"]').each(function (i) {
+          var video = videoList[i];
+          var media = video.media[0];
+          $(this).parent().css('height', 'auto');
+          $(this).parent().css('padding', '0');
+          $(this).find('.img_video_playicon').css('top', '0');
+          $(this).prepend('<div id="preview-video' + video.id + '" style="z-index: 1; width: 100%; position: absolute; height: 100%;"></div>');
+          video.player = new Clappr.Player({
+            source: media.file_path_hls || media.file_path,
+            parentId: "#preview-video" + video.id,
+            poster: 'assets/images/backgrounds/home_banner.png',
+            width: '100%',
+            height: '100%',
+          });
+          $("#preview-video" + video.id).hide();
+
+          // $(elements[i]).removeAttr('href')
+          $(this).click(function (evt) {
+            evt.preventDefault();
+            $(this).find('img').css('visibility', 'hidden');
+            $("#preview-video" + video.id).show();
+            video.player.play();
+          })
+        });
+      })
+    }
 
     function displayLanguage(langType) {
       langType = _.parseInt(langType)
