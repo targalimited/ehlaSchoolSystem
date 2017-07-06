@@ -34,7 +34,7 @@ class UserController extends Controller
 
         foreach (User::all() as $v) {
             $this->student[$v->id] = $v->email;
-            
+
         }
         foreach (User::where('user_group', 3)->get() as $v) {
             $this->teacher[$v->id]['username'] = $v->username;
