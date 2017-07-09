@@ -82,26 +82,41 @@
     function fixPreviewVideo(videoList) {
       $timeout(function () {
         $('#preview-dialog a[href^="ehla://"]').each(function (i) {
-          var video = videoList[i];
-          var media = video.media[0];
           $(this).parent().css('height', 'auto');
           $(this).parent().css('padding', '0');
           $(this).find('.img_video_playicon').css('top', '0');
-          $(this).prepend('<div id="preview-video' + video.id + '" style="z-index: 1; width: 100%; position: absolute; height: 100%;"></div>');
+          $(this).find('.img_video_img').wrap('<div style="position: relative" class="video-wrapper"></div>')
+          var regex = /itemID=(\d*)/ig;
+          var href = $(this).attr('href');
+          var match = regex.exec(href);
+          if (!match) {
+            return;
+          }
+          var id = match[1];
+          var video = _.find(videoList, function (v) {
+            return parseInt(v.id) === parseInt(id);
+          })
+          if (!video) {
+            console.log('id', id, 'video', video);
+            return;
+          }
+
+          var media = video.media[0];
+          $(this).find('div.video-wrapper').prepend('<div id="preview-video' + video.id + '-' + i + '" style="z-index: 1; width: 100%; position: absolute; height: 100%;"></div>');
           video.player = new Clappr.Player({
             source: media.file_path_hls || media.file_path,
-            parentId: "#preview-video" + video.id,
+            parentId: "#preview-video" + video.id + '-' + i,
             poster: 'assets/images/backgrounds/home_banner.png',
             width: '100%',
             height: '100%',
           });
-          $("#preview-video" + video.id).hide();
+          $("#preview-video" + video.id + '-' + i).hide();
 
           // $(elements[i]).removeAttr('href')
           $(this).click(function (evt) {
             evt.preventDefault();
             $(this).find('img').css('visibility', 'hidden');
-            $("#preview-video" + video.id).show();
+            $("#preview-video" + video.id + '-' + i).show();
             video.player.play();
           })
         });

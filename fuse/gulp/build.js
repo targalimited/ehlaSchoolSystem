@@ -50,7 +50,7 @@ gulp.task('html', ['inject', 'partials'], function () {
     .pipe($.sourcemaps.write('maps'))
     .pipe(jsFilter.restore)
     .pipe(cssFilter)
-    .pipe(replace('url\(/assets', 'url\(/school/assets'))
+    .pipe(replace('/assets/images', '/school/assets/images'))
     .pipe($.sourcemaps.init())
     .pipe($.cleanCss())
     .pipe($.rev())
