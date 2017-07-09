@@ -29,7 +29,7 @@ class UserController extends Controller
         }
 
         foreach (SchoolClass::all() as $v) {
-            $this->class[$v->id] = $v->c_name;
+            $this->class[$v->id] = strtolower($v->c_name);
         }
 
         foreach (User::all() as $v) {
@@ -42,6 +42,8 @@ class UserController extends Controller
         }
 
         foreach (TeacherClassSubject::all() as $k => $v) {
+            $this->teacher_subject_class[$v->id]['multiple'] = $v->multiple_teacher;
+            $this->teacher_subject_class[$v->id]['email'] =  $this->teacher[$v->teacher_id]['email'];
             $this->teacher_subject_class[$v->id]['class_id'] = $v->class_id;
             $this->teacher_subject_class[$v->id]['subject_id'] = $v->subject_id;
             $this->teacher_subject_class[$v->id]['class_name'] = $this->class[$v->class_id];
@@ -65,7 +67,7 @@ class UserController extends Controller
             $teacher_class_subject[$v['teacher_id']]['subject'] = $this->subject[$v['subject_id']];
         }
 
-       // dd($teacher_class_subject);
+        // dd($teacher_class_subject);
 
         return Excel::create('teacher_list', function ($excel) use ($teacher_class_subject) {
             $excel->sheet('teacher_class_subject', function ($sheet) use ($teacher_class_subject) {
@@ -75,20 +77,24 @@ class UserController extends Controller
 
     }
 
-    public function getStudentExcel(Request $request){
+    public function getStudentExcel(Request $request)
+    {
 
         $this->init();
 
-        //dd($this->teacher_subject_class);
-
         $student_subject = StudentSubject::get();
 
-        foreach ($student_subject as $k => $v){
+        foreach ($student_subject as $k => $v) {
             $new_student_list[$v->student_id]['class_id'] = $this->teacher_subject_class[$v->teacher_class_subject_id]['class_name'];
             $new_student_list[$v->student_id]['student_id'] = $v->student_id;
-            $new_student_list[$v->student_id][$this->teacher_subject_class[$v->teacher_class_subject_id]['subject_name']] = 'Y';
+            $new_student_list[$v->student_id][$this->teacher_subject_class[$v->teacher_class_subject_id]['subject_name']] = ($this->teacher_subject_class[$v->teacher_class_subject_id]['multiple'])?$this->teacher_subject_class[$v->teacher_class_subject_id]['email']:'Y';
         }
-            dd($new_student_list);
+
+        return Excel::create('student_list', function ($excel) use ($new_student_list) {
+            $excel->sheet('teacher_class_subject', function ($sheet) use ($new_student_list) {
+                $sheet->fromArray($new_student_list);
+            });
+        })->export('xlsx');
 
     }
 
@@ -122,6 +128,9 @@ class UserController extends Controller
                     }
                 }
 
+                // print_r(array_count_values($teacher_sheet));
+                //dd($teacher_sheet);
+
 
 //                try {
 
@@ -131,6 +140,8 @@ class UserController extends Controller
 
                 foreach ($teacher_sheet as $v) {
 
+                   // dd($this->class);
+
                     if (!in_array($v['username'], $username)) {
                         $errors[$i] = 'No this username ' . $v['username'];
                         $i++;
@@ -139,11 +150,11 @@ class UserController extends Controller
                         $errors[$i] = 'No this email ' . $v['email'];
                         $i++;
                     }
-                    if (!in_array($v['class'], $this->class)) {
+                    if (!in_array(strtolower($v['class']), $this->class)) {
                         $errors[$i] = 'No this class ' . $v['class'];
                         $i++;
                     }
-                    if (!in_array($v['subject'], $this->subject)) {
+                    if (!in_array(strtolower($v['subject']), $this->subject)) {
                         $errors[$i] = 'No this subject ' . $v['subject'];
                         $i++;
                     }
@@ -181,6 +192,20 @@ class UserController extends Controller
 
                     TeacherClassSubject::truncate();
                     TeacherClassSubject::insert($new_teacher_set);
+
+                    //TODO update duplicate class and subject filed
+
+
+                    $query = DB::select('SELECT class_id, subject_id FROM school_teacher_class_subject GROUP BY class_id, subject_id HAVING count(*) > 1');
+
+                    foreach ($query as $k => $v){
+                        $tea = TeacherClassSubject::where('class_id',$v->class_id)->where('subject_id',$v->subject_id)->get();
+                        foreach($tea as $v1){
+                            $v1->multiple_teacher = 1;
+                            $v1->save();
+                        }
+                    }
+
 
                 }
 
