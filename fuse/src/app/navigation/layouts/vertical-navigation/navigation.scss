@@ -14,6 +14,12 @@
 
         .logo {
 
+          display: block;
+          width: 150px;
+          height: 33.3px;
+          background-image: url(/assets/images/logos/ehla_logo.svg);
+          background-size: cover;
+
             .logo-image {
                 display: block;
                 background: material-color('light-blue', '600');
@@ -64,10 +70,17 @@
             position: absolute;
 
             .navigation-header {
+                .logo {
+                  display: block;
+                  width: 150px;
+                  height: 33.3px;
+                  background-image: url("/assets/images/logos/ehla_logo.svg");
+                }
 
                 .fold-toggle {
                     transform: rotate(180deg);
                     opacity: 0;
+                    display: none;
                 }
             }
         }
@@ -81,6 +94,7 @@
                     .fold-toggle {
                         transition: transform 0.3s ease-in-out 0.1s, opacity 0.3s ease-in-out 0.2s;
                         opacity: 1;
+                        display: block;
                     }
                 }
             }
@@ -96,6 +110,13 @@
 
                 .navigation-header {
                     padding: 0 16px;
+
+                    .logo {
+                      display: block;
+                      width: 100%;
+                      height: 25px;
+                      background-image: url("/assets/images/logos/ehla_logo_icon.svg");
+                    }
 
                     .logo-text {
                         display: none;
