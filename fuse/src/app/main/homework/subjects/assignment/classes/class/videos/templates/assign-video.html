@@ -18,13 +18,14 @@
                     </li>
                     <li style="width: 25%;">School Tailored Level</li>
                     <li style="width: 15%;">Language</li>
-                    <li style="width: 15%;">Tutor</li>
-                    <li style="width: 15%;">
-                        Preview
+                    <li style="width: 15%;text-align: center;"><span style="margin-left: -40px;">Tutor</span></li>
+                    <li style="width: 15%;text-align: center;">
+                        <span style="margin-left: -30px;">Preview</span>
                     </li>
                 </ul>
             </div>
-            <ul class="ehla-table-list" ng-repeat="v in vm.node.videoList" style="border-bottom: none; padding: 0">
+            <ul class="ehla-table-list" ng-repeat="v in vm.node.videoList" style="border-bottom: none; padding: 0"
+                ng-class="[$index % 2 === 0 ? 'ehla-table-list-even' : 'ehla-table-list-odd']">
                 <ul class="ehla-table-list" style="padding: 0">
                     <li style="width: 30%">
                         <md-checkbox ng-value="v.name_en || v.name_zh" ng-model="vm.node.selectedVideos[v.id]" class="no-margin"
@@ -38,9 +39,9 @@
                     <li style="width: 15%">
                         {{vm.displayLanguage(v.teaching_lang_type)}}
                     </li>
-                    <li style="width: 15%">
+                    <li style="width: 15%; text-align: center; position: relative" ng-style="{'background-color': v.isShowTutor ? 'background-color: rgb(2,136,209);' : 'auto'}">
                         <div ng-if="v.tutor.name_en || v.tutor.name_zh">
-                            <a style="cursor: pointer" ng-click="vm.showTutor(v)">
+                            <a style="cursor: pointer" ng-click="vm.showTutor(v)" ng-style="{'color': v.isShowTutor ? 'white' : 'auto'}">
                                 <span>Tutors</span>
                                 <md-icon md-font-icon="icon-chevron-up" ng-if="!v.isShowTutor"
                                          class="icon s12 md-default-theme md-font material-icons"
@@ -54,8 +55,8 @@
                             -
                         </div>
                     </li>
-                    <li style="width: 15%;">
-                        <a style="cursor: pointer" ng-click="vm.preview(v)">
+                    <li style="width: 15%; text-align: center;" ng-style="{'background-color': v.isPreview ? 'background-color: rgb(2,136,209);' : 'auto'}">
+                        <a style="cursor: pointer" ng-click="vm.preview(v)" ng-style="{'color': v.isPreview ? 'white' : 'auto'}">
                             <span>Preview</span>
                             <md-icon md-font-icon="icon-chevron-up" ng-if="!v.isPreview"
                                      class="icon s12 md-default-theme md-font material-icons"
@@ -66,7 +67,7 @@
                         </a>
                     </li>
                 </ul>
-                <ul class="ehla-table-list" style="padding: 0" ng-show="v.isShowTutor">
+                <ul class="ehla-table-list info-section" style="padding: 0" ng-show="v.isShowTutor">
                     <li style="width: 100%; position: relative" ng-repeat="tutor in v.tutors">
                         <div layout="row" style="padding: 10px 0;">
                             <div><img class="tutor-pic" ng-src="{{tutor.profile_pic_path}}" style="height: 200px;"></div>
@@ -86,9 +87,9 @@
                         </div>
                     </li>
                 </ul>
-                <ul class="ehla-table-list" style="padding: 0" ng-show="v.isPreview">
+                <ul class="ehla-table-list info-section" style="padding: 0" ng-show="v.isPreview">
                     <li style="width: 100%; position: relative">
-                        <div id="video{{v.id}}" style="width: 100%;"></div>
+                        <div id="video{{v.id}}" style="width: 100%; padding: 10px"></div>
                     </li>
                 </ul>
             </ul>

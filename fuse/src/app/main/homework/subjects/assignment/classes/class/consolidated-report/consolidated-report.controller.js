@@ -79,15 +79,15 @@
         vm.categories = [];
         $scope.expanded = {};
 
-        $scope.toggleCheck = tableTree.toggleCheck(vm);
-        $scope.isAllChecked = tableTree.isAllChecked(vm);
-        $scope.toggleCheckAll = tableTree.toggleCheckAll(vm);
+        $scope.toggleCheck = tableTree.toggleCheck(vm, $scope.expanded);
+        $scope.isAllChecked = tableTree.isAllChecked(vm, $scope.expanded);
+        $scope.toggleCheckAll = tableTree.toggleCheckAll(vm, $scope.expanded);
         $scope.isAllExpanded = tableTree.isAllExpanded(vm, $scope.expanded);
         $scope.toggleExpand = tableTree.toggleExpand(vm, $scope.expanded);
         $scope.toggleExpandAll = tableTree.toggleExpandAll(vm, $scope.expanded);
-        $scope.propagateCheckFromParent = tableTree.propagateCheckFromParent(vm);
-        $scope.verifyAllParentsCheckStatus = tableTree.verifyAllParentsCheckStatus(vm);
-        $scope.applyFilter = tableTree.applyFilter(vm);
+        $scope.propagateCheckFromParent = tableTree.propagateCheckFromParent(vm, $scope.expanded);
+        $scope.verifyAllParentsCheckStatus = tableTree.verifyAllParentsCheckStatus(vm, $scope.expanded);
+        $scope.applyFilter = tableTree.applyFilter(vm, $scope.expanded);
         vm.statusFilter = 'checked';
 
         // Methods

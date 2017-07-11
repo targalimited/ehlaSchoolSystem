@@ -24,23 +24,23 @@
 }
 
 ms-navigation {
-  font-size: 130% !important;;
+  font-size: 110% !important;;
 }
 
 input, button, textarea, select {
-  font-size: 130% !important;;
+  font-size: 110% !important;;
 }
 
 div.header *, div.content {
-  font-size: 120% !important;;
+  font-size: 110% !important;;
 }
 
 md-tabs-wrapper {
-  zoom: 1.3 !important;;
+  zoom: 1.1 !important;;
 }
 
 md-dialog form {
-  font-size: 140% !important;;
+  font-size: 120% !important;;
 }
 
 md-toolbar {
@@ -48,7 +48,7 @@ md-toolbar {
 }
 
 div.breadcrumb a span {
-  font-size: 130%;
+  font-size: 110%;
 }
 
 .ms-card * {
@@ -56,15 +56,15 @@ div.breadcrumb a span {
 }
 
 div#calendarView {
-  font-size: 140%;
+  font-size: 120%;
 }
 
 .fc-day-grid-event .fc-content {
-  font-size: 140% !important;
+  font-size: 120% !important;
 }
 
 .qtip-fixed, .qtip-fixed h3, md-tooltip {
-  font-size: 140% !important;
+  font-size: 120% !important;
 }
 
 .ehla-table-list {
@@ -106,11 +106,30 @@ div#calendarView {
   }
 }
 
-
 .datatables-buttons-explicit {
   position: absolute;
   margin: 10px;
   z-index: 2;
+}
+
+
+table.dataTable tbody {
+  tr:nth-child(even) { background-color: white; }
+  tr:nth-child(odd) { background-color: #eee; }
+}
+
+table.dataTable thead tr {
+  background-color: rgb(85, 86, 86);
+  .column-title {
+    color: white;
+  }
+  .column-title:after {
+    color: white !important;
+  }
+}
+
+table.dataTable.hover tbody tr:hover {
+  background-color: #a4a9a6;
 }
 
 /**
@@ -121,7 +140,6 @@ div.ehla-table-list-wrapper {
   border: 1px solid #eee;
   border-bottom: none;
 }
-
 
 div.ehla-table-list-undragable .ehla-table-list:hover {
   cursor: pointer !important;
@@ -136,6 +154,15 @@ ul.ehla-table-list {
   border-bottom: 1px solid #eee;
 }
 
+
+ul.ehla-table-list-even {
+  background-color: white;
+}
+
+ul.ehla-table-list-odd {
+  background-color: #eee;
+}
+
 ul.ehla-table-list md-checkbox {
   margin: 0;
 }
@@ -143,8 +170,19 @@ ul.ehla-table-list md-checkbox {
 ul.ehla-table-list-header {
   padding: 0 5px;
   font-weight: 600;
-  line-height:40px;
-  background-color: #eee;
+  line-height: 40px;
+  background-color: rgb(85, 86, 86);
+  color: white;
+}
+
+ul.ehla-table-list-header  {
+  .icon {
+    color: white !important;
+  }
+  .md-icon {
+    border-color: white !important;
+    color: white;
+  }
 }
 
 ul.ehla-table-list li {
@@ -153,18 +191,17 @@ ul.ehla-table-list li {
   height: 40px;
   padding: 0 5px;
   vertical-align: middle;
-  overflow:hidden;
-  font-weight:300;
-  cursor: default;
+  overflow: hidden;
+  font-weight: 300;
 }
 
-ul.ehla-table-list li.amount-padding{
+ul.ehla-table-list li.amount-padding {
   padding-right: 15px;
   text-align: right;
 }
 
-ul.ehla-table-list:hover {
-  background-color: #eee;
+ul.ehla-table-list:not(.ehla-table-list-header):hover {
+  background-color: #d6d6d6
 }
 
 .angular-ui-tree-nodes .angular-ui-tree-nodes {
@@ -172,12 +209,12 @@ ul.ehla-table-list:hover {
   margin: 0
 }
 
-md-toast.md-error-toast-theme div.md-toast-content{
+md-toast.md-error-toast-theme div.md-toast-content {
   color: white !important;
   background-color: red !important;
 }
 
-md-toast.md-success-toast-theme div.md-toast-content{
+md-toast.md-success-toast-theme div.md-toast-content {
   color: white !important;
   background-color: green !important;
 }

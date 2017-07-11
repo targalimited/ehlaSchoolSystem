@@ -216,11 +216,14 @@
 
           vm.showTutor = function (v) {
             v.isShowTutor = !v.isShowTutor;
+            v.isPreview = !v.isShowTutor;
+            v.player && v.player.pause();
             v.tutors = [v.tutor];
           }
 
           vm.preview = function (video) {
             video.isPreview = !video.isPreview;
+            video.isShowTutor = !video.isPreview;
 
             if (video.isPreview) {
               if (!video.player) {
@@ -279,25 +282,25 @@
     $scope.expandedAssigned = {};
     $scope.expandedUnassigned = {};
 
-    $scope.toggleCheckAssigned = tableTree.toggleCheck(vm.assigned);
-    $scope.isAllCheckedAssigned = tableTree.isAllChecked(vm.assigned);
-    $scope.toggleCheckAllAssigned = tableTree.toggleCheckAll(vm.assigned);
+    $scope.toggleCheckAssigned = tableTree.toggleCheck(vm.assigned, $scope.expandedAssigned);
+    $scope.isAllCheckedAssigned = tableTree.isAllChecked(vm.assigned, $scope.expandedAssigned);
+    $scope.toggleCheckAllAssigned = tableTree.toggleCheckAll(vm.assigned, $scope.expandedAssigned);
     $scope.isAllExpandedAssigned = tableTree.isAllExpanded(vm.assigned, $scope.expandedAssigned);
-    $scope.toggleExpandAssigned = tableTree.toggleExpand(vm, $scope.expandedAssigned);
+    $scope.toggleExpandAssigned = tableTree.toggleExpand(vm.assigned, $scope.expandedAssigned, $scope.expandedAssigned);
     $scope.toggleExpandAllAssigned = tableTree.toggleExpandAll(vm.assigned, $scope.expandedAssigned);
-    $scope.propagateCheckFromParentAssigned = tableTree.propagateCheckFromParent(vm.assigned);
-    $scope.verifyAllParentsCheckStatusAssigned = tableTree.verifyAllParentsCheckStatus(vm.assigned);
-    $scope.applyFilterAssigned = tableTree.applyFilter(vm.assigned);
+    $scope.propagateCheckFromParentAssigned = tableTree.propagateCheckFromParent(vm.assigned, $scope.expandedAssigned);
+    $scope.verifyAllParentsCheckStatusAssigned = tableTree.verifyAllParentsCheckStatus(vm.assigned, $scope.expandedAssigned);
+    $scope.applyFilterAssigned = tableTree.applyFilter(vm.assigned, $scope.expandedAssigned);
 
-    $scope.toggleCheckUnassigned = tableTree.toggleCheck(vm.unassigned);
-    $scope.isAllCheckedUnassigned = tableTree.isAllChecked(vm.unassigned);
-    $scope.toggleCheckAllUnassigned = tableTree.toggleCheckAll(vm.unassigned);
+    $scope.toggleCheckUnassigned = tableTree.toggleCheck(vm.unassigned, $scope.expandedUnassigned);
+    $scope.isAllCheckedUnassigned = tableTree.isAllChecked(vm.unassigned, $scope.expandedUnassigned);
+    $scope.toggleCheckAllUnassigned = tableTree.toggleCheckAll(vm.unassigned, $scope.expandedUnassigned);
     $scope.isAllExpandedUnassigned = tableTree.isAllExpanded(vm.unassigned, $scope.expandedUnassigned);
-    $scope.toggleExpandUnassigned = tableTree.toggleExpand(vm, $scope.expandedUnassigned);
+    $scope.toggleExpandUnassigned = tableTree.toggleExpand(vm.unassigned, $scope.expandedUnassigned);
     $scope.toggleExpandAllUnassigned = tableTree.toggleExpandAll(vm.unassigned, $scope.expandedUnassigned);
-    $scope.propagateCheckFromParentUnassigned = tableTree.propagateCheckFromParent(vm.unassigned);
-    $scope.verifyAllParentsCheckStatusUnassigned = tableTree.verifyAllParentsCheckStatus(vm.unassigned);
-    $scope.applyFilterUnassigned = tableTree.applyFilter(vm.unassigned);
+    $scope.propagateCheckFromParentUnassigned = tableTree.propagateCheckFromParent(vm.unassigned, $scope.expandedUnassigned);
+    $scope.verifyAllParentsCheckStatusUnassigned = tableTree.verifyAllParentsCheckStatus(vm.unassigned, $scope.expandedUnassigned);
+    $scope.applyFilterUnassigned = tableTree.applyFilter(vm.unassigned, $scope.expandedUnassigned);
 
     $scope.applyFilterAssigned();
     $scope.applyFilterUnassigned();
