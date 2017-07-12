@@ -13,13 +13,14 @@
 
             <div>
                 <ul class="ehla-table-list ehla-table-list-header">
-                    <li style="width: 30%">
+                    <li style="width: 40%">
                         <span>Video</span>
                     </li>
-                    <li style="width: 25%;">School Tailored Level</li>
-                    <li style="width: 15%;">Language</li>
-                    <li style="width: 15%;text-align: center;"><span style="margin-left: -40px;">Tutor</span></li>
-                    <li style="width: 15%;text-align: center;">
+                    <li style="width: 20%;">School Tailored Level</li>
+                    <li style="width: 10%;">Language</li>
+                    <li style="width: 20%;">Remark</li>
+                    <li style="width: 10%;text-align: center;"><span style="margin-left: -40px;">Tutor</span></li>
+                    <li style="width: 10%;text-align: center;">
                         <span style="margin-left: -30px;">Preview</span>
                     </li>
                 </ul>
@@ -27,19 +28,22 @@
             <ul class="ehla-table-list" ng-repeat="v in vm.node.videoList" style="border-bottom: none; padding: 0"
                 ng-class="[$index % 2 === 0 ? 'ehla-table-list-even' : 'ehla-table-list-odd']">
                 <ul class="ehla-table-list" style="padding: 0">
-                    <li style="width: 30%">
+                    <li style="width: 40%">
                         <md-checkbox ng-value="v.name_en || v.name_zh" ng-model="vm.node.selectedVideos[v.id]" class="no-margin"
                                      ng-disabled="!vm.isEditable">
                             <span>{{v.name_en || v.name_zh}}</span>
                         </md-checkbox>
                     </li>
-                    <li style="width: 25%">
+                    <li style="width: 20%">
                         P1
                     </li>
-                    <li style="width: 15%">
+                    <li style="width: 10%">
                         {{vm.displayLanguage(v.teaching_lang_type)}}
                     </li>
-                    <li style="width: 15%; text-align: center; position: relative" ng-style="{'background-color': v.isShowTutor ? 'background-color: rgb(2,136,209);' : 'auto'}">
+                    <li style="width: 20%">
+                      {{v.remark || 'This is remark'}}
+                    </li>
+                    <li style="width: 10%; text-align: center; position: relative" ng-style="{'background-color': v.isShowTutor ? 'background-color: rgb(2,136,209);' : 'auto'}">
                         <div ng-if="v.tutor.name_en || v.tutor.name_zh">
                             <a style="cursor: pointer" ng-click="vm.showTutor(v)" ng-style="{'color': v.isShowTutor ? 'white' : 'auto'}">
                                 <span>Tutors</span>
@@ -55,7 +59,7 @@
                             -
                         </div>
                     </li>
-                    <li style="width: 15%; text-align: center;" ng-style="{'background-color': v.isPreview ? 'background-color: rgb(2,136,209);' : 'auto'}">
+                    <li style="width: 10%; text-align: center;" ng-style="{'background-color': v.isPreview ? 'background-color: rgb(2,136,209);' : 'auto'}">
                         <a style="cursor: pointer" ng-click="vm.preview(v)" ng-style="{'color': v.isPreview ? 'white' : 'auto'}">
                             <span>Preview</span>
                             <md-icon md-font-icon="icon-chevron-up" ng-if="!v.isPreview"
