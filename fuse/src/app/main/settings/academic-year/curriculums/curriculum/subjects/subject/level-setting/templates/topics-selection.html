@@ -39,20 +39,30 @@
     <ul class="ehla-table-list" ui-tree-handle ng-class="[node._index_ % 2 === 0 ? 'ehla-table-list-even' : 'ehla-table-list-odd']">
         <li style="width: 50%">
             <div ng-style="{'margin-left': 20*(depth()-1) + 'px'}" style="padding: 0 5px;">
-                <a class="btn btn-xs" ng-if="node.child && node.child.length > 0"
-                   data-nodrag
-                   ng-click="toggleExpand(node)">
+                <table>
+                    <tr>
+                        <td>
+                            <a class="btn btn-xs" ng-if="node.child && node.child.length > 0"
+                               data-nodrag
+                               ng-click="toggleExpand(node)">
                                       <span class="icon s20" ng-class="{
                                           'icon-plus': !expanded[node.id],
                                           'icon-minus': expanded[node.id]
                                           }">
                                       </span>
-                </a>
-                <a class="btn btn-xs ng-scope" style="visibility: hidden"
-                   ng-if="!node.child || !node.child.length">
+                            </a>
+                        </td>
+                        <td>
+                            <a class="btn btn-xs ng-scope" style="visibility: hidden"
+                               ng-if="!node.child || !node.child.length">
                                             <span class="icon icon-plus">
                                       </span></a>
-                <span>{{ node.name_en || node.name_zh }}</span>
+                        </td>
+                        <td>
+                            <span>{{ node.name_en || node.name_zh }}</span>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </li>
         <li style="width: 25%;" class="ehla-question-input">
