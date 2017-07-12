@@ -84,6 +84,7 @@
     vm.showTutor = function (v) {
       v.isShowTutor = !v.isShowTutor;
       v.isPreview = false;
+      v.player && v.player.pause();
       v.tutors = [v.tutor];
     }
 
