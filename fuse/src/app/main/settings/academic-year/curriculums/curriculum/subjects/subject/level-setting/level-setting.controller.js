@@ -75,11 +75,13 @@
 
           vm.showTutor = function (v) {
             v.isShowTutor = !v.isShowTutor;
+            v.isPreview = false;
             v.tutors = [v.tutor];
           }
 
           vm.preview = function (video) {
             video.isPreview = !video.isPreview;
+            video.isShowTutor = false;
 
             if (video.isPreview) {
               if (!video.player) {

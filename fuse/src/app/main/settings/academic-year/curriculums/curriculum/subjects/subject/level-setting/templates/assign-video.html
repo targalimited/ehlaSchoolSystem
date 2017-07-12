@@ -11,102 +11,101 @@
 
         <md-dialog-content>
 
-            <!--
-            <div ng-repeat="video in vm.node.videoList" layout="row" class="layout-row">
-                <div flex="70" class="flex-70">
-                    <md-radio-button class="no-margin">
-                        {{video.name}}
-                    </md-radio-button>
-                </div>
-                <div flex="30" class="flex-30"><a>Preview</a></div>
-                <div flex="100" class="flex-100"><a>video</a></div>
-            </div>
-            -->
-            <div>
-                <ul class="ehla-table-list ehla-table-list-header">
-                    <li style="width: 30%">
-                        <span>Video</span>
-                    </li>
-                    <li style="width: 25%;">School Tailored Level</li>
-                    <li style="width: 15%;">Language</li>
-                    <li style="width: 15%;">Tutor</li>
-                    <li style="width: 15%;">
-                        Preview
-                    </li>
-                </ul>
-            </div>
-
-            <ul class="ehla-table-list" ng-repeat="v in vm.node.videoList" style="border-bottom: none; padding: 0">
-                <ul class="ehla-table-list" style="padding: 0">
-                    <li style="width: 30%">
-                        <span>{{v.name_en || v.name_zh}}</span>
-                    </li>
-                    <li style="width: 25%">
-                        <md-select ng-model="v.video_custom_level" placeholder="Select Levels"
-                                   style="margin: 5px 10px 5px 0"
-                                   multiple>
-                            <md-optgroup label="Levels">
-                                <md-option ng-value="level.id" ng-repeat="level in vm.levels">{{level.name_en}}</md-option>
-                            </md-optgroup>
-                        </md-select>
-                    </li>
-                    <li style="width: 15%">
-                        {{vm.displayLanguage(v.teaching_lang_type)}}
-                    </li>
-                    <li style="width: 15%">
-                        <div ng-if="v.tutor.name_en || v.tutor.name_zh">
-                            <a style="cursor: pointer" ng-click="vm.showTutor(v)">
-                                <span>Tutors</span>
-                                <md-icon md-font-icon="icon-chevron-up" ng-if="!v.isShowTutor"
-                                         class="icon s12 md-default-theme md-font material-icons"
-                                         aria-hidden="true"></md-icon>
-                                <md-icon md-font-icon="icon-chevron-down" ng-if="v.isShowTutor"
-                                         class="icon s12 md-default-theme md-font material-icons"
-                                         aria-hidden="true"></md-icon>
-                            </a>
-                        </div>
-                        <div ng-if="!v.tutor.name_en && v.tutor.name_zh">
-                            -
-                        </div>
-                    </li>
-                    <li style="width: 15%;">
-                        <a style="cursor: pointer" ng-click="vm.preview(v)">
-                            <span>Preview</span>
-                            <md-icon md-font-icon="icon-chevron-up" ng-if="!v.isPreview"
-                                     class="icon s12 md-default-theme md-font material-icons"
-                                     aria-hidden="true"></md-icon>
-                            <md-icon md-font-icon="icon-chevron-down" ng-if="v.isPreview"
-                                     class="icon s12 md-default-theme md-font material-icons"
-                                     aria-hidden="true"></md-icon>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="ehla-table-list" style="padding: 0" ng-show="v.isShowTutor">
-                    <li style="width: 100%; position: relative" ng-repeat="tutor in v.tutors">
-                        <div layout="row" style="padding: 10px 0;">
-                            <div><img class="tutor-pic" ng-src="{{tutor.profile_pic_path}}" style="height: 200px;"></div>
-                            <div flex class="tutor-desc">
-                                <h2 style="text-align: center">
-                                    {{tutor.name_en || tutor.name_zh}}
-                                </h2>
-                                <h3 ng-if="tutor.title_en || tutor.title_zh">
-                                    test
-                                    {{tutor.title_en || tutor.title_zh}}
-                                </h3>
-                                <div style="padding: 0 30px">
-                                    {{tutor.short_description_en || tutor.short_description_zh}}
-                                </div>
-
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-                <ul class="ehla-table-list" style="padding: 0" ng-show="v.isPreview">
-                    <li style="width: 100%; position: relative">
-                        <div id="video{{v.id}}" style="width: 100%;"></div>
-                    </li>
-                </ul>
+          <div>
+            <ul class="ehla-table-list ehla-table-list-header">
+              <li style="width: 40%">
+                <span>Video</span>
+              </li>
+              <li style="width: 20%;">School Tailored Level</li>
+              <li style="width: 10%;">Language</li>
+              <li style="width: 20%;">Remark</li>
+              <li style="width: 10%;text-align: center;"><span style="margin-left: -40px;">Tutor</span></li>
+              <li style="width: 10%;text-align: center;">
+                <span style="margin-left: -30px;">Preview</span>
+              </li>
             </ul>
+          </div>
+          <ul class="ehla-table-list" ng-repeat="v in vm.node.videoList" style="border-bottom: none; padding: 0"
+              ng-class="[$index % 2 === 0 ? 'ehla-table-list-even' : 'ehla-table-list-odd']">
+            <ul class="ehla-table-list" style="padding: 0">
+              <li style="width: 40%">
+                <md-checkbox ng-value="v.name_en || v.name_zh" ng-model="vm.node.selectedVideos[v.id]" class="no-margin"
+                             ng-disabled="!vm.isEditable">
+                  <span>{{v.name_en || v.name_zh}}</span>
+                </md-checkbox>
+              </li>
+              <li style="width: 20%">
+                <md-select ng-model="v.video_custom_level" placeholder="Select Levels"
+                           style="margin: 5px 10px 5px 0"
+                           multiple>
+                  <md-optgroup label="Levels">
+                    <md-option ng-value="level.id" ng-repeat="level in vm.levels">{{level.name_en}}</md-option>
+                  </md-optgroup>
+                </md-select>
+              </li>
+              <li style="width: 10%">
+                {{vm.displayLanguage(v.teaching_lang_type)}}
+              </li>
+              <li style="width: 20%">
+                <md-input-container class="md-block" flex-gt-sm>
+                  <label>Remark</label>
+                  <input ng-model="v.remark" ng-disabled="vm.isEditable">
+                </md-input-container>
+              </li>
+              <li style="width: 10%; text-align: center; position: relative" ng-style="{'background-color': v.isShowTutor ? 'background-color: rgb(2,136,209);' : 'auto'}">
+                <div ng-if="v.tutor.name_en || v.tutor.name_zh">
+                  <a style="cursor: pointer" ng-click="vm.showTutor(v)" ng-style="{'color': v.isShowTutor ? 'white' : 'auto'}">
+                    <span>Tutors</span>
+                    <md-icon md-font-icon="icon-chevron-up" ng-if="!v.isShowTutor"
+                             class="icon s12 md-default-theme md-font material-icons"
+                             aria-hidden="true"></md-icon>
+                    <md-icon md-font-icon="icon-chevron-down" ng-if="v.isShowTutor"
+                             class="icon s12 md-default-theme md-font material-icons"
+                             aria-hidden="true"></md-icon>
+                  </a>
+                </div>
+                <div ng-if="!v.tutor.name_en && v.tutor.name_zh">
+                  -
+                </div>
+              </li>
+              <li style="width: 10%; text-align: center;" ng-style="{'background-color': v.isPreview ? 'background-color: rgb(2,136,209);' : 'auto'}">
+                <a style="cursor: pointer" ng-click="vm.preview(v)" ng-style="{'color': v.isPreview ? 'white' : 'auto'}">
+                  <span>Preview</span>
+                  <md-icon md-font-icon="icon-chevron-up" ng-if="!v.isPreview"
+                           class="icon s12 md-default-theme md-font material-icons"
+                           aria-hidden="true"></md-icon>
+                  <md-icon md-font-icon="icon-chevron-down" ng-if="v.isPreview"
+                           class="icon s12 md-default-theme md-font material-icons"
+                           aria-hidden="true"></md-icon>
+                </a>
+              </li>
+            </ul>
+            <ul class="ehla-table-list info-section" style="padding: 0" ng-show="v.isShowTutor">
+              <li style="width: 100%; position: relative" ng-repeat="tutor in v.tutors">
+                <div layout="row" style="padding: 10px 0;">
+                  <div><img class="tutor-pic" ng-src="{{tutor.profile_pic_path}}" style="height: 200px;"></div>
+                  <div flex class="tutor-desc">
+                    <h2 style="text-align: center">
+                      {{tutor.name_en || tutor.name_zh}}
+                    </h2>
+                    <h3 ng-if="tutor.title_en || tutor.title_zh">
+                      test
+                      {{tutor.title_en || tutor.title_zh}}
+                    </h3>
+                    <div style="padding: 0 30px">
+                      {{tutor.short_description_en || tutor.short_description_zh}}
+                    </div>
+
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <ul class="ehla-table-list info-section" style="padding: 0" ng-show="v.isPreview">
+              <li style="width: 100%; position: relative">
+                <div id="video{{v.id}}" style="width: 100%; padding: 10px"></div>
+              </li>
+            </ul>
+          </ul>
 
         </md-dialog-content>
 
