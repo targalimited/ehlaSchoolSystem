@@ -23,6 +23,19 @@
 
     return service;
 
+    function updateIndex(vm, expanded) {
+      var index = 0;
+      (function assignIndex(nodes) {
+        _.each(nodes, function (node) {
+          if (node._visible_) {
+            node._index_ = index++;
+            if (expanded[node.id] && node.child && node.child.length) {
+              assignIndex(node.child);
+            }
+          }
+        });
+      })(vm.data);
+    }
 
     function isAllChecked(vm) {
       return function () {
@@ -46,7 +59,7 @@
       }
     }
 
-    function toggleCheckAll(vm) {
+    function toggleCheckAll(vm, expanded) {
       return function () {
         var checkStatus = isAllChecked(vm)() !== 2 ? 'checked' : 'unchecked';
         (function toggle(nodes) {
@@ -57,6 +70,8 @@
             }
           });
         })(vm.data);
+
+        updateIndex(vm, expanded);
       }
     }
 
@@ -90,25 +105,28 @@
             expand(child, expanded[node.id]);
           });
         }
+        updateIndex(vm, expanded);
       }
     }
 
-    function toggleExpandAll(vm, expandList) {
+    function toggleExpandAll(vm, expanded) {
       return function () {
-        var isExpandAll = isAllExpanded(vm, expandList)() !== 2;
+        var isExpandAll = isAllExpanded(vm, expanded)() !== 2;
         // console.log('isExpandAll', isExpandAll);
         (function toggle(nodes) {
           _.each(nodes, function (node) {
-            expandList[node.id] = isExpandAll;
+            expanded[node.id] = isExpandAll;
             if (node.child.length) {
               toggle(node.child);
             }
           });
         })(vm.data);
+
+        updateIndex(vm, expanded)
       }
     }
 
-    function toggleCheck(vm) {
+    function toggleCheck(vm, expanded) {
       return function (node) {
         if (_.isUndefined(node.checkStatus)) {
           node.checkStatus = 'unchecked';
@@ -124,6 +142,8 @@
         }
 
         (verifyAllParentsCheckStatus(vm))(node);
+
+        updateIndex(vm, expanded)
       }
     }
 
@@ -168,7 +188,7 @@
       }
     }
 
-    function applyFilter(vm) {
+    function applyFilter(vm, expanded) {
       return function () {
         (function filter(nodes, parent) {
           var isAnyVisible = false;
@@ -207,6 +227,8 @@
           });
           return isAnyVisible;
         })(vm.data);
+
+        updateIndex(vm, expanded)
       }
     };
   }
