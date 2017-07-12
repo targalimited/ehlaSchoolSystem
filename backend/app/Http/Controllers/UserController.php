@@ -492,11 +492,7 @@ class UserController extends Controller
 
                 if ($class_id && $subject_id) {
 
-                    $teacher_class_subject = New TeacherClassSubject();
-                    $teacher_class_subject->teacher_id = $user->id;
-                    $teacher_class_subject->class_id = $class_id;
-                    $teacher_class_subject->subject_id=$subject_id;
-                    $teacher_class_subject->save();
+                    //TODO Create student subject class bind to teacher
 
                 } else {
                     $result = [
