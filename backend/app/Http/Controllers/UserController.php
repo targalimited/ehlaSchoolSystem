@@ -43,7 +43,7 @@ class UserController extends Controller
 
         foreach (TeacherClassSubject::all() as $k => $v) {
             $this->teacher_subject_class[$v->id]['multiple'] = $v->multiple_teacher;
-            $this->teacher_subject_class[$v->id]['email'] =  $this->teacher[$v->teacher_id]['email'];
+            $this->teacher_subject_class[$v->id]['email'] = $this->teacher[$v->teacher_id]['email'];
             $this->teacher_subject_class[$v->id]['class_id'] = $v->class_id;
             $this->teacher_subject_class[$v->id]['subject_id'] = $v->subject_id;
             $this->teacher_subject_class[$v->id]['class_name'] = $this->class[$v->class_id];
@@ -87,7 +87,7 @@ class UserController extends Controller
         foreach ($student_subject as $k => $v) {
             $new_student_list[$v->student_id]['class_id'] = $this->teacher_subject_class[$v->teacher_class_subject_id]['class_name'];
             $new_student_list[$v->student_id]['student_id'] = $v->student_id;
-            $new_student_list[$v->student_id][$this->teacher_subject_class[$v->teacher_class_subject_id]['subject_name']] = ($this->teacher_subject_class[$v->teacher_class_subject_id]['multiple'])?$this->teacher_subject_class[$v->teacher_class_subject_id]['email']:'Y';
+            $new_student_list[$v->student_id][$this->teacher_subject_class[$v->teacher_class_subject_id]['subject_name']] = ($this->teacher_subject_class[$v->teacher_class_subject_id]['multiple']) ? $this->teacher_subject_class[$v->teacher_class_subject_id]['email'] : 'Y';
         }
 
         return Excel::create('student_list', function ($excel) use ($new_student_list) {
@@ -140,7 +140,7 @@ class UserController extends Controller
 
                 foreach ($teacher_sheet as $v) {
 
-                   // dd($this->class);
+                    // dd($this->class);
 
                     if (!in_array($v['username'], $username)) {
                         $errors[$i] = 'No this username ' . $v['username'];
@@ -198,9 +198,9 @@ class UserController extends Controller
 
                     $query = DB::select('SELECT class_id, subject_id FROM school_teacher_class_subject GROUP BY class_id, subject_id HAVING count(*) > 1');
 
-                    foreach ($query as $k => $v){
-                        $tea = TeacherClassSubject::where('class_id',$v->class_id)->where('subject_id',$v->subject_id)->get();
-                        foreach($tea as $v1){
+                    foreach ($query as $k => $v) {
+                        $tea = TeacherClassSubject::where('class_id', $v->class_id)->where('subject_id', $v->subject_id)->get();
+                        foreach ($tea as $v1) {
                             $v1->multiple_teacher = 1;
                             $v1->save();
                         }
@@ -396,5 +396,120 @@ class UserController extends Controller
             return error_json($result);
         }
 
+    }
+
+    public function postSingleTeacher(Request $request)
+    {
+
+        $rules = array('email' => 'unique:users,email');
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $result = [
+                'status' => false,
+                'code' => '',
+                'message' => $validator->errors()
+            ];
+            return error_json($result);
+        }
+
+        DB::transaction(function () use($request){
+
+            $user = New User();
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->password = $request->password;
+            $user->save();
+
+            //user role 3 = student
+            $user->roles()->attach(2);
+
+            $this->init();
+
+            foreach ($request->class_subject as $k => $v) {
+                $class_id = array_search(strtolower($v['class']), $this->class);
+                $subject_id = array_search(strtolower($v['subject']), $this->subject);
+
+
+                if ($class_id && $subject_id) {
+
+                    $teacher_class_subject = New TeacherClassSubject();
+                    $teacher_class_subject->teacher_id = $user->id;
+                    $teacher_class_subject->class_id = $class_id;
+                    $teacher_class_subject->subject_id=$subject_id;
+                    $teacher_class_subject->save();
+
+                } else {
+                    $result = [
+                        'status' => false,
+                        'code' => '',
+                        'message' => ['No such class or subject']
+                    ];
+                    return error_json($result);
+                }
+            }
+
+        }, 2);
+
+        return return_success();
+    }
+
+    public function postSingleStudent(Request $request)
+    {
+
+        $rules = array('student_id' => 'unique:users,student_id');
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $result = [
+                'status' => false,
+                'code' => '',
+                'message' => $validator->errors()
+            ];
+            return error_json($result);
+        }
+
+        DB::transaction(function () use($request){
+
+            $user = New User();
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->password = $request->password;
+            $user->student_id = $request->student_id;
+            $user->save();
+
+            //user role 3 = student
+            $user->roles()->attach(3);
+
+            $this->init();
+
+            foreach ($request->class_subject as $k => $v) {
+                $class_id = array_search(strtolower($v['class']), $this->class);
+                $subject_id = array_search(strtolower($v['subject']), $this->subject);
+
+
+                if ($class_id && $subject_id) {
+
+                    $teacher_class_subject = New TeacherClassSubject();
+                    $teacher_class_subject->teacher_id = $user->id;
+                    $teacher_class_subject->class_id = $class_id;
+                    $teacher_class_subject->subject_id=$subject_id;
+                    $teacher_class_subject->save();
+
+                } else {
+                    $result = [
+                        'status' => false,
+                        'code' => '',
+                        'message' => ['No such class or subject']
+                    ];
+                    return error_json($result);
+                }
+            }
+
+        }, 2);
+
+        return return_success();
     }
 }

@@ -15,7 +15,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 {
     use Authenticatable, CanResetPassword,EntrustUserTrait;
 
-    protected $table = 'user';
     protected $guarded = ['id'];
 
     const CREATED_AT = 'create_ts';
