@@ -189,7 +189,7 @@
 
             <div>
               <ul class="ehla-table-list ehla-table-list-header">
-                <li style="width: 20%">
+                <li style="width: 30%">
                   <span>Video</span>
                 </li>
                 <li style="width: 10%;">Starting Time</li>
@@ -206,13 +206,12 @@
             <ul class="ehla-table-list" ng-repeat="v in vm.extendedLearning[0].detail" style="border-bottom: none; padding: 0"
                 ng-class="[$index % 2 === 0 ? 'ehla-table-list-even' : 'ehla-table-list-odd']">
               <ul class="ehla-table-list" style="padding: 0">
-                <li style="width: 20%">
-                  <md-checkbox ng-value="v.name_en || v.name_zh" ng-model="vm.node.selectedVideos[v.id]" class="no-margin"
-                               ng-disabled="!vm.isEditable">
+                <li style="width: 30%">
+                  <md-checkbox ng-value="v.name_en || v.name_zh" ng-model="vm.node.selectedVideos[v.id]" class="no-margin">
                     <span>{{v.name_en || v.name_zh}}</span>
                   </md-checkbox>
                 </li>
-                <li style="width: 15%;">
+                <li style="width: 10%;">
                   <md-input-container class="md-block" flex-gt-sm>
 
                     <input mdc-datetime-picker="" date="true" time="true" type="text" id="starttime"
@@ -223,7 +222,7 @@
                            readonly="readonly">
                   </md-input-container>
                 </li>
-                <li style="width: 15%;">
+                <li style="width: 10%;">
                   <md-input-container class="md-block" flex-gt-sm>
 
                     <input mdc-datetime-picker="" date="true" time="true" type="text" id="endtime"
