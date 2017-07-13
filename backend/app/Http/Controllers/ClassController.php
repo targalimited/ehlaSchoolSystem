@@ -60,6 +60,7 @@ class ClassController extends Controller
             DB::transaction(function () use ($request) {
                 $school_class = New SchoolClass();
                 $school_class->c_name = $request->c_name;
+                $school_class->name_zh = $request->name_zh;
                 $school_class->level_id = $request->level_id;
                 $school_class->save();
             }, 2);
@@ -86,6 +87,7 @@ class ClassController extends Controller
       DB::transaction(function () use ($request){
           $school_class = SchoolClass::where('id', $request->id)->first();
           $school_class->c_name = $request->c_name;
+          $school_class->name_zh = $request->name_zh;
           $school_class->level_id = $request->level_id;
           $school_class->save();
       });
