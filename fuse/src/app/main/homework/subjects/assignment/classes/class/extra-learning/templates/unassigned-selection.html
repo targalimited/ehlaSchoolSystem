@@ -33,7 +33,7 @@
         <div class="desc">{{ item.level_desc_en }}{{item.difficulty_en ? ' | ' + item.difficulty_en : '' }}{{vm.displayThemes(item)}}</div>
       </td>
       <td>
-        <a ng-if="item.btn_show_open === '1'" class="access-btn" ng-click="vm.viewSettings(item, 'unassigned')">Settings</a>
+        <a ng-if="item.btn_show_open === '1'" class="access-btn" ng-click="vm.viewSettings(item, 'unassigned')">Assignment</a>
         <!-- <a ng-if="item.btn_show_open !== '1'" class="locked-btn">Locked</a> -->
         <a ng-if="item.btn_show_preview === '1'" ng-click="vm.previewItem($event, item)" class="preview-btn">Preview</a>
       </td>

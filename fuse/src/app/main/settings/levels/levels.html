@@ -47,13 +47,13 @@
                 </li>
               </ul>
             </div>
-            <div ng-show="!vm.levelData.length && loading" class="ehla-table-empty">Loading</div>
-            <div ng-show="!vm.levelData.length && !loading" class="ehla-table-empty">No Data</div>
+            <div ng-show="!vm.data.length && loading" class="ehla-table-empty">Loading</div>
+            <div ng-show="!vm.data.length && !loading" class="ehla-table-empty">No Data</div>
             <div ui-tree="treeOptions"
                  ui-tree-nodes
                  data-drag-enabled="false"
-                 ng-model="vm.levelData">
-              <div ng-repeat="node in vm.levelData"
+                 ng-model="vm.data">
+              <div ng-repeat="node in vm.data"
                    ui-tree-node
                    ng-include="'nodes_renderer'">
               </div>

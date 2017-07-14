@@ -6,7 +6,7 @@
     .controller('LevelsController', LevelsController);
 
   /** @ngInject */
-  function LevelsController(breadcrumbs, $scope, $state, $mdDialog, $document, msUtils, Restangular, generalMessage, loadingScreen) {
+  function LevelsController(tableTree, breadcrumbs, $scope, $state, $mdDialog, $document, msUtils, Restangular, generalMessage, loadingScreen) {
     var vm = this;
     $scope.breadcrumbs = breadcrumbs;
     vm.levels = $scope.breadcrumbs.ehlaLevels;
@@ -16,26 +16,27 @@
       Restangular.one('levels').get()
         .then(function (results) {
           var data = results.plain().data;
-          vm.levelData = [];
+          vm.data = [];
           _.each(data, function (level) {
-            var lv = _.find(vm.levelData, function (lv) {
+            var lv = _.find(vm.data, function (lv) {
               return lv.name_en === level.name_en;
             })
             if (lv) {
               lv.ehlaLevels.push(level.level)
             } else {
-              vm.levelData.push({
+              vm.data.push({
                 name_en: level.name_en,
                 ehlaLevels: [level.level],
               });
             }
           });
-          console.log(vm.levelData);
+          console.log(vm.data);
         })
         .catch(function (err) {
           console.error('Cannot login', err);
         })
         .finally((function () {
+          $scope.applyFilter();
           loadingScreen.hideLoadingScreen();
         }));
     }
@@ -44,20 +45,22 @@
 
 
     vm.addLevel = function () {
-      vm.levelData.push({});
+      vm.data.push({});
+      $scope.applyFilter();
     }
 
     vm.deleteLevel = function (event, node) {
-      _.remove(vm.levelData, function (lv) {
+      _.remove(vm.data, function (lv) {
         return lv.name_en === node.name_en;
       });
+      $scope.applyFilter();
     }
 
     vm.saveLevel = function () {
       // school level name should be unique
       loadingScreen.showLoadingScreen();
       var postData = [];
-      _.each(vm.levelData, function (level) {
+      _.each(vm.data, function (level) {
         if (_.trim(level.name_en) !== '' && level.ehlaLevels.length) {
           _.each(level.ehlaLevels, function (lv) {
             postData.push({
@@ -82,5 +85,20 @@
         }));
     }
     //////////
+
+    vm.selectedCategories = ['-1'];
+    //vm.selectedSubjects = ['-1'];
+    vm.categories = [];
+    $scope.expanded = {};
+
+    $scope.toggleCheck = tableTree.toggleCheck(vm, $scope.expanded);
+    $scope.isAllChecked = tableTree.isAllChecked(vm, $scope.expanded);
+    $scope.toggleCheckAll = tableTree.toggleCheckAll(vm, $scope.expanded);
+    $scope.isAllExpanded = tableTree.isAllExpanded(vm, $scope.expanded);
+    $scope.toggleExpand = tableTree.toggleExpand(vm, $scope.expanded);
+    $scope.toggleExpandAll = tableTree.toggleExpandAll(vm, $scope.expanded);
+    $scope.propagateCheckFromParent = tableTree.propagateCheckFromParent(vm, $scope.expanded);
+    $scope.verifyAllParentsCheckStatus = tableTree.verifyAllParentsCheckStatus(vm, $scope.expanded);
+    $scope.applyFilter = tableTree.applyFilter(vm, $scope.expanded);
   }
 })();
