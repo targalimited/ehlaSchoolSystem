@@ -53,6 +53,11 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('teacher_single','UserController@postSingleTeacher');
         Route::post('student_single','UserController@postSingleStudent');
 
+        //Permission Control
+        Route::post('attach_permission','RoleController@attachPermission');
+        Route::post('attach_role','RoleController@attachRole');
+        Route::post('create_permission','RoleController@postPermission');
+
 
         Route::post('userApi/logout', 'LoginController@logout');
         //Subject Controller
