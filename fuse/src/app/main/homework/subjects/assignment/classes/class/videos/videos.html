@@ -68,7 +68,7 @@
                   <md-optgroup label="Categories">
                     <md-option ng-value="-1">All Categories</md-option>
                     <md-option ng-value="category.id" ng-repeat="category in vm.unassigned.categories">
-                      {{category.name_en || category.name_zh}}
+                      {{category['name_' + language]}}
                     </md-option>
                   </md-optgroup>
                 </md-select>
@@ -123,7 +123,7 @@
                   <md-optgroup label="Categories">
                     <md-option ng-value="-1">All Categories</md-option>
                     <md-option ng-value="category.id" ng-repeat="category in vm.assigned.categories">
-                      {{category.name_en || category.name_zh}}
+                      {{category['name_' + language]}}
                     </md-option>
                   </md-optgroup>
                 </md-select>

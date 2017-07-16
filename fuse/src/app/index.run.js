@@ -6,7 +6,7 @@
     .run(runBlock);
 
   /** @ngInject */
-  function runBlock($rootScope, $timeout, $state) {
+  function runBlock($rootScope, $timeout, $translate, $state) {
     try {
       $rootScope.user = JSON.parse(localStorage.getItem('user'));
     } catch (e) {
@@ -35,6 +35,8 @@
     var stateChangeSuccessEvent = $rootScope.$on('$stateChangeSuccess', function () {
       $timeout(function () {
         $rootScope.loadingProgress = false;
+        $rootScope.language = $translate.use();
+        console.log('language', $rootScope.language);
       });
     });
 

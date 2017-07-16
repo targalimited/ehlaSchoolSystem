@@ -52,6 +52,7 @@
                   vm.categories.push({
                     id: w.categoryId,
                     name_en: w.parentNameEN,
+                    name_zh: w.parentNameZH,
                   });
                   w.checkStatus = 'checked';
                   _.assign(w, found);

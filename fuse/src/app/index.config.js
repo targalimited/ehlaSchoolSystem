@@ -33,8 +33,11 @@
         $translateProvider.useLoader('$translatePartialLoader', {
             urlTemplate: '{part}/i18n/{lang}.json'
         });
+
+        $translateProvider.useLocalStorage();
         $translateProvider.preferredLanguage('en');
         $translateProvider.useSanitizeValueStrategy('sanitize');
+
 
         RestangularProvider.setBaseUrl('http://api.schoolsystem.com/v1/');
         $httpProvider.interceptors.push('sessionInjector');

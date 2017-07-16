@@ -29,8 +29,8 @@
     <tr ng-repeat="item in vm.data.list" ng-show="!loading">
       <td><div><img ng-src="{{ item.thumbnail_path }}" title="{{ item.name_en }}" alt="{{ item.name_en }}"/></div></td>
       <td>
-        <div class="title">{{ item.name_en }}</div>
-        <div class="desc">{{ item.level_desc_en }}{{item.difficulty_en ? ' | ' + item.difficulty_en : '' }}{{vm.displayThemes(item)}}</div>
+        <div class="title">{{ item['name_' + language] }}</div>
+        <div class="desc">{{ item['level_desc_' + language] }}{{item['difficulty_' + language] ? ' | ' + item['difficulty_' + language] : '' }} {{vm.displayThemes(item)}}</div>
       </td>
       <td>
         <a ng-if="item.btn_show_open === '1'" class="access-btn" ng-click="vm.viewSettings(item, 'unassigned')">Assignment</a>

@@ -34,7 +34,12 @@
         transition: height 0.25s cubic-bezier(0.250, 0.460, 0.450, 0.940);
     }
 
+    .ms-navigation-node:nth-child(even) { background: rgba(0, 0, 0, 0.1); }
+    .ms-navigation-node:nth-child(odd) { background: rgba(138, 115, 115, 0.1); }
+
     .ms-navigation-node {
+
+
 
         .ms-navigation-item {
             display: block;
@@ -43,7 +48,7 @@
             color: rgba(255, 255, 255, 0.70);
 
             &:hover {
-                background: rgba(0, 0, 0, 0.1);
+
             }
 
             // Non-link & Link Common

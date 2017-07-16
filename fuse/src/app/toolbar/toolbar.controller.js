@@ -79,7 +79,7 @@
             vm.userStatus = vm.userStatusOptions[0];
 
             // Get the selected language directly from angular-translate module setting
-            vm.selectedLanguage = vm.languages[$translate.preferredLanguage()];
+            vm.selectedLanguage = vm.languages[$translate.use()];
         }
 
 
@@ -136,6 +136,7 @@
              * block and the translations should work without any problems.
              */
             if (lang.code !== 'en') {
+                /**
                 var message = 'Fuse supports translations through angular-translate module, but currently we do not have any translations other than English language. If you want to help us, send us a message through ThemeForest profile page.';
 
                 $mdToast.show({
@@ -146,10 +147,18 @@
                 });
 
                 return;
+                 **/
             }
 
             // Change the language
-            $translate.use(lang.code);
+            $translate.use(lang.code).then(function () {
+                $rootScope.language = lang.code;
+                console.log('success loading language', lang.code);
+            })
+              .catch(function (err) {
+                  console.log('error loading language', err);
+                  $rootScope.language = lang.code;
+              });
         }
 
         /**

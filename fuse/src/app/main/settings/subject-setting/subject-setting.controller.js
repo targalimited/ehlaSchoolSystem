@@ -42,7 +42,7 @@
     .controller('SubjectSettingController', SubjectSettingController);
 
   /** @ngInject */
-  function SubjectSettingController(breadcrumbs, $scope, $state, $mdDialog, $document, msUtils, Restangular, generalMessage, loadingScreen) {
+  function SubjectSettingController(breadcrumbs, $rootScope, $scope, $state, $mdDialog, $document, msUtils, Restangular, generalMessage, loadingScreen) {
     var vm = this;
     $scope.breadcrumbs = breadcrumbs;
     vm.displaySchoolLevels = msUtils.displaySchoolLevels;
@@ -65,7 +65,7 @@
 
 
     vm.deleteSubject = function (event, node) {
-      generalMessage.showConfirm(event, 'Delete Subject', 'Are you sure to delete the subject "' + node.s_name_en + '"?').then(function () {
+      generalMessage.showConfirm(event, 'Delete Subject', 'Are you sure to delete the subject "' + node['name_' + $rootScope.language] + '"?').then(function () {
         loadingScreen.showLoadingScreen();
 
         Restangular.all('subjects/' + node.id).customDELETE()
@@ -119,7 +119,7 @@
                 break;
 
               case 'edit' :
-                vm.dialogTitle = 'Edit Subject - ' + vm.subject.s_name_en;
+                vm.dialogTitle = 'Edit Subject - ' + vm.subject['s_name_' + $rootScope.language];
                 break;
 
               default:

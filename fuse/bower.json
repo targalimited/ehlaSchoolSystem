@@ -47,7 +47,9 @@
     "lodash": "^4.16.4",
     "restangular": "^1.6.1",
     "ng-material-datetimepicker": "^1.5.10",
-    "clappr": "^0.2.66"
+    "clappr": "^0.2.66",
+    "angular-translate-storage-cookie": "^2.15.2",
+    "angular-translate-storage-local": "^2.15.2"
   },
   "devDependencies": {
     "angular-mocks": "1.5.8"
@@ -56,7 +58,8 @@
     "angular": "1.5.8",
     "d3": "3.5.14",
     "moment": "^2.17.1",
-    "angular-material": "1.1.1"
+    "angular-material": "1.1.1",
+    "angular-translate": "2.11.0"
   },
   "overrides": {
     "angular-material": {

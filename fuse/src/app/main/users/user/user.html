@@ -149,7 +149,7 @@
                     md-item-text="item.s_name_en"
                     md-require-match>
                     <md-item-template>
-                      <span md-highlight-text="c.subject" md-highlight-flags="^i">{{item.s_name_en}}</span>
+                      <span md-highlight-text="c.subject" md-highlight-flags="^i">{{item['s_name_' + language]}}</span>
                     </md-item-template>
                   </md-autocomplete>
                 </td>

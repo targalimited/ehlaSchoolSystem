@@ -48,6 +48,17 @@
         </div>
       </md-tab>
 
+      <md-tab label="Completed" md-on-select="vm.switchSection('completed')" md-active="section === 'completed'">
+        <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100" layout-wrap="">
+          <div class="content-card" layout="column" flex>
+            <!-- / CONTENT TOOLBAR -->
+            <div class="content" layout="row" flex
+                 ng-include="'app/main/homework/subjects/assignment/classes/class/extra-learning/templates/completed-selection.html'"></div>
+
+          </div>
+        </div>
+      </md-tab>
+
 
     </md-tabs>
   </div>

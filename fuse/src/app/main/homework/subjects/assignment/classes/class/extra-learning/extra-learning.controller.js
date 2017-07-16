@@ -110,9 +110,9 @@
     }
 
     vm.displayThemes = function (item) {
-      return item.themes && item.themes.length ? _.trimStart(_.reduce(item.themes, function (result, i) {
-        return result + ', ' + i.name_en;
-      }, ' | '), ', ') : '';
+      return item.themes && item.themes.length ? ' | ' + _.trimStart(_.reduce(item.themes, function (result, i) {
+        return result + ', ' + i['name_' + $rootScope.language];
+      }, ''), ', ') : '';
     }
 
     vm.previewItem = function (ev, item) {
@@ -147,7 +147,7 @@
             var previewItem;
             return Restangular.service('itemApi/get_preview_by_item_id').post({params: {id: item.id}}).then(function (results) {
               previewItem = results.plain().data;
-              var myString = previewItem[0]['preview_en'];
+              var myString = previewItem[0]['preview_' + $rootScope.language];
               var matches = msUtils.getMatches(myString);
               
               return Restangular.service('itemApi/get_by_ids').post({ params: { ids: matches } });

@@ -2,7 +2,7 @@
     <form name="taskForm" class="md-inline-form" novalidate>
         <md-toolbar class="md-accent md-hue-2">
             <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
-                <span class="title">{{vm.title}} - {{vm.weakness.name_en || vm.weakness.name_zh}}</span>
+                <span class="title">{{vm.title}} - {{vm.weakness['name_' + language]}}</span>
                 <md-button class="md-icon-button" ng-click="vm.closeDialog()">
                     <md-icon md-font-icon="icon-close" aria-label="Close dialog"></md-icon>
                 </md-button>

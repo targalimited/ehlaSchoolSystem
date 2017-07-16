@@ -4,14 +4,12 @@
   <div ncy-breadcrumb></div>
 
   <!-- HEADER -->
-  <div class="header md-accent-bg" layout="row" layout-align="start center"
-       style="background-image: url('/assets/images/banners/{{breadcrumbs.subject.s_name_en.toLowerCase()}}.jpg'),
-       url('/school/assets/images/banners/{{breadcrumbs.subject.s_name_en.toLowerCase()}}.jpg')">
+  <div class="header md-accent-bg" layout="row" layout-align="start center">
     <div class="white-fg" layout="row" layout-align="start center" flex>
       <div layout="row" layout-align="start center">
         <div layout="column" layout-align="start start">
           <div class="h2">
-            {{breadcrumbs.subject.s_name_en}}
+            {{breadcrumbs.subject['s_name_' + language]}}
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@
   <form name="taskForm" class="md-inline-form" novalidate>
     <md-toolbar class="md-accent md-hue-2">
       <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
-        <span class="title">{{vm.node.name_en || vm.node.name_zh}} -> Select Video</span>
+        <span class="title">{{vm.node['name_' + language]}} -> Select Video</span>
         <md-button class="md-icon-button" ng-click="vm.closeDialog()">
           <md-icon md-font-icon="icon-close" aria-label="Close dialog"></md-icon>
         </md-button>
@@ -31,7 +31,7 @@
           <li style="width: 40%">
             <md-checkbox ng-value="v.name_en || v.name_zh" ng-model="vm.node.selectedVideos[v.id]" class="no-margin"
                          ng-disabled="!vm.isEditable">
-              <span>{{v.name_en || v.name_zh}}</span>
+              <span>{{v['name_' + language]}}</span>
             </md-checkbox>
           </li>
           <li style="width: 20%">
@@ -85,14 +85,14 @@
               <div><img class="tutor-pic" ng-src="{{tutor.profile_pic_path}}" style="height: 200px;"></div>
               <div flex class="tutor-desc">
                 <h2 style="text-align: center">
-                  {{tutor.name_en || tutor.name_zh}}
+                  {{tutor['name_' + language]}}
                 </h2>
-                <h3 ng-if="tutor.title_en || tutor.title_zh">
+                <h3 ng-if="tutor['title_' + language]">
                   test
-                  {{tutor.title_en || tutor.title_zh}}
+                  {{tutor['title_' + language]}}
                 </h3>
                 <div style="padding: 0 30px">
-                  {{tutor.short_description_en || tutor.short_description_zh}}
+                  {{tutor['short_description_' + language]}}
                 </div>
 
               </div>

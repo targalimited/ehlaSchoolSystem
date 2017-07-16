@@ -113,7 +113,7 @@
         return result;
       }, 0);
 
-      var vname = _.truncate(node.videoList && node.videoList.length ? (node.videoList[0].name_en || node.videoList[0].name_zh) : '-', {
+      var vname = _.truncate(node.videoList && node.videoList.length ? (node.videoList[0]['name_' + language]) : '-', {
         'length': 35,
         'separator': ' '
       });

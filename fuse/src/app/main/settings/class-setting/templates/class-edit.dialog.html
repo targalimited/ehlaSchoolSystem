@@ -29,7 +29,7 @@
           <md-select ng-model="vm.class.level_id" placeholder="Select Level" style="margin: 5px 10px 5px 0"
                      name="level" required>
             <md-optgroup label="Levels">
-              <md-option ng-value="level.id" ng-repeat="level in vm.levels">{{level.name_en}}</md-option>
+              <md-option ng-value="level.id" ng-repeat="level in vm.levels">{{level['name_' + language]}}</md-option>
             </md-optgroup>
           </md-select>
           <div ng-messages="eventForm.level.$error" ng-show="eventForm.level.$touched" role="alert">

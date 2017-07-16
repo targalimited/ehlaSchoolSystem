@@ -59,7 +59,7 @@
                                       </span></a>
                         </td>
                         <td>
-                            <span>{{ node.name_en || node.name_zh }}</span>
+                            <span>{{ node['name_' + language] }}</span>
                         </td>
                     </tr>
                 </table>
@@ -70,7 +70,7 @@
                        ng-if="!node.child.length"
                        multiple>
                 <md-optgroup label="Levels">
-                    <md-option ng-value="level.id" ng-repeat="level in vm.levels">{{level.name_en}}</md-option>
+                    <md-option ng-value="level.id" ng-repeat="level in vm.levels">{{level['name_' + language]}}</md-option>
                 </md-optgroup>
             </md-select>
         </li>

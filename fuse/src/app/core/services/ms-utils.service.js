@@ -6,7 +6,7 @@
     .factory('msUtils', msUtils);
 
   /** @ngInject */
-  function msUtils($timeout, $window, breadcrumb) {
+  function msUtils($timeout, $rootScope, $window, breadcrumb) {
     // Private variables
     var mobileDetect = new MobileDetect($window.navigator.userAgent),
       browserInfo = null;
@@ -165,7 +165,7 @@
           return l.id === level;
         });
         if (foundLevel) {
-          result += foundLevel.name_en + ', ';
+          result += foundLevel['name_' + $rootScope.language] + ', ';
         }
         return result;
       }, ''), ', ');

@@ -10,7 +10,7 @@
       <div layout="row" layout-align="start center">
         <div layout="column" layout-align="start start">
           <div class="h2">
-            {{vm.detail.name_en}}
+            {{vm.detail['name_' + language]}}
           </div>
         </div>
       </div>
@@ -207,8 +207,8 @@
                 ng-class="[$index % 2 === 0 ? 'ehla-table-list-even' : 'ehla-table-list-odd']">
               <ul class="ehla-table-list" style="padding: 0">
                 <li style="width: 30%">
-                  <md-checkbox ng-value="v.name_en || v.name_zh" ng-model="vm.node.selectedVideos[v.id]" class="no-margin">
-                    <span>{{v.name_en || v.name_zh}}</span>
+                  <md-checkbox ng-value="v['name_' + language]" ng-model="vm.node.selectedVideos[v.id]" class="no-margin">
+                    <span>{{v['name_' + language]}}</span>
                   </md-checkbox>
                 </li>
                 <li style="width: 10%;">
@@ -280,14 +280,14 @@
                     <div><img class="tutor-pic" ng-src="{{tutor.profile_pic_path}}" style="height: 200px;"></div>
                     <div flex class="tutor-desc">
                       <h2 style="text-align: center">
-                        {{tutor.name_en || tutor.name_zh}}
+                        {{tutor['name_' + language]}}
                       </h2>
                       <h3 ng-if="tutor.title_en || tutor.title_zh">
                         test
-                        {{tutor.title_en || tutor.title_zh}}
+                        {{tutor['title_' + language]}}
                       </h3>
                       <div style="padding: 0 30px">
-                        {{tutor.short_description_en || tutor.short_description_zh}}
+                        {{tutor['short_description_' + language]}}
                       </div>
                     </div>
                   </div>
