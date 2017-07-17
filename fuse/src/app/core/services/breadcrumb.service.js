@@ -6,7 +6,7 @@
     .factory('breadcrumb', breadcrumbService);
 
   /** @ngInject */
-  function breadcrumbService($rootScope, $state, $q, Restangular, $mdDialog, $document) {
+  function breadcrumbService($rootScope, $state, $translate, $q, Restangular, $mdDialog, $document) {
 
     var values = { weaknesses: {} };
 
@@ -20,6 +20,17 @@
       getCurriculumWeaknessList: getCurriculumWeaknessList,
     };
 
+
+    // De-activate loading indicator
+    var stateChangeSuccessEvent = $rootScope.$on('$stateChangeSuccess', function () {
+      values.language = $translate.use();
+      console.log('values.language', values.language);
+    });
+
+    // Cleanup
+    $rootScope.$on('$destroy', function () {
+      stateChangeSuccessEvent();
+    });
 
     $rootScope.$on('logout', function () {
       values = { weaknesses: {} };
@@ -444,7 +455,6 @@
           });
       }
     }
-
 
     function getBreadCrumbs(params) {
       var promises = [];

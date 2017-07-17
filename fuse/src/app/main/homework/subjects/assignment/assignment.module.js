@@ -23,7 +23,7 @@
                     },
                 },
                 ncyBreadcrumb: {
-                    label: '{{breadcrumbs.subject["s_name_" + language]}}'
+                    label: '{{breadcrumbs.subject["s_name_" + breadcrumbs.language]}}'
                 },
                 authenticate: true,
             });

@@ -6,7 +6,7 @@
         .controller('ToolbarController', ToolbarController);
 
     /** @ngInject */
-    function ToolbarController($rootScope, $q, $state, $timeout, $mdSidenav, $translate, $mdToast, msNavigationService, Restangular) {
+    function ToolbarController($rootScope, $q, $state, $timeout, $mdSidenav, $translate, $mdToast, breadcrumb, msNavigationService, Restangular) {
         var vm = this;
 
         // Data
@@ -152,7 +152,7 @@
 
             // Change the language
             $translate.use(lang.code).then(function () {
-                $rootScope.language = lang.code;
+                breadcrumb.values.language = $rootScope.language = lang.code;
                 console.log('success loading language', lang.code);
             })
               .catch(function (err) {
