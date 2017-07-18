@@ -11,7 +11,7 @@
 
         <md-dialog-content>
 
-            <div ng-bind-html="vm.trustSrc(vm.item[0]['preview_en'])"></div>
+            <div ng-bind-html="vm.trustSrc(vm.item[0]['preview_' + language] || vm.item[0].preview)"></div>
 
         </md-dialog-content>
 

@@ -117,8 +117,9 @@
 
     vm.previewItem = function (ev, item) {
       $mdDialog.show({
-        controller: function ($timeout, node, previewItem, $sce, $mdDialog) {
+        controller: function ($scope, $rootScope, $timeout, node, previewItem, $sce, $mdDialog) {
           var vm = this;
+          $scope.language = $rootScope.language;
           vm.node = node;
           vm.item = previewItem;
           vm.videoList = previewItem[0].videoList;
@@ -147,9 +148,9 @@
             var previewItem;
             return Restangular.service('itemApi/get_preview_by_item_id').post({params: {id: item.id}}).then(function (results) {
               previewItem = results.plain().data;
-              var myString = previewItem[0]['preview_' + $rootScope.language];
+              var myString = previewItem[0]['preview_' + $rootScope.language] || previewItem[0].preview;
               var matches = msUtils.getMatches(myString);
-              
+
               return Restangular.service('itemApi/get_by_ids').post({ params: { ids: matches } });
             })
               .then(function (results) {

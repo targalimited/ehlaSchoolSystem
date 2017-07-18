@@ -93,9 +93,9 @@
         type = 'add';
       }
       $mdDialog.show({
-        controller: function SettingFormDialogController($mdDialog, dialogData) {
+        controller: function SettingFormDialogController($scope, $rootScope, $mdDialog, dialogData) {
           var vm = this;
-
+          $scope.language = $rootScope.language;
           // Data
           vm.subject = dialogData;
           vm.type = type;

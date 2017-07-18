@@ -53,8 +53,9 @@
     vm.selectVideo = function (ev, item) {
       console.log(item);
       $mdDialog.show({
-        controller: function (node, videos, $sce, $mdDialog) {
+        controller: function ($scope, $rootScope, node, videos, $sce, $mdDialog) {
           console.log('videos', videos);
+          $scope.language = $rootScope.language;
           var vm = this;
           node.videoList = videos;
           vm.node = node;

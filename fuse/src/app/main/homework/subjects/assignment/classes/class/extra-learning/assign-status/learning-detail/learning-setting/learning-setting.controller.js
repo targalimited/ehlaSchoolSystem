@@ -124,7 +124,7 @@
       .then(function (results) {
         vm.extendedLearning = results.plain().data;
         console.log('vm.extendedLearning', vm.extendedLearning);
-        var matches = msUtils.getMatches(vm.detail['preview_' + $rootScope.language]);
+        var matches = msUtils.getMatches(vm.detail['preview_' + $rootScope.language] || vm.detail.preview);
         return Restangular.service('itemApi/get_by_ids').post({ params: { ids: matches } });
       })
         .then(function (results) {

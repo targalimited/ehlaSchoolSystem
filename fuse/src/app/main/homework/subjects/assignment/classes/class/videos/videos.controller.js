@@ -167,8 +167,9 @@
 
     vm.selectExercise = function (ev, item, isViewOnly) {
       $mdDialog.show({
-        controller: function (node, isViewOnly, $mdDialog) {
+        controller: function ($scope, $rootScope, node, isViewOnly, $mdDialog) {
           var vm = this;
+          $scope.language = $rootScope.language;
           vm.node = node;
           vm.isEditable = !isViewOnly;
           vm.cancel = vm.closeDialog = function () {
@@ -195,8 +196,9 @@
 
     vm.selectVideo = function (ev, item, isViewOnly) {
       $mdDialog.show({
-        controller: function (node, isViewOnly, videos, $sce, $mdDialog) {
+        controller: function ($scope, $rootScope, node, isViewOnly, videos, $sce, $mdDialog) {
           var vm = this;
+          $scope.language = $rootScope.language;
           vm.node = node;
           node.videoList = videos;
           vm.isEditable = !isViewOnly;

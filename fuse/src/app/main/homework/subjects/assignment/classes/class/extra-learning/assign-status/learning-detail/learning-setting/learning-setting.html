@@ -69,7 +69,7 @@
       <md-tab label="Preview" md-on-select="vm.switchSection('preview')">
         <md-tab-body>
           <div id="preview-dialog" class="exercise-detail-form-container md-background-bg md-whiteframe-1dp"
-               ng-bind-html="vm.trustSrc(vm.detail['preview_en'])">
+               ng-bind-html="vm.trustSrc(vm.detail['preview_' + language] || vm.detail.preview)">
           </div>
         </md-tab-body>
       </md-tab>

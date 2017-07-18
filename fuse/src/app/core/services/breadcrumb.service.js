@@ -44,8 +44,9 @@
       }
 
       $mdDialog.show({
-        controller: function (weakness, history, $mdDialog) {
+        controller: function ($scope, $rootScope, weakness, history, $mdDialog) {
           var vm = this;
+          $scope.language = $rootScope.language;
           vm.weakness = weakness;
           vm.history = history;
           vm.cancel = vm.closeDialog = function () {

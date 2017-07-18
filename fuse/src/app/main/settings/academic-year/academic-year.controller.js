@@ -56,9 +56,9 @@
 
     vm.editYear = function (e, year) {
       $mdDialog.show({
-        controller: function SettingFormDialogController($mdDialog, dialogData) {
+        controller: function SettingFormDialogController($scope, $rootScope, $mdDialog, dialogData) {
           var vm = this;
-
+          $scope.language = $rootScope.language;
           // Data
           vm.year = dialogData;
           vm.type = _.isUndefined(dialogData) ? 'add' : 'edit';

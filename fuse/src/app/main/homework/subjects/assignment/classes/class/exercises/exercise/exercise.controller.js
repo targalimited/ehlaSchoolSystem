@@ -33,8 +33,9 @@
 
     vm.assignDifficulty = function (ev, item) {
       $mdDialog.show({
-        controller: function (weakness, isExamination, isExercise, isDisableEdit, $mdDialog) {
+        controller: function ($scope, $rootScope, weakness, isExamination, isExercise, isDisableEdit, $mdDialog) {
           var vm = this;
+          $scope.language = $rootScope.language;
           vm.weakness = weakness;
           vm.difficulties = [{ name: 'Easy', value: 0 }, { name: 'General', value: 1 }, {
             name: 'Advanced',

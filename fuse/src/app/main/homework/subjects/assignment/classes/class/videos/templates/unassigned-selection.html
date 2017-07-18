@@ -79,7 +79,7 @@
                                       </span></a>
             </td>
             <td>
-              <span>{{ node['name_' + language] }}</span>
+              <span>{{ node['name_' + language] || node.name }}</span>
             </td>
           </tr>
         </table>
