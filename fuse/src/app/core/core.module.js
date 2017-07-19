@@ -18,5 +18,6 @@
                 'restangular',
                 'ngMaterialDatePicker',
                 'ui.calendar',
+                'ngMaterialAccordion',
             ]);
 })();
