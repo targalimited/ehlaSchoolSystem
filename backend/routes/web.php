@@ -57,6 +57,10 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('attach_permission','RoleController@attachPermission');
         Route::post('attach_role','RoleController@attachRole');
         Route::post('create_permission','RoleController@postPermission');
+        Route::post('create_role','RoleController@postRole');
+        Route::put('update_role','RoleController@putRole');
+        Route::delete('delete_role','RoleController@deleteRole');
+        Route::get('read_role','RoleController@readRole');
 
 
         Route::post('userApi/logout', 'LoginController@logout');
