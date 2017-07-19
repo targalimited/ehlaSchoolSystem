@@ -37,9 +37,12 @@
             <div>
               <ul class="ehla-table-list ehla-table-list-header">
                 <li style="width: 30%">
-                  <span>School Level</span>
+                  <span>School Level in English</span>
                 </li>
-                <li style="width: 50%;">
+                <li style="width: 30%">
+                  <span>School Level in Chinese</span>
+                </li>
+                <li style="width: 40%;">
                   <span>EHLA Level</span>
                 </li>
                 <li style="width: 20%;">
@@ -61,17 +64,24 @@
           </div>
         </div>
         <script type="text/ng-template" id="nodes_renderer">
-          <ul class="ehla-table-list" ui-tree-handle ng-class="[node._index_ % 2 === 0 ? 'ehla-table-list-even' : 'ehla-table-list-odd']">
+          <ul class="ehla-table-list" ui-tree-handle
+              ng-class="[node._index_ % 2 === 0 ? 'ehla-table-list-even' : 'ehla-table-list-odd']">
             <li style="width: 30%">
               <div ng-style="{'margin-left': 20*(depth()-1) + 'px'}" style="padding: 0 5px;">
                 <md-input-container><input type="text" ng-model="node.name_en"/></md-input-container>
               </div>
             </li>
-            <li style="width: 50%;" class="ehla-question-input">
+            <li style="width: 30%">
+              <div ng-style="{'margin-left': 20*(depth()-1) + 'px'}" style="padding: 0 5px;">
+                <md-input-container><input type="text" ng-model="node.name_zh"/></md-input-container>
+              </div>
+            </li>
+            <li style="width: 40%;" class="ehla-question-input">
               <md-select ng-model="node.ehlaLevels" placeholder="Select Levels" style="margin: 5px 10px 5px 0"
                          multiple>
                 <md-optgroup label="Levels">
-                  <md-option ng-value="level.level" ng-repeat="level in vm.levels">{{level['name_' + language]}}</md-option>
+                  <md-option ng-value="level.level" ng-repeat="level in vm.levels">{{level['name_' + language]}}
+                  </md-option>
                 </md-optgroup>
               </md-select>
             </li>

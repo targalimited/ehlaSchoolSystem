@@ -51,15 +51,9 @@
     vm.detail = breadcrumbs.learningDetail;
     vm.isEditable = true;
     $scope.section = 'unassigned';
-    vm.data = _.cloneDeep(msUtils.exerciseList);
     vm.topicsSearch = '';
     vm.selectedCategories = ['-1'],
-      $scope.expanded = {};
-    _.each(vm.data, function (v) {
-      if (v.child && v.child.length) {
-        $scope.expanded[v.id] = true;
-      }
-    });
+    $scope.expanded = {};
     $scope.toggleCheck = tableTree.toggleCheck(vm, $scope.expanded);
     $scope.isAllChecked = tableTree.isAllChecked(vm, $scope.expanded);
     $scope.toggleCheckAll = tableTree.toggleCheckAll(vm, $scope.expanded);
@@ -119,17 +113,22 @@
 
     vm.init = function () {
       loadingScreen.showLoadingScreen();
-      //itemApi/get_related_items_by_item_id
-      return Restangular.service('itemApi/get_related_items_by_item_id').post({params: {id: breadcrumbs.learningId}})
-      .then(function (results) {
-        vm.extendedLearning = results.plain().data;
-        console.log('vm.extendedLearning', vm.extendedLearning);
-        var matches = msUtils.getMatches(vm.detail['preview_' + $rootScope.language] || vm.detail.preview);
-        return Restangular.service('itemApi/get_by_ids').post({ params: { ids: matches } });
-      })
+      return $q.all([
+        Restangular.service('itemApi/get_related_items_by_item_id').post({ params: { id: breadcrumbs.learningId } }),
+        Restangular.service('readingApi/get_exercises').post({ params: { id: $state.params.refId } }),
+      ])
+        .then(function (results) {
+          vm.extendedLearning = results[0].plain().data;
+          vm.exerciseList = results[1].plain().data;
+          console.log('exerciseList', vm.exerciseList);
+          console.log('vm.extendedLearning', vm.extendedLearning);
+          var matches = msUtils.getMatches(vm.detail['preview_' + $rootScope.language] || vm.detail.preview);
+          return Restangular.service('itemApi/get_by_ids').post({ params: { ids: matches } });
+        })
         .then(function (results) {
           vm.videoList = results.plain().data;
           msUtils.fixPreviewVideo(vm.videoList);
+          $scope.applyFilter();
         })
         .catch(function (err) {
           console.log('err', err);

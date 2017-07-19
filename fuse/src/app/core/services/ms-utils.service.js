@@ -160,6 +160,7 @@
       if (!lvls || !lvls.length) {
         return '';
       }
+      // console.log(breadcrumb.values.levels, lvls);
       return _.trimEnd(_.reduce(lvls.sort(), function (result, level) {
         var foundLevel = _.find(breadcrumb.values.levels, function (l) {
           return l.id === level;

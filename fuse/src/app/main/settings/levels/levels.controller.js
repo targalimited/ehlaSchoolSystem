@@ -26,6 +26,7 @@
             } else {
               vm.data.push({
                 name_en: level.name_en,
+                name_zh: level.name_zh,
                 ehlaLevels: [level.level],
               });
             }

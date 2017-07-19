@@ -12,9 +12,9 @@
     $stateProvider
       .state('app.homework.subjects.assignment.classes.class.extra-learning.assign-status.learning-detail', {
         abstract: true,
-        url: '/:learningId',
+        url: '/:learningId/:refId',
         ncyBreadcrumb: {
-          label: '{{breadcrumbs.learningDetail["name_" + language]}}',
+          label: '{{breadcrumbs.learningDetail["name_" + breadcrumbs.language]}}',
         },
       });
   }

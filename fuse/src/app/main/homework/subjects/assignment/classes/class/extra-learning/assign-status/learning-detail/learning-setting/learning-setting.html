@@ -93,92 +93,47 @@
                 </li>
               </ul>
             </div>
-            <div ui-tree="treeOptionsAssigned"
-                 ui-tree-nodes
-                 data-drag-enabled="false"
-                 ng-model="vm.data">
-              <div ng-repeat="node in vm.data"
-                   ui-tree-node
-                   ng-hide="!node._visible_"
-                   ng-include="'nodes_exercise'">
-              </div>
-            </div>
-            <script type="text/ng-template" id="nodes_exercise">
-              <ul class="ehla-table-list" ui-tree-handle ng-class="[node._index_ % 2 === 0 ? 'ehla-table-list-even' : 'ehla-table-list-odd']">
-                <li style="width: 40%">
-                  <div ng-style="{'margin-left': 20*(depth()-1) + 'px'}" style="padding: 0 5px;">
-                    <table>
-                      <tr>
-                        <td>
-                          <md-checkbox ng-checked="node.checkStatus==='checked'"
-                                       md-indeterminate="node.checkStatus==='partlyChecked'"
-                                       ng-click="toggleCheck(node)">
-                          </md-checkbox>
-                        </td>
-                        <td>
-                          <a class="btn btn-xs" ng-if="node.child && node.child.length > 0"
-                             data-nodrag
-                             ng-click="toggleExpand(node)">
-                                      <span class="icon s20" ng-class="{
-                                          'icon-plus': !expanded[node.id],
-                                          'icon-minus': expanded[node.id]
-                                          }">
-                                      </span>
-                          </a>
-                        </td>
-                        <td>
-                          <a class="btn btn-xs ng-scope" style="visibility: hidden"
-                             ng-if="!node.child || !node.child.length">
-                                            <span class="icon icon-plus">
-                                      </span></a>
-                        </td>
-                        <td>
-                          <span>{{ node.name || node.name }}</span>
-                        </td>
-                      </tr>
-                    </table>
-                  </div>
-                </li>
-                <li style="width: 20%">
-                  <md-input-container class="md-block" flex-gt-sm ng-if="!node.child || node.child.length === 0">
 
-                    <input mdc-datetime-picker="" date="true" time="true" type="text" id="astarttime"
-                           style="max-width: 90%;" title="{{node.start_date | date : 'yyyy-MM-dd HH-mm'}}"
-                           show-todays-date="" min-date="date"
-                           ng-model="node.start_date" class="md-input" required="true"
-                           readonly="readonly">
-                  </md-input-container>
-                </li>
-                <li style="width: 20%">
-                  <md-input-container class="md-block" flex-gt-sm ng-if="!node.child || node.child.length === 0">
 
-                    <input mdc-datetime-picker="" date="true" time="true" type="text" id="aendtime"
-                           style="max-width: 90%;" title="{{node.end_date | date : 'yyyy-MM-dd HH-mm'}}"
-                           show-todays-date="" min-date="date"
-                           ng-model="node.end_date" class="md-input" required="true"
-                           readonly="readonly">
-                  </md-input-container>
-                </li>
-                <li style="width: 20%">
-                  <md-input-container style="width: 100%;" ng-if="!node.child || node.child.length === 0">
-                    <input type="text" ng-model="node.remark" style="width: 90%;">
-                  </md-input-container>
-                </li>
+              <ul class="ehla-table-list" style="padding: 0;" ng-repeat="node in vm.exerciseList" ng-class="[$index % 2 === 0 ? 'ehla-table-list-even' : 'ehla-table-list-odd']">
+                <ul class="ehla-table-list" style="padding: 0">
+                  <li style="width: 40%">
+                    <md-checkbox ng-checked="node.checkStatus==='checked'"
+                                 md-indeterminate="node.checkStatus==='partlyChecked'"
+                                 ng-click="toggleCheck(node)">
+                      {{ node['title_' + language] }}
+                    </md-checkbox>
+                  </li>
+                  <li style="width: 20%">
+                    <md-input-container class="md-block" flex-gt-sm ng-if="!node.child || node.child.length === 0">
+
+                      <input mdc-datetime-picker="" date="true" time="true" type="text" id="astarttime"
+                             style="max-width: 90%;" title="{{node.start_date | date : 'yyyy-MM-dd HH-mm'}}"
+                             show-todays-date="" min-date="date"
+                             ng-model="node.start_date" class="md-input" required="true"
+                             readonly="readonly">
+                    </md-input-container>
+                  </li>
+                  <li style="width: 20%">
+                    <md-input-container class="md-block" flex-gt-sm ng-if="!node.child || node.child.length === 0">
+
+                      <input mdc-datetime-picker="" date="true" time="true" type="text" id="aendtime"
+                             style="max-width: 90%;" title="{{node.end_date | date : 'yyyy-MM-dd HH-mm'}}"
+                             show-todays-date="" min-date="date"
+                             ng-model="node.end_date" class="md-input" required="true"
+                             readonly="readonly">
+                    </md-input-container>
+                  </li>
+                  <li style="width: 20%">
+                    <md-input-container style="width: 100%;" ng-if="!node.child || node.child.length === 0">
+                      <input type="text" ng-model="node.remark" style="width: 90%;">
+                    </md-input-container>
+                  </li>
+                  </ul>
+
               </ul>
-              <div
-                ng-if="node.child && node.child.length > 0 && expanded.hasOwnProperty(node.id)"
-                ng-show="expanded[node.id]"
-                ui-tree-nodes=""
-                ng-model="node.child"
-                style="background: white; "
-              >
-                <div ng-repeat="node in node.child"
-                     ui-tree-node
-                     ng-hide="!node._visible_"
-                     ng-include="'nodes_exercise'"></div>
-              </div>
 
-            </script>
+
           </div>
         </md-tab-body>
       </md-tab>
@@ -203,11 +158,13 @@
                 </li>
               </ul>
             </div>
-            <ul class="ehla-table-list" ng-repeat="v in vm.extendedLearning[0].detail" style="border-bottom: none; padding: 0"
+            <ul class="ehla-table-list" ng-repeat="v in vm.extendedLearning[0].detail"
+                style="border-bottom: none; padding: 0"
                 ng-class="[$index % 2 === 0 ? 'ehla-table-list-even' : 'ehla-table-list-odd']">
               <ul class="ehla-table-list" style="padding: 0">
                 <li style="width: 30%">
-                  <md-checkbox ng-value="v['name_' + language]" ng-model="vm.node.selectedVideos[v.id]" class="no-margin">
+                  <md-checkbox ng-value="v['name_' + language]" ng-model="vm.node.selectedVideos[v.id]"
+                               class="no-margin">
                     <span>{{v['name_' + language]}}</span>
                   </md-checkbox>
                 </li>
@@ -242,9 +199,11 @@
                 <li style="width: 10%">
                   {{v.remark || 'This is remark'}}
                 </li>
-                <li style="width: 10%; text-align: center; position: relative" ng-style="{'background-color': v.isShowTutor ? 'background-color: rgb(2,136,209);' : 'auto'}">
+                <li style="width: 10%; text-align: center; position: relative"
+                    ng-style="{'background-color': v.isShowTutor ? 'background-color: rgb(2,136,209);' : 'auto'}">
                   <div ng-if="v.tutor.name_en || v.tutor.name_zh">
-                    <a style="cursor: pointer" ng-click="vm.showTutor(v)" ng-style="{'color': v.isShowTutor ? 'white' : 'auto'}">
+                    <a style="cursor: pointer" ng-click="vm.showTutor(v)"
+                       ng-style="{'color': v.isShowTutor ? 'white' : 'auto'}">
                       <span>Tutors</span>
                       <!--
                       <md-icon md-font-icon="icon-chevron-up" ng-if="!v.isShowTutor"
@@ -260,8 +219,10 @@
                     -
                   </div>
                 </li>
-                <li style="width: 10%; text-align: center;" ng-style="{'background-color': v.isPreview ? 'background-color: rgb(2,136,209);' : 'auto'}">
-                  <a style="cursor: pointer" ng-click="vm.preview(v)" ng-style="{'color': v.isPreview ? 'white' : 'auto'}">
+                <li style="width: 10%; text-align: center;"
+                    ng-style="{'background-color': v.isPreview ? 'background-color: rgb(2,136,209);' : 'auto'}">
+                  <a style="cursor: pointer" ng-click="vm.preview(v)"
+                     ng-style="{'color': v.isPreview ? 'white' : 'auto'}">
                     <span>Preview</span>
                     <!--
                     <md-icon md-font-icon="icon-chevron-up" ng-if="!v.isPreview"
@@ -286,8 +247,24 @@
                         test
                         {{tutor['title_' + language]}}
                       </h3>
-                      <div style="padding: 0 30px">
+                      <div style="padding: 0 30px" ng-if="!tutor.isMore">
                         {{tutor['short_description_' + language]}}
+                      </div>
+                      <div style="padding: 0 30px" ng-if="tutor.isMore"
+                           ng-bind-html="vm.trustSrc(tutor['description_' + language])">
+                      </div>
+                      <div style="text-align: right; margin:20px">
+                        <a style="cursor: pointer" ng-click="tutor.isMore = !tutor.isMore">
+                          <!-- icon-magnify-plus-->
+                          <md-icon ng-show="!tutor.isMore" style="color: white !important"
+                                   md-font-icon="icon-magnify-plus"
+                                   class="icon s18 md-default-theme md-font material-icons"
+                                   aria-hidden="true"></md-icon>
+                          <md-icon ng-show="tutor.isMore" style="color: white !important"
+                                   md-font-icon="icon-magnify-minus"
+                                   class="icon s18 md-default-theme md-font material-icons"
+                                   aria-hidden="true"></md-icon>
+                        </a>
                       </div>
                     </div>
                   </div>
