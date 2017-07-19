@@ -23,13 +23,30 @@ class RoleController extends Controller
 
     }
 
+    public function putRole(Request $request)
+    {
+        $owner = Role::findOrFail($request->id);
+        $owner->name = $request->name;
+        $owner->display_name = $request->display_name; // optional
+        $owner->description = $request->description; // optional
+        $owner->save();
+
+        return return_success();
+
+    }
+
     public function deleteRole(Request $request)
     {
 
         $role = Role::findOrFail($request->id); // Pull back a given role
-
-        // Regular Delete
+        // Regular Delete, Delete relate role_permission, role_user and role together
         $role->delete(); // This will work no matter what
+    }
+
+    public function readRole(Request $request){
+        $role = Role::all();
+        $result['data'] = $role;
+        return json($result);
     }
 
     public function postPermission(Request $request){
