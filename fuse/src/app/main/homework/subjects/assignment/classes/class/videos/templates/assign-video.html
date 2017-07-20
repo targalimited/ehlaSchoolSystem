@@ -91,8 +91,24 @@
                   test
                   {{tutor['title_' + language]}}
                 </h3>
-                <div style="padding: 0 30px">
+                <div style="padding: 0 30px" ng-if="!tutor.isMore">
                   {{tutor['short_description_' + language]}}
+                </div>
+                <div style="padding: 0 30px" ng-if="tutor.isMore"
+                     ng-bind-html="vm.trustSrc(tutor['description_' + language])">
+                </div>
+                <div style="text-align: right; margin:20px">
+                  <a style="cursor: pointer" ng-click="tutor.isMore = !tutor.isMore">
+                    <!-- icon-magnify-plus-->
+                    <md-icon ng-show="!tutor.isMore" style="color: white !important"
+                             md-font-icon="icon-magnify-plus"
+                             class="icon s18 md-default-theme md-font material-icons"
+                             aria-hidden="true"></md-icon>
+                    <md-icon ng-show="tutor.isMore" style="color: white !important"
+                             md-font-icon="icon-magnify-minus"
+                             class="icon s18 md-default-theme md-font material-icons"
+                             aria-hidden="true"></md-icon>
+                  </a>
                 </div>
 
               </div>

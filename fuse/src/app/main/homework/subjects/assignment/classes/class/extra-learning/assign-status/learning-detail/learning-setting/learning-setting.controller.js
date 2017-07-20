@@ -4,7 +4,7 @@
   angular
     .module('app.homework.subjects.assignment.classes.class.extra-learning.assign-status.learning-detail.learning-setting', [
       'ui.tree',
-      //'app.homework.subjects.assignment.classes.class.extra-learning.learning-setting.learning-settings'
+      'app.homework.subjects.assignment.classes.class.extra-learning.assign-status.learning-detail.learning-setting.consolidated-report-weakness'
     ])
     .config(config);
 
@@ -45,7 +45,7 @@
     .controller('LearningSettingController', LearningSettingController);
 
   /** @ngInject */
-  function LearningSettingController($q, $sce, $rootScope, breadcrumb, breadcrumbs, msUtils, tableTree, loadingScreen, Restangular, $scope, $state, $mdDialog) {
+  function LearningSettingController($timeout, $q, $sce, $rootScope, breadcrumb, breadcrumbs, msUtils, tableTree, loadingScreen, Restangular, $scope, $state, $mdDialog) {
     var vm = this;
     $scope.breadcrumbs = breadcrumbs;
     vm.detail = breadcrumbs.learningDetail;
@@ -53,6 +53,7 @@
     $scope.section = 'unassigned';
     vm.topicsSearch = '';
     vm.selectedCategories = ['-1'],
+      $scope.isConsoidatedReportReady = false;
     $scope.expanded = {};
     $scope.toggleCheck = tableTree.toggleCheck(vm, $scope.expanded);
     $scope.isAllChecked = tableTree.isAllChecked(vm, $scope.expanded);
@@ -67,12 +68,6 @@
 
     vm.back = function () {
       $state.go('app.homework.subjects.assignment.classes.class.extra-learning')
-    }
-
-    vm.switchSection = function () {
-      _.each(vm.videoList, function (v) {
-        v.player && v.player.pause();
-      });
     }
 
     vm.showTutor = function (v) {
@@ -110,12 +105,21 @@
     };
 
     vm.displayLanguage = msUtils.displayLanguage;
-
     vm.init = function () {
+      $scope.exerciseAPI = '';
+      switch(true) {
+        case breadcrumbs.learningType === 'reading':
+          $scope.exerciseAPI = 'readingApi/get_exercises';
+          break;
+        case breadcrumbs.learningType === 'writing':
+          $scope.exerciseAPI = 'writingApi/get_levels';
+          break;
+      }
+
       loadingScreen.showLoadingScreen();
       return $q.all([
         Restangular.service('itemApi/get_related_items_by_item_id').post({ params: { id: breadcrumbs.learningId } }),
-        Restangular.service('readingApi/get_exercises').post({ params: { id: $state.params.refId } }),
+        Restangular.service($scope.exerciseAPI).post({ params: { id: $state.params.refId } }),
       ])
         .then(function (results) {
           vm.extendedLearning = results[0].plain().data;
@@ -129,6 +133,9 @@
           vm.videoList = results.plain().data;
           msUtils.fixPreviewVideo(vm.videoList);
           $scope.applyFilter();
+          $timeout(function () {
+            $($('button.md-accordion-toggle').get(0)).trigger('click');
+          });
         })
         .catch(function (err) {
           console.log('err', err);
@@ -136,6 +143,85 @@
         .finally(function () {
           loadingScreen.hideLoadingScreen();
         })
+    }
+
+
+    vm.switchSection = function (section) {
+      _.each(vm.videoList, function (v) {
+        v.player && v.player.pause();
+      });
+
+      if (section === 'consolidated-report') {
+        $scope.getConsolidatedReport();
+      }
+    }
+
+    vm.showGraph = breadcrumb.showErrorBarChart;
+
+    $scope.getConsolidatedReport = function () {
+      if ($scope.isConsoidatedReportReady) {
+        return;
+      }
+
+      loadingScreen.showLoadingScreen();
+      $q.all([
+        breadcrumb.getCurriculumWeaknessList(breadcrumbs.teacherId, breadcrumbs.subjectId, breadcrumbs.classId),
+        Restangular.one('teachers', breadcrumbs.teacherId).one('subjects', breadcrumbs.subjectId).one('classes', breadcrumbs.classId).one('result', 'consolidatedReport').get(),
+      ])
+        .then(function (results) {
+          var wk = results[0].curriculum;
+          var result = results[1].plain().data;
+          console.log(result);
+
+          var r = breadcrumb.getConsolidatedReport(result);
+
+          if (!r.length) {
+            $scope.loading = false;
+            return;
+          }
+
+          vm.categories = [];
+          (function check(wk) {
+            _.each(wk, function (w) {
+              $scope.expanded[w.id] = true;
+              if (w.child && w.child.length) {
+                check(w.child);
+              } else {
+                var found = _.find(r, function (fw) {
+                  //console.log('parseInt(w.id) === parseInt(fw.weakness_id)', parseInt(w.id), parseInt(fw.weakness_id), parseInt(w.id) === parseInt(fw.weakness_id));
+                  return parseInt(w.id) === parseInt(fw.weakness_id);
+                });
+                if (found) {
+                  vm.categories.push({
+                    id: w.categoryId,
+                    name_en: w.parentNameEN,
+                    name_zh: w.parentNameZH,
+                  });
+                  w.checkStatus = 'checked';
+                  _.assign(w, found);
+                }
+              }
+            })
+          })(wk);
+
+          vm.data = wk;
+          vm.categories = _.uniqBy(vm.categories, 'id');
+          $scope.applyFilter();
+          $scope.isConsoidatedReportReady = true;
+        })
+        .catch(function (err) {
+          console.error('Cannot login', err);
+        })
+        .finally((function () {
+          console.log('$scope.expanded', $scope.expanded);
+          loadingScreen.hideLoadingScreen();
+        }));
+    };
+
+    vm.viewStudents = function (item) {
+      $state.go('app.homework.subjects.assignment.classes.class.extra-learning.assign-status.learning-detail.learning-setting.consolidated-report-weakness.student-report', {
+        weaknessId: item.id
+      });
     }
 
     vm.init();

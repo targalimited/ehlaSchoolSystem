@@ -7,6 +7,31 @@
 
   /** @ngInject */
   function runBlock($rootScope, $timeout, $translate, $state) {
+    $(document).ready(function(){
+      $(window).resize(function() {
+        // revamp: calculate each block width and decide if show the ellipsis block
+
+        var bWidth = $('.breadcrumb-wrapper').outerWidth();
+        var length = $('.breadcrumb > span.br-item').length;
+        console.log('bWidth', bWidth, 'length', length);
+        _.each(_.range(0, 20), function (numOfItems) {
+          var padding = 250;
+          var lower = numOfItems * 170 + padding;
+          var upper = (numOfItems + 1) * 170 + padding;
+          if (bWidth >= lower && bWidth < upper && length > numOfItems + 1) {
+            $('.breadcrumb > span:not(.breadcrumb-home)').hide();
+            $('.breadcrumb .breadcrumb-skip-menu').show();
+            $('.breadcrumb > span.br-item:nth-last-child(-n+' + (numOfItems + 1) + ')').show();
+          }
+        });
+      });
+
+      // on breadcrumb element br-item created or removed, re-render
+      // elList.addEventListener('DOMNodeInserted', updateCount, false);
+      // elList.addEventListener('DOMNodeRemoved', updateCount, false);
+
+    });
+
     try {
       $rootScope.user = JSON.parse(localStorage.getItem('user'));
     } catch (e) {

@@ -1,30 +1,38 @@
-<div class="layout-align-space-between-stretch layout-row breadcrumb" layout="row"
+<div class="breadcrumb-wrapper layout-align-space-between-stretch layout-row" layout="row"
      layout-align="space-between" style="background: none;
      margin-left: 20px;
     min-height: 0;
     max-height: 70px;
     padding-bottom: 0;">
-    <div layout="column" layout-align="center start" class="layout-align-center-start layout-column">
-        <div class="breadcrumb layout-align-start-center layout-row" layout="row" layout-align="start center">
-            <md-icon md-font-icon="icon-home" class="s16 md-default-theme md-font material-icons icon-home"></md-icon>
-            <md-icon md-font-icon="icon-chevron-right"
-                     class="s16 separator md-default-theme md-font material-icons icon-chevron-right"
-                     aria-hidden="true"></md-icon>
-            <!-- <span class="parent ng-binding">
-        ANGULAR MATERIAL THEMING</span></div><div class="title ng-binding">Introduction and Terms</div> -->
-            <span ng-repeat="step in steps | limitTo:(steps.length-1)">
+  <div layout="column" layout-align="center start" class="layout-align-center-start layout-column">
+    <div class="breadcrumb layout-align-start-center layout-row" layout="row" layout-align="start center">
+      <span class="breadcrumb-home">
+      <md-icon md-font-icon="icon-home" class="s16 md-default-theme md-font material-icons icon-home"></md-icon>
+      <md-icon md-font-icon="icon-chevron-right"
+               class="s16 separator md-default-theme md-font material-icons icon-chevron-right"
+               aria-hidden="true"></md-icon>
+      </span>
+      <span class="breadcrumb-skip-menu">
+        <span>...</span>
+        <md-icon md-font-icon="icon-chevron-right"
+                 class="s16 separator md-default-theme md-font material-icons icon-chevron-right"
+                 aria-hidden="true"></md-icon>
+      </span>
+      <!-- <span class="parent ng-binding">
+  ANGULAR MATERIAL THEMING</span></div><div class="title ng-binding">Introduction and Terms</div> -->
+            <span class="br-item" ng-repeat="step in steps | limitTo:(steps.length-1)">
     <md-button ng-href="{{step.ncyBreadcrumbLink}}" class="step-btn-link" ng-disabled="!!step.abstract">
-      {{step.ncyBreadcrumbLabel}}
+      <div>{{step.ncyBreadcrumbLabel}}</div>
     </md-button>
     <span class="seperator">/</span>
   </span>
-            <span ng-repeat="step in steps | limitTo:-1">
+            <span class="br-item" ng-repeat="step in steps | limitTo:-1">
     <a class="step-btn-link md-button md-default-theme md-ink-ripple" ng-disabled="true" class="step-btn-link">
-      <span>{{step.ncyBreadcrumbLabel}}</span>
+      <div>{{step.ncyBreadcrumbLabel}}</div>
     </a>
   </span>
-        </div>
-
-        <!-- <div class="title">{{steps[steps.length - 1].ncyBreadcrumbLabel}}</div> -->
     </div>
+
+    <!-- <div class="title">{{steps[steps.length - 1].ncyBreadcrumbLabel}}</div> -->
+  </div>
 </div>

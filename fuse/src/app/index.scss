@@ -90,11 +90,6 @@ button.md-accordion-toggle.md-button {
   border-bottom: 2px solid white;
 }
 
-button.md-accordion-toggle.md-button.md-active {
-  background-color: indianred;
-  color: white;
-}
-
 .md-accordion-wrapper {
   margin-top: -10000px;
 }
@@ -353,4 +348,13 @@ md-dialog md-dialog-actions.dtp-buttons .md-button {
 
 md-ink-bar {
   height: 5px;
+}
+
+
+.breadcrumb > * > div {
+  /* With less: .text-overflow(); */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 170px;
 }

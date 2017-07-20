@@ -87,10 +87,6 @@
 
       Restangular.service('itemApi/get_by_category').post(params)
         .then(function (results) {
-          var ids = _.map(results.plain().data, 'id');
-          return Restangular.service('itemApi/get_by_ids').post({ params: { ids: ids } });
-        })
-        .then(function (results) {
           vm.data.list = results.plain().data;
         })
         .catch(function (err) {
@@ -176,7 +172,7 @@
     }
 
     vm.viewSettings = function (item, assignStatus) {
-      $state.go('app.homework.subjects.assignment.classes.class.extra-learning.assign-status.learning-detail.learning-setting', { assignStatus: assignStatus, learningId: item.id, refId: item.reading_id })
+      $state.go('app.homework.subjects.assignment.classes.class.extra-learning.assign-status.learning-detail.learning-setting', { assignStatus: assignStatus, learningId: item.id, refId: item.reading_id || item.writing_id })
     }
   }
 })();
