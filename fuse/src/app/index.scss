@@ -80,8 +80,24 @@ md-select-menu.md-default-theme md-content md-optgroup, md-select-menu md-conten
 end theme
 **/
 
+.md-accordion-content {
+  min-height: 48px !important;
+}
 
+button.md-accordion-toggle.md-button {
+  background-color: bisque;
+  color: black;
+  border-bottom: 2px solid white;
+}
 
+button.md-accordion-toggle.md-button.md-active {
+  background-color: indianred;
+  color: white;
+}
+
+.md-accordion-wrapper {
+  margin-top: -10000px;
+}
 
 ul.ehla-table-list md-checkbox.md-indeterminate .md-icon:after {
   display: inline-block !important;
