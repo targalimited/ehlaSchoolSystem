@@ -60,6 +60,33 @@ class RoleController extends Controller
         return return_success();
     }
 
+    public function putPermission(Request $request)
+    {
+        $owner = Permission::findOrFail($request->id);
+        $owner->name = $request->name;
+        $owner->display_name = $request->display_name; // optional
+        $owner->description = $request->description; // optional
+        $owner->save();
+
+        return return_success();
+
+    }
+
+    public function deletePermission(Request $request)
+    {
+
+        $role = Permission::findOrFail($request->id); // Pull back a given role
+        // Regular Delete, Delete relate role_permission,  permission together
+        $role->delete(); // This will work no matter what
+        return return_success();
+    }
+
+    public function readPermission(Request $request){
+        $role = Permission::all();
+        $result['data'] = $role;
+        return json($result);
+    }
+
     public function attachPermission(Request $request){
         $role_id = $request->role_id;
         $permission_id = $request->permission_id;
