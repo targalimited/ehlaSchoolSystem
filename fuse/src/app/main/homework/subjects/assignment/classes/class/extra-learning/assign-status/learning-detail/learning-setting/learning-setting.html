@@ -100,8 +100,8 @@
                 <li style="width: 40%">
                   <md-checkbox ng-checked="node.checkStatus==='checked'"
                                md-indeterminate="node.checkStatus==='partlyChecked'"
-                               ng-click="toggleCheck(node)"
-                               ng-bind-html="vm.trustSrc(node['title_img_' + language] || node['title_txt_' + language] || node['title_' + language])">
+                               ng-click="toggleCheck(node)">
+                    <span ng-bind-html="vm.trustSrc(node['title_img_' + language] || node['title_txt_' + language] || node['title_' + language])"></span>
                   </md-checkbox>
                 </li>
                 <li style="width: 20%">

@@ -6,31 +6,52 @@
     .run(runBlock);
 
   /** @ngInject */
-  function runBlock($rootScope, $timeout, $translate, $state) {
-    $(document).ready(function(){
-      $(window).resize(function() {
-        // revamp: calculate each block width and decide if show the ellipsis block
+  function runBlock($rootScope, $timeout, $interval, $translate, $state) {
 
-        var bWidth = $('.breadcrumb-wrapper').outerWidth();
-        var length = $('.breadcrumb > span.br-item').length;
-        console.log('bWidth', bWidth, 'length', length);
-        _.each(_.range(0, 20), function (numOfItems) {
-          var padding = 250;
-          var lower = numOfItems * 170 + padding;
-          var upper = (numOfItems + 1) * 170 + padding;
-          if (bWidth >= lower && bWidth < upper && length > numOfItems + 1) {
-            $('.breadcrumb > span:not(.breadcrumb-home)').hide();
-            $('.breadcrumb .breadcrumb-skip-menu').show();
-            $('.breadcrumb > span.br-item:nth-last-child(-n+' + (numOfItems + 1) + ')').show();
-          }
+    $(document).ready(function(){
+      $interval(adjustBreadcrumbWidth, 300);
+    });
+    function adjustBreadcrumbWidth() {
+      // revamp: calculate each block width and decide if show the ellipsis block
+      var bWidth = $('.breadcrumb-wrapper').outerWidth();
+      var homeWidth = $('.breadcrumb-home').outerWidth(true);
+      var menu = $('.breadcrumb-skip-menu');
+      var menuWidth = menu.outerWidth(true);
+      bWidth -= homeWidth + menuWidth;
+      // var length = $('.breadcrumb > span.br-item').length;
+      // console.log('bWidth', bWidth);
+      var elements = [];
+      var skippedMenuItem = [];
+      $('.breadcrumb > span.br-item').each(function () {
+        elements.push({
+          element: $(this),
+          width: $(this).outerWidth(true)
         });
+      })
+      var isShowSkipMenu = false;
+      _.each(_.reverse(elements), function (e) {
+        bWidth -= e.width;
+        // console.log('m width', bWidth);
+        if (bWidth <= 0) {
+          e.element.is(':visible') && e.element.hide();
+          skippedMenuItem.push({
+            href: e.element.find('a').attr('href'),
+            text: e.element.find('a div').text()
+          });
+          isShowSkipMenu = true;
+        } else {
+          !e.element.is(':visible') && e.element.show();
+        }
       });
 
-      // on breadcrumb element br-item created or removed, re-render
-      // elList.addEventListener('DOMNodeInserted', updateCount, false);
-      // elList.addEventListener('DOMNodeRemoved', updateCount, false);
+      if (isShowSkipMenu) {
+        !menu.is(':visible') && menu.show();
+      } else {
+        menu.is(':visible') && menu.hide();
+      }
 
-    });
+      $rootScope.$broadcast('$breadcrumbMenuResize', skippedMenuItem);
+    }
 
     try {
       $rootScope.user = JSON.parse(localStorage.getItem('user'));

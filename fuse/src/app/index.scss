@@ -351,7 +351,7 @@ md-ink-bar {
 }
 
 
-.breadcrumb > * > div {
+.breadcrumb span.br-item a div{
   /* With less: .text-overflow(); */
   white-space: nowrap;
   overflow: hidden;

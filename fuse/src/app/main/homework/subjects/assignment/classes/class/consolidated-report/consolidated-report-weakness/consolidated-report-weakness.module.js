@@ -13,7 +13,7 @@
         abstract: true,
         url: '/weaknesses/:weaknessId',
         ncyBreadcrumb: {
-          label: '{{breadcrumbs.weakness.truncatedName}}',
+          label: '{{breadcrumbs.weakness["name_" + breadcrumbs.language]}}',
         },
       });
   }

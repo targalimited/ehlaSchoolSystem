@@ -4,22 +4,42 @@
     min-height: 0;
     max-height: 70px;
     padding-bottom: 0;">
-  <div layout="column" layout-align="center start" class="layout-align-center-start layout-column">
-    <div class="breadcrumb layout-align-start-center layout-row" layout="row" layout-align="start center">
+    <div layout="column" layout-align="center start" class="layout-align-center-start layout-column">
+        <div class="breadcrumb layout-align-start-center layout-row" layout="row" layout-align="start center">
       <span class="breadcrumb-home">
+          <md-button aria-label="Open menu with custom trigger" class="md-icon-button">
       <md-icon md-font-icon="icon-home" class="s16 md-default-theme md-font material-icons icon-home"></md-icon>
+              </md-button>
       <md-icon md-font-icon="icon-chevron-right"
                class="s16 separator md-default-theme md-font material-icons icon-chevron-right"
                aria-hidden="true"></md-icon>
       </span>
-      <span class="breadcrumb-skip-menu">
-        <span>...</span>
+            <span class="breadcrumb-skip-menu">
+        <span>
+            <md-menu>
+          <md-button aria-label="Open menu with custom trigger" class="md-icon-button" ng-click="$mdOpenMenu()">
+        <md-icon md-font-icon="icon-dots-horizontal"></md-icon>
+      </md-button>
+        <md-menu-content width="4">
+            <md-menu-item ng-repeat-start="item in skippedMenuItem">
+          <md-button ng-href="{{item.href}}" ng-if="item.href">
+            {{item.text}}
+          </md-button>
+                <md-button ng-if="!item.href">
+            {{item.text}}
+          </md-button>
+        </md-menu-item>
+                <md-menu-divider ng-if="!$last" ng-repeat-end></md-menu-divider>
+      </md-menu-content>
+            </md-menu>
+
+        </span>
         <md-icon md-font-icon="icon-chevron-right"
                  class="s16 separator md-default-theme md-font material-icons icon-chevron-right"
                  aria-hidden="true"></md-icon>
       </span>
-      <!-- <span class="parent ng-binding">
-  ANGULAR MATERIAL THEMING</span></div><div class="title ng-binding">Introduction and Terms</div> -->
+            <!-- <span class="parent ng-binding">
+        ANGULAR MATERIAL THEMING</span></div><div class="title ng-binding">Introduction and Terms</div> -->
             <span class="br-item" ng-repeat="step in steps | limitTo:(steps.length-1)">
     <md-button ng-href="{{step.ncyBreadcrumbLink}}" class="step-btn-link" ng-disabled="!!step.abstract">
       <div>{{step.ncyBreadcrumbLabel}}</div>
@@ -31,8 +51,8 @@
       <div>{{step.ncyBreadcrumbLabel}}</div>
     </a>
   </span>
-    </div>
+        </div>
 
-    <!-- <div class="title">{{steps[steps.length - 1].ncyBreadcrumbLabel}}</div> -->
-  </div>
+        <!-- <div class="title">{{steps[steps.length - 1].ncyBreadcrumbLabel}}</div> -->
+    </div>
 </div>
