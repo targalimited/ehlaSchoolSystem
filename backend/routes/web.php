@@ -45,6 +45,9 @@ Route::group(['prefix' => 'v1'], function () {
             dump(Auth::user());
         });
 
+        //reading controller
+        Route::post('start_reading_assignment','ReadingController@startReadingAssignment');
+
         //User controller
         Route::post('account_teacher','UserController@postTeacher');
         Route::post('account_student','UserController@postStudent');
