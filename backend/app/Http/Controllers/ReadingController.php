@@ -8,9 +8,17 @@ use Illuminate\Http\Request;
 class ReadingController extends Controller
 {
     //
+
+    public function postReadingAssignment(Request $request){
+
+    }
+
     public function startReadingAssignment(Request $request)
     {
 
+
+
+        dd('die');
 
         $input['assignment_id'] = 1;
         $input["teacher_class_subject_id"] = "1";

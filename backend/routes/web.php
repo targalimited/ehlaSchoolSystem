@@ -46,6 +46,7 @@ Route::group(['prefix' => 'v1'], function () {
         });
 
         //reading controller
+        Route::post('create_reading_assignment','ReadingController@postReadingAssignment');
         Route::post('start_reading_assignment','ReadingController@startReadingAssignment');
 
         //User controller
