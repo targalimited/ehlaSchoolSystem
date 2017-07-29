@@ -46,8 +46,10 @@ Route::group(['prefix' => 'v1'], function () {
         });
 
         //reading controller
-        Route::post('create_reading_assignment','ReadingController@postReadingAssignment');
+        Route::post('create_reading_exercise','ReadingController@postReadingExercise');
         Route::post('start_reading_assignment','ReadingController@startReadingAssignment');
+        Route::get('get_reading_exercise','ReadingController@getReadingExercise');
+        Route::delete('delete_reading_exercise','ReadingController@deleteReadingExercise');
 
         //User controller
         Route::post('account_teacher','UserController@postTeacher');
