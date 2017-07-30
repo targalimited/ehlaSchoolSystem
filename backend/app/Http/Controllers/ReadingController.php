@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ReadingExercise;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
@@ -9,8 +10,21 @@ class ReadingController extends Controller
 {
     //
 
-    public function postReadingAssignment(Request $request){
+    public function postReadingExercise(Request $request){
+        ReadingExercise::where('teacher_class_subject_id',$request->teacher_class_subject_id)->delete();
+        ReadingExercise::insert($request->exercises);
+        return return_success();
+    }
 
+    public function getReadingExercise(Request $request){
+        $readingExercise = ReadingExercise::where('teacher_class_subject_id',$request->teacher_class_subject_id)->get();
+        $result['data'] = $readingExercise;
+        return json($result);
+    }
+
+    public function deleteReadingExercise(Request $request){
+        ReadingExercise::where('exercise_id',$request->exercise_id)->where('teacher_class_subject_id',$request->teacher_class_subject_id)->delete();
+        return return_success();
     }
 
     public function startReadingAssignment(Request $request)
