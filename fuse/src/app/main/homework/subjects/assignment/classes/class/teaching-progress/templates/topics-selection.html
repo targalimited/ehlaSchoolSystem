@@ -52,7 +52,7 @@
 </div>
 </div>
 <script type="text/ng-template" id="nodes_renderer">
-    <ul class="ehla-table-list" ui-tree-handle ng-class="[node._index_ % 2 === 0 ? 'ehla-table-list-even' : 'ehla-table-list-odd']">
+    <ul class="ehla-table-list" ng-class="[node._index_ % 2 === 0 ? 'ehla-table-list-even' : 'ehla-table-list-odd']">
         <li style="width: 70%">
             <div ng-style="{'margin-left': 20*(depth()-1) + 'px'}" style="padding: 0 5px;"
                  ng-init="expanded[node.id] = true">

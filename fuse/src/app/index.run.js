@@ -9,7 +9,7 @@
   function runBlock($rootScope, $timeout, $interval, $translate, $state) {
 
     $(document).ready(function(){
-      $interval(adjustBreadcrumbWidth, 300);
+      $interval(adjustBreadcrumbWidth, 1000);
     });
     function adjustBreadcrumbWidth() {
       // revamp: calculate each block width and decide if show the ellipsis block
@@ -34,8 +34,9 @@
         // console.log('m width', bWidth);
         if (bWidth <= 0) {
           e.element.is(':visible') && e.element.hide();
+          var anchor = e.element.find('a');
           skippedMenuItem.push({
-            href: e.element.find('a').attr('href'),
+            href: !anchor.attr('disabled') ? anchor.attr('href') : '',
             text: e.element.find('a div').text()
           });
           isShowSkipMenu = true;

@@ -22,10 +22,10 @@
       </md-button>
         <md-menu-content width="4">
             <md-menu-item ng-repeat-start="item in skippedMenuItem">
-          <md-button ng-href="{{item.href}}" ng-if="item.href">
+          <md-button ng-href="{{item.href}}" ng-if="item.href !== ''">
             {{item.text}}
           </md-button>
-                <md-button ng-if="!item.href">
+                <md-button ng-if="item.href === ''">
             {{item.text}}
           </md-button>
         </md-menu-item>
