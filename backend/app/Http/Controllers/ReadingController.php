@@ -77,6 +77,8 @@ class ReadingController extends Controller
 
         }
 
+        return return_success();
+
 
     }
 }
