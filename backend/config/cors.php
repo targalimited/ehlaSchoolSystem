@@ -11,8 +11,8 @@ return [
      |
      */
     'supportsCredentials' => true,
-  // 'allowedOrigins' => ['http://localhost:3000','http://schoolsystem.com','http://www.schoolsystem.com'],
-    'allowedOrigins' => ['*'],
+   'allowedOrigins' => ['http://localhost:3000','http://schoolsystem.com','http://www.schoolsystem.com'],
+   // 'allowedOrigins' => ['*'],
     'allowedHeaders' => ['*'],
     'allowedMethods' => ['*'],
     'exposedHeaders' => [],

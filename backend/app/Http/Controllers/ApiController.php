@@ -42,7 +42,7 @@ class ApiController extends Controller
 
 
         try {
-            $result = $client->request($request->method(), 'http://ehla-usermodel-dev.aubbragqid.ap-southeast-1.elasticbeanstalk.com/' . $uri,
+            $result = $client->request($request->method(), 'https://usermodel-dev.ehlacademy.org/' . $uri,
                 [
                     'auth' => ['ehl_api', '27150900'],
                     'headers' => [
