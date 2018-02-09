@@ -267,7 +267,7 @@ class AssignmentController extends Controller
                 else
                     $token = '20896.ee30caefa8fc37a02d8993a93daa3a5cf9dfa31f';
 
-                $result = $client->request('POST', 'http://ehla-usermodel-dev.aubbragqid.ap-southeast-1.elasticbeanstalk.com/v1/assignmentApi/get_preset_assignment?access-token=' . $token . '&encode=1',
+                $result = $client->request('POST', env('USERMODEL_URL').'/v1/assignmentApi/get_preset_assignment?access-token=' . $token . '&encode=1',
                     [
                         'auth' => ['ehl_api', '27150900'],
                         'headers' => [

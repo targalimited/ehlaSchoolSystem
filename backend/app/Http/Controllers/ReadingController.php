@@ -55,7 +55,7 @@ class ReadingController extends Controller
             else
                 $token = '20896.fa9c61f9e8cc64f7c94022874a958e0e2e978296';
 
-            $result = $client->request('POST', 'http://ehla-usermodel-dev.aubbragqid.ap-southeast-1.elasticbeanstalk.com/v1/assignmentApi/start_reading_assignment?access-token=' . $token . '&encode=1',
+            $result = $client->request('POST', env('USERMODEL_URL').'/v1/assignmentApi/start_reading_assignment?access-token=' . $token . '&encode=1',
                 [
                     'auth' => ['ehl_api', '27150900'],
                     'headers' => [

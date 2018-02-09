@@ -170,7 +170,7 @@ class CurriculumSettingController extends Controller
                 $token = '2337.9beb2db40bd24394318ad5f240e5ede4559a915b';
 
 
-            $result = $client->request('POST', 'http://ehla-usermodel-dev.aubbragqid.ap-southeast-1.elasticbeanstalk.com/v1/weaknessApi/list_all?access-token=' . $token . '&encode=1',
+            $result = $client->request('POST', env('USERMODEL_URL').'v1/weaknessApi/list_all?access-token=' . $token . '&encode=1',
                 [
                     'auth' => ['ehl_api', '27150900'],
                     'headers' => [

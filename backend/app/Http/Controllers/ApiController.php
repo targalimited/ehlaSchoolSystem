@@ -42,7 +42,7 @@ class ApiController extends Controller
 
 
         try {
-            $result = $client->request($request->method(), 'https://usermodel-dev.ehlacademy.org/' . $uri,
+            $result = $client->request($request->method(), env('USERMODEL_URL') . $uri,
                 [
                     'auth' => ['ehl_api', '27150900'],
                     'headers' => [

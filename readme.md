@@ -5,3 +5,7 @@ when you want to deploy, follow the commands:
 2. git merge dev
 3. git push
 4. git checkout dev
+
+Development:
+1. `cd fuse`
+2. `gulp serve`
