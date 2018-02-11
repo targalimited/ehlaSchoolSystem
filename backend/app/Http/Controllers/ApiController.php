@@ -31,9 +31,7 @@ class ApiController extends Controller
             $input['source'] = 'school_portal';
         }
 
-//        dd($request->getQueryString());
-
-        if ($_SERVER['QUERY_STRING'])
+        if (isset($_SERVER['QUERY_STRING']))
             $uri = $request->path() . '?' . $_SERVER['QUERY_STRING'] . '&encode=1&access-token=' . $access_token;
         else
             $uri = $request->path() . '?encode=1&access-token=' . $access_token;

@@ -7,5 +7,7 @@ when you want to deploy, follow the commands:
 4. git checkout dev
 
 Development:
-1. `cd fuse`
-2. `gulp serve`
+1. `cd backend`
+2. `php artisan serve`
+3. `cd fuse`
+4. `gulp serve`

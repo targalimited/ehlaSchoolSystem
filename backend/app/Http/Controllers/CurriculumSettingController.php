@@ -187,9 +187,12 @@ class CurriculumSettingController extends Controller
                 ]
             );
 
+//            dd($result);
+
             return \GuzzleHttp\json_decode($result->getBody()->getContents(), true);
         } catch (\Exception $e) {
             // There was another exception.
+//          dd($e);
             return response()->json(\GuzzleHttp\json_decode($e->getResponse()->getBody()->getContents(), true), 200);
 
         }
