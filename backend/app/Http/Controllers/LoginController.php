@@ -14,6 +14,9 @@ class LoginController extends Controller
     {
         $access_token = $request->headers->get('access-token');
 
+        if(!isset($_SERVER['QUERY_STRING']))
+          $_SERVER['QUERY_STRING'] = '';
+
         $uri = $request->path() . '?' . $_SERVER['QUERY_STRING'] . '&encode=1&access-token=' . $access_token;
 
         $input = '';

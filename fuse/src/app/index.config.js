@@ -39,7 +39,7 @@
         $translateProvider.useSanitizeValueStrategy('sanitize');
 
 
-        RestangularProvider.setBaseUrl('http://api.schoolsystem.com/v1/');
+        RestangularProvider.setBaseUrl('http://127.0.0.1:8000/v1/');
         $httpProvider.interceptors.push('sessionInjector');
         $mdThemingProvider.theme("success-toast");
         $mdThemingProvider.theme("error-toast");
