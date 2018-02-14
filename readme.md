@@ -6,7 +6,7 @@ when you want to deploy, follow the commands:
 3. git push
 4. git checkout dev
 
-Development:
+run in development:
 1. `cd backend`
 2. `php artisan serve`
 3. `cd fuse`
