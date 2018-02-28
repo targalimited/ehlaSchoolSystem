@@ -1,0 +1,12 @@
+version: '3'
+services:
+  school_system:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: ehla/school
+    container_name: school
+    volumes:
+      - .:/opt/school_system
+    environment:
+        NODE_ENV: development
