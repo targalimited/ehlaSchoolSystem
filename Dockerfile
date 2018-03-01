@@ -14,11 +14,11 @@ ENV NODE_VERSION 7.6.0
 ENV NVM_DIR /home/node/.nvm
 
 #install the specified node version and set it as the default one, install the global npm packages
-RUN . ~/.nvm/nvm.sh && nvm install $NODE_VERSION && nvm alias default $NODE_VERSION
+RUN . ~/.nvm/nvm.sh && nvm install $NODE_VERSION && nvm alias default $NODE_VERSION && \
+    npm i -g --silent bower && \
+    npm i -g --silent gulp && \
+    cd fuse && bower i --allow-root && npm i && gulp clean && gulp build
 
-RUN npm i -g --silent bower
-RUN npm i -g --silent gulp
-RUN cd fuse && bower i --allow-root && npm i && gulp clean && gulp build
 RUN cd backend && composer install && cp .env.development .env
 COPY /opt/school_system/backend /var/www/site
 EXPOSE 80 13310
