@@ -1,10 +1,10 @@
-FROM spiralout/docker-apache-php-composer:latest
+FROM dynaum/php-apache-composer:latest
 MAINTAINER Kyo
 RUN mkdir -p /opt/school_system
 WORKDIR /opt/school_system
 COPY . .
 
-RUN apt-get upgrade && apt-add-repository ppa:ondrej/php && apt-get install php7.0 && apt-get install -y git
+RUN apt-get install -y git
 
 RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
 
