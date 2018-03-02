@@ -7,10 +7,6 @@ services:
     image: ehla/school
     container_name: school
     volumes:
-      - .:/opt/school_system
-      - /opt/school_system/backend/vendor
-      - /opt/school_system/backend/public/school
-      - /opt/school_system/backend/.env
       - /var/www/site
     environment:
         NODE_ENV: development

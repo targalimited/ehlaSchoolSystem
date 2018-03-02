@@ -4,7 +4,7 @@ RUN mkdir -p /opt/school_system
 WORKDIR /opt/school_system
 COPY . .
 
-RUN apt-get install -y git
+RUN apt-get update && apt-get install -y git
 
 RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
 
@@ -20,7 +20,7 @@ RUN . ~/.nvm/nvm.sh && nvm install $NODE_VERSION && nvm alias default $NODE_VERS
     npm i -g --silent gulp && \
     cd fuse && bower i --allow-root && npm i && gulp clean && gulp build
 
-RUN cd backend && composer install && cp .env.development .env
+RUN cd backend && composer self-update && composer install && cp .env.development .env
 COPY /opt/school_system/backend /var/www/site
 EXPOSE 80 13310
 CMD echo "Server Started"
