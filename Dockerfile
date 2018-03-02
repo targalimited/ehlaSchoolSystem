@@ -4,7 +4,7 @@ RUN mkdir -p /opt/school_system
 WORKDIR /opt/school_system
 COPY . .
 
-RUN apt-get install -y git
+RUN apt-get upgrade && apt-get install php7.0 && apt-get install -y git
 
 RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
 
