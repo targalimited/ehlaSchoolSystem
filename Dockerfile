@@ -23,4 +23,4 @@ RUN . ~/.nvm/nvm.sh && nvm install $NODE_VERSION && nvm alias default $NODE_VERS
 RUN cd backend && composer install && cp .env.development .env
 COPY /opt/school_system/backend /var/www/site
 EXPOSE 80 13310
-CMD echo "Server Started"
+CMD echo "Server Started DOCKER"
