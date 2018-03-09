@@ -11,10 +11,12 @@ when you want to deploy, follow the commands:
 
 run in development:
 
-1. `modify the .env file for your own local development`
-2. `run composer install`
-3. `cd backend`
-4. `php artisan serve`
+First time:
+run 'npm init'
+modify .env file
+
+1. `cd backend`
+2. `npm start`
 
 1. `cd fuse`
 2. `npm install`
