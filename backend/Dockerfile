@@ -1,4 +1,4 @@
-FROM dynaum/php-apache-composer:latest
+FROM composer/composer:master-php5-alpine
 MAINTAINER Kyo
 RUN mkdir -p /opt/school_system
 WORKDIR /opt/school_system
@@ -22,5 +22,5 @@ RUN . ~/.nvm/nvm.sh && nvm install $NODE_VERSION && nvm alias default $NODE_VERS
 
 RUN cd backend && composer install && cp .env.development .env
 COPY /opt/school_system/backend /var/www/site
-EXPOSE 80 13310
+EXPOSE 8080
 CMD echo "Server Started DOCKER"
