@@ -1,0 +1,17 @@
+version: '3'
+services:
+  school_system:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: ehla/school_backend
+    container_name: school_backend
+    volumes:
+      - .:/var/www/html
+      - /opt/school_system/backend/vendor
+    environment:
+        NODE_ENV: development
+    tty: true
+    ports:
+      - "8000:80"
+

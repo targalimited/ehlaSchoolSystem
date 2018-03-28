@@ -1,10 +1,6 @@
-FROM composer/composer:master-php5-alpine
+FROM petecoop/laravel:onbuild
 MAINTAINER Kyo
-RUN mkdir -p /opt/school_system/backend
-WORKDIR /opt/school_system/backend
-COPY . .
 
-RUN cd backend && composer install && cp .env.development .env
+RUN cp .env.development .env
 
-EXPOSE 8080
-CMD php artisan serve
+EXPOSE 80
