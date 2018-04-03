@@ -1,17 +1,30 @@
 version: '3'
 services:
-  school_system:
-    build: 
+  school_system_backend:
+    build:
       context: .
       dockerfile: Dockerfile
-    image: ehla/school_backend
     container_name: school_backend
     volumes:
       - .:/var/www/html
-      - /opt/school_system/backend/vendor
     environment:
         NODE_ENV: development
     tty: true
     ports:
       - "8000:80"
-
+    links:
+      - "mysql:database"
+  mysql:
+    container_name: school_mysql
+    restart: always
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=school_1
+      - MYSQL_USER=homestead
+      - MYSQL_PASSWORD=secret
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
