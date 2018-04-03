@@ -4,6 +4,6 @@ MAINTAINER Kyo
 RUN mkdir -p /var/www/html
 WORKDIR /var/www/html
 COPY . .
-RUN cp .env.development .env
+RUN cp .env.local .env
 
 EXPOSE 80
