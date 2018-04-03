@@ -1,0 +1,17 @@
+version: '3'
+services:
+  school_system:
+    tty: true
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: ehla/school_frontend
+    container_name: school_frontend
+    volumes:
+      - .:/opt/school_system/frontend
+      - /opt/school_system/frontend/.tmp/serve
+    environment:
+        NODE_ENV: development
+    ports:
+      - "3000:3000"
+

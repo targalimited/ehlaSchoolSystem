@@ -32,23 +32,23 @@ class UserController extends Controller
             $this->class[$v->id] = strtolower($v->c_name);
         }
 
-        foreach (User::all() as $v) {
-            $this->student[$v->id] = $v->email;
-
-        }
-        foreach (User::where('user_group', 3)->get() as $v) {
-            $this->teacher[$v->id]['username'] = $v->username;
-            $this->teacher[$v->id]['email'] = $v->email;
-        }
-
-        foreach (TeacherClassSubject::all() as $k => $v) {
-            $this->teacher_subject_class[$v->id]['multiple'] = $v->multiple_teacher;
-            $this->teacher_subject_class[$v->id]['email'] = $this->teacher[$v->teacher_id]['email'];
-            $this->teacher_subject_class[$v->id]['class_id'] = $v->class_id;
-            $this->teacher_subject_class[$v->id]['subject_id'] = $v->subject_id;
-            $this->teacher_subject_class[$v->id]['class_name'] = $this->class[$v->class_id];
-            $this->teacher_subject_class[$v->id]['subject_name'] = $this->subject[$v->subject_id];
-        }
+//        foreach (User::all() as $v) {
+//            $this->student[$v->id] = $v->email;
+//
+//        }
+//        foreach (User::where('user_group', 3)->get() as $v) {
+//            $this->teacher[$v->id]['username'] = $v->username;
+//            $this->teacher[$v->id]['email'] = $v->email;
+//        }
+//
+//        foreach (TeacherClassSubject::all() as $k => $v) {
+//            $this->teacher_subject_class[$v->id]['multiple'] = $v->multiple_teacher;
+//            $this->teacher_subject_class[$v->id]['email'] = $this->teacher[$v->teacher_id]['email'];
+//            $this->teacher_subject_class[$v->id]['class_id'] = $v->class_id;
+//            $this->teacher_subject_class[$v->id]['subject_id'] = $v->subject_id;
+//            $this->teacher_subject_class[$v->id]['class_name'] = $this->class[$v->class_id];
+//            $this->teacher_subject_class[$v->id]['subject_name'] = $this->subject[$v->subject_id];
+//        }
 
 
     }
@@ -112,7 +112,10 @@ class UserController extends Controller
                     break;
                 }
 
+                //result[0]->sheet1, result[1]->sheet2
                 $results = $reader->get()->toArray();
+
+dd($first_sheet_title);
 
                 if ($first_sheet_title == 'teacher_list') {
                     $teacher_sheet = $results[0];
@@ -190,21 +193,21 @@ class UserController extends Controller
                         $new_teacher_set[$k]['comment'] = $v['email'] . "," . $v['class'] . "," . $v['subject'];
                     }
 
-                    TeacherClassSubject::truncate();
-                    TeacherClassSubject::insert($new_teacher_set);
+//                    TeacherClassSubject::truncate();
+//                    TeacherClassSubject::insert($new_teacher_set);
 
                     //TODO update duplicate class and subject filed
 
 
-                    $query = DB::select('SELECT class_id, subject_id FROM school_teacher_class_subject GROUP BY class_id, subject_id HAVING count(*) > 1');
-
-                    foreach ($query as $k => $v) {
-                        $tea = TeacherClassSubject::where('class_id', $v->class_id)->where('subject_id', $v->subject_id)->get();
-                        foreach ($tea as $v1) {
-                            $v1->multiple_teacher = 1;
-                            $v1->save();
-                        }
-                    }
+//                    $query = DB::select('SELECT class_id, subject_id FROM school_teacher_class_subject GROUP BY class_id, subject_id HAVING count(*) > 1');
+//
+//                    foreach ($query as $k => $v) {
+//                        $tea = TeacherClassSubject::where('class_id', $v->class_id)->where('subject_id', $v->subject_id)->get();
+//                        foreach ($tea as $v1) {
+//                            $v1->multiple_teacher = 1;
+//                            $v1->save();
+//                        }
+//                    }
 
 
                 }
