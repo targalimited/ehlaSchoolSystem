@@ -4,8 +4,6 @@ MAINTAINER Kyo
 RUN mkdir -p /var/www/html
 WORKDIR /var/www/html
 COPY . .
-COPY .env.development .env
+COPY .env.local .env
 
 EXPOSE 80
-
-CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
