@@ -5,6 +5,6 @@ RUN mkdir -p /var/www/html
 WORKDIR /var/www/html
 COPY . .
 COPY .env.development .env
-RUN composer install
+RUN composer self-update && composer install
 
 EXPOSE 80
