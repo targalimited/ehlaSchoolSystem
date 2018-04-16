@@ -5,7 +5,6 @@ RUN mkdir -p /var/www/html
 WORKDIR /var/www/html
 COPY . .
 COPY .env.development .env
+RUN composer install
 
 EXPOSE 80
-
-CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
