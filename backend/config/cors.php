@@ -11,7 +11,7 @@ return [
      |
      */
     'supportsCredentials' => true,
-   'allowedOrigins' => ['http://localhost:3000','http://schoolsystem.com','http://www.schoolsystem.com'],
+   'allowedOrigins' => ['http://school-system.ap-southeast-1.elasticbeanstalk.com','http://localhost:3000','http://schoolsystem.com','http://www.schoolsystem.com'],
    // 'allowedOrigins' => ['*'],
     'allowedHeaders' => ['*'],
     'allowedMethods' => ['*'],
