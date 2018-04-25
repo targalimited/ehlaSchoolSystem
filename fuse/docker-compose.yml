@@ -4,7 +4,7 @@ services:
     tty: true
     build: 
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile_local
     container_name: school_frontend
     volumes:
       - ./src:/opt/school_system/frontend/src

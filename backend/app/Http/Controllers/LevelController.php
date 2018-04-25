@@ -17,8 +17,6 @@ class LevelController extends Controller
 
     public function postLevel(Request $request){
 
-
-
         Level::truncate();
         Level::insert($request->levels);
         return return_success();

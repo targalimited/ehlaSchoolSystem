@@ -50,7 +50,7 @@ gulp.task('html', ['inject', 'partials'], function () {
     .pipe($.sourcemaps.write('maps'))
     .pipe(jsFilter.restore)
     .pipe(cssFilter)
-    .pipe(replace('/assets/images', '/school/assets/images'))
+    //.pipe(replace('/assets/images', '/school/assets/images'))
     .pipe($.sourcemaps.init())
     .pipe($.cleanCss())
     .pipe($.rev())
@@ -58,7 +58,7 @@ gulp.task('html', ['inject', 'partials'], function () {
     .pipe(cssFilter.restore)
     .pipe($.revReplace())
     .pipe(htmlFilter)
-    .pipe(replace('<base href="/">', '<base href="/school/">'))
+    //.pipe(replace('<base href="/">', '<base href="/school/">'))
     .pipe($.htmlmin({
       collapseWhitespace: true,
       maxLineLength: 120,
