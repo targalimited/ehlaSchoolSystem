@@ -18,7 +18,7 @@ exports.paths = {
     e2e : 'e2e'
 };
 
-exports.serverApiUrl = 'school-system.ap-southeast-1.elasticbeanstalk.com/v1/';
+exports.serverApiUrl = 'school-system-backend.ap-southeast-1.elasticbeanstalk.com/v1/';
 
 /**
  *  Wiredep is the lib which inject bower dependencies in your project
