@@ -6,4 +6,10 @@ WORKDIR /var/www/html
 COPY . .
 COPY .env.local .env
 
-EXPOSE 80
+RUN composer install
+
+RUN php artisan config:clear
+
+CMD php artisan serve  --port=8081 --host=0.0.0.0
+
+EXPOSE 8081

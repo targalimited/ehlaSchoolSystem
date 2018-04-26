@@ -11,7 +11,7 @@ services:
         NODE_ENV: development
     tty: true
     ports:
-      - "8081:80"
+      - "8081:8081"
     links:
       - "mysql:database"
   mysql:

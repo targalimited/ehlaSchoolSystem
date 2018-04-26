@@ -6,5 +6,4 @@ WORKDIR /var/www/html
 COPY . .
 COPY .env.development .env
 
-
 EXPOSE 80
