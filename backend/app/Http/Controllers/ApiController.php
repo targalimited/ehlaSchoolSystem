@@ -74,6 +74,8 @@ class ApiController extends Controller
 //                $user->email = $user_info['username'];
 //                $user->save();
 
+                dd(env('DB_HOST'));
+
                 $user = User::where('email',$data['data'][0]['username'])->first();
                 if(!$user){
                     $result = [
