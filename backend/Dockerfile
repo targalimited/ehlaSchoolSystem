@@ -1,13 +1,15 @@
-FROM shakyshane/laravel-php:latest
+FROM shin1x1/laravel-on-php7-apache
 
-WORKDIR /var/www
-RUN mkdir -p /var/www/storage/framework/sessions /var/www/storage/framework/views /var/www/storage/framework/cache /var/www/bootstrap/cache
+WORKDIR /var/www/html
+RUN mkdir -p /var/www/html/storage/framework/sessions /var/www/html/storage/framework/views /var/www/html/storage/framework/cache /var/www/html/bootstrap/cache
 COPY . .
 
 COPY .env.development .env
 RUN chown -R www-data:www-data \
-        /var/www/storage \
-        /var/www/bootstrap/cache
+        /var/www/html/storage \
+        /var/www/html/bootstrap/cache
+
+# RUN chmod 777 storage
 
 RUN php artisan key:generate
 RUN php artisan config:clear
