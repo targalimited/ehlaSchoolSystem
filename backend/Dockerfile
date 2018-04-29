@@ -4,7 +4,6 @@ WORKDIR /var/www/html
 RUN mkdir -p /var/www/html/storage/framework/sessions /var/www/html/storage/framework/views /var/www/html/storage/framework/cache /var/www/html/bootstrap/cache
 COPY . .
 
-RUN cp .env.development .env
 RUN chown -R www-data:www-data \
         /var/www/html/storage \
         /var/www/html/bootstrap/cache
