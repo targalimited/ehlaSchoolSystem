@@ -1,7 +1,7 @@
 FROM composer/composer:master
 
 WORKDIR /app
-RUN mkdir -p /app/storage/framework/sessions /app/storage/framework/views /app/storage/framework/cache
+RUN mkdir -p /app/storage/framework/sessions /app/storage/framework/views /app/storage/framework/cache /app/bootstrap/cache
 COPY . .
 
 COPY .env.development .env
