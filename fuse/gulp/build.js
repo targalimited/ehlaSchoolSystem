@@ -45,7 +45,7 @@ gulp.task('html', ['inject', 'partials'], function () {
     .pipe($.sourcemaps.init())
     .pipe($.ngAnnotate())
     .pipe($.uglify({preserveComments: $.uglifySaveLicense})).on('error', conf.errorHandler('Uglify'))
-    .pipe(replace('127.0.0.1:8000/v1/', conf.serverApiUrl))
+    .pipe(replace('127.0.0.1:8081/v1/', conf.serverApiUrl))
     .pipe($.rev())
     .pipe($.sourcemaps.write('maps'))
     .pipe(jsFilter.restore)
