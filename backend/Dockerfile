@@ -10,9 +10,8 @@ RUN chown -R www-data:www-data \
 
 # RUN chmod 777 storage
 
-RUN php artisan key:generate
+RUN php artisan key:generate --force
 RUN php artisan config:clear
-RUN php artisan config:cache
 RUN php artisan optimize
 
 EXPOSE 80
