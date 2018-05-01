@@ -39,7 +39,7 @@ class ApiController extends Controller
         $client = new Client();
 
 
-        try {
+//        try {
             $result = $client->request($request->method(), env('USERMODEL_URL') . $uri,
                 [
                     'auth' => ['ehl_api', '27150900'],
@@ -54,6 +54,7 @@ class ApiController extends Controller
             );
 
             $data = \GuzzleHttp\json_decode($result->getBody()->getContents(), true);
+
 
 
 
@@ -74,9 +75,10 @@ class ApiController extends Controller
 //                $user->email = $user_info['username'];
 //                $user->save();
 
-                dd(env('DB_HOST'));
-
                 $user = User::where('email',$data['data'][0]['username'])->first();
+
+
+
                 if(!$user){
                     $result = [
                         'status' => false,
@@ -93,11 +95,11 @@ class ApiController extends Controller
 
             return $data;
 
-        } catch (\Exception $e) {
-            // There was another exception.
-            return response()->json(\GuzzleHttp\json_decode($e->getResponse()->getBody()->getContents(), true), $e->getResponse()->getStatusCode());
-
-        }
+//        } catch (\Exception $e) {
+//            // There was another exception.
+//            return response()->json(\GuzzleHttp\json_decode($e->getResponse()->getBody()->getContents(), true), $e->getResponse()->getStatusCode());
+//
+//        }
 
     }
 }
