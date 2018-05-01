@@ -41,11 +41,11 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', 'db-test.ckjfdmyszhad.ap-southeast-1.rds.amazonaws.com'),
-            'port' => env('DB_PORT', '13310'),
-            'database' => env('DB_DATABASE', 'ehl_user'),
-            'username' => env('DB_USERNAME', 'billchan'),
-            'password' => env('DB_PASSWORD', '4&CdMY-6a9<J934P'),
+            'host' => env('DB_HOST'),
+            'port' => env('DB_PORT'),
+            'database' => env('DB_DATABASE'),
+            'username' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => env('DB_PREFIX', ''),
