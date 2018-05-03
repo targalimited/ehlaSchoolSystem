@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Role;
 use App\SchoolClass;
 use App\StudentSubject;
 use App\Subject;
@@ -9,6 +10,7 @@ use App\TeacherClassSubject;
 use App\User;
 use Illuminate\Http\Request;
 use Excel;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -510,5 +512,23 @@ dd($first_sheet_title);
         }, 2);
 
         return return_success();
+    }
+
+    public function getUser(Request $request){
+
+
+     // $users = User::withRole(['Student','Teacher'])->get();
+
+      $users = Role::with('users')->get();
+
+      $result['data'] = $users;
+      return json($users);
+
+
+      //$users=$user->hasRole('Teacher');
+      //$users = User::hasRole('Teacher')->get();
+
+
+
     }
 }
