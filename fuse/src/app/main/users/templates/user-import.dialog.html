@@ -1,0 +1,63 @@
+<md-dialog class="event-form-dialog" aria-label="New Message">
+  <form name="eventForm" class="md-inline-form" novalidate>
+    <md-toolbar class="md-accent md-hue-2">
+      <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+        <span class="title">Import Users</span>
+        <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Close dialog" translate
+                   translate-attr-aria-label="CALENDAR.CLOSE_DIALOG">
+          <md-icon md-font-icon="icon-close"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div layout="row">
+        <md-checkbox name="dump" disabled ng-checked="true">
+          Clean and Import Users
+        </md-checkbox>
+      </div>
+
+
+      <div layout="column" style="padding-bottom: 20px">
+        <div id="file-uploader"
+             flow-init="vm.ngFlowOptions"
+             flow-name="vm.ngFlow.flow"
+             flow-file-added="vm.fileAdded($file)"
+             flow-file-success="vm.fileSuccess($file, $message)"
+             flow-file-error="vm.fileError($file, $message)"
+             flow-complete="vm.uploadComplete()">
+
+          <md-button class="md-raised file-input" flow-attrs="{accept:'.csv, .xls, .xlsx'}" flow-btn id="file-input">
+            <label>Select file to upload</label>
+          </md-button>
+          <div style="padding: 20px">
+            <div ng-if="vm.file">
+              <i class="icon-file-excel">{{vm.file.file.name}}</i>
+            </div>
+            <div ng-if="vm.error" style="color: red">
+              {{vm.error}}
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions>
+      <div layout="row" layout-align="end center" style="width: 100%">
+        <div>
+          <md-button ng-click="vm.upload()" class="save-button md-accent md-raised" aria-label="SAVE"
+                     ng-disabled="eventForm.$invalid">
+            Confirm
+          </md-button>
+        </div>
+        <div>
+          <md-button ng-click="vm.closeDialog()" class="save-button md-raised">
+            CANCEL
+          </md-button>
+        </div>
+      </div>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
