@@ -6,7 +6,7 @@
     .controller('UsersController', UsersController);
 
   /** @ngInject */
-  function UsersController($scope, $state, $timeout, $compile, msUtils, UsersData, generalMessage, loadingScreen, Restangular) {
+  function UsersController($scope, $state, $timeout, $compile, msUtils, UsersData, generalMessage, loadingScreen, Restangular, $mdDialog, $document) {
     var vm = this;
 
     // Data
@@ -134,6 +134,93 @@
     vm.createUser = function () {
       $state.go('app.users.user', { userId: 'create' })
     }
-    //////////
+
+
+    vm.init = function () {
+
+    }
+
+    vm.init();
+
+    vm.importUsers = function (e) {
+      $mdDialog.show({
+        controller: function SettingFormDialogController($scope, $rootScope, $mdDialog) {
+          var vm = this;
+          $scope.language = $rootScope.language;
+          vm.file = null;
+          vm.closeDialog = closeDialog;
+
+          vm.ngFlowOptions = {
+            // You can configure the ngFlow from here
+            target                   : 'api/media/image',
+            chunkSize                : 15 * 1024 * 1024,
+            maxChunkRetries          : 1,
+            simultaneousUploads      : 1,
+            testChunks               : false,
+            progressCallbacksInterval: 1000
+          };
+          vm.ngFlow = {
+            // ng-flow will be injected into here through its directive
+            flow: {}
+          };
+
+
+          vm.fileAdded = function(file)
+          {
+            // Append it to the file list
+            vm.file = file;
+            console.log(file)
+            vm.error = '';
+          }
+
+          /**
+           * Upload
+           * Automatically triggers when files added to the uploader
+           */
+          vm.upload = function()
+          {
+            // Set headers
+            vm.ngFlow.flow.opts.headers = {
+              'X-Requested-With': 'XMLHttpRequest',
+              //'X-XSRF-TOKEN'    : $cookies.get('XSRF-TOKEN')
+            };
+
+            vm.ngFlow.flow.upload();
+            loadingScreen.showLoadingScreen();
+          }
+
+
+          vm.uploadComplete = function () {
+            loadingScreen.hideLoadingScreen();
+          }
+
+          vm.fileSuccess = function(file, message)
+          {
+            closeDialog();
+          }
+
+          vm.fileError = function ($file, $message) {
+            vm.file = null;
+            vm.error = $message && $message.replace(/<[^>]+>/gm, '');
+          }
+
+          /**
+           * Close the dialog
+           */
+          function closeDialog() {
+            $mdDialog.cancel();
+          }
+        },
+        controllerAs: 'vm',
+        templateUrl: 'app/main/users/templates/user-import.dialog.html',
+        parent: angular.element($document.body),
+        targetEvent: e,
+        clickOutsideToClose: true,
+      }).then(function (response) {
+        if (response === 'success') {
+          vm.init();
+        }
+      });
+    }
   }
 })();
