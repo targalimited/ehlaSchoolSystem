@@ -104,6 +104,7 @@ class UserController extends Controller
     {
         $this->init();
 
+
         if ($request->hasFile('file')) {
             $path = $request->file('file')->getRealPath();
             Excel::load($path, function ($reader) use ($request) {
@@ -117,8 +118,10 @@ class UserController extends Controller
                 //result[0]->sheet1, result[1]->sheet2
                 $results = $reader->get()->toArray();
 
-dd($first_sheet_title);
+                //sheet 1 for creating new teacher
+                //sheet 2 for binding teacher with class and subject
 
+                //second time import , the teacher list already existed named teacher_list (sheet1)
                 if ($first_sheet_title == 'teacher_list') {
                     $teacher_sheet = $results[0];
                     foreach (User::where('user_group', 3)->get() as $v) {
@@ -145,8 +148,7 @@ dd($first_sheet_title);
 
                 foreach ($teacher_sheet as $v) {
 
-                    // dd($this->class);
-
+                    //sheet 1 username and email must match sheet 2
                     if (!in_array($v['username'], $username)) {
                         $errors[$i] = 'No this username ' . $v['username'];
                         $i++;
@@ -174,7 +176,7 @@ dd($first_sheet_title);
                     return error_json($result);
                 } else {
 
-                    if ($first_sheet_title != 'teacher_list') //first import, if second import skip this step
+                    if ($first_sheet_title != 'teacher_list') //for first import, creating new teacher user, if second import skip this step
                         foreach ($results[0] as $v) {
                             $user = New User();
                             $user->username = $v['username'];
@@ -190,13 +192,14 @@ dd($first_sheet_title);
 
                     foreach ($teacher_sheet as $k => $v) {
                         $new_teacher_set[$k]['teacher_id'] = array_search($v['email'], $teacher_email);
-                        $new_teacher_set[$k]['class_id'] = array_search($v['class'], $this->class);
-                        $new_teacher_set[$k]['subject_id'] = array_search($v['subject'], $this->subject);
+                        $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
+                        $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
                         $new_teacher_set[$k]['comment'] = $v['email'] . "," . $v['class'] . "," . $v['subject'];
                     }
 
-//                    TeacherClassSubject::truncate();
-//                    TeacherClassSubject::insert($new_teacher_set);
+
+                    TeacherClassSubject::truncate();
+                    TeacherClassSubject::insert($new_teacher_set);
 
                     //TODO update duplicate class and subject filed
 
