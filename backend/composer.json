@@ -12,7 +12,7 @@
         "guzzlehttp/guzzle": "^6.2",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
-        "zizaco/entrust": "5.2.x-dev",
+        "zizaco/entrust": "dev-master",
         "maatwebsite/excel": "~2.1.0"
     },
     "require-dev": {

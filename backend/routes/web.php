@@ -58,6 +58,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('exportStudentExcel','UserController@getStudentExcel');
         Route::post('teacher_single','UserController@postSingleTeacher');
         Route::post('student_single','UserController@postSingleStudent');
+        Route::get('user_list','UserController@getUser');
 
         //Permission Control
         Route::post('attach_permission','RoleController@attachPermission');
