@@ -6,31 +6,46 @@
     .controller('UsersController', UsersController);
 
   /** @ngInject */
-  function UsersController($scope, $state, $timeout, $compile, msUtils, UsersData, generalMessage, loadingScreen, Restangular, $mdDialog, $document) {
+  function UsersController($scope, $state, $timeout, $compile, msUtils, UsersData, generalMessage, loadingScreen, Restangular, $mdDialog, $document, breadcrumbs) {
     var vm = this;
 
     // Data
     vm.data = UsersData.data;
-    _.each(vm.data, function (u) {
-      u.roles = [Math.floor(Math.random() * 2)];
-      u.status = Math.floor(Math.random() * 2);
-    });
     vm.selectedRoles = [-1];
     vm.selectedStatus = [-1];
-    vm.roles = [
+    vm.roles = breadcrumbs.roles;
+    vm.exportAllowedRoles = [
       { id: 0, name: 'Student' },
       { id: 1, name: 'Teacher' },
-    ];
+    ]
     vm.statuses = [
-      { id: 0, name: 'Active' },
-      { id: 1, name: 'Inactive' },
+      { id: 'active', name: 'Active' },
+      { id: 'non-active', name: 'Inactive' },
     ];
     vm.displayRoles = msUtils.displayRoles;
+
+    vm.init = function () {
+      loadingScreen.showLoadingScreen();
+      Restangular.one('user_list').get()
+        .then(function (results) {
+          vm.data = results.plain();
+          console.log(vm.data);
+          initFilter();
+        })
+        .catch(function (err) {
+          console.error('Cannot login', err);
+        })
+        .finally((function () {
+          loadingScreen.hideLoadingScreen();
+        }));
+    }
+
+
     vm.displayUserStatus = function (status) {
       switch (true) {
-        case parseInt(status) === 0:
+        case status === 'active':
           return 'Active';
-        case parseInt(status) === 1:
+        case status === 'non-active':
           return 'Inactive';
       }
     };
@@ -98,13 +113,10 @@
       }, 500);
     }
 
-    initFilter();
-
-
     $scope.filterStatus = function (user) {
       // console.log('xxxx', user);
       return _.some(vm.selectedStatus, function (r) {
-        return parseInt(r) === -1 || parseInt(user.status) === parseInt(r);
+        return r === -1 || user.status === r;
       });
     }
 
@@ -121,7 +133,7 @@
       // console.log('xxxx', user);
       return _.some(vm.selectedRoles, function (r) {
         return parseInt(r) === -1 || _.some(user.roles, function (role) {
-            return parseInt(role) === parseInt(r);
+            return parseInt(role.id) === parseInt(r);
           });
       });
     };
@@ -135,42 +147,71 @@
       $state.go('app.users.user', { userId: 'create' })
     }
 
-
-    vm.init = function () {
-
-    }
-
     vm.init();
+
+    vm.exportUserByRole = function (role) {
+      Restangular.one('export' + role.name + 'Excel').get()
+        .then(function (results) {
+          var file = new Blob([results], { type: 'text/csv' });
+          saveAs(file, 'something.csv');
+        })
+        .catch(function (err) {
+          console.error('Cannot login', err);
+        })
+        .finally((function () {
+          loadingScreen.hideLoadingScreen();
+        }));
+    }
 
     vm.importUsers = function (e) {
       $mdDialog.show({
         controller: function SettingFormDialogController($scope, $rootScope, $mdDialog) {
           var vm = this;
           $scope.language = $rootScope.language;
-          vm.file = null;
+          vm.files = { student: null, teacher: null };
+          vm.isLoading = { student: false, teacher: false }
+          vm.isSuccess = { student: false, teacher: false }
+          vm.errors = { student: '', teacher: '' }
           vm.closeDialog = closeDialog;
 
           vm.ngFlowOptions = {
-            // You can configure the ngFlow from here
-            target                   : 'api/media/image',
-            chunkSize                : 15 * 1024 * 1024,
-            maxChunkRetries          : 1,
-            simultaneousUploads      : 1,
-            testChunks               : false,
-            progressCallbacksInterval: 1000
+            student: {
+              // You can configure the ngFlow from here
+              target                   : 'api/media/image',
+              chunkSize                : 15 * 1024 * 1024,
+              maxChunkRetries          : 1,
+              simultaneousUploads      : 1,
+              testChunks               : false,
+              progressCallbacksInterval: 1000
+            },
+            teacher: {
+              // You can configure the ngFlow from here
+              target                   : 'api/media/image',
+              chunkSize                : 15 * 1024 * 1024,
+              maxChunkRetries          : 1,
+              simultaneousUploads      : 1,
+              testChunks               : false,
+              progressCallbacksInterval: 1000
+            }
           };
           vm.ngFlow = {
             // ng-flow will be injected into here through its directive
-            flow: {}
+            student: {
+              flow: {}
+            },
+            teacher: {
+              flow: {}
+            }
           };
 
 
-          vm.fileAdded = function(file)
+          vm.fileAdded = function(file, type)
           {
             // Append it to the file list
-            vm.file = file;
-            console.log(file)
-            vm.error = '';
+            vm.files[type] = file;
+            vm.errors[type] = '';
+            vm.isLoading[type] = false;
+            vm.isSuccess[type] = false
           }
 
           /**
@@ -179,29 +220,54 @@
            */
           vm.upload = function()
           {
-            // Set headers
-            vm.ngFlow.flow.opts.headers = {
-              'X-Requested-With': 'XMLHttpRequest',
-              //'X-XSRF-TOKEN'    : $cookies.get('XSRF-TOKEN')
-            };
+            _.each(vm.files, function (file, type) {
+              // Set headers
+              vm.ngFlow[type].flow.opts.headers = {
+                'X-Requested-With': 'XMLHttpRequest',
+                //'X-XSRF-TOKEN'    : $cookies.get('XSRF-TOKEN')
+              };
+              if (vm.files[type]) {
+                vm.ngFlow[type].flow.upload();
+                vm.isLoading[type] = true;
+                vm.isSuccess[type] = false;
+              } else {
+                vm.isLoading[type] = false;
+                vm.isSuccess[type] = true;
+              }
 
-            vm.ngFlow.flow.upload();
+              vm.errors[type] = '';
+            });
             loadingScreen.showLoadingScreen();
           }
 
 
-          vm.uploadComplete = function () {
-            loadingScreen.hideLoadingScreen();
+          vm.uploadComplete = function (type) {
+            vm.isLoading[type] = true;
+            var isAllComplete = _.every(vm.files, function (file, type) {
+              return vm.isLoading[type] === true;
+            })
+            if (isAllComplete) {
+              loadingScreen.hideLoadingScreen();
+            }
           }
 
           vm.fileSuccess = function(file, message)
           {
-            closeDialog();
+            vm.isLoading[type] = false;
+            vm.isSuccess[type] = true;
+            var isAllSuccess = _.every(vm.files, function (file, type) {
+              return vm.isSuccess[type] === true;
+            })
+            if (isAllSuccess) {
+              closeDialog();
+            }
           }
 
-          vm.fileError = function ($file, $message) {
-            vm.file = null;
-            vm.error = $message && $message.replace(/<[^>]+>/gm, '');
+          vm.fileError = function ($file, $message, type) {
+            vm.files[type] = null;
+            vm.isLoading[type] = false;
+            vm.isSuccess[type] = false;
+            vm.errors[type] = $message && $message.replace(/<[^>]+>/gm, '');
           }
 
           /**

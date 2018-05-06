@@ -1,6 +1,6 @@
 <div
-  class="doc-page material-docs ehla-blue-bg layout-docs doc-template page-layout simple tabbed fullwidth ng-scope layout-column"
-  layout="column">
+    class="doc-page material-docs ehla-blue-bg layout-docs doc-template page-layout simple tabbed fullwidth ng-scope layout-column"
+    layout="column">
 
   <div ncy-breadcrumb></div>
   <!-- HEADER -->
@@ -16,17 +16,33 @@
     </div>
 
     <div>
+      <span>
       <md-button class="md-raised md-accent md-background" ng-click="vm.createUser()">
         <span>Create User</span>
       </md-button>
-
+      </span>
+      <span>
       <md-button class="md-raised md-background" ng-click="vm.importUsers($event)">
         <span>Import Users</span>
       </md-button>
+      </span>
+      <md-menu id="export-menu" md-offset="0 72" md-position-mode="target-right target">
+        <md-button class="md-raised md-background"
+                   aria-label="Language" md-menu-origin md-menu-align-target ng-click="$mdOpenMenu()">
+          <span>Export Users</span>
+        </md-button>
 
-      <md-button class="md-raised md-background" ng-click="vm.exportUsers($event)">
-        <span>Export Users</span>
-      </md-button>
+        <md-menu-content width="3" id="export-menu-content">
+          <md-menu-item ng-repeat="role in vm.exportAllowedRoles">
+            <md-button ng-click="vm.exportUserByRole(role)" aria-label="{{role.name}}">
+                <span layout="row" layout-align="start center">
+                    <span>{{role.name}}</span>
+                </span>
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+
     </div>
   </div>
   <!-- / HEADER -->
@@ -74,9 +90,10 @@
           <td></td>
           <td></td>
         </tr>
-        <tr ng-repeat="user in filtered = (vm.data | filter: filterRoles | filter: filterStatus)" ng-click="viewUserDetails(user)" ng-show="!loading">
+        <tr ng-repeat="user in filtered = (vm.data | filter: filterRoles | filter: filterStatus)"
+            ng-click="viewUserDetails(user)" ng-show="!loading">
           <td>{{ user.id }}</td>
-          <td>{{ user.name }}</td>
+          <td>{{ user.username }}</td>
           <td>
             {{vm.displayRoles(user.roles, vm.roles)}}
           </td>

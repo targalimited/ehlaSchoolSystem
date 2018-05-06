@@ -475,16 +475,6 @@
       values.learningId = params.learningId;
       var curriculums = { 'school-based-curriculum': 'school-based curriculum' }
       values.curriculum = curriculums[params.curriculum];
-      values.user = {
-        name: 'hong304@gmail.com',
-        roles: [0],
-        classes: [
-          { id:0, className: '1A', subject: 'English', user: 'Professor Hong' },
-          {  id:1, className: '1A', subject: 'Math', user: 'Mad Scientist Kyo' },
-          {  id:2, className: '1A', subject: 'Chinese', user: 'Ming' },
-          {  id:3, className: '1A', subject: 'Computer', user: 'Alan Turing' },
-        ]
-      };
 
       if (values.learningId) {
         promises.push(Restangular.service('itemApi/get_by_ids').post({params: {ids: [values.learningId]}})
@@ -520,6 +510,18 @@
         })
           .then(function (res) {
             values.ehlaLevels = res.plain().data;
+          })
+          .catch(function (err) {
+            console.error('Cannot login', err);
+            return err;
+          }))
+      }
+
+
+      if (_.isUndefined(values.roles)) {
+        promises.push(Restangular.one('read_role').get()
+          .then(function (res) {
+            values.roles = res.plain().data;
           })
           .catch(function (err) {
             console.error('Cannot login', err);

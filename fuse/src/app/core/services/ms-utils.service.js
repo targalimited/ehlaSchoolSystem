@@ -178,7 +178,7 @@
       }
       return _.trimEnd(_.reduce(userRoles, function (result, level) {
         var foundLevel = _.find(roles, function (l) {
-          return l.id === level;
+          return l.id === level.id;
         });
         if (foundLevel) {
           result += foundLevel.name + ', ';
