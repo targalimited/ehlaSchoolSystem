@@ -522,8 +522,8 @@ class UserController extends Controller
 
      // $users = User::withRole(['Student','Teacher'])->get();
 
-      $users = Role::with('users')->get();
-
+      //$users = Role::with('users')->get();
+      $users = User::WhereHas('roles')->with('roles')->get()->toArray();
       $result['data'] = $users;
       return json($users);
 
