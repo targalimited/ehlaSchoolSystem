@@ -59,6 +59,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('teacher_single','UserController@postSingleTeacher');
         Route::post('student_single','UserController@postSingleStudent');
         Route::get('user_list','UserController@getUser');
+        Route::get('user/{id}','UserController@getUserDetails');
 
         //Permission Control
         Route::post('attach_permission','RoleController@attachPermission');

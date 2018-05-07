@@ -523,15 +523,18 @@ class UserController extends Controller
      // $users = User::withRole(['Student','Teacher'])->get();
 
       //$users = Role::with('users')->get();
-      $users = User::WhereHas('roles')->with('roles')->get()->toArray();
+      $users = User::WhereHas('roles')->with('roles')->get();
       $result['data'] = $users;
-      return json($users);
-
+      return json($result);
 
       //$users=$user->hasRole('Teacher');
       //$users = User::hasRole('Teacher')->get();
 
+    }
 
-
+    public function getUserDetails(Request $request){
+      $user = User::with('roles')->where('id',$request->id)->get();
+      $result['data'] = $user;
+      return json($result);
     }
 }
