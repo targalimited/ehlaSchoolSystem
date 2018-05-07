@@ -6,49 +6,69 @@
     .controller('UserController', UserController);
 
   /** @ngInject */
-  function UserController($scope, $state, breadcrumbs, generalMessage, loadingScreen, Restangular) {
+  function UserController($scope, $state, breadcrumbs, generalMessage, loadingScreen, Restangular, $q) {
     var vm = this;
 
     $scope.breadcrumbs = breadcrumbs;
     $scope.userId = $state.params.userId;
-    $scope.isCreate = $scope.userId === 'create';
+    $scope.action = $scope.userId === 'create' ? 'create' : 'edit';
+    $scope.title = _.upperFirst($scope.action);
     // Data
-    $scope.user = {
-      name: 'hong304@gmail.com',
-      roles: [0],
-      classes: [
-        { id:0, className: '1A', subject: 'English', user: 'Professor Hong' },
-        {  id:1, className: '1A', subject: 'Math', user: 'Mad Scientist Kyo' },
-        {  id:2, className: '1A', subject: 'Chinese', user: 'Ming' },
-        {  id:3, className: '1A', subject: 'Computer', user: 'Alan Turing' },
-      ]
-    };
-    vm.roles = breadcrumbs.roles;
-    vm.users = [
-      { id: 0, name: 'Professor Hong' },
-      { id: 1, name: 'Mad Scientist Kyo' },
-      { id: 2, name: 'Ming' },
-      { id: 3, name: 'Alan Turing' },
-    ];
-    vm.subjects = breadcrumbs.allSubjects;
-    vm.classes = breadcrumbs.allClasses;
+    $scope.user = {};
+
+    $scope.roles = breadcrumbs.roles;
+    $scope.teachers = [];
+    $scope.subjects = breadcrumbs.allSubjects;
+    $scope.classes = breadcrumbs.allClasses;
     // console.log(vm.classes, vm.subjects);
 
-    vm.deleteClass = function ($event, c) {
-      _.remove($scope.user.classes, function (a) {
+    $scope.init = function () {
+      loadingScreen.showLoadingScreen();
+      $q.all([
+        $scope.action === 'create' ? {} : Restangular.one('user', $scope.userId).get(),
+        Restangular.one('user_list').get(),
+      ])
+        .then(function (results) {
+          $scope.user = $scope.action === 'create' ? { roles: [], class_subject: [{}] } : results[0].plain();
+          var userList = results[1].plain();
+          $scope.teachers = _.filter(userList, function (u) {
+            return $scope.isRole('Teacher', u.roles)
+          })
+        })
+        .catch(function (err) {
+          console.error('Cannot login', err);
+        })
+        .finally((function () {
+          loadingScreen.hideLoadingScreen();
+        }));
+
+    }
+
+    $scope.init();
+
+    $scope.deleteClass = function ($event, c) {
+      _.remove($scope.user.class_subject, function (a) {
         return a.id === c.id;
       })
     }
 
-    vm.searchTextItems = function (query, items) {
+    $scope.isRole = function (roleName, roles) {
+      return $scope.user && _.some(roles || $scope.user.roles, function (role) {
+        return _.parseInt(role.id) === _.parseInt(_.find($scope.roles, function (r) {
+          return r.name === roleName
+        }).id);
+      })
+    }
+
+    $scope.searchTextItems = function (query, items) {
       return query ? _.filter(items, function (c) {
-        var name = c.c_name || c.s_name_en || c.name;
+        var name = c.c_name || c.s_name_en || c.name || c.username;
         return (name.toLowerCase().indexOf(query.toLowerCase()) === 0);
       }) : items;
     }
 
     $scope.addClass = function () {
-      $scope.user.classes.push({ id: $scope.user.classes.length });
+      $scope.user.class_subject.push({ id: $scope.user.class_subject.length });
     }
 
     $scope.back = function () {
@@ -56,7 +76,22 @@
     }
     
     $scope.saveUser = function () {
-      
+      loadingScreen.showLoadingScreen();
+      var promise = $scope.action === 'create' ?
+        Restangular.service($scope.isRole('Student') ? 'student_single' : 'teacher_single').post($scope.user) :
+        Restangular.service('teacher_single').post($scope.user);
+      promise
+        .then(function (results) {
+          generalMessage.showMessageToast('success', 'User ' + $scope.action + ' successfully.');
+          $scope.back();
+        })
+        .catch(function (err) {
+          console.error('Cannot login', err);
+          generalMessage.showMessageToast('error', 'User ' + $scope.action + ' unsuccessfully.');
+        })
+        .finally((function () {
+          loadingScreen.hideLoadingScreen();
+        }));
     }
 
     //////////

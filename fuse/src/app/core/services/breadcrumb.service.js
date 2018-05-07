@@ -467,6 +467,7 @@
       values.classId = _.parseInt(params.classId);
       values.exerciseId = _.parseInt(params.exerciseId);
       values.exerciseType = params.exerciseType;
+      values.userId = _.parseInt(params.userId);
       values.weaknessId = _.parseInt(params.weaknessId);
       values.academicId = _.parseInt(params.academicId);
       values.videoId = _.parseInt(params.videoId);

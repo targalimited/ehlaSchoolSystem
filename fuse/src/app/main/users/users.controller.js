@@ -177,7 +177,7 @@
           vm.ngFlowOptions = {
             student: {
               // You can configure the ngFlow from here
-              target                   : 'api/media/image',
+              target                   : 'v1/importTeacherExcel',
               chunkSize                : 15 * 1024 * 1024,
               maxChunkRetries          : 1,
               simultaneousUploads      : 1,
@@ -186,7 +186,7 @@
             },
             teacher: {
               // You can configure the ngFlow from here
-              target                   : 'api/media/image',
+              target                   : 'v1/importStudentExcel',
               chunkSize                : 15 * 1024 * 1024,
               maxChunkRetries          : 1,
               simultaneousUploads      : 1,

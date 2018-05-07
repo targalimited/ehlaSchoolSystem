@@ -23,7 +23,7 @@
           },
         },
         ncyBreadcrumb: {
-          label: '{{breadcrumbs.user.name}}'
+          label: '{{action}}'
         },
       });
 

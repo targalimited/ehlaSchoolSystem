@@ -9,7 +9,7 @@
       <div layout="row" layout-align="start center">
         <div layout="column" layout-align="start start">
           <div class="h2">
-            Users
+            {{title}} User {{ action === 'edit' ? ' - ' + user.username : '' }}
           </div>
         </div>
       </div>
@@ -17,8 +17,8 @@
 
     <div>
       <md-button class="md-raised md-accent md-background" ng-click="saveUser()" ng-disabled="loading">
-        <span ng-if="isCreate">Create</span>
-        <span ng-if="!isCreate">Save</span>
+        <span ng-if="action === 'create'">Create</span>
+        <span ng-if="action === 'edit'">Save</span>
       </md-button>
       <md-button class="md-raised md-background" ng-click="back()">
         <span>Cancel</span>
@@ -40,7 +40,7 @@
           </div>
           <div layout="column" flex="80">
             <md-input-container>
-              <input ng-model="user.name" required="true">
+              <input ng-model="user.username" required="true">
             </md-input-container>
           </div>
         </div>
@@ -62,12 +62,12 @@
         <div layout="row">
           <div layout="column" flex="20">
             <md-input-container>
-              <label>Current Password</label>
+              <label>Password</label>
             </md-input-container>
           </div>
           <div layout="column" flex="80">
             <md-input-container>
-              <input ng-model="user.password" required="true">
+              <input type="password" ng-model="user.password" required="true">
             </md-input-container>
           </div>
         </div>
@@ -75,12 +75,12 @@
         <div layout="row">
           <div layout="column" flex="20">
             <md-input-container>
-              <label>New Password</label>
+              <label>Confirm Password</label>
             </md-input-container>
           </div>
           <div layout="column" flex="80">
             <md-input-container>
-              <input ng-model="user.newPassword" required="true">
+              <input type="password" ng-model="user.confirmPassword" required="true">
             </md-input-container>
           </div>
         </div>
@@ -93,10 +93,10 @@
           </div>
           <div layout="column" flex="80">
             <md-input-container>
-              <md-select ng-model="user.roles" required
+              <md-select ng-model="user.roles[0].id" required
                          class="normal" placeholder="Roles">
                 <md-optgroup label="Roles">
-                  <md-option ng-repeat="role in vm.roles" value="{{role.id}}">
+                  <md-option ng-repeat="role in roles" value="{{role.id}}">
                     {{role.name}}
                   </md-option>
                 </md-optgroup>
@@ -105,10 +105,10 @@
           </div>
         </div>
 
-        <div layout="row">
+        <div layout="row" ng-if="user.roles[0].id">
           <div layout="column" flex="20">
             <md-input-container>
-              <label>Classes</label>
+              <label>{{ isRole('Student') ? 'Enrolled' : 'Teaching'}}</label>
             </md-input-container>
           </div>
           <div layout="column" flex="80">
@@ -116,23 +116,23 @@
               <tr>
                 <th>Class</th>
                 <th>Subject</th>
-                <th>Teacher</th>
+                <th ng-if="isRole('Student')">Teacher</th>
                 <th></th>
               </tr>
-              <tr ng-repeat="c in user.classes">
+              <tr ng-repeat="c in user.class_subject">
                 <td>
                   <md-autocomplete
-                    ng-style="{outline: !c.className ? '1px solid red' : ''}"
+                    ng-style="{outline: !c.class ? '1px solid red' : ''}"
                     md-input-name="autocompleteClass"
                     md-input-minlength="2"
                     md-input-maxlength="18"
-                    md-selected-item="c.className"
+                    md-selected-item="c.class"
                     md-search-text="c.searchClassName"
-                    md-items="item in vm.searchTextItems(c.searchClassName, vm.classes)"
+                    md-items="item in searchTextItems(c.searchClassName, classes)"
                     md-item-text="item.c_name"
                     md-require-match>
                     <md-item-template>
-                      <span md-highlight-text="c.className" md-highlight-flags="^i">{{item.c_name}}</span>
+                      <span md-highlight-text="c.class" md-highlight-flags="^i">{{item.c_name}}</span>
                     </md-item-template>
                     <div ng-messages="userForm.autocompleteClass.$error">
                       <div ng-message="required">Class is required</div>
@@ -148,7 +148,7 @@
                     md-input-maxlength="18"
                     md-selected-item="c.subject"
                     md-search-text="c.searchSubject"
-                    md-items="item in vm.searchTextItems(c.searchSubject, vm.subjects)"
+                    md-items="item in searchTextItems(c.searchSubject, subjects)"
                     md-item-text="item.s_name_en"
                     md-require-match>
                     <md-item-template>
@@ -156,25 +156,25 @@
                     </md-item-template>
                   </md-autocomplete>
                 </td>
-                <td>
+                <td ng-if="isRole('Student')">
                   <md-autocomplete
                     md-input-name="autocompleteUser"
-                    ng-style="{outline: !c.user ? '1px solid red' : ''}"
+                    ng-style="{outline: !c.teacher ? '1px solid red' : ''}"
                     md-input-minlength="2"
                     md-input-maxlength="18"
-                    md-selected-item="c.user"
-                    md-search-text="c.searchUser"
-                    md-items="item in vm.searchTextItems(c.searchUser, vm.users)"
-                    md-item-text="item.name"
+                    md-selected-item="c.teacher"
+                    md-search-text="c.searchTeacher"
+                    md-items="item in searchTextItems(c.searchTeacher, teachers)"
+                    md-item-text="item.username"
                     md-require-match>
                     <md-item-template>
-                      <span md-highlight-text="c.user" md-highlight-flags="^i">{{item.name}}</span>
+                      <span md-highlight-text="c.teacher" md-highlight-flags="^i">{{item.username}}</span>
                     </md-item-template>
                   </md-autocomplete>
                 </td>
                 <td>
                   <md-icon md-font-icon="red-600-fg icon-delete" style="padding: 0 10px; cursor: pointer"
-                           ng-click="vm.deleteClass($event, c)"
+                           ng-click="deleteClass($event, c)"
                            class="s22"></md-icon>
                 </td>
               </tr>
@@ -187,7 +187,7 @@
           </div>
         </div>
 
-        <div layout="row">
+        <div layout="row" ng-if="action === 'edit'">
           <div layout="column" flex="20">
             <md-input-container>
               <label>Status</label>
