@@ -431,7 +431,7 @@ class UserController extends Controller
             $user->save();
 
             //user role 3 = student
-            $user->roles()->attach(2);
+            $user->roles()->attach(5);
 
             $this->init();
 
@@ -533,7 +533,9 @@ class UserController extends Controller
     }
 
     public function getUserDetails(Request $request){
-      $user = User::with('roles')->where('id',$request->id)->get()->first();
+      $user = User::with('roles')->with(['teacher_classes_subjects' => function($query){
+        $query->with('classes')->with('subjects');
+      }])->where('id',$request->id)->get()->first()->toArray();
       $result['data'] = $user;
       return json($result);
     }

@@ -22,17 +22,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function classes()
     {
-        return $this->belongsToMany('App\SchoolClass','teacher_class_subject','user_id','class_id')->withPivot('id');
+        return $this->belongsToMany('App\SchoolClass','teacher_class_subject','teacher_id','class_id')->withPivot('id');
     }
 
     public function subjects()
     {
-        return $this->belongsToMany('App\Subject','teacher_class_subject','user_id')->withPivot('id');
+        return $this->belongsToMany('App\Subject','teacher_class_subject','teacher_id')->withPivot('id');
     }
 
     public function teacher_classes_subjects()
     {
-        return $this->belongsToMany('App\TeacherClassSubject','student_subjects','user_id','teacher_class_subject_id')->withTimestamps();;
+      return $this->hasMany(TeacherClassSubject::class,'teacher_id');
+       // return $this->belongsToMany('App\TeacherClassSubject','teacher_class_subject','teacher_id','teacher_class_subject_id')->withTimestamps();;
     }
 
     public function calendar_events(){
