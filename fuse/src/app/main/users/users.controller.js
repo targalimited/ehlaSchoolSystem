@@ -28,7 +28,7 @@
       loadingScreen.showLoadingScreen();
       Restangular.one('user_list').get()
         .then(function (results) {
-          vm.data = results.plain();
+          vm.data = results.plain().data;
           console.log(vm.data);
           initFilter();
         })

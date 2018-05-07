@@ -29,8 +29,12 @@
         Restangular.one('user_list').get(),
       ])
         .then(function (results) {
-          $scope.user = $scope.action === 'create' ? { roles: [], class_subject: [{}] } : results[0].plain();
-          var userList = results[1].plain();
+          $scope.user = $scope.action === 'create' ? { roles: [], class_subject: [{}] } : results[0].plain().data;
+          $scope.user.password = '';
+          if (!$scope.user.class_subject || !$scope.user.class_subject.length) {
+            $scope.user.class_subject = [{}];
+          }
+          var userList = results[1].plain().data;
           $scope.teachers = _.filter(userList, function (u) {
             return $scope.isRole('Teacher', u.roles)
           })

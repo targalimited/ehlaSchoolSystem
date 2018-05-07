@@ -533,7 +533,7 @@ class UserController extends Controller
     }
 
     public function getUserDetails(Request $request){
-      $user = User::with('roles')->where('id',$request->id)->get();
+      $user = User::with('roles')->where('id',$request->id)->get()->first();
       $result['data'] = $user;
       return json($result);
     }
