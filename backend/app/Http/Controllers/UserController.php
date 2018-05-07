@@ -34,23 +34,25 @@ class UserController extends Controller
             $this->class[$v->id] = strtolower($v->c_name);
         }
 
-//        foreach (User::all() as $v) {
-//            $this->student[$v->id] = $v->email;
-//
-//        }
-//        foreach (User::where('user_group', 3)->get() as $v) {
-//            $this->teacher[$v->id]['username'] = $v->username;
-//            $this->teacher[$v->id]['email'] = $v->email;
-//        }
-//
-//        foreach (TeacherClassSubject::all() as $k => $v) {
-//            $this->teacher_subject_class[$v->id]['multiple'] = $v->multiple_teacher;
-//            $this->teacher_subject_class[$v->id]['email'] = $this->teacher[$v->teacher_id]['email'];
-//            $this->teacher_subject_class[$v->id]['class_id'] = $v->class_id;
-//            $this->teacher_subject_class[$v->id]['subject_id'] = $v->subject_id;
-//            $this->teacher_subject_class[$v->id]['class_name'] = $this->class[$v->class_id];
-//            $this->teacher_subject_class[$v->id]['subject_name'] = $this->subject[$v->subject_id];
-//        }
+        foreach (User::all() as $v) {
+            $this->student[$v->id] = $v->email;
+
+        }
+        foreach (User::where('user_group', 3)->get() as $v) {
+            $this->teacher[$v->id]['username'] = $v->username;
+            $this->teacher[$v->id]['email'] = $v->email;
+        }
+
+        foreach (TeacherClassSubject::all() as $k => $v) {
+            $this->teacher_subject_class[$v->id]['multiple'] = $v->multiple_teacher;
+            $this->teacher_subject_class[$v->id]['email'] = $this->teacher[$v->teacher_id]['email'];
+            $this->teacher_subject_class[$v->id]['class_id'] = $v->class_id;
+            $this->teacher_subject_class[$v->id]['subject_id'] = $v->subject_id;
+            $this->teacher_subject_class[$v->id]['class_name'] = $this->class[$v->class_id];
+            $this->teacher_subject_class[$v->id]['subject_name'] = $this->subject[$v->subject_id];
+        }
+
+
 
 
     }
@@ -63,13 +65,12 @@ class UserController extends Controller
 
         foreach (TeacherClassSubject::all() as $k => $v) {
             //$teacher_subject_class[$k]['username'] = $v->subject_id;
-            $teacher_class_subject[$v['teacher_id']]['username'] = $this->teacher[$v['teacher_id']]['username'];
-            $teacher_class_subject[$v['teacher_id']]['email'] = $this->teacher[$v['teacher_id']]['email'];
-            $teacher_class_subject[$v['teacher_id']]['class'] = $this->class[$v['class_id']];
-            $teacher_class_subject[$v['teacher_id']]['subject'] = $this->subject[$v['subject_id']];
+            $teacher_class_subject[$k]['username'] = $this->teacher[$v['teacher_id']]['username'];
+            $teacher_class_subject[$k]['email'] = $this->teacher[$v['teacher_id']]['email'];
+            $teacher_class_subject[$k]['class'] = $this->class[$v['class_id']];
+            $teacher_class_subject[$k]['subject'] = $this->subject[$v['subject_id']];
         }
 
-        // dd($teacher_class_subject);
 
         return Excel::create('teacher_list', function ($excel) use ($teacher_class_subject) {
             $excel->sheet('teacher_class_subject', function ($sheet) use ($teacher_class_subject) {
@@ -354,7 +355,6 @@ class UserController extends Controller
                                 $new_student_list[$i]['subject_id'] = array_search($k, $this->subject);
                                 //development
 
-                                // dd($this->teacher_subject_class);
 
                                 foreach ($this->teacher_subject_class as $key => $v) {
 
