@@ -213,6 +213,7 @@
            */
           function save() {
             loadingScreen.showLoadingScreen();
+            vm.class.name_zh = vm.class.c_name;
             switch (vm.type) {
               case 'add' :
                 Restangular.service('classes').post(vm.class)

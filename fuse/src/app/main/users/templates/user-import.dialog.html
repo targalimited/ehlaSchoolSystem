@@ -18,24 +18,47 @@
       </div>
 
 
-      <div layout="column" style="padding-bottom: 20px">
-        <div id="file-uploader"
-             flow-init="vm.ngFlowOptions"
-             flow-name="vm.ngFlow.flow"
-             flow-file-added="vm.fileAdded($file)"
-             flow-file-success="vm.fileSuccess($file, $message)"
-             flow-file-error="vm.fileError($file, $message)"
-             flow-complete="vm.uploadComplete()">
+      <div layout="row">
+        <div layout="column" flex="50" id="file-uploader-student"
+             flow-init="vm.ngFlowOptions.student"
+             flow-name="vm.ngFlow.student.flow"
+             flow-file-added="vm.fileAdded($file, 'student')"
+             flow-file-success="vm.fileSuccess($file, $message, 'student')"
+             flow-file-error="vm.fileError($file, $message, 'student')"
+             flow-complete="vm.uploadComplete('student')">
 
-          <md-button class="md-raised file-input" flow-attrs="{accept:'.csv, .xls, .xlsx'}" flow-btn id="file-input">
-            <label>Select file to upload</label>
+          <md-button style="background-color: green; color: white" class="md-raised file-input" flow-attrs="{accept:'.csv, .xls, .xlsx'}" flow-btn id="file-input-student">
+            <label>Select file to upload *Students*</label>
           </md-button>
           <div style="padding: 20px">
-            <div ng-if="vm.file">
-              <i class="icon-file-excel">{{vm.file.file.name}}</i>
+            <div ng-if="vm.files.student">
+              <i class="icon-file-excel">{{vm.files.student.file.name}}</i>
             </div>
-            <div ng-if="vm.error" style="color: red">
-              {{vm.error}}
+            <div ng-if="vm.errors.student" style="color: red">
+              {{vm.errors.student}}
+            </div>
+          </div>
+
+        </div>
+
+
+        <div layout="column" flex="50" id="file-uploader-teacher"
+             flow-init="vm.ngFlowOptions.teacher"
+             flow-name="vm.ngFlow.teacher.flow"
+             flow-file-added="vm.fileAdded($file, 'teacher')"
+             flow-file-success="vm.fileSuccess($file, $message, 'teacher')"
+             flow-file-error="vm.fileError($file, $message, 'teacher')"
+             flow-complete="vm.uploadComplete('teacher')">
+
+          <md-button style="background-color: red; color: white" class="md-raised file-input" flow-attrs="{accept:'.csv, .xls, .xlsx'}" flow-btn id="file-input-teacher">
+            <label>Select file to upload *Teacher*</label>
+          </md-button>
+          <div style="padding: 20px">
+            <div ng-if="vm.files.teacher">
+              <i class="icon-file-excel">{{vm.files.teacher.file.name}}</i>
+            </div>
+            <div ng-if="vm.errors.teacher" style="color: red">
+              {{vm.errors.teacher}}
             </div>
           </div>
 

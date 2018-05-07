@@ -11,6 +11,18 @@
     $scope.breadcrumbs = breadcrumbs;
     vm.levels = $scope.breadcrumbs.ehlaLevels;
 
+
+    vm.updateLevelData = function () {
+      Restangular.one('levels').get()
+        .then(function (res) {
+          $scope.breadcrumbs.levels = res.plain().data;
+        })
+        .catch(function (err) {
+          console.error('Cannot login', err);
+          return err;
+        })
+    }
+
     vm.init = function () {
       loadingScreen.showLoadingScreen();
       Restangular.one('levels').get()
@@ -75,6 +87,7 @@
       Restangular.service('levels').post({ levels: postData })
         .then(function (results) {
           console.log(results);
+          vm.updateLevelData();
           generalMessage.showMessageToast('success', 'Level Settings Update save successfully.')
         })
         .catch(function (err) {
