@@ -323,13 +323,14 @@ class UserController extends Controller
                 } else {
 
                     //dd($this->subject);
-                    // dd($results);
+//                  dd($results[0]);
 
                     $new_student_list = [[]];
 
                     $i = 0;
 
-                    foreach ($results as $v) {
+
+                  //  foreach ($results as $v) {
 
 //                        foreach ($this->subject as $v1 => $k1){
 //                            if($v[$v1]=='Y'){
@@ -339,53 +340,62 @@ class UserController extends Controller
 
 
                         $class_id = '';
+                  $user_id = '';
 
-                        foreach ($v as $k => $value) {
+                        foreach ($results[0] as $k1 => $value1) {
+                            foreach ($value1 as $k => $value) {
+                              if ($k == 'class')
+                                $class_id = array_search(strtolower($value), $this->class);
+                              if ($k == 'email')
+                                $user_id = array_search(strtolower($value), $this->student);
 
-                            if ($k == 'class')
-                                $class_id = array_search($value, $this->class);
-                            if ($k == 'email')
-                                $user_id = array_search($value, $this->student);
+                              $new_student_list[$i]['student_id'] = $user_id;
+                              $subject_id = array_search(strtolower($k), $this->subject);
 
-                            if ($value == 'Y') {
-                                $new_student_list[$i]['user_id'] = $user_id;
+                              //development
+                             // $new_student_list[$i]['class_id'] = $class_id;
+                             // $new_student_list[$i]['subject'] = $k;
+                              //development
 
-                                //development
-                                $new_student_list[$i]['class_id'] = $class_id;
-                                $new_student_list[$i]['subject_id'] = array_search($k, $this->subject);
-                                //development
-
-
+                              if ($value == 'Y') {
                                 foreach ($this->teacher_subject_class as $key => $v) {
 
-                                    if ($v['class_id'] == $class_id && $v['subject_id'] == array_search($k, $this->subject))
-                                        $new_student_list[$i]['teacher_subject_class_id'] = $key;
+                                  if ($v['class_id'] == $class_id && $v['subject_id'] == $subject_id)
+                                    $new_student_list[$i]['teacher_class_subject_id'] = $key;
 
                                 }
 
                                 $i++;
-                            }
-
-
+                              }else if($value === null){
+                                //if don't know which teacher, leave it!
+//                                $new_student_list[$i]['teacher_class_subject_id'] = null;
+//                                $i++;
+                              }
+                          }
                         }
 
 
                         // dd(array_search($v['class'], $this->class));
 
-                    }
+                   // }
 
-                    dd($new_student_list);
+//                    dd($new_student_list);
 
-                    $teacher_class_subject = TeacherClassSubject::all();
-                    foreach ($teacher_class_subject as $v) {
-                        foreach ($results as $v1) {
+                  StudentSubject::truncate();
+                  StudentSubject::insert($new_student_list);
 
-                            if ($v->class_id == '' && $v->subject_id == '') {
+                  return return_success();
 
-                            }
-
-                        }
-                    }
+//                    $teacher_class_subject = TeacherClassSubject::all();
+//                    foreach ($teacher_class_subject as $v) {
+//                        foreach ($results as $v1) {
+//
+//                            if ($v->class_id == '' && $v->subject_id == '') {
+//
+//                            }
+//
+//                        }
+//                    }
 
 
                 }
