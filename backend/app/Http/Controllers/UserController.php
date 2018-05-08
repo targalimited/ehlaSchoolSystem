@@ -17,192 +17,190 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
 
-    public $class;
-    public $subject;
-    public $student;
-    public $teacher;
-    public $teacher_subject_class;
+  public $class;
+  public $subject;
+  public $student;
+  public $teacher;
+  public $teacher_subject_class;
 
-    private function init()
-    {
+  private function init()
+  {
 
-        foreach (Subject::all() as $v) {
-            $this->subject[$v->id] = strtolower(str_replace(' ', '_', $v->s_name_en));
-        }
-
-        foreach (SchoolClass::all() as $v) {
-            $this->class[$v->id] = strtolower($v->c_name);
-        }
-
-        foreach (User::all() as $v) {
-            $this->student[$v->id] = $v->email;
-
-        }
-        foreach (User::where('user_group', 3)->get() as $v) {
-            $this->teacher[$v->id]['username'] = $v->username;
-            $this->teacher[$v->id]['email'] = $v->email;
-        }
-
-        foreach (TeacherClassSubject::all() as $k => $v) {
-            $this->teacher_subject_class[$v->id]['multiple'] = $v->multiple_teacher;
-            $this->teacher_subject_class[$v->id]['email'] = $this->teacher[$v->teacher_id]['email'];
-            $this->teacher_subject_class[$v->id]['class_id'] = $v->class_id;
-            $this->teacher_subject_class[$v->id]['subject_id'] = $v->subject_id;
-            $this->teacher_subject_class[$v->id]['class_name'] = $this->class[$v->class_id];
-            $this->teacher_subject_class[$v->id]['subject_name'] = $this->subject[$v->subject_id];
-        }
-
-
-
-
+    foreach (Subject::all() as $v) {
+      $this->subject[$v->id] = strtolower(str_replace(' ', '_', $v->s_name_en));
     }
 
-    public function getTeacherExcel(Request $request)
-    {
-
-        $this->init();
-
-
-        foreach (TeacherClassSubject::all() as $k => $v) {
-            //$teacher_subject_class[$k]['username'] = $v->subject_id;
-            $teacher_class_subject[$k]['username'] = $this->teacher[$v['teacher_id']]['username'];
-            $teacher_class_subject[$k]['email'] = $this->teacher[$v['teacher_id']]['email'];
-            $teacher_class_subject[$k]['class'] = $this->class[$v['class_id']];
-            $teacher_class_subject[$k]['subject'] = $this->subject[$v['subject_id']];
-        }
-
-
-        return Excel::create('teacher_list', function ($excel) use ($teacher_class_subject) {
-            $excel->sheet('teacher_class_subject', function ($sheet) use ($teacher_class_subject) {
-                $sheet->fromArray($teacher_class_subject);
-            });
-        })->export('xlsx');
-
+    foreach (SchoolClass::all() as $v) {
+      $this->class[$v->id] = strtolower($v->c_name);
     }
 
-    public function getStudentExcel(Request $request)
-    {
-
-        $this->init();
-
-        $student_subject = StudentSubject::get();
-
-        foreach ($student_subject as $k => $v) {
-            $new_student_list[$v->student_id]['class_id'] = $this->teacher_subject_class[$v->teacher_class_subject_id]['class_name'];
-            $new_student_list[$v->student_id]['student_id'] = $v->student_id;
-            $new_student_list[$v->student_id][$this->teacher_subject_class[$v->teacher_class_subject_id]['subject_name']] = ($this->teacher_subject_class[$v->teacher_class_subject_id]['multiple']) ? $this->teacher_subject_class[$v->teacher_class_subject_id]['email'] : 'Y';
-        }
-
-        return Excel::create('student_list', function ($excel) use ($new_student_list) {
-            $excel->sheet('teacher_class_subject', function ($sheet) use ($new_student_list) {
-                $sheet->fromArray($new_student_list);
-            });
-        })->export('xlsx');
+    foreach (User::all() as $v) {
+      $this->student[$v->id] = $v->email;
 
     }
+    foreach (User::where('user_group', 3)->get() as $v) {
+      $this->teacher[$v->id]['username'] = $v->username;
+      $this->teacher[$v->id]['email'] = $v->email;
+    }
 
-    public function postTeacher(Request $request)
-    {
-        $this->init();
+    foreach (TeacherClassSubject::all() as $k => $v) {
+      $this->teacher_subject_class[$v->id]['multiple'] = $v->multiple_teacher;
+      $this->teacher_subject_class[$v->id]['email'] = $this->teacher[$v->teacher_id]['email'];
+      $this->teacher_subject_class[$v->id]['class_id'] = $v->class_id;
+      $this->teacher_subject_class[$v->id]['subject_id'] = $v->subject_id;
+      $this->teacher_subject_class[$v->id]['class_name'] = $this->class[$v->class_id];
+      $this->teacher_subject_class[$v->id]['subject_name'] = $this->subject[$v->subject_id];
+    }
 
 
-        if ($request->hasFile('file')) {
-            $path = $request->file('file')->getRealPath();
-            Excel::load($path, function ($reader) use ($request) {
+  }
+
+  public function getTeacherExcel(Request $request)
+  {
+
+    $this->init();
 
 
-                foreach ($reader->get() as $v) {
-                    $first_sheet_title = $v->getTitle();
-                    break;
-                }
+    foreach (TeacherClassSubject::all() as $k => $v) {
+      //$teacher_subject_class[$k]['username'] = $v->subject_id;
+      $teacher_class_subject[$k]['username'] = $this->teacher[$v['teacher_id']]['username'];
+      $teacher_class_subject[$k]['email'] = $this->teacher[$v['teacher_id']]['email'];
+      $teacher_class_subject[$k]['class'] = $this->class[$v['class_id']];
+      $teacher_class_subject[$k]['subject'] = $this->subject[$v['subject_id']];
+    }
 
-                //result[0]->sheet1, result[1]->sheet2
-                $results = $reader->get()->toArray();
 
-                //sheet 1 for creating new teacher
-                //sheet 2 for binding teacher with class and subject
+    return Excel::create('teacher_list', function ($excel) use ($teacher_class_subject) {
+      $excel->sheet('teacher_class_subject', function ($sheet) use ($teacher_class_subject) {
+        $sheet->fromArray($teacher_class_subject);
+      });
+    })->export('xlsx');
 
-                //second time import , the teacher list already existed named teacher_list (sheet1)
-                if ($first_sheet_title == 'teacher_list') {
-                    $teacher_sheet = $results[0];
-                    foreach (User::where('user_group', 3)->get() as $v) {
-                        $username[] = $v->username;
-                        $email[] = $v->email;
-                    }
-                } else {
-                    $teacher_sheet = $results[1];
-                    foreach ($results[0] as $v) {
-                        $username[] = $v['username'];
-                        $email[] = $v['email'];
-                    }
-                }
+  }
 
-                // print_r(array_count_values($teacher_sheet));
-                //dd($teacher_sheet);
+  public function getStudentExcel(Request $request)
+  {
+
+    $this->init();
+
+    $student_subject = StudentSubject::get();
+
+    foreach ($student_subject as $k => $v) {
+      $new_student_list[$v->student_id]['class_id'] = $this->teacher_subject_class[$v->teacher_class_subject_id]['class_name'];
+      $new_student_list[$v->student_id]['student_id'] = $v->student_id;
+      $new_student_list[$v->student_id][$this->teacher_subject_class[$v->teacher_class_subject_id]['subject_name']] = ($this->teacher_subject_class[$v->teacher_class_subject_id]['multiple']) ? $this->teacher_subject_class[$v->teacher_class_subject_id]['email'] : 'Y';
+    }
+
+    return Excel::create('student_list', function ($excel) use ($new_student_list) {
+      $excel->sheet('teacher_class_subject', function ($sheet) use ($new_student_list) {
+        $sheet->fromArray($new_student_list);
+      });
+    })->export('xlsx');
+
+  }
+
+  public function postTeacher(Request $request)
+  {
+    $this->init();
+
+
+    if ($request->hasFile('file')) {
+      $path = $request->file('file')->getRealPath();
+      Excel::load($path, function ($reader) use ($request) {
+
+
+        foreach ($reader->get() as $v) {
+          $first_sheet_title = $v->getTitle();
+          break;
+        }
+
+        //result[0]->sheet1, result[1]->sheet2
+        $results = $reader->get()->toArray();
+
+        //sheet 1 for creating new teacher
+        //sheet 2 for binding teacher with class and subject
+
+        //second time import , the teacher list already existed named teacher_list (sheet1)
+        if ($first_sheet_title == 'teacher_list') {
+          $teacher_sheet = $results[0];
+          foreach (User::where('user_group', 3)->get() as $v) {
+            $username[] = $v->username;
+            $email[] = $v->email;
+          }
+        } else {
+          $teacher_sheet = $results[1];
+          foreach ($results[0] as $v) {
+            $username[] = $v['username'];
+            $email[] = $v['email'];
+          }
+        }
+
+        // print_r(array_count_values($teacher_sheet));
+        //dd($teacher_sheet);
 
 
 //                try {
 
 
-                $i = 0;
-                $errors = [];
+        $i = 0;
+        $errors = [];
 
-                foreach ($teacher_sheet as $v) {
+        foreach ($teacher_sheet as $v) {
 
-                    //sheet 1 username and email must match sheet 2
-                    if (!in_array($v['username'], $username)) {
-                        $errors[$i] = 'No this username ' . $v['username'];
-                        $i++;
-                    }
-                    if (!in_array($v['email'], $email)) {
-                        $errors[$i] = 'No this email ' . $v['email'];
-                        $i++;
-                    }
-                    if (!in_array(strtolower($v['class']), $this->class)) {
-                        $errors[$i] = 'No this class ' . $v['class'];
-                        $i++;
-                    }
-                    if (!in_array(strtolower($v['subject']), $this->subject)) {
-                        $errors[$i] = 'No this subject ' . $v['subject'];
-                        $i++;
-                    }
-                }
+          //sheet 1 username and email must match sheet 2
+          if (!in_array($v['username'], $username)) {
+            $errors[$i] = 'No this username ' . $v['username'];
+            $i++;
+          }
+          if (!in_array($v['email'], $email)) {
+            $errors[$i] = 'No this email ' . $v['email'];
+            $i++;
+          }
+          if (!in_array(strtolower($v['class']), $this->class)) {
+            $errors[$i] = 'No this class ' . $v['class'];
+            $i++;
+          }
+          if (!in_array(strtolower($v['subject']), $this->subject)) {
+            $errors[$i] = 'No this subject ' . $v['subject'];
+            $i++;
+          }
+        }
 
-                if ($errors) {
-                    $result = [
-                        'status' => false,
-                        'code' => '',
-                        'message' => $errors
-                    ];
-                    return error_json($result);
-                } else {
+        if ($errors) {
+          $result = [
+            'status' => false,
+            'code' => '',
+            'message' => $errors
+          ];
+          return error_json($result);
+        } else {
 
-                    if ($first_sheet_title != 'teacher_list') //for first import, creating new teacher user, if second import skip this step
-                        foreach ($results[0] as $v) {
-                            $user = New User();
-                            $user->username = $v['username'];
-                            $user->email = $v['email'];
-                            $user->password = $v['password'];
-                            $user->save();
-                        }
+          if ($first_sheet_title != 'teacher_list') //for first import, creating new teacher user, if second import skip this step
+            foreach ($results[0] as $v) {
+              $user = New User();
+              $user->username = $v['username'];
+              $user->email = $v['email'];
+              $user->password = $v['password'];
+              $user->save();
+            }
 
-                    $users = User::whereIn('email', $email)->get();
-                    foreach ($users as $v) {
-                        $teacher_email[$v->id] = $v->email;
-                    }
+          $users = User::whereIn('email', $email)->get();
+          foreach ($users as $v) {
+            $teacher_email[$v->id] = $v->email;
+          }
 
-                    foreach ($teacher_sheet as $k => $v) {
-                        $new_teacher_set[$k]['teacher_id'] = array_search($v['email'], $teacher_email);
-                        $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
-                        $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
-                        $new_teacher_set[$k]['comment'] = $v['email'] . "," . $v['class'] . "," . $v['subject'];
-                    }
+          foreach ($teacher_sheet as $k => $v) {
+            $new_teacher_set[$k]['teacher_id'] = array_search($v['email'], $teacher_email);
+            $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
+            $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
+            $new_teacher_set[$k]['comment'] = $v['email'] . "," . $v['class'] . "," . $v['subject'];
+          }
 
 
-                    TeacherClassSubject::truncate();
-                    TeacherClassSubject::insert($new_teacher_set);
+          TeacherClassSubject::truncate();
+          TeacherClassSubject::insert($new_teacher_set);
 
-                    //TODO update duplicate class and subject filed
+          //TODO update duplicate class and subject filed
 
 
 //                    $query = DB::select('SELECT class_id, subject_id FROM school_teacher_class_subject GROUP BY class_id, subject_id HAVING count(*) > 1');
@@ -216,7 +214,7 @@ class UserController extends Controller
 //                    }
 
 
-                }
+        }
 
 
 //                    $validator = Validator::make($results[1], [
@@ -265,72 +263,72 @@ class UserController extends Controller
 //                    return Response()->json($result, 500);
 //                }
 
-                return return_success();
-            });
+        return return_success();
+      });
 
 
-        } else {
+    } else {
 
-            $result = [
-                'status' => false,
-                'code' => '',
-                'message' => ['please select excel file to update']
-            ];
-            return error_json($result);
-        }
-
-
+      $result = [
+        'status' => false,
+        'code' => '',
+        'message' => ['please select excel file to update']
+      ];
+      return error_json($result);
     }
 
-    public function postStudent(Request $request)
-    {
-        $this->init();
 
-        if ($request->hasFile('file')) {
+  }
 
-            $path = $request->file('file')->getRealPath();
-            Excel::load($path, function ($reader) use ($request) {
+  public function postStudent(Request $request)
+  {
+    $this->init();
+
+    if ($request->hasFile('file')) {
+
+      $path = $request->file('file')->getRealPath();
+      Excel::load($path, function ($reader) use ($request) {
 
 
-                $results = $reader->get()->toArray();
+        $results = $reader->get()->toArray();
 
 
-                if ($results[0]) {
-                    foreach (array_keys($results[0]) as $v) {
-                        $subjects[] = $v;
-                    }
-                }
+        if ($results[0]) {
+          foreach (array_keys($results[0]) as $v) {
+            $subjects[] = $v;
+          }
+        }
 
-                $subjects_db = Subject::all();
+        $subjects_db = Subject::all();
 
-                foreach ($subjects_db as $v) {
-                    $new_subject_db[] = strtolower(str_replace(' ', '_', $v->s_name_en));
-                }
-                $errors = [];
-                for ($i = 3; $i < count($subjects); $i++) {
-                    if (!in_array(strtolower($subjects[$i]), $new_subject_db)) {
-                        $errors[] = 'no this subject ' . $subjects[$i];
-                    }
-                }
+        foreach ($subjects_db as $v) {
+          $new_subject_db[] = strtolower(str_replace(' ', '_', $v->s_name_en));
+        }
+        $errors = [];
+        for ($i = 3; $i < count($subjects); $i++) {
+          if (!in_array(strtolower($subjects[$i]), $new_subject_db)) {
+            $errors[] = 'no this subject ' . $subjects[$i];
+          }
+        }
 
-                if ($errors) {
-                    $result = [
-                        'status' => false,
-                        'code' => '',
-                        'message' => $errors
-                    ];
-                    return error_json($result);
-                } else {
+        if ($errors) {
+          $result = [
+            'status' => false,
+            'code' => '',
+            'message' => $errors
+          ];
+          return error_json($result);
+        } else {
 
-                    //dd($this->subject);
+          //dd($this->subject);
 //                  dd($results[0]);
 
-                    $new_student_list = [[]];
+          $new_student_list = [[]];
 
-                    $i = 0;
+          $i = 0;
 
 
-                  //  foreach ($results as $v) {
+          //  foreach ($results as $v) {
 
 //                        foreach ($this->subject as $v1 => $k1){
 //                            if($v[$v1]=='Y'){
@@ -339,52 +337,52 @@ class UserController extends Controller
 //                        }
 
 
-                        $class_id = '';
-                  $user_id = '';
+          $class_id = '';
+          $user_id = '';
 
-                        foreach ($results[0] as $k1 => $value1) {
-                            foreach ($value1 as $k => $value) {
-                              if ($k == 'class')
-                                $class_id = array_search(strtolower($value), $this->class);
-                              if ($k == 'email')
-                                $user_id = array_search(strtolower($value), $this->student);
+          foreach ($results[0] as $k1 => $value1) {
+            foreach ($value1 as $k => $value) {
+              if ($k == 'class')
+                $class_id = array_search(strtolower($value), $this->class);
+              if ($k == 'email')
+                $user_id = array_search(strtolower($value), $this->student);
 
-                              $new_student_list[$i]['student_id'] = $user_id;
-                              $subject_id = array_search(strtolower($k), $this->subject);
+              $new_student_list[$i]['student_id'] = $user_id;
+              $subject_id = array_search(strtolower($k), $this->subject);
 
-                              //development
-                             // $new_student_list[$i]['class_id'] = $class_id;
-                             // $new_student_list[$i]['subject'] = $k;
-                              //development
+              //development
+              // $new_student_list[$i]['class_id'] = $class_id;
+              // $new_student_list[$i]['subject'] = $k;
+              //development
 
-                              if ($value == 'Y') {
-                                foreach ($this->teacher_subject_class as $key => $v) {
+              if ($value == 'Y') {
+                foreach ($this->teacher_subject_class as $key => $v) {
 
-                                  if ($v['class_id'] == $class_id && $v['subject_id'] == $subject_id)
-                                    $new_student_list[$i]['teacher_class_subject_id'] = $key;
+                  if ($v['class_id'] == $class_id && $v['subject_id'] == $subject_id)
+                    $new_student_list[$i]['teacher_class_subject_id'] = $key;
 
-                                }
+                }
 
-                                $i++;
-                              }else if($value === null){
-                                //if don't know which teacher, leave it!
+                $i++;
+              } else if ($value === null) {
+                //if don't know which teacher, leave it!
 //                                $new_student_list[$i]['teacher_class_subject_id'] = null;
 //                                $i++;
-                              }
-                          }
-                        }
+              }
+            }
+          }
 
 
-                        // dd(array_search($v['class'], $this->class));
+          // dd(array_search($v['class'], $this->class));
 
-                   // }
+          // }
 
 //                    dd($new_student_list);
 
-                  StudentSubject::truncate();
-                  StudentSubject::insert($new_student_list);
+          StudentSubject::truncate();
+          StudentSubject::insert($new_student_list);
 
-                  return return_success();
+          return return_success();
 
 //                    $teacher_class_subject = TeacherClassSubject::all();
 //                    foreach ($teacher_class_subject as $v) {
@@ -398,155 +396,157 @@ class UserController extends Controller
 //                    }
 
 
-                }
+        }
 
 
-            });
+      });
 
+
+    } else {
+
+      $result = [
+        'status' => false,
+        'code' => '',
+        'message' => ['please select excel file to update']
+      ];
+      return error_json($result);
+    }
+
+  }
+
+  public function postSingleTeacher(Request $request)
+  {
+
+    $rules = array('email' => 'unique:users,email');
+
+    $validator = Validator::make($request->all(), $rules);
+
+    if ($validator->fails()) {
+      $result = [
+        'status' => false,
+        'code' => '',
+        'message' => $validator->errors()
+      ];
+      return error_json($result);
+    }
+
+    DB::transaction(function () use ($request) {
+
+      $user = New User();
+      $user->username = $request->username;
+      $user->email = $request->email;
+      $user->password = $request->password;
+      $user->save();
+
+      //user role 3 = student
+      $user->roles()->attach(5);
+
+      $this->init();
+
+      foreach ($request->class_subject as $k => $v) {
+        $class_id = array_search(strtolower($v['class']['id']), $this->class);
+        $subject_id = array_search(strtolower($v['subject']['id']), $this->subject);
+
+
+        if ($class_id && $subject_id) {
+
+          $teacher_class_subject = New TeacherClassSubject();
+          $teacher_class_subject->teacher_id = $user->id;
+          $teacher_class_subject->class_id = $class_id;
+          $teacher_class_subject->subject_id = $subject_id;
+          $teacher_class_subject->save();
 
         } else {
-
-            $result = [
-                'status' => false,
-                'code' => '',
-                'message' => ['please select excel file to update']
-            ];
-            return error_json($result);
+          $result = [
+            'status' => false,
+            'code' => '',
+            'message' => ['No such class or subject']
+          ];
+          return error_json($result);
         }
+      }
 
+    }, 2);
+
+    return return_success();
+  }
+
+  public function postSingleStudent(Request $request)
+  {
+
+    $rules = array('student_id' => 'unique:users,student_id');
+
+    $validator = Validator::make($request->all(), $rules);
+
+    if ($validator->fails()) {
+      $result = [
+        'status' => false,
+        'code' => '',
+        'message' => $validator->errors()
+      ];
+      return error_json($result);
     }
 
-    public function postSingleTeacher(Request $request)
-    {
+    DB::transaction(function () use ($request) {
 
-        $rules = array('email' => 'unique:users,email');
+      $user = New User();
+      $user->username = $request->username;
+      $user->email = $request->email;
+      $user->password = $request->password;
+      $user->student_id = $request->student_id;
+      $user->save();
 
-        $validator = Validator::make($request->all(), $rules);
+      //user role 3 = student
+      $user->roles()->attach(3);
 
-        if ($validator->fails()) {
-            $result = [
-                'status' => false,
-                'code' => '',
-                'message' => $validator->errors()
-            ];
-            return error_json($result);
+      $this->init();
+
+      foreach ($request->class_subject as $k => $v) {
+        $class_id = array_search(strtolower($v['class']), $this->class);
+        $subject_id = array_search(strtolower($v['subject']), $this->subject);
+
+
+        if ($class_id && $subject_id) {
+
+          //TODO Create student subject class bind to teacher
+
+        } else {
+          $result = [
+            'status' => false,
+            'code' => '',
+            'message' => ['No such class or subject']
+          ];
+          return error_json($result);
         }
+      }
 
-        DB::transaction(function () use($request){
+    }, 2);
 
-            $user = New User();
-            $user->username = $request->username;
-            $user->email = $request->email;
-            $user->password = $request->password;
-            $user->save();
+    return return_success();
+  }
 
-            //user role 3 = student
-            $user->roles()->attach(5);
-
-            $this->init();
-
-            foreach ($request->class_subject as $k => $v) {
-                $class_id = array_search(strtolower($v['class']['id']), $this->class);
-                $subject_id = array_search(strtolower($v['subject']['id']), $this->subject);
+  public function getUser(Request $request)
+  {
 
 
-                if ($class_id && $subject_id) {
+    // $users = User::withRole(['Student','Teacher'])->get();
 
-                    $teacher_class_subject = New TeacherClassSubject();
-                    $teacher_class_subject->teacher_id = $user->id;
-                    $teacher_class_subject->class_id = $class_id;
-                    $teacher_class_subject->subject_id=$subject_id;
-                    $teacher_class_subject->save();
+    //$users = Role::with('users')->get();
+    $users = User::WhereHas('roles')->with('roles')->get();
+    $result['data'] = $users;
+    return json($result);
 
-                } else {
-                    $result = [
-                        'status' => false,
-                        'code' => '',
-                        'message' => ['No such class or subject']
-                    ];
-                    return error_json($result);
-                }
-            }
+    //$users=$user->hasRole('Teacher');
+    //$users = User::hasRole('Teacher')->get();
 
-        }, 2);
+  }
 
-        return return_success();
-    }
-
-    public function postSingleStudent(Request $request)
-    {
-
-        $rules = array('student_id' => 'unique:users,student_id');
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            $result = [
-                'status' => false,
-                'code' => '',
-                'message' => $validator->errors()
-            ];
-            return error_json($result);
-        }
-
-        DB::transaction(function () use($request){
-
-            $user = New User();
-            $user->username = $request->username;
-            $user->email = $request->email;
-            $user->password = $request->password;
-            $user->student_id = $request->student_id;
-            $user->save();
-
-            //user role 3 = student
-            $user->roles()->attach(3);
-
-            $this->init();
-
-            foreach ($request->class_subject as $k => $v) {
-                $class_id = array_search(strtolower($v['class']), $this->class);
-                $subject_id = array_search(strtolower($v['subject']), $this->subject);
-
-
-                if ($class_id && $subject_id) {
-
-                    //TODO Create student subject class bind to teacher
-
-                } else {
-                    $result = [
-                        'status' => false,
-                        'code' => '',
-                        'message' => ['No such class or subject']
-                    ];
-                    return error_json($result);
-                }
-            }
-
-        }, 2);
-
-        return return_success();
-    }
-
-    public function getUser(Request $request){
-
-
-     // $users = User::withRole(['Student','Teacher'])->get();
-
-      //$users = Role::with('users')->get();
-      $users = User::WhereHas('roles')->with('roles')->get();
-      $result['data'] = $users;
-      return json($result);
-
-      //$users=$user->hasRole('Teacher');
-      //$users = User::hasRole('Teacher')->get();
-
-    }
-
-    public function getUserDetails(Request $request){
-      $user = User::with('roles')->with(['teacher_classes_subjects' => function($query){
-        $query->with('classes')->with('subjects');
-      }])->where('id',$request->id)->get()->first()->toArray();
-      $result['data'] = $user;
-      return json($result);
-    }
+  public function getUserDetails(Request $request)
+  {
+    $user = User::with('roles')->with(['teacher_classes_subjects' => function ($query) {
+      $query->with('classes')->with('subjects');
+    }])->where('id', $request->id)->get()->first()->toArray();
+    $result['data'] = $user;
+    return json($result);
+  }
 }
