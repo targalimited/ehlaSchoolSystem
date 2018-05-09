@@ -181,6 +181,7 @@ class UserController extends Controller
               $user->username = $v['username'];
               $user->email = $v['email'];
               $user->password = $v['password'];
+              $user->user_group = 3;
               $user->save();
             }
 
@@ -432,7 +433,11 @@ class UserController extends Controller
 
     DB::transaction(function () use ($request) {
 
-      $user = New User();
+      if($request->id)
+        $user = User::find(id)->get();
+      else
+        $user = New User();
+
       $user->username = $request->username;
       $user->email = $request->email;
       $user->password = $request->password;
