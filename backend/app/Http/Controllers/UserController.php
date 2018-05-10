@@ -43,6 +43,7 @@ class UserController extends Controller
       $this->teacher[$v->id]['email'] = $v->email;
     }
 
+
     foreach (TeacherClassSubject::all() as $k => $v) {
       $this->teacher_subject_class[$v->id]['multiple'] = $v->multiple_teacher;
       $this->teacher_subject_class[$v->id]['email'] = $this->teacher[$v->teacher_id]['email'];
@@ -85,11 +86,13 @@ class UserController extends Controller
 
     $student_subject = StudentSubject::get();
 
+
     foreach ($student_subject as $k => $v) {
       $new_student_list[$v->student_id]['class_id'] = $this->teacher_subject_class[$v->teacher_class_subject_id]['class_name'];
       $new_student_list[$v->student_id]['student_id'] = $v->student_id;
       $new_student_list[$v->student_id][$this->teacher_subject_class[$v->teacher_class_subject_id]['subject_name']] = ($this->teacher_subject_class[$v->teacher_class_subject_id]['multiple']) ? $this->teacher_subject_class[$v->teacher_class_subject_id]['email'] : 'Y';
     }
+    sort($new_student_list);
 
     return Excel::create('student_list', function ($excel) use ($new_student_list) {
       $excel->sheet('teacher_class_subject', function ($sheet) use ($new_student_list) {
