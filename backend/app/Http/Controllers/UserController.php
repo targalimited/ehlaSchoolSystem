@@ -186,6 +186,9 @@ class UserController extends Controller
               $user->password = $v['password'];
               $user->user_group = 3;
               $user->save();
+
+              $user->roles()->attach(5);
+
             }
 
           $users = User::whereIn('email', $email)->get();
@@ -284,6 +287,7 @@ class UserController extends Controller
 
   }
 
+  //TODO create student account
   public function postStudent(Request $request)
   {
     $this->init();
@@ -479,6 +483,7 @@ class UserController extends Controller
     return return_success();
   }
 
+  //TODO update student
   public function postSingleStudent(Request $request)
   {
 
@@ -556,5 +561,10 @@ class UserController extends Controller
     }])->where('id', $request->id)->get()->first()->toArray();
     $result['data'] = $user;
     return json($result);
+  }
+
+  //TODO delete user
+  public function deleteUser(Request $request){
+
   }
 }
