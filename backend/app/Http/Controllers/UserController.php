@@ -507,8 +507,8 @@ class UserController extends Controller
       $this->init();
 
       foreach ($request->class_subject as $k => $v) {
-        $class_id = array_search(strtolower($v['class']), $this->class);
-        $subject_id = array_search(strtolower($v['subject']), $this->subject);
+        $class_id = array_search(strtolower($v['class']['id']), $this->class);
+        $subject_id = array_search(strtolower($v['subject']['id']), $this->subject);
 
 
         if ($class_id && $subject_id) {
