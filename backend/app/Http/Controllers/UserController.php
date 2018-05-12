@@ -34,10 +34,6 @@ class UserController extends Controller
       $this->class[$v->id] = strtolower($v->c_name);
     }
 
-    foreach (User::all() as $v) {
-      $this->student[$v->id] = $v->email;
-
-    }
     foreach (User::where('user_group', 3)->get() as $v) {
       $this->teacher[$v->id]['username'] = $v->username;
       $this->teacher[$v->id]['email'] = $v->email;
@@ -333,7 +329,7 @@ class UserController extends Controller
 
           $new_student_list = [[]];
 
-          $i = 0;
+
 
 
           //  foreach ($results as $v) {
@@ -345,8 +341,28 @@ class UserController extends Controller
 //                        }
 
 
-          $class_id = '';
-          $user_id = '';
+
+
+          DB::transaction(function () use ($results, $new_student_list) {
+            foreach ($results[0] as $v) {
+              $user = New User();
+              $user->username = $v['username'];
+              $user->email = $v['email'];
+              $user->password = $v['password'];
+              $user->user_group = 3;
+              $user->save();
+
+              $user->roles()->attach(3);
+
+            }
+
+          foreach (User::all() as $v) {
+            $this->student[$v->id] = $v->email;
+          }
+
+            $i = 0;
+            $class_id = '';
+            $user_id = '';
 
           foreach ($results[0] as $k1 => $value1) {
             foreach ($value1 as $k => $value) {
@@ -387,8 +403,12 @@ class UserController extends Controller
 
 //                    dd($new_student_list);
 
-          StudentSubject::truncate();
-          StudentSubject::insert($new_student_list);
+
+
+            StudentSubject::truncate();
+            StudentSubject::insert($new_student_list);
+
+          },2);
 
           return return_success();
 
