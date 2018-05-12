@@ -57,7 +57,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('exportTeacherExcel','UserController@getTeacherExcel');
         Route::get('exportStudentExcel','UserController@getStudentExcel');
         Route::post('teacher_single','UserController@postSingleTeacher');
+        Route::put('teacher_single','UserController@putSingleTeacher');
         Route::post('student_single','UserController@postSingleStudent');
+        Route::put('student_single','UserController@putSingleStudent');
         Route::get('user_list','UserController@getUser');
         Route::get('user/{id}','UserController@getUserDetails');
 
