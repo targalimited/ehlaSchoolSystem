@@ -461,6 +461,7 @@ else
       return error_json($result);
     }
 
+
     DB::transaction(function () use ($request) {
 
       if(isset($request->id))
@@ -487,13 +488,9 @@ else
 
       foreach ($request->class_subject as $k => $v) {
 
-        if($request->id){
-          $class_id=$v['class']['id'];
-          $subject_id = $v['subject']['id'];
-        }else{
-          $class_id = array_search(strtolower($v['class']), $this->class);
-          $subject_id = array_search(strtolower($v['subject']), $this->subject);
-        }
+
+          $class_id = (array_key_exists(strtolower($v['class']['id']), $this->class))?$v['class']['id']:false;
+          $subject_id = (array_key_exists(strtolower($v['subject']['id']), $this->subject))?$v['subject']['id']:false;
 
 
         if ($class_id && $subject_id) {
@@ -608,17 +605,28 @@ else
         $this->student[$v->id] = $v->email;
       }
 
-      $class_id = array_search(strtolower($request->class), $this->class);
+
+      $class_id = (array_key_exists($request->class_id, $this->class))?$request->class_id:false;
       $user_id = array_search(strtolower($request->email), $this->student);
 
-      $tcs = TeacherClassSubject::where('class_id',$class_id)->get();
+
+      if($class_id){
+        $tcs = TeacherClassSubject::where('class_id',$class_id)->get();
 
 
-      foreach ($tcs as $v){
-        $student_subject = New StudentSubject();
-        $student_subject->teacher_class_subject_id = $v->id;
-        $student_subject->student_id =$user_id;
-        $student_subject->save();
+        foreach ($tcs as $v){
+          $student_subject = New StudentSubject();
+          $student_subject->teacher_class_subject_id = $v->id;
+          $student_subject->student_id =$user_id;
+          $student_subject->save();
+        }
+      }else{
+        $result = [
+          'status' => false,
+          'code' => '',
+          'message' => ['No such class']
+        ];
+        return error_json($result);
       }
 
 
