@@ -23,6 +23,10 @@ class TeacherClassSubject extends Model
     public function subjects()
     {
       return $this->belongsTo(Subject::class,'subject_id');
+    }
+
+    public function teachers(){
+      return $this->belongsTo(User::class,'teacher_id');
 
     }
 }

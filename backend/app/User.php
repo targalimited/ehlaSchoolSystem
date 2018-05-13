@@ -36,6 +36,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
        // return $this->belongsToMany('App\TeacherClassSubject','teacher_class_subject','teacher_id','teacher_class_subject_id')->withTimestamps();;
     }
 
+    public function student_subjects(){
+      return $this->hasMany(StudentSubject::class,'student_id');
+    }
+
     public function calendar_events(){
         return $this->hasMany(CalendarEvent::class);
     }

@@ -76,6 +76,7 @@ class UserController extends Controller
 
   }
 
+  //TODO student_id to student name and student email
   public function getStudentExcel(Request $request)
   {
 
@@ -345,6 +346,7 @@ class UserController extends Controller
 
           DB::transaction(function () use ($results, $new_student_list) {
             foreach ($results[0] as $v) {
+
               $user = New User();
               $user->username = $v['username'];
               $user->email = $v['email'];
@@ -355,7 +357,7 @@ class UserController extends Controller
               $user->roles()->attach(3);
 
               $scs = New StudentClassSubject();
-              $scs->class_id = $v['class_id'];
+              $scs->class_id = array_search(strtolower($v['class']), $this->class);
               $scs->student_id = $user->id;
               $scs->save();
 
@@ -553,8 +555,9 @@ class UserController extends Controller
       $tcs = TeacherClassSubject::where('teacher_id',$request->id)->get()->pluck('id');
 
       StudentSubject::whereIn('teacher_class_subject_id',$tcs)->delete();
+      TeacherClassSubject::where('teacher_id',$request->id)->delete();
 
-
+      $count=0;
       foreach ($request->class_subject as $k => $v) {
 
           $class_id=$v['class']['id'];
@@ -568,6 +571,14 @@ class UserController extends Controller
           $teacher_class_subject->subject_id = $subject_id;
           $teacher_class_subject->save();
 
+
+          $scs = StudentClassSubject::where('class_id',$class_id)->get()->pluck('student_id');
+          foreach($scs as $k => $v){
+            $new_scs[$count]['student_id'] = $v;
+            $new_scs[$count]['teacher_class_subject_id'] = $teacher_class_subject->id;
+            $count++;
+          }
+
         } else {
           $result = [
             'status' => false,
@@ -577,7 +588,7 @@ class UserController extends Controller
           return error_json($result);
         }
       }
-
+      StudentSubject::insert($new_scs);
     }, 2);
 
     return return_success();
@@ -752,7 +763,12 @@ class UserController extends Controller
   {
     $user = User::with('roles')->with(['teacher_classes_subjects' => function ($query) {
       $query->with('classes')->with('subjects');
+    }])->with(['student_subjects' => function ($query1) {
+      $query1->with(['teacher_class_subjects' => function ($query) {
+        $query->with('classes')->with('subjects')->with('teachers');
+      }]);
     }])->where('id', $request->id)->get()->first()->toArray();
+
     $result['data'] = $user;
     return json($result);
   }
