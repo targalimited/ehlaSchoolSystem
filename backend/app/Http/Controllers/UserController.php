@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Role;
 use App\SchoolClass;
+use App\StudentClassSubject;
 use App\StudentSubject;
 use App\Subject;
 use App\TeacherClassSubject;
@@ -353,6 +354,11 @@ class UserController extends Controller
 
               $user->roles()->attach(3);
 
+              $scs = New StudentClassSubject();
+              $scs->class_id = $v['class_id'];
+              $scs->student_id = $user->id;
+              $scs->save();
+
             }
 
           foreach (User::all() as $v) {
@@ -460,47 +466,61 @@ class UserController extends Controller
     }
 
 
-    DB::transaction(function () use ($request) {
+      DB::transaction(function () use ($request) {
 
 
         $user = New User();
         $user->email = $request->email;
 
-      $user->username = $request->username;
-      $user->password = $request->password;
-      $user->user_group = 3;
-      $user->save();
+        $user->username = $request->username;
+        $user->password = $request->password;
+        $user->user_group = 3;
+        $user->save();
 
-      //user role 3 = student
+        //user role 3 = student
         $user->roles()->attach(5);
 
-      $this->init();
+        $this->init();
 
-      foreach ($request->class_subject as $k => $v) {
-
-
-          $class_id = (array_key_exists(strtolower($v['class']['id']), $this->class))?$v['class']['id']:false;
-          $subject_id = (array_key_exists(strtolower($v['subject']['id']), $this->subject))?$v['subject']['id']:false;
+        $count = 0;
+        foreach ($request->class_subject as $k => $v) {
 
 
-        if ($class_id && $subject_id) {
-          $teacher_class_subject = New TeacherClassSubject();
-          $teacher_class_subject->teacher_id = $user->id;
-          $teacher_class_subject->class_id = $class_id;
-          $teacher_class_subject->subject_id = $subject_id;
-          $teacher_class_subject->save();
+          $class_id = (array_key_exists(strtolower($v['class']['id']), $this->class)) ? $v['class']['id'] : false;
+          $subject_id = (array_key_exists(strtolower($v['subject']['id']), $this->subject)) ? $v['subject']['id'] : false;
 
-        } else {
-          $result = [
-            'status' => false,
-            'code' => '',
-            'message' => ['No such class or subject']
-          ];
-          return error_json($result);
+
+          if ($class_id && $subject_id) {
+            $teacher_class_subject = New TeacherClassSubject();
+            $teacher_class_subject->teacher_id = $user->id;
+            $teacher_class_subject->class_id = $class_id;
+            $teacher_class_subject->subject_id = $subject_id;
+            $teacher_class_subject->save();
+
+            $scs = StudentClassSubject::where('class_id',$class_id)->get()->pluck('student_id');
+            foreach($scs as $k => $v){
+                $new_scs[$count]['student_id'] = $v;
+                $new_scs[$count]['teacher_class_subject_id'] = $teacher_class_subject->id;
+                $count++;
+            }
+
+
+          } else {
+            $result = [
+              'status' => false,
+              'code' => '',
+              'message' => ['No such class or subject']
+            ];
+            return error_json($result);
+          }
+
+
         }
-      }
 
-    }, 2);
+
+        StudentSubject::insert($new_scs);
+
+      }, 2);
 
     return return_success();
   }
@@ -530,7 +550,9 @@ class UserController extends Controller
 
       $this->init();
 
-        StudentSubject::where('teacher_id',$request->id)->delete();
+      $tcs = TeacherClassSubject::where('teacher_id',$request->id)->get()->pluck('id');
+
+      StudentSubject::whereIn('teacher_class_subject_id',$tcs)->delete();
 
 
       foreach ($request->class_subject as $k => $v) {
@@ -588,6 +610,11 @@ class UserController extends Controller
 
       //user role 3 = student
       $user->roles()->attach(3);
+
+      $scs = New StudentClassSubject();
+      $scs->class_id = $request->class_id;
+      $scs->student_id = $user->id;
+      $scs->save();
 
       $this->init();
 
@@ -654,6 +681,11 @@ class UserController extends Controller
       $user->password = $request->password;
       $user->user_group = 3;
       $user->save();
+
+      $scs = StudentClassSubject::where('student_id',$request->id)->first();
+      $scs->class_id = $request->class_id;
+      $scs->student_id = $request->id;
+      $scs->save();
 
       $this->init();
 
