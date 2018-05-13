@@ -445,9 +445,7 @@ class UserController extends Controller
   {
 
 //    dd($request->all());
-if($request->id)
-    $rules = array('email' => 'unique:users,email,'.$request->id);
-else
+
   $rules = array('email' => 'unique:users,email');
 
     $validator = Validator::make($request->all(), $rules);
@@ -464,27 +462,19 @@ else
 
     DB::transaction(function () use ($request) {
 
-      if(isset($request->id))
-        $user = User::where('id',$request->id)->first();
-      else {
+
         $user = New User();
         $user->email = $request->email;
-      }
+
       $user->username = $request->username;
       $user->password = $request->password;
+      $user->user_group = 3;
       $user->save();
 
       //user role 3 = student
-      if(!$request->id)
         $user->roles()->attach(5);
 
       $this->init();
-
-
-
-      if($request->id){
-        TeacherClassSubject::where('teacher_id',$request->id)->delete();
-      }
 
       foreach ($request->class_subject as $k => $v) {
 
@@ -705,7 +695,7 @@ else
 //        }
 //      }
 
-    }, 2);
+    },2);
 
     return return_success();
   }
