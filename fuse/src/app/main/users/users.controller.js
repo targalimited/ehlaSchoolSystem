@@ -233,7 +233,7 @@
                 vm.isSuccess[type] = false;
               } else {
                 vm.isLoading[type] = false;
-                vm.isSuccess[type] = true;
+                // vm.isSuccess[type] = true;
               }
 
               vm.errors[type] = '';
@@ -243,42 +243,44 @@
 
 
           vm.uploadComplete = function (type) {
-            vm.isLoading[type] = true;
+            vm.isLoading[type] = false;
+            console.log('complete')
             var isAllComplete = _.every(vm.files, function (file, type) {
-              return vm.isLoading[type] === true;
+              return vm.isLoading[type] === false;
+            })
+            var isAllSuccess = _.every(vm.files, function (file, type) {
+              return vm.isSuccess[type] === true;
             })
             if (isAllComplete) {
               loadingScreen.hideLoadingScreen();
+            }
+            if (isAllSuccess) {
+              $mdDialog.hide('success');
             }
           }
 
           vm.fileSuccess = function(file, message, type)
           {
+            console.log('success')
             vm.isLoading[type] = false;
             vm.isSuccess[type] = true;
-            var isAllSuccess = _.every(vm.files, function (file, type) {
-              return vm.isSuccess[type] === true;
-            })
-            if (isAllSuccess) {
-              closeDialog();
-            }
-
-            loadingScreen.hideLoadingScreen();
+            vm.files[type] = null;
+            vm.errors[type] = 'Successfully imported ' + type;
           }
 
           vm.fileError = function ($file, $message, type) {
+            console.log('fail')
             vm.files[type] = null;
             vm.isLoading[type] = false;
             vm.isSuccess[type] = false;
-            vm.errors[type] = $message && $message.replace(/<[^>]+>/gm, '');
-            loadingScreen.hideLoadingScreen();
+            vm.errors[type] = 'Failed to import ' + type; // $message && $message.replace(/<[^>]+>/gm, '');
           }
 
           /**
            * Close the dialog
            */
           function closeDialog() {
-            $mdDialog.cancel();
+            $mdDialog.hide('success');
           }
         },
         controllerAs: 'vm',
