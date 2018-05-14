@@ -46,8 +46,10 @@ Route::group(['prefix' => 'v1'], function () {
         });
 
         Route::get('/user', function (Request $request) {
-            dump(Auth::user());
+            return Auth::user();
         });
+
+        Route::post('login', 'UserController@login');
 
         //reading controller
         Route::post('create_reading_exercise','ReadingController@postReadingExercise');
@@ -80,7 +82,6 @@ Route::group(['prefix' => 'v1'], function () {
         Route::put('update_role','RoleController@putRole');
         Route::delete('delete_role','RoleController@deleteRole');
         Route::get('read_role','RoleController@readRole');
-
 
         Route::post('userApi/logout', 'LoginController@logout');
         //Subject Controller
