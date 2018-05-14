@@ -41,6 +41,10 @@ Route::get('/addStudent',function (Request $request){
 Route::group(['prefix' => 'v1'], function () {
     Route::group(['middleware' => 'detectDB'], function () {
 
+        Route::get('/dumpuser', function (Request $request) {
+            dump(Auth::dumpuser());
+        });
+
         Route::get('/user', function (Request $request) {
             dump(Auth::user());
         });
