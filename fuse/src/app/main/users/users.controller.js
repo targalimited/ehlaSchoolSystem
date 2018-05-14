@@ -178,7 +178,7 @@
           vm.ngFlowOptions = {
             student: {
               // You can configure the ngFlow from here
-              target                   : 'v1/importTeacherExcel',
+              target                   : 'http://localhost:8000/v1/account_student',
               chunkSize                : 15 * 1024 * 1024,
               maxChunkRetries          : 1,
               simultaneousUploads      : 1,
@@ -187,7 +187,7 @@
             },
             teacher: {
               // You can configure the ngFlow from here
-              target                   : 'v1/importStudentExcel',
+              target                   : 'http://localhost:8000/v1/account_teacher',
               chunkSize                : 15 * 1024 * 1024,
               maxChunkRetries          : 1,
               simultaneousUploads      : 1,
@@ -252,7 +252,7 @@
             }
           }
 
-          vm.fileSuccess = function(file, message)
+          vm.fileSuccess = function(file, message, type)
           {
             vm.isLoading[type] = false;
             vm.isSuccess[type] = true;
@@ -262,6 +262,8 @@
             if (isAllSuccess) {
               closeDialog();
             }
+
+            loadingScreen.hideLoadingScreen();
           }
 
           vm.fileError = function ($file, $message, type) {
@@ -269,6 +271,7 @@
             vm.isLoading[type] = false;
             vm.isSuccess[type] = false;
             vm.errors[type] = $message && $message.replace(/<[^>]+>/gm, '');
+            loadingScreen.hideLoadingScreen();
           }
 
           /**
