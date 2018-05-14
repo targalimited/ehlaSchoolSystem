@@ -20,6 +20,7 @@
         <span>Add Class</span>
       </md-button>
 
+      <!--
       <md-button class="md-raised md-background" ng-click="vm.importClass($event)">
         <span>Import Classes</span>
       </md-button>
@@ -27,6 +28,7 @@
       <md-button class="md-raised md-background" ng-click="vm.exportClass($event)">
         <span>Export Classes</span>
       </md-button>
+      -->
     </div>
   </div>
   <!-- / HEADER -->
@@ -44,14 +46,16 @@
               <span class="column-title">Class</span>
             </div>
           </th>
+          <!--
           <th class="secondary-text">
             <div class="table-header">
               <span class="column-title">Level</span>
             </div>
           </th>
+          -->
           <th class="secondary-text">
             <div class="table-header">
-              <span class="column-title">Action</span>
+              <span class="column-title text-center">Action</span>
             </div>
           </th>
         </tr>
@@ -62,11 +66,15 @@
           <td style="text-align: center">Loading...</td>
           <td></td>
         </tr>
-        <tr ng-repeat="class in vm.data" ng-click="vm.editClass($event, class)"
+        <tr ng-repeat="class in vm.data"
             ng-show="!loading">
           <td>{{ class.c_name }}</td>
-          <td>{{ vm.displaySchoolLevels([class.level_id]) }}</td>
-          <td ng-click="$event.preventDefault(); $event.stopPropagation();">
+          <!--<td>{{ vm.displaySchoolLevels([class.level_id]) }}</td>-->
+          <td class="year-icons" ng-click="$event.preventDefault(); $event.stopPropagation();">
+            <md-icon md-font-icon="blue-600-fg icon-pencil"
+                     ng-click="vm.editClass($event, class)"
+                     class="s18"></md-icon>
+
             <md-icon md-font-icon="red-600-fg icon-delete"
                      ng-click="vm.deleteClass($event, class)"
                      class="s18"></md-icon>

@@ -34,6 +34,20 @@
           if (!$scope.user.class_subject || !$scope.user.class_subject.length) {
             $scope.user.class_subject = [{}];
           }
+          console.log('@@@',  $scope.user)
+          if ($scope.user.teacher_classes_subjects) {
+            $scope.user.class_subject = $scope.user.teacher_classes_subjects;
+            _.each($scope.user.class_subject, function (i) {
+              i.class = i.classes;
+              i.subject = i.subjects;
+              i.teacher = i.teachers;
+            })
+          }
+
+          if (_.isUndefined($scope.user.class_id) && $scope.user.class_subject.length) {
+            $scope.user.class_id = $scope.user.class_subject[0].class.id;
+          }
+
           var userList = results[1].plain().data;
           $scope.teachers = _.filter(userList, function (u) {
             return $scope.isRole('Teacher', u.roles)
@@ -67,7 +81,7 @@
     $scope.searchTextItems = function (query, items) {
       return query ? _.filter(items, function (c) {
         var name = c.c_name || c.s_name_en || c.name || c.username;
-        return (name.toLowerCase().indexOf(query.toLowerCase()) === 0);
+        return (name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
       }) : items;
     }
 
@@ -81,9 +95,13 @@
     
     $scope.saveUser = function () {
       loadingScreen.showLoadingScreen();
+      if (_.isUndefined($scope.user.class_id) && $scope.user.class_subject.length) {
+        $scope.user.class_id = $scope.user.class_subject[0].class.id;
+      }
       var promise = $scope.action === 'create' ?
         Restangular.service($scope.isRole('Student') ? 'student_single' : 'teacher_single').post($scope.user) :
-        Restangular.service('teacher_single').post($scope.user);
+        Restangular.all($scope.isRole('Student') ? 'student_single' : 'teacher_single').customPUT($scope.user);
+
       promise
         .then(function (results) {
           generalMessage.showMessageToast('success', 'User ' + $scope.action + ' successfully.');

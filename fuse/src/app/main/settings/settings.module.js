@@ -42,10 +42,10 @@
       title: 'Academic Year',
       state: 'app.settings.academic-year',
     });
-    msNavigationServiceProvider.saveItem('fuse.settings.levels', {
+    /*msNavigationServiceProvider.saveItem('fuse.settings.levels', {
       title: 'Levels',
       state: 'app.settings.levels',
-    });
+    });*/
     msNavigationServiceProvider.saveItem('fuse.settings.subjects', {
       title: 'Subjects',
       state: 'app.settings.subjects',

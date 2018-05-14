@@ -108,23 +108,24 @@
         <div layout="row" ng-if="user.roles[0].id">
           <div layout="column" flex="20">
             <md-input-container>
-              <label>{{ isRole('Student') ? 'Enrolled' : 'Teaching'}}</label>
+              <label>{{ isRole('Student') ? 'Class' : 'Teaching'}}</label>
             </md-input-container>
           </div>
           <div layout="column" flex="80">
+            {{user.class_subject}}
             <table>
               <tr>
-                <th>Class</th>
-                <th>Subject</th>
-                <th ng-if="isRole('Student')">Teacher</th>
-                <th></th>
+                <th><span ng-if="!isRole('Student')">Class</span></th>
+                <th ng-if="!isRole('Student')">Subject</th>
+                <!-- <th ng-if="isRole('Student')">Teacher</th> -->
+                <th ng-if="!isRole('Student')"></th>
               </tr>
               <tr ng-repeat="c in user.class_subject">
                 <td>
                   <md-autocomplete
                     ng-style="{outline: !c.class ? '1px solid red' : ''}"
                     md-input-name="autocompleteClass"
-                    md-input-minlength="2"
+                    md-input-minlength="1"
                     md-input-maxlength="18"
                     md-selected-item="c.class"
                     md-search-text="c.searchClassName"
@@ -132,7 +133,7 @@
                     md-item-text="item.c_name"
                     md-require-match>
                     <md-item-template>
-                      <span md-highlight-text="c.class" md-highlight-flags="^i">{{item.c_name}}</span>
+                      <span md-highlight-text="c.class" md-highlight-flags="gi">{{item.c_name}}</span>
                     </md-item-template>
                     <div ng-messages="userForm.autocompleteClass.$error">
                       <div ng-message="required">Class is required</div>
@@ -140,11 +141,11 @@
                     </div>
                   </md-autocomplete>
                 </td>
-                <td>
+                <td ng-if="!isRole('Student')">
                   <md-autocomplete
                     md-input-name="autocompleteSubject"
                     ng-style="{outline: !c.subject ? '1px solid red' : ''}"
-                    md-input-minlength="2"
+                    md-input-minlength="1"
                     md-input-maxlength="18"
                     md-selected-item="c.subject"
                     md-search-text="c.searchSubject"
@@ -152,15 +153,16 @@
                     md-item-text="item.s_name_en"
                     md-require-match>
                     <md-item-template>
-                      <span md-highlight-text="c.subject" md-highlight-flags="^i">{{item['s_name_' + language]}}</span>
+                      <span md-highlight-text="c.subject" md-highlight-flags="gi">{{item['s_name_' + language]}}</span>
                     </md-item-template>
                   </md-autocomplete>
                 </td>
+                <!--
                 <td ng-if="isRole('Student')">
                   <md-autocomplete
                     md-input-name="autocompleteUser"
                     ng-style="{outline: !c.teacher ? '1px solid red' : ''}"
-                    md-input-minlength="2"
+                    md-input-minlength="1"
                     md-input-maxlength="18"
                     md-selected-item="c.teacher"
                     md-search-text="c.searchTeacher"
@@ -168,11 +170,12 @@
                     md-item-text="item.username"
                     md-require-match>
                     <md-item-template>
-                      <span md-highlight-text="c.teacher" md-highlight-flags="^i">{{item.username}}</span>
+                      <span md-highlight-text="c.teacher" md-highlight-flags="gi">{{item.username}}</span>
                     </md-item-template>
                   </md-autocomplete>
                 </td>
-                <td>
+                -->
+                <td ng-if="!isRole('Student')">
                   <md-icon md-font-icon="red-600-fg icon-delete" style="padding: 0 10px; cursor: pointer"
                            ng-click="deleteClass($event, c)"
                            class="s22"></md-icon>
@@ -180,7 +183,7 @@
               </tr>
             </table>
             <div>
-              <md-button class="md-raised md-accent md-background" ng-click="addClass()">
+              <md-button class="md-raised md-accent md-background" ng-click="addClass()" ng-if="!isRole('Student')">
                 <span>Add</span>
               </md-button>
             </div>

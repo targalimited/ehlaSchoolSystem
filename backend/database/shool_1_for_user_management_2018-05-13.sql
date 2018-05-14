@@ -87,7 +87,7 @@ CREATE TABLE `school_assignment_items` (
   `updated_at` datetime NOT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 
 
@@ -112,7 +112,7 @@ CREATE TABLE `school_assignments` (
   `published` tinyint(1) DEFAULT NULL,
   `compulsory` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 
 
@@ -181,7 +181,7 @@ CREATE TABLE `school_classes` (
   `level_id` int(2) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 LOCK TABLES `school_classes` WRITE;
 /*!40000 ALTER TABLE `school_classes` DISABLE KEYS */;
@@ -212,7 +212,7 @@ CREATE TABLE `school_curriculum_settings` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `level` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -276,7 +276,7 @@ CREATE TABLE `school_permission_role` (
   KEY `school_permission_role_role_id_foreign` (`role_id`),
   CONSTRAINT `school_permission_role_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `school_permissions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `school_permission_role_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `school_roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 
@@ -287,14 +287,14 @@ DROP TABLE IF EXISTS `school_permissions`;
 
 CREATE TABLE `school_permissions` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `display_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `school_permissions_name_unique` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 
@@ -310,7 +310,7 @@ CREATE TABLE `school_role_user` (
   KEY `school_role_user_role_id_foreign` (`role_id`),
   CONSTRAINT `school_role_user_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `school_roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `school_role_user_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `school_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 LOCK TABLES `school_role_user` WRITE;
 /*!40000 ALTER TABLE `school_role_user` DISABLE KEYS */;
@@ -337,14 +337,14 @@ DROP TABLE IF EXISTS `school_roles`;
 
 CREATE TABLE `school_roles` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `display_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `school_roles_name_unique` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 LOCK TABLES `school_roles` WRITE;
 /*!40000 ALTER TABLE `school_roles` DISABLE KEYS */;
@@ -375,7 +375,7 @@ CREATE TABLE `school_student_subjects` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   UNIQUE KEY `teacher_class_subject_id` (`teacher_class_subject_id`,`student_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 LOCK TABLES `school_student_subjects` WRITE;
 /*!40000 ALTER TABLE `school_student_subjects` DISABLE KEYS */;
@@ -412,7 +412,7 @@ CREATE TABLE `school_subjects` (
   `create_ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 LOCK TABLES `school_subjects` WRITE;
 /*!40000 ALTER TABLE `school_subjects` DISABLE KEYS */;
@@ -443,7 +443,7 @@ CREATE TABLE `school_teacher_class_subject` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `teacher_class_subject` (`teacher_id`,`class_id`,`subject_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 LOCK TABLES `school_teacher_class_subject` WRITE;
 /*!40000 ALTER TABLE `school_teacher_class_subject` DISABLE KEYS */;
@@ -474,7 +474,7 @@ CREATE TABLE `school_teaching_progresses` (
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 
 
@@ -485,20 +485,20 @@ DROP TABLE IF EXISTS `school_users`;
 
 CREATE TABLE `school_users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(100) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
-  `email` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
+  `username` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `email` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `user_group` int(11) NOT NULL DEFAULT '5',
-  `sc_token` varchar(100) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
-  `fb_token` varchar(100) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
-  `acc_type` enum('paying','free','free_trial','unlimited') CHARACTER SET utf8mb4 NOT NULL DEFAULT 'paying',
-  `status` enum('non-active','active') CHARACTER SET utf8mb4 NOT NULL DEFAULT 'non-active',
+  `sc_token` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `fb_token` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `acc_type` enum('paying','free','free_trial','unlimited') CHARACTER SET utf8 NOT NULL DEFAULT 'paying',
+  `status` enum('non-active','active') CHARACTER SET utf8 NOT NULL DEFAULT 'non-active',
   `is_deleted` int(1) NOT NULL DEFAULT '0',
   `create_ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `school_id` int(11) DEFAULT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `remember_token` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `remember_token` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `student_id` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
@@ -569,7 +569,7 @@ CREATE TABLE `school_video_settings` (
   `video_id` int(11) DEFAULT NULL,
   `level` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -584,12 +584,12 @@ CREATE TABLE `school_weakness_sets` (
   `question_id` int(11) DEFAULT NULL,
   `question_type` int(11) DEFAULT NULL,
   `difficulty` int(11) DEFAULT NULL,
-  `marks` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `marks` varchar(255) COLLATE utf8_unicode_ci DEFAULT '',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 
