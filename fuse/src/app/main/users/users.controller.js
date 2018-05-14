@@ -152,6 +152,7 @@
     vm.exportUserByRole = function (role) {
       Restangular.one('export' + role.name + 'Excel').get()
         .then(function (results) {
+          console.log('@@@@@@@@@', results)
           var file = new Blob([results], { type: 'text/csv' });
           saveAs(file, 'something.csv');
         })

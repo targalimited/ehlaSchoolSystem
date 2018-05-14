@@ -34,10 +34,10 @@
 
         <md-menu-content width="3" id="export-menu-content">
           <md-menu-item ng-repeat="role in vm.exportAllowedRoles">
-            <md-button ng-click="vm.exportUserByRole(role)" aria-label="{{role.name}}">
-                <span layout="row" layout-align="start center">
+            <md-button aria-label="{{role.name}}">
+                <a href="http://localhost:8000/v1/export{{role.name}}Excel" layout="row" layout-align="start center">
                     <span>{{role.name}}</span>
-                </span>
+                </a>
             </md-button>
           </md-menu-item>
         </md-menu-content>

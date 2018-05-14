@@ -44,8 +44,10 @@
             })
           }
 
-          if (_.isUndefined($scope.user.class_id) && $scope.user.class_subject.length) {
-            $scope.user.class_id = $scope.user.class_subject[0].class.id;
+          if (_.isUndefined($scope.user.class_id) && $scope.user.student_subjects.length) {
+            $scope.user.class_id = $scope.user.student_subjects[0].teacher_class_subjects.class_id;
+            console.log('@@@@@@@@@', $scope.user.class_id)
+            $scope.user.class_subject = [{class: $scope.user.student_subjects[0].teacher_class_subjects.classes}];
           }
 
           var userList = results[1].plain().data;
@@ -95,7 +97,7 @@
     
     $scope.saveUser = function () {
       loadingScreen.showLoadingScreen();
-      if (_.isUndefined($scope.user.class_id) && $scope.user.class_subject.length) {
+      if ($scope.user.class_subject.length) {
         $scope.user.class_id = $scope.user.class_subject[0].class.id;
       }
       var promise = $scope.action === 'create' ?
