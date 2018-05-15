@@ -38,7 +38,7 @@ Route::get('/addStudent',function (Request $request){
 //header('Access-Control-Allow-Credentials: true');
 
 
-Route::group(['prefix' => 'v1'], function () {
+Route::group(['prefix' => 'v1', 'middleware' => ['cors']], function () {
     Route::group(['middleware' => 'detectDB'], function () {
 
         Route::get('/user', function (Request $request) {
