@@ -95,5 +95,13 @@
       stateChangeStartEvent();
       stateChangeSuccessEvent();
     });
+
+    $rootScope.isOfRoles = function (roleNames) {
+      // console.log($rootScope.user)
+      //$rootScope.user.userGroup.title = 'Teacher'
+      return _.some(roleNames, function (roleName) {
+        return $rootScope.user.userGroup.title === roleName;
+      });
+    }
   }
 })();

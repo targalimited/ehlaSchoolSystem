@@ -44,9 +44,8 @@
             })
           }
 
-          if (_.isUndefined($scope.user.class_id) && $scope.user.student_subjects.length) {
+          if (_.isUndefined($scope.user.class_id) && $scope.user.student_subjects && $scope.user.student_subjects.length) {
             $scope.user.class_id = $scope.user.student_subjects[0].teacher_class_subjects.class_id;
-            console.log('@@@@@@@@@', $scope.user.class_id)
             $scope.user.class_subject = [{class: $scope.user.student_subjects[0].teacher_class_subjects.classes}];
           }
 

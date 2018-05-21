@@ -1,6 +1,6 @@
 <div
-  class="doc-page material-docs ehla-blue-bg layout-docs doc-template page-layout simple tabbed fullwidth ng-scope layout-column"
-  layout="column">
+    class="doc-page material-docs ehla-blue-bg layout-docs doc-template page-layout simple tabbed fullwidth ng-scope layout-column"
+    layout="column">
 
   <div ncy-breadcrumb></div>
   <!-- HEADER -->
@@ -94,9 +94,16 @@
           <div layout="column" flex="80">
             <md-input-container>
               <md-select ng-model="user.roles[0].id" required
+                         ng-disabled="!isOfRoles(['Teacher', 'Principal', 'Vice Principal', 'Director'])"
                          class="normal" placeholder="Roles">
                 <md-optgroup label="Roles">
-                  <md-option ng-repeat="role in roles" value="{{role.id}}">
+                  <md-option
+                      ng-disabled="role.name === 'Principal' ||
+                      (isOfRoles(['Vice Principal', 'Director', 'Teacher']) && role.name === 'Vice Principal') ||
+                      (isOfRoles(['Director', 'Teacher']) && role.name === 'Director') ||
+                      (isOfRoles(['Teacher']) && role.name === 'Teacher') ||
+                      (role.name === 'Student' && action === 'edit')"
+                      ng-repeat="role in roles" value="{{role.id}}">
                     {{role.name}}
                   </md-option>
                 </md-optgroup>
@@ -122,15 +129,15 @@
               <tr ng-repeat="c in user.class_subject">
                 <td>
                   <md-autocomplete
-                    ng-style="{outline: !c.class ? '1px solid red' : ''}"
-                    md-input-name="autocompleteClass"
-                    md-input-minlength="1"
-                    md-input-maxlength="18"
-                    md-selected-item="c.class"
-                    md-search-text="c.searchClassName"
-                    md-items="item in searchTextItems(c.searchClassName, classes)"
-                    md-item-text="item.c_name"
-                    md-require-match>
+                      ng-style="{outline: !c.class ? '1px solid red' : ''}"
+                      md-input-name="autocompleteClass"
+                      md-input-minlength="1"
+                      md-input-maxlength="18"
+                      md-selected-item="c.class"
+                      md-search-text="c.searchClassName"
+                      md-items="item in searchTextItems(c.searchClassName, classes)"
+                      md-item-text="item.c_name"
+                      md-require-match>
                     <md-item-template>
                       <span md-highlight-text="c.class" md-highlight-flags="gi">{{item.c_name}}</span>
                     </md-item-template>
@@ -142,15 +149,15 @@
                 </td>
                 <td ng-if="!isRole('Student')">
                   <md-autocomplete
-                    md-input-name="autocompleteSubject"
-                    ng-style="{outline: !c.subject ? '1px solid red' : ''}"
-                    md-input-minlength="1"
-                    md-input-maxlength="18"
-                    md-selected-item="c.subject"
-                    md-search-text="c.searchSubject"
-                    md-items="item in searchTextItems(c.searchSubject, subjects)"
-                    md-item-text="item.s_name_en"
-                    md-require-match>
+                      md-input-name="autocompleteSubject"
+                      ng-style="{outline: !c.subject ? '1px solid red' : ''}"
+                      md-input-minlength="1"
+                      md-input-maxlength="18"
+                      md-selected-item="c.subject"
+                      md-search-text="c.searchSubject"
+                      md-items="item in searchTextItems(c.searchSubject, subjects)"
+                      md-item-text="item.s_name_en"
+                      md-require-match>
                     <md-item-template>
                       <span md-highlight-text="c.subject" md-highlight-flags="gi">{{item['s_name_' + language]}}</span>
                     </md-item-template>
@@ -189,6 +196,7 @@
           </div>
         </div>
 
+        <!--
         <div layout="row" ng-if="action === 'edit'">
           <div layout="column" flex="20">
             <md-input-container>
@@ -200,6 +208,7 @@
             </md-switch>
           </div>
         </div>
+        -->
       </form>
     </div>
   </div>

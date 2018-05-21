@@ -42,7 +42,7 @@
         </div>
 
 
-        <div layout="column" flex="50" id="file-uploader-teacher"
+        <div layout="column" flex="50" id="file-uploader-teacher" ng-if="!isOfRoles(['Teacher'])"
              flow-init="vm.ngFlowOptions.teacher"
              flow-name="vm.ngFlow.teacher.flow"
              flow-file-added="vm.fileAdded($file, 'teacher')"

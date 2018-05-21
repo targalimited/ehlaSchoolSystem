@@ -35,7 +35,17 @@
        'param1': 'page'
        },*/
       translate: 'SETTINGS.SETTINGS_NAV',
-      weight: 6
+      weight: 6,
+      hidden: function () {
+        try {
+          var user = JSON.parse(localStorage.getItem('user'));
+          //user.userGroup.title = 'Principal'
+          //console.log(user.userGroup.title)
+          return user.userGroup.title === 'Teacher';
+        } catch (e) {
+          return true;
+        }
+      }
     });
 
     msNavigationServiceProvider.saveItem('fuse.settings.academic-year', {
