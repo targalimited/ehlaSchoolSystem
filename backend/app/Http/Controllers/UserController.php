@@ -9,6 +9,7 @@ use App\StudentSubject;
 use App\Subject;
 use App\TeacherClassSubject;
 use App\User;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Excel;
 use Illuminate\Support\Facades\Auth;
@@ -176,19 +177,74 @@ class UserController extends Controller
           return error_json($result);
         } else {
 
-          if ($first_sheet_title != 'teacher_list') //for first import, creating new teacher user, if second import skip this step
-            foreach ($results[0] as $v) {
-              $user = New User();
-              $user->username = $v['username'];
-              $user->email = $v['email'];
-              $user->password = $v['password'];
-              $user->user_group = 3;
-              $user->save();
 
-              $user->roles()->attach(5);
+          if ($first_sheet_title != 'teacher_list') {
+             //for first import, creating new teacher user, if second import skip this step
+              foreach ($results[0] as $k => $v) {
+                $user = New User();
+                $user->username = $v['username'];
+                $user->email = $v['email'];
+                $user->password = '12345678';
+                $user->user_group = 3;
+                $user->save();
+
+                $user_list[$k]['username'] = $v['email'];
+                $user_list[$k]['nickname'] = $v['username'];
+                $user_list[$k]['nickname'] = "";
+
+                $user->roles()->attach(5);
+
+              }
+
+
+            try {
+              $client = New Client();
+
+              if (config('app.env') == 'production')
+                $token = $request->headers->get('access-token');
+              else
+                $token = config('app.account_crud_token');
+
+              $input['userGroup'] = '3';
+              $input['accType'] = '';
+              $input['users'] = $user_list;
+
+              $result = $client->request('POST', env('USERMODEL_URL').'v1/userApi/account_batch_creator?access-token=' . $token . '&encode=1',
+                [
+                  'auth' => ['ehl_api', '27150900'],
+                  'headers' => [
+                    'User-Agent' => filter_input(INPUT_SERVER, 'HTTP_USER_AGENT')
+                  ],
+                  'form_params' => [
+                    'params' => $input
+                  ]
+
+                ]
+              )->getBody()->getContents();
+
+
+              //$return = (json_decode('{"success":true,"data":[{"status":true,"username":"ctm@student.com","account":null,"password":"dVzLOREq","type":"new account"},{"status":true,"username":"lwk@student.com","account":null,"password":"wpcyYGAl","type":"new account"},{"status":true,"username":"lwm@student.com","account":null,"password":"ziUFYuXj","type":"new account"}],"params":{"userGroup":"5","accType":"","users":[{"username":"ctm@student.com","nickname":"Chan Tai Ming"},{"username":"lwk@student.com","nickname":"Lau Wing Ki"},{"username":"lwm@student.com","nickname":"Leung wai Ming"}]},"metadata":false,"debug":{"query_time":0.031157970428466797}}'));
+              // $return = json_decode($result);
+
+              $return = \GuzzleHttp\json_decode($result, true);
+
+            } catch (\Exception $e) {
+              // There was another exception.
+              $return = response()->json(\GuzzleHttp\json_decode($e->getResponse()->getBody()->getContents(), true), 200);
 
             }
 
+            if($return['success']){
+              foreach ($return['data'] as $k => $v) {
+
+                $user = User::where('email',$v['username'])->first();
+                $user->password = $v['password'];
+                $user->save();
+
+              }
+            }
+
+          }
           $users = User::whereIn('email', $email)->get();
           foreach ($users as $v) {
             $teacher_email[$v->id] = $v->email;
@@ -343,16 +399,20 @@ class UserController extends Controller
 
 
 
-
-          DB::transaction(function () use ($results, $new_student_list) {
-            foreach ($results[0] as $v) {
+          DB::transaction(function () use ($results, $new_student_list, $request) {
+            foreach ($results[0] as $k => $v) {
 
               $user = New User();
               $user->username = $v['username'];
               $user->email = $v['email'];
-              $user->password = $v['password'];
+              $user->password = '12345678';
               $user->user_group = 3;
               $user->save();
+
+              $user_list[$k]['username'] = $v['email'];
+              $user_list[$k]['nickname'] = $v['username'];
+              $user_list[$k]['account'] = "";
+
 
               $user->roles()->attach(3);
 
@@ -361,6 +421,52 @@ class UserController extends Controller
               $scs->student_id = $user->id;
               $scs->save();
 
+            }
+
+            try {
+              $client = New Client();
+
+              if (config('app.env') == 'production')
+                $token = $request->headers->get('access-token');
+              else
+                $token = config('app.account_crud_token');
+
+              $input['userGroup'] = '5';
+              $input['accType'] = '';
+              $input['users'] = $user_list;
+
+              $result = $client->request('POST', env('USERMODEL_URL').'v1/userApi/account_batch_creator?access-token=' . $token . '&encode=1',
+                [
+                  'auth' => ['ehl_api', '27150900'],
+                  'headers' => [
+                    'User-Agent' => filter_input(INPUT_SERVER, 'HTTP_USER_AGENT')
+                  ],
+                  'form_params' => [
+                    'params' => $input
+                  ]
+
+                ]
+              )->getBody()->getContents();
+
+
+              //$return = (json_decode('{"success":true,"data":[{"status":true,"username":"ctm@student.com","account":null,"password":"dVzLOREq","type":"new account"},{"status":true,"username":"lwk@student.com","account":null,"password":"wpcyYGAl","type":"new account"},{"status":true,"username":"lwm@student.com","account":null,"password":"ziUFYuXj","type":"new account"}],"params":{"userGroup":"5","accType":"","users":[{"username":"ctm@student.com","nickname":"Chan Tai Ming"},{"username":"lwk@student.com","nickname":"Lau Wing Ki"},{"username":"lwm@student.com","nickname":"Leung wai Ming"}]},"metadata":false,"debug":{"query_time":0.031157970428466797}}'));
+             // $return = json_decode($result);
+
+              $return = \GuzzleHttp\json_decode($result, true);
+            } catch (\Exception $e) {
+              // There was another exception.
+              $return = response()->json(\GuzzleHttp\json_decode($e->getResponse()->getBody()->getContents(), true), 200);
+
+            }
+
+            if($return['success']){
+              foreach ($return['data'] as $k => $v) {
+
+                $user = User::where('email',$v['username'])->first();
+                $user->password = $v['password'];
+                $user->save();
+
+              }
             }
 
           foreach (User::all() as $v) {
@@ -402,14 +508,6 @@ class UserController extends Controller
               }
             }
           }
-
-
-          // dd(array_search($v['class'], $this->class));
-
-          // }
-
-//                    dd($new_student_list);
-
 
 
             StudentSubject::truncate();
@@ -750,7 +848,17 @@ class UserController extends Controller
     // $users = User::withRole(['Student','Teacher'])->get();
 
     //$users = Role::with('users')->get();
-    $users = User::WhereHas('roles')->with('roles')->get();
+    //$user = User::where('id','=','719')->first();
+    $user = Auth::user();
+
+    if($user && $user->roles()->first()->id == 5){
+      $teachers = TeacherClassSubject::where('teacher_id','=',$user->id)->pluck('class_id');
+      $students = StudentClassSubject::whereIn('class_id',$teachers)->pluck('student_id');
+      $users = User::whereIn('id',$students)->WhereHas('roles')->with('roles')->get();
+    }else{
+      $users = User::WhereHas('roles')->with('roles')->get();
+    }
+
     $result['data'] = $users;
     return json($result);
 
@@ -758,6 +866,7 @@ class UserController extends Controller
     //$users = User::hasRole('Teacher')->get();
 
   }
+
 
   public function getUserDetails(Request $request)
   {

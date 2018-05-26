@@ -26,6 +26,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
+    'account_crud_token' => env('ACCOUNT_CRUD_TOKEN',''),
 
     /*
     |--------------------------------------------------------------------------
