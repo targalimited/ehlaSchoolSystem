@@ -17,13 +17,13 @@ class CORS {
    * @return mixed
    */
   public function handle($request, Closure $next) {
-//        return $next($request);
 
     // ALLOW OPTIONS METHOD
     $headers = [
-      "Access-Control-Allow-Origin"   => "*",
-      'Access-Control-Allow-Methods' => 'POST, GET, OPTIONS, PUT, DELETE',
-      'Access-Control-Allow-Headers' => 'Content-Type, X-Auth-Token, Origin, Authorization'
+      'Access-Control-Allow-Origin' => 'http://localhost:3000',
+      'Access-Control-Allow-Credentials'=> true,
+      'Access-Control-Allow-Methods' => '*',
+      'Access-Control-Allow-Headers' => '*'
     ];
 
     if ($request->getMethod() == "OPTIONS") {
