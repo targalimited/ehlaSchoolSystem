@@ -22,6 +22,7 @@
             return breadcrumb.getBreadCrumbs($stateParams);
           },
         },
+        authenticate: true,
         ncyBreadcrumb: {
           label: '{{action}}'
         },

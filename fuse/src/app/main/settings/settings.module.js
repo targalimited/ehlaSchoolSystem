@@ -20,6 +20,7 @@
           label: 'Settings'
         },
         abstract: true,
+        authenticate: true,
       });
 
     // Translation

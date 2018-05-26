@@ -25,6 +25,7 @@
             return msApi.resolve('users@get');
           }
         },
+        authenticate: true,
         ncyBreadcrumb: {
           label: 'Users'
         },
