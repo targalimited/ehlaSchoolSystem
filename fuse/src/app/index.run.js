@@ -65,7 +65,8 @@
       $rootScope.loadingProgress = true;
 
       var accessToken = localStorage.getItem('access_token');
-      if (!accessToken && toState.authenticate) {
+      console.log(accessToken, toState)
+      if (!accessToken && (toState.authenticate || _.isUndefined(toState.authenticate))) {
         $timeout(function () {
           $rootScope.loadingProgress = false;
           $state.go('app.login');
