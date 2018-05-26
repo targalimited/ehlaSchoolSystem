@@ -27,6 +27,5 @@ class TeacherClassSubject extends Model
 
     public function teachers(){
       return $this->belongsTo(User::class,'teacher_id');
-
     }
 }
