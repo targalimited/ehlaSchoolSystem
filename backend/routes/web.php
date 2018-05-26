@@ -39,7 +39,7 @@ Route::get('/addStudent',function (Request $request){
 
 
 Route::group(['prefix' => 'v1'], function () {
-    Route::group(['middleware' => 'detectDB'], function () {
+    Route::group(['middleware' => ['cors','detectDB']], function () {
 
         Route::get('/user', function (Request $request) {
             dump(Auth::user());
@@ -165,7 +165,7 @@ Route::group(['prefix' => 'v1'], function () {
 
     });
 
-    Route::any('{api?}/{function?}/{params?}', 'ApiController@api')->where('params', '(.*)')->middleware('detectDB');
+    Route::any('{api?}/{function?}/{params?}', 'ApiController@api')->where('params', '(.*)')->middleware('cors','detectDB');
 
 });
 
