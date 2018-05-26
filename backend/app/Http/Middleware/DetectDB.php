@@ -25,12 +25,20 @@ class DetectDB
        // $db_name = "school_".Auth::user()->school_id;
         $db_name = "school_1";
         DB::purge('mysql');
-        config(['database.connections.mysql.host'=>env('DB_HOST_SCHOOL','school-system-rds.ckjfdmyszhad.ap-southeast-1.rds.amazonaws.com')]);
-        config(['database.connections.mysql.port'=>env('DB_PORT_SCHOOL','13310')]);
-        config(['database.connections.mysql.database'=>env('DB_DATABASE_SCHOOL',$db_name)]);
-        config(['database.connections.mysql.username'=>env('DB_USERNAME_SCHOOL','ehlawebusr')]);
-        config(['database.connections.mysql.password'=>env('DB_PASSWORD_SCHOOL','JS,J.0>D16GvHZt[(=DrgLk1(=70:bad')]);
-        config(['database.connections.mysql.prefix'=>'school_']);
+
+//        config(['database.connections.mysql.host'=>env('DB_HOST_SCHOOL','school-system-rds.ckjfdmyszhad.ap-southeast-1.rds.amazonaws.com')]);
+//        config(['database.connections.mysql.port'=>env('DB_PORT_SCHOOL','13310')]);
+//        config(['database.connections.mysql.database'=>env('DB_DATABASE_SCHOOL',$db_name)]);
+//        config(['database.connections.mysql.username'=>env('DB_USERNAME_SCHOOL','ehlawebusr')]);
+//        config(['database.connections.mysql.password'=>env('DB_PASSWORD_SCHOOL','JS,J.0>D16GvHZt[(=DrgLk1(=70:bad')]);
+//        config(['database.connections.mysql.prefix'=>'school_']);
+
+      config(['database.connections.mysql.host'=>env('DB_HOST_SCHOOL')]);
+      config(['database.connections.mysql.port'=>env('DB_PORT_SCHOOL')]);
+      config(['database.connections.mysql.database'=>env('DB_DATABASE_SCHOOL')]);
+      config(['database.connections.mysql.username'=>env('DB_USERNAME_SCHOOL')]);
+      config(['database.connections.mysql.password'=>env('DB_PASSWORD_SCHOOL')]);
+      config(['database.connections.mysql.prefix'=>'school_']);
        // config(['database.default'=>'mysql']);
         DB::reconnect();
         return $next($request);
