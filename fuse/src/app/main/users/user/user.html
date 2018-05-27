@@ -94,13 +94,13 @@
           <div layout="column" flex="80">
             <md-input-container>
               <md-select ng-model="user.roles[0].id" required
-                         ng-disabled="!isOfRoles(['Teacher', 'Principal', 'Vice Principal', 'Director'])"
+                         ng-disabled="!isOfRoles(['Teacher', 'Principal', 'Vice Principal', 'Panel Chair'])"
                          class="normal" placeholder="Roles">
                 <md-optgroup label="Roles">
                   <md-option
                       ng-disabled="role.name === 'Principal' ||
-                      (isOfRoles(['Vice Principal', 'Director', 'Teacher']) && role.name === 'Vice Principal') ||
-                      (isOfRoles(['Director', 'Teacher']) && role.name === 'Director') ||
+                      (isOfRoles(['Vice Principal', 'Panel Chair', 'Teacher']) && role.name === 'Vice Principal') ||
+                      (isOfRoles(['Panel Chair', 'Teacher']) && role.name === 'Panel Chair') ||
                       (isOfRoles(['Teacher']) && role.name === 'Teacher') ||
                       (role.name === 'Student' && action === 'edit')"
                       ng-repeat="role in roles" value="{{role.id}}">
