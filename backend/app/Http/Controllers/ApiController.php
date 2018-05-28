@@ -44,8 +44,6 @@ class ApiController extends Controller
 
         $client = new Client();
 
-
-
         $result = $client->request($request->method(), env('USERMODEL_URL') . $uri,
           [
             'auth' => ['ehl_api', '27150900'],
@@ -61,13 +59,19 @@ class ApiController extends Controller
 
         $data = \GuzzleHttp\json_decode($result->getBody()->getContents(), true);
 
+        if(!$data['success']){
+          $result = [
+            'status' => false,
+            'code' => '401',
+            'message' => 'You dont have permission to login',
+            'data' => $data['debug']
+          ];
+          return Response()->json($result,401);
+        }
 
         if ($request->function == 'login') {
 
-
           $user = User::where('email',$data['data'][0]['username'])->first();
-
-
 
           if(!$user){
             $result = [
@@ -91,9 +95,6 @@ class ApiController extends Controller
 
         return Response()->json($result,401);
       }
-
-
-
 
     }
 }
