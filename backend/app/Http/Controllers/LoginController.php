@@ -91,6 +91,7 @@ class LoginController extends Controller
 
           $data = \GuzzleHttp\json_decode($result->getBody()->getContents(), true);
 
+
           if(!$data['success']){
             $result = [
               'status' => false,
@@ -113,7 +114,9 @@ class LoginController extends Controller
             }
             Auth::loginUsingId($user->id, true);
 
-          return $data;
+            $user = Auth::user()->with('roles')->first();
+
+          return $user;
 
         }else{
           $result = [

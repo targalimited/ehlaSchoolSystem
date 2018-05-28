@@ -190,7 +190,7 @@ class UserController extends Controller
 
                 $user_list[$k]['username'] = $v['email'];
                 $user_list[$k]['nickname'] = $v['username'];
-                $user_list[$k]['nickname'] = "";
+                $user_list[$k]['account'] = "";
 
                 $user->roles()->attach(5);
 
@@ -239,6 +239,7 @@ class UserController extends Controller
 
                 $user = User::where('email',$v['username'])->first();
                 $user->password = $v['password'];
+                //$user->usermodel_user_id = $v['id'];
                 $user->save();
 
               }
@@ -464,6 +465,7 @@ class UserController extends Controller
 
                 $user = User::where('email',$v['username'])->first();
                 $user->password = $v['password'];
+                //$user->usermodel_user_id = $v['id'];
                 $user->save();
 
               }
