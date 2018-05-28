@@ -1,0 +1,121 @@
+<div
+  class="doc-page ehla-blue-bg material-docs layout-docs doc-template page-layout simple tabbed ng-scope layout-column"
+  layout="column">
+
+  <div ncy-breadcrumb></div>
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="start center">
+    <div class="white-fg" layout="row" layout-align="start center" flex>
+      <div layout="row" layout-align="start center">
+        <div layout="column" layout-align="start start">
+          <div class="h2">
+            {{pageTitle}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <md-button class="md-raised md-background" ng-click="back()">
+        <span>Back</span>
+      </md-button>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <div class="content videos-content" id="top">
+		<md-tabs md-dynamic-height>
+      <md-tab ng-repeat="tab in tabs" 
+							label="{{tab['label_en']}}" 
+							md-on-select="switchSection(tab.tab)" 
+							md-active="section === tab.tab">
+        <div class="content" layout="row" flex>
+					
+					<div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100" layout-wrap="">
+						<div class="content-card" layout="column" flex>
+							<div class="content" layout="row" flex>
+								<div class="white-bg md-whiteframe-4dp">							
+									<div id="DataTables_Table_0_wrapper" class="dataTables_wrapper no-footer">
+										<div class="dataTables_length">
+											<label>Show 
+												<select ng-change="entryUpdate(tab)" ng-model="tab.selectedEntry">
+													<option value="10">10</option>
+													<option value="25">25</option>
+													<option value="50">50</option>
+													<option value="100">100</option>
+												</select>
+												entries
+											</label>
+										</div>
+										<div class="dataTables_filter">
+											<label>Search:<input type="search">
+											</label>
+										</div>								
+									
+										<table class="dataTable row-border hover extra-learning-table">
+											<tbody>
+											<tr ng-repeat="item in tab.data">
+												<td><div><img ng-src="{{ item.thumbnail_path }}" title="{{ item.name_en }}" alt="{{ item.name_en }}"/></div></td>
+												<td>
+													<div class="title">{{ item['name_en'] }}</div>
+													<div class="desc">{{ item['info_en'] }}</div>
+													<div class="desc">{{ item['info_nd_en'] }}</div>
+												</td>
+												<td>
+													<a class="access-btn" ng-click="vm.viewSettings(item.id)">Assignment</a>
+													<a ng-click="vm.previewItem($event, item)" class="preview-btn">Preview</a>
+												</td>
+											</tr>
+											</tbody>
+										</table>							
+									
+										<div class="dataTables_info" role="status" ng-show="tab.data.length > 0">
+											Showing {{((tab.currentPage - 1) * tab.limit) + 1}} to {{tab.currentMaxPage}} of {{tab.totalCount}} entries
+										</div>
+										
+										<div class="dataTables_paginate paging_simple_numbers" ng-show="tab.data.length > 0">
+										
+											<a ng-show="tab.currentPage==1" class="paginate_button previous disabled">Previous</a>
+											<a ng-show="tab.currentPage!=1" class="paginate_button previous">Previous</a>
+											
+											<span>
+												
+												<a ng-show="tab.currentPage==1" class="paginate_button current" ng-click="pageSelect(tab, 1)">1</a>
+												<a ng-show="tab.currentPage!=1" class="paginate_button" ng-click="pageSelect(tab, 1)">1</a>
+												
+												<span class="ellipsis" ng-show="tab.currentPage >3 && tab.maxPage> 5">…</span>
+												
+												<a class="paginate_button current" ng-show="tab.maxPage>2 && tab.currentPage == tab.p1" ng-click="pageSelect(tab, tab.p1)">{{tab.p1}}</a>
+												<a class="paginate_button" ng-show="tab.maxPage>2 && tab.currentPage != tab.p1" ng-click="pageSelect(tab, tab.p1)">{{tab.p1}}</a>
+																								
+												<a class="paginate_button current" ng-show="tab.maxPage>3 && tab.currentPage == tab.p2" ng-click="pageSelect(tab, tab.p2)">{{tab.p2}}</a>
+												<a class="paginate_button" ng-show="tab.maxPage>3 && tab.currentPage != tab.p2" ng-click="pageSelect(tab, tab.p2)">{{tab.p2}}</a>
+																								
+												<a class="paginate_button current" ng-show="tab.p3 != -1 && tab.maxPage>4 && tab.currentPage == tab.p3" ng-click="pageSelect(tab, tab.p3)">{{tab.p3}}</a>
+												<a class="paginate_button" ng-show="tab.p3 != -1 && tab.maxPage>4 && tab.currentPage != tab.p3" ng-click="pageSelect(tab, tab.p3)">{{tab.p3}}</a>
+												
+												<span class="ellipsis" ng-show="tab.currentPage <tab.maxPage - 2 && tab.maxPage> 5">…</span>
+												
+												<a ng-show="tab.currentPage==tab.maxPage && tab.maxPage != 1" class="paginate_button current" ng-show="tab.maxpage > 1" ng-click="pageSelect(tab, tab.maxPage)">{{tab.maxPage}}</a>
+												<a ng-show="tab.currentPage!=tab.maxPage && tab.maxPage != 1" class="paginate_button" ng-show="tab.maxpage > 1" ng-click="pageSelect(tab, tab.maxPage)">{{tab.maxPage}}</a>
+												
+											</span>
+											
+											<a ng-show="tab.currentPage==tab.maxPage" class="paginate_button next disabled">Next</a>
+											<a ng-show="tab.currentPage!=tab.maxPage" class="paginate_button next">Next</a>
+											
+										</div>
+								
+									</div>
+							
+								</div>
+							</div>
+						</div>
+					</div>
+										
+				</div>
+      </md-tab>			
+		</md-tabs>
+	</div>
+</div>

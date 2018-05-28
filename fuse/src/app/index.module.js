@@ -28,8 +28,8 @@
       // Homework
       'app.homework',
 
-      // Report
-      // 'app.reports',
+			// Pilot 100
+			'app.pilot',
 
       // Calendar
       'app.calendar',

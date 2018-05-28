@@ -6,13 +6,173 @@ use App\Assignment;
 use App\AssignmentItemQuestion;
 use App\TeacherClassSubject;
 use App\Traits\TeacherClassSubjectTrait;
+use App\UsermodelApiServices;
+use App\ParamBasicServices;
+use App\PermissionControlServices;
+use App\Homework;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ResultController extends Controller
 {
+	public function get_school_result_report(Request $request) {	
+		//params
+		$params = $request->params;
+	
+		//params basic
+		$PBS = New ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		
+		//permission
+		$PCS = New PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
 
+		//gather data
+		$academicId = $user['academic_id'];
+		$studentIds = $PBS->getStudents();		
+		$itemId = $params['item_id'];
+		$itemType = $params['item_type'];
+		
+		//usermodel
+		$UAS = New UsermodelApiServices($request);
+		$result = $UAS->resultApiGetSchoolResultReport($academicId, $studentIds, $itemId);	
+		$resultReport = $result["data"];
+		
+		if ($itemType == 2) {
+			$data = $UAS->schoolApiGetReadingHomeworkByItemId($itemId);
+			$exercise = $data["data"];
+		}
+		
+		
+		
+		
+		$output['result'] = $resultReport;
+		$output['exercise'] = $exercise;
+		return json($output);
+	}
+	public function get_school_result_summary_report(Request $request) {	
+		//params
+		$params = $request->params;
+	
+		//params basic
+		$PBS = New ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		
+		//permission
+		$PCS = New PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
 
+		//gather data
+		$academicId = $user['academic_id'];
+		$classId = $user['class_id'];
+		$subjectId = $user['subject_id'];
+		$studentIds = $PBS->getStudents();		
+		$itemId = $params['item_id'];
+		$itemType = $params['item_type'];
+		
+		//usermodel
+		$UAS = New UsermodelApiServices($request);
+		$result = $UAS->resultApiGetSchoolResultSummaryReport($academicId, $studentIds, $itemId);	
+		$exeDetail = $result["data"]["exercise"];
+		$userResult = $result["data"]["user_result"];
+				
+		$homework = New Homework();
+		$homework->decorateHomeworkListDetail($exeDetail, $itemId, $academicId, $classId, $subjectId);
+		
+		$exeDetailMapper = [];
+		$userResultMapper = [];
+		$userList = [];
+		
+		//loop exercise
+		foreach ($exeDetail as $value) {
+			unset($value['title_en'], $value['title_zh'], $value['description_en'], $value['description_zh']);
+			$exeDetailMapper[$value['id']] = $value;
+		}
+		//loop user result
+		foreach ($userResult as $value) {
+			if (!isset($userResultMapper[$value['user_id']])) {
+				$userResultMapper[$value['user_id']] = [];
+			}
+			$value['result_json'] = json_decode($value['result_json'], true);
+			array_push($userResultMapper[$value['user_id']], $value);
+		}
+		//loop user
+		foreach ($studentIds as $id) {
+			$userObj = [];
+			$userObj['user_id'] = $id;
+			$userObj['exercises'] = $exeDetailMapper;
+			
+			if (isset($userResultMapper[$id])) {
+				foreach ($userResultMapper[$id] as &$userResult) {
+					if (isset($userObj['exercises'][$userResult['optional_id']])) {
+						if (!isset($userObj['exercises'][$userResult['optional_id']]['result_detail'])) {
+							$userObj['exercises'][$userResult['optional_id']]['result_detail'] = [];
+							$userObj['exercises'][$userResult['optional_id']]['completed_date'] = $userResult['create_ts'];
+							
+							$userObj['exercises'][$userResult['optional_id']]['redo_count'] = 0;
+							$userObj['exercises'][$userResult['optional_id']]['num_of_qtns'] = intval($userResult["result_json"]['num_of_qtns']);
+							$userObj['exercises'][$userResult['optional_id']]['correct_cnt'] = intval($userResult["result_json"]['correct_cnt']);
+						} else {
+							$userObj['exercises'][$userResult['optional_id']]['redo_count'] += $userResult['is_redo'];
+							$userObj['exercises'][$userResult['optional_id']]['num_of_qtns'] = intval(max($userResult["result_json"]['num_of_qtns'], $userObj['exercises'][$userResult['optional_id']]['num_of_qtns']));
+							
+							if ($userObj['exercises'][$userResult['optional_id']]['correct_cnt'] < 0) {$userObj['exercises'][$userResult['optional_id']]['correct_cnt'] = 0;}
+							
+							$userObj['exercises'][$userResult['optional_id']]['correct_cnt'] += $userResult["result_json"]['correct_cnt'];
+							if ($userObj['exercises'][$userResult['optional_id']]['correct_cnt'] > $userObj['exercises'][$userResult['optional_id']]['num_of_qtns']) {
+								$userObj['exercises'][$userResult['optional_id']]['correct_cnt'] = $userObj['exercises'][$userResult['optional_id']]['num_of_qtns'];
+							}
+						}
+						$result_detail = [];
+						$result_detail['assignment_id'] = $userResult['assignment_id'];
+						$result_detail['qtn_ids'] = (isset($userResult['qtn_ids'])) ? explode(',', $userResult['qtn_ids']) : [];
+						$result_detail['complete_qtn_ids'] = (isset($userResult['complete_qtn_ids'])) ? explode(',', $userResult['complete_qtn_ids']) : [];
+						
+						array_push($userObj['exercises'][$userResult['optional_id']]['result_detail'], $result_detail);
+					}
+				}
+				
+			}
+			$userObj['format_exercises'] = [];
+			foreach ($userObj['exercises'] as $exe) {
+				$userObj['format_exercises'][$exe['type']] = $exe;
+			}
+			unset($userObj['exercises']);
+			
+			array_push($userList, $userObj);
+		}
+		
+		return json(['data' => $userList]);
+	}
+
+	public function get_school_weakness_report(Request $request) {	
+		//params
+		$params = $request->params;
+	
+		//params basic
+		$PBS = New ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		
+		//permission
+		$PCS = New PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+
+		//gather data
+		$academicId = $user['academic_id'];
+		$studentIds = $PBS->getStudents();
+		$itemId = $params['item_id'];
+		$reportType = $params['report_type'];
+		
+		//usermodel
+		$UAS = New UsermodelApiServices($request);
+		$result = $UAS->resultApiGetSchoolWeaknessReport($academicId, $studentIds, $itemId, $reportType);	
+		$output["data"] = $result["data"];
+		$output["metadata"] = $result["metadata"];
+	
+		return json($output);
+	}
+
+	// ------------------------------ below deprecated ----------------------------------------------------------------------
     //TODO return student info
     public function getStudentLatestAssignmentResult(Request $request)
     {

@@ -1,0 +1,10 @@
+{
+    "PILOT": {
+        "PILOT_NAV": "Pilot 100",
+        "CHOOSE_ITEMS_NAV": "Choose items",
+        "ENGLISH_NAV": "English",
+        "CHINESE_NAV": "Chinese",
+        "MATHEMATICS_NAV": "Mathematics",
+        "REPORT_NAV": "Report"
+    }
+}

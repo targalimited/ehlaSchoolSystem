@@ -1,0 +1,6 @@
+.resp-display-tag {display:none;}
+
+@media only screen and (max-width: 1000px) {
+		.resp-hidden-tag {display:none;}
+		.resp-display-tag {display:block;}
+}

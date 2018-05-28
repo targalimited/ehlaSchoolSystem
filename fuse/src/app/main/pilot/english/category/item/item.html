@@ -1,0 +1,924 @@
+<div class="doc-page ehla-blue-bg material-docs layout-docs doc-template page-layout simple tabbed ng-scope layout-column" layout="column">
+
+    <div ncy-breadcrumb></div>
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="start center">
+			<div class="white-fg" layout="row" layout-align="start center" flex>
+				<div layout="row" layout-align="start center">
+					<div layout="column" layout-align="start start">
+						<div class="h2">
+							{{itemDetail['name_' + language]}}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div>
+				<md-button class="md-raised md-background" ng-click="back()">
+					<span>Back</span>
+				</md-button>
+			</div>
+    </div>
+    <!-- / HEADER -->
+
+    <div class="content exercise-content">
+
+			<md-tabs md-dynamic-height>
+				<md-tab ng-repeat="tab in tabs" 
+								label="{{tab['label_' + language]}}" 
+								md-on-select="switchSection(tab.tab)" 
+								md-active="section === tab.tab">
+								
+					<div class="loading-screen" ng-show="isShowLoading">
+						<div style="position: absolute; top: 50%; left: 50%;">
+								<md-progress-circular id="toolbar-progress" class="md-accent"
+																			md-mode="indeterminate" md-diameter="96">
+								</md-progress-circular>
+						</div>
+					</div>
+					<div ng-if="tab.tab == 1">
+						<md-tab-body>
+							<div id="preview-dialog" class="exercise-detail-form-container md-background-bg md-whiteframe-1dp"
+								ng-bind-html="trustSrc(itemDetail['preview_' + language] || itemDetail.preview)">
+							</div>
+							
+						</md-tab-body>
+					</div>
+								
+					<div ng-if="tab.tab == 2">
+						<md-tab-body>
+							<div class="exercise-detail-form-container md-background-bg md-whiteframe-1dp">
+								<form class="md-inline-form">
+									<!-- add info st -->
+									<!-- add info nd -->
+									
+									<md-input-container class="md-block" ng-if="itemDetail['difficulty_' + language]">
+										<label><span ng-if="language == 'zh'">難度</span><span ng-if="language == 'en'">Difficulty</span></label>
+										<input ng-model="itemDetail['difficulty_' + language]" readonly>
+									</md-input-container>
+
+									<md-input-container class="md-block" ng-if="itemDetail.article_ori">
+										<label><span ng-if="language == 'zh'">文章</span><span ng-if="language == 'en'">Article</span></label>
+										<textarea ng-model="itemDetail.article_ori" readonly rows="3"></textarea>
+									</md-input-container>
+								</form>
+							</div>
+						</md-tab-body>
+					</div>
+					
+					
+					<div ng-if="tab.tab == 3">
+						<md-tab-body>
+						
+							<div class="widget-group" layout="row" flex="100" layout-wrap>
+								<ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="100" flex-gt-md="50">
+									<ms-widget-front class="white-bg">
+										<div class="pt-8 pb-16" layout="column" layout-align="start center">
+											<div class="orange-fg font-size-30 line-height-30" style="margin:10px">
+												Assign Homework
+											</div>
+										</div>
+										<div>
+											<div layout="row" class="border-bottom">
+												<div class="pv-12" layout="column" width="200px" style="margin: 20px 10px 0 10px">
+													<span class="font-size-16">Start Date: </span>
+												</div>
+												<div class="pv-8" layout="column" flex="50">
+													<md-input-container class="md-block" style="margin:0px;padding:0px" aria-label="startdate">
+														<input mdc-datetime-picker="" date="true" time="true" type="text"
+																	 id="aendtime"
+																	 style="width: 95%;"
+																	 title="{{comAssign.start_date | date : 'yyyy-MM-dd HH-mm'}}"
+																	 show-todays-date="" min-date="date"
+																	 ng-model="comAssign.start_date" class="md-input" required="true"
+																	 readonly="readonly">
+													</md-input-container>
+												</div>
+												<div class="pv-8" layout="column" flex="30">
+													<button ng-click="comAssign.start_date = setDate('today')" style="box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.26); color:#a7603a;margin:6px 8px; padding:6px 8px; width:80px;background-color:#ffffff;">
+														Today
+													</button>
+												</div>
+											</div>
+											<div layout="row">
+												<div class="pv-12" layout="column" width="200px" style="margin: 20px 10px 0 10px">
+													<span class="font-size-16">End Date: </span>
+												</div>
+												<div class="pv-8" layout="column" flex="50">
+													<md-input-container class="md-block" style="margin:0px;padding:0px" aria-label="enddate">
+														<input mdc-datetime-picker="" date="true" time="true" type="text"
+																	 id="aendtime"
+																	 style="width: 95%;"
+																	 title="{{comAssign.end_date | date : 'yyyy-MM-dd HH-mm'}}"
+																	 show-todays-date="" min-date="date"
+																	 ng-model="comAssign.end_date" class="md-input" required="true"
+																	 readonly="readonly">
+													</md-input-container>
+												</div>
+											</div>
+											<div layout="row" class="border-bottom">
+												<div layout="column">
+													<button ng-click="comAssign.end_date = setDate('7days')" style="box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.26); color:#a7603a;margin:6px 8px; padding:6px 8px; background-color:#ffffff;">
+														One week later
+													</button>
+												</div>
+												<div layout="column">
+													<button ng-click="comAssign.end_date = setDate('14days')" style="box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.26); color:#a7603a;margin:6px 8px; padding:6px 8px; background-color:#ffffff;">
+														Two weeks later
+													</button>
+												</div>
+												<div layout="column">
+													<button ng-click="comAssign.end_date = setDate('1month')" style="box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.26); color:#a7603a;margin:6px 8px; padding:6px 8px; background-color:#ffffff;">
+														One months later
+													</button>
+												</div>
+											</div>
+											
+											<div layout="row" class="border-bottom">
+												<div class="pv-8" layout="column" width="120px" style="margin: 0 10px">
+													<span class="font-size-16">Remark</span>
+												</div>
+												<div class="pv-8" layout="column" flex="70">
+													<md-input-container class="md-block" flex-gt-sm style="margin:0px;padding:0px">
+														<input class="font-size-18" type="text" style="max-width: 95%;" ng-model="comAssign.remark">
+													</md-input-container>
+												</div>
+											</div>
+											
+											<div layout="row">
+												<div class="pv-8" layout="column" width="120px" style="margin: 0 10px">
+													<span class="font-size-16">Exercise</span>
+												</div>
+											</div>
+											<div layout="row" ng-repeat="exe in exerciseList | filter:{ is_published: '!1' }">		
+												<div style="margin-left:20px">
+													<md-checkbox name="tos" ng-model="exe.comFlag" ng-true-value="1">
+													 {{exe['title_' + language]}}
+													</md-checkbox>
+												</div>
+											</div>
+											
+											<div layout="row">
+												<button ng-click="batchSetPublishAssignment(0)" style="box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.26); color:#a7603a;margin:6px 8px; padding:6px 8px; background-color:#ffffff;">
+													save
+												</button>
+												<button ng-click="batchSetPublishAssignment(1)" style="box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.26); color:#a7603a;margin:6px 8px; padding:6px 8px; background-color:#ffffff;">
+													save and publish
+												</button>
+											</div>
+											
+										</div>
+									</ms-widget-front>
+								</ms-widget>
+
+								<ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="100" flex-gt-md="50">
+									<ms-widget-front class="white-bg">
+										<div class="pt-8 pb-16" layout="column" layout-align="center center">
+											<div class="light-green-fg  font-size-30 line-height-30" style="margin:10px">		
+												<span ng-click="ed = (ed == false) ? true : false" class="icon s20" style="color:#8BC34A" ng-class="{
+														'icon-plus': ed == false,
+														'icon-minus': ed != false
+														}">
+												</span>
+												Exercise Description
+											</div>
+											<ul ng-show="ed != false" style="margin:10px 40px 0 10px">
+												<li ng-repeat="exe in exerciseList"  style="margin-top:10px">
+													<div layout="row" flex>
+														<span class="font-size-16">{{exe['title_' + language]}}</span>
+													</div>
+													<div layout="row" flex>
+														<span class="font-size-16">{{exe['description_' + language]}}</span>
+													</div>
+												</li>
+											</ul>
+										</div>
+									</ms-widget-front>
+								</ms-widget>
+							</div>
+						
+							<div class="widget-group" layout="row" flex="100" layout-wrap>
+								<ms-widget layout="column" flex="100" flex-gt-sm="100">
+									<ms-widget-front class="white-bg">
+										<div class="pt-8 pb-16" layout="column" layout-align="center center">
+											<div class="light-blue-fg font-size-30 line-height-30" style="margin:0 10px">
+												<span ng-click="es = (es == false) ? true : false" class="icon s20" style="color:#03A9F4" ng-class="{
+														'icon-plus': es == false,
+														'icon-minus': es != false
+														}">
+												</span>
+												Exercise Summary
+											</div>
+										</div>										
+										<div ng-show="es != false" class="resp-hidden-tag">
+											<div class="pv-8 mh-16 border-top" flex="none" flex-gt-sm="100" layout="row" layout-align="start center" layout-wrap style="padding: 0px;">
+												<div class="pv-8" layout="column" layout-align="center center" flex="100" flex-gt-sm="20">
+													<span class="font-size-16">Exercise name</span>
+												</div>
+												<div class="pv-8 border-left" layout="column" layout-align="center center" flex="100" flex-gt-sm="20">
+													<span class="font-size-16">Start Time</span>
+												</div>
+												<div class="pv-8 border-left" layout="column" layout-align="center center" flex="100" flex-gt-sm="20">
+													<span class="font-size-16">End Time</span>
+												</div>
+												<div class="pv-8 border-left" layout="column" layout-align="center center" flex="100" flex-gt-sm="20">
+													<span class="font-size-16">Remark</span>
+												</div>
+
+												<div class="pv-8 border-left" layout="column" layout-align="center center" flex="100" flex-gt-sm="20">
+													<span class="font-size-16">Action</span>
+												</div>
+											</div>
+										</div>
+									
+										<div ng-show="es != false" ng-repeat="exe in exerciseList">
+											<div class="pv-8 mh-16 border-top" layout="row" layout-align="start center" layout-wrap>
+												<div class="pv-8" layout="column" layout-align="center center" flex="100" flex-gt-sm="20">
+													<span class="font-size-16">{{exe['title_' + language]}}</span>
+												</div>
+												<div class="pv-8 border-left" layout="column" layout-align="center center" flex="100" flex-gt-sm="20">
+												
+													<div class="resp-display-tag"><span class="font-size-16">Start Time</span></div>
+												
+													<div>
+														<md-input-container class="md-block" flex-gt-sm style="margin:0px;padding:0px">
+															<input ng-readonly="exe.is_published == 1" ng-change="exe.is_changing = true;" mdc-datetime-picker="" date="true" time="true" type="text"
+																		 id="aendtime"
+																		 style="max-width: 95%;"
+																		 title="{{exe.start_date | date : 'yyyy-MM-dd HH-mm'}}"
+																		 show-todays-date="" min-date="date"
+																		 ng-model="exe.start_date" class="md-input" required="true"
+																		 readonly="readonly">
+														</md-input-container>
+													</div>
+													<!--<div ng-if="exe.is_published == 1">
+														<span class="font-size-16">{{exe.start_date_display | date:'yyyy-MM-dd HH-mm'}}</span>
+													</div>-->
+												</div>
+												<div class="pv-8 border-left" layout="column" layout-align="center center" flex="100" flex-gt-sm="20">
+													<div class="resp-display-tag"><span class="font-size-16">End Time</span></div>
+													<div>
+														<md-input-container class="md-block" flex-gt-sm style="margin:0px;padding:0px">
+															<input ng-readonly="exe.is_published == 1" ng-change="exe.is_changing = true;" mdc-datetime-picker="" date="true" time="true" type="text"
+																		 id="aendtime"
+																		 style="max-width: 95%;"
+																		 title="{{exe.end_date | date : 'yyyy-MM-dd HH-mm'}}"
+																		 show-todays-date="" min-date="date"
+																		 ng-model="exe.end_date" class="md-input" required="true"
+																		 readonly="readonly">
+														</md-input-container>
+													</div>
+													<!--<div ng-if="exe.is_published == 1">
+														<span class="font-size-16">{{exe.end_date_display | date:'yyyy-MM-dd HH-mm'}}</span>
+													</div>-->
+												</div>
+												<div class="pv-8 border-left" layout="column" layout-align="center center" flex="100" flex-gt-sm="20">
+													<div class="resp-display-tag"><span class="font-size-16">Remark</span></div>
+													<div>
+														<md-input-container class="md-block" flex-gt-sm style="margin:0px;padding:0px">
+															<input class="font-size-18" ng-change="exe.is_changing = true;" type="text" style="max-width: 95%;" ng-model="exe.remark">
+														</md-input-container>
+													</div>
+													<!--<div ng-if="exe.is_published == 1" class="font-size-16">{{exe.remark}}</div>-->
+												</div>
+												<div class="pv-8 border-left" layout="column" layout-align="center center" flex="100" flex-gt-sm="20">
+													<button ng-show="exe.is_published != 1 && exe.is_changing == true" ng-click="setAssignments(exe)" style="box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.26); color:#a7603a;margin:6px 8px; padding:6px 8px; width:80px;background-color:#ffffff;">
+														save
+													</button>
+													<button ng-show="exe.is_published != 1 && exe.start_date != null && exe.end_date != null && exe.teacher_id != null && exe.is_changing != true" ng-click="publishAssignments(exe)" style="box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.26); color:#a7603a;margin:6px 8px; padding:6px 8px; width:80px;background-color:#ffffff;">
+														publish
+													</button>
+													
+													<button ng-show="exe.is_published == 1" ng-click="publishAssignments(exe)" style="box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.26); color:#a7603a;margin:6px 8px; padding:6px 8px; width:160px;background-color:#ffffff;">
+														Re-publish
+													</button>
+												</div>
+											</div>
+										</div>									
+									</ms-widget-front>
+								</ms-widget>
+							</div>
+						
+						</md-tab-body>						
+					</div>
+					
+					<!--
+					<div ng-if="false">
+					  <div class="md-background-bg">
+							<div>						
+								<div>
+									<ul class="ehla-table-list ehla-table-list-header">
+										<li style="width: 20%">
+											<span ng-if="language == 'en'">Exercise</span>
+											<span ng-if="language == 'zh'">練習</span>
+										</li>
+										<li style="width: 15%; text-align: center">
+											<span ng-if="language == 'en'">Starting Time</span>
+											<span ng-if="language == 'zh'">開始時間</span>
+										</li>
+										<li style="width: 15%; text-align: center">
+											<span ng-if="language == 'en'">End Time</span>
+											<span ng-if="language == 'zh'">結束時間</span>
+										</li>
+										<li style="width: 40%; text-align: center">
+											<span ng-if="language == 'en'">Remark</span>
+											<span ng-if="language == 'zh'">備註</span>
+										</li>
+										<li style="width: 10%; text-align: center">
+											<span ng-if="language == 'en'">Assigned by</span>
+											<span ng-if="language == 'zh'">配置老師</span>
+										</li>
+									</ul>
+								</div>
+								<div ng-repeat="exe in exerciseList">
+									<ul class="ehla-table-list ehla-table-list-odd" style="padding: 0">										
+										<li style="width: 20%">
+											<div style="padding: 0 5px;">{{exe['title_' + language]}}</div>
+										</li>
+
+										<li style="width: 15%">
+											<div ng-if="exe.is_published != 1">
+												<md-input-container class="md-block" flex-gt-sm>
+													<input ng-readonly="exe.is_published == 1" ng-change="exe.is_changing = true;" mdc-datetime-picker="" date="true" time="true" type="text"
+																 id="astarttime"
+																 style="max-width: 95%;"
+																 title="{{exe.start_date | date : 'yyyy-MM-dd HH-mm'}}"
+																 show-todays-date="" min-date="date"
+																 ng-model="exe.start_date" class="md-input" required="true"
+																 readonly="readonly">
+												</md-input-container>
+											</div>
+											<div ng-if="exe.is_published == 1">
+												<span>{{exe.start_date_display | date:'yyyy-MM-dd HH-mm'}}</span>
+											</div>
+										</li>
+										
+										<li style="width: 15%">
+											<div ng-if="exe.is_published != 1">
+												<md-input-container class="md-block" flex-gt-sm>
+													<input ng-readonly="exe.is_published == 1" ng-change="exe.is_changing = true;" mdc-datetime-picker="" date="true" time="true" type="text"
+																 id="aendtime"
+																 style="max-width: 95%;"
+																 title="{{exe.end_date | date : 'yyyy-MM-dd HH-mm'}}"
+																 show-todays-date="" min-date="date"
+																 ng-model="exe.end_date" class="md-input" required="true"
+																 readonly="readonly">
+												</md-input-container>
+											</div>
+											<div ng-if="exe.is_published == 1">
+											<span>{{exe.end_date_display | date:'yyyy-MM-dd HH-mm'}}</span>
+											</div>
+										</li>
+										
+										<li style="width: 40%">
+											<div ng-if="exe.is_published != 1">
+												<md-input-container class="md-block" flex-gt-sm>
+													<input ng-readonly="exe.is_published == 1" ng-change="exe.is_changing = true;" type="text" style="max-width: 95%;" ng-model="exe.remark">
+												</md-input-container>
+											</div>
+											<div ng-if="exe.is_published == 1">
+												<span>{{exe.remark}}</span>
+											</div>
+										</li>
+										
+										<li style="width: 10%; text-align: center; position: relative">												
+											<span>{{exe.teacher_id}}</span>
+										</li>
+										
+									</ul>		
+									
+									<ul>
+										<li>
+											<div layout="row" flex>
+												<div style="padding: 0 5px;width:75%;">{{exe['description_' + language]}}</div>	
+												<div style="padding: 0 5px;width:20%; text-align:right ">
+												
+													<button ng-show="exe.is_published != 1 && exe.is_changing == true" ng-click="saveExercise(exe)" style="box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.26); color:#a7603a;margin:6px 8px; padding:6px 8px; width:80px;background-color:#ffffff;">
+														save
+													</button>
+													<button ng-show="exe.is_published != 1 && exe.start_date != null && exe.end_date != null && exe.teacher_id != null && exe.is_changing != true" ng-click="publishExercise(exe)" style="box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.26); color:#a7603a;margin:6px 8px; padding:6px 8px; width:80px;background-color:#ffffff;">
+														publish
+													</button>
+													<span ng-show="exe.is_published == 1">published</span>
+												</div>
+											</div>
+										</li>										
+									</ul>
+									
+									<div style="background:#FACFC6" ng-if="(exe.type == '1' || exe.type == '2' || exe.type == '3') && exe.assignment_summary != null">
+										<ul>
+											<div layout="row" flex>
+												<div style="width: 60%">
+													<a class="btn btn-xs"
+														 data-nodrag>
+														<span class="icon s20" ng-class="{
+																'icon-plus': 1 == 2,
+																'icon-minus': 2 === 2
+																}">
+														</span>
+													</a>
+													username 
+												</div>
+												<div style="width: 20%">
+													correct / total words
+												</div>
+												<div style="width: 20%">
+													Redo counter
+												</div>
+											</div>											
+										</ul>
+										<div ng-repeat="assignment in exe.assignment_summary">
+											<ul>
+												<div layout="row" flex>
+													<div style="width: 60%">
+														{{assignment.name}}
+													</div>
+													<div ng-if="assignment.num_of_qtns != null" style="width: 20%">
+														<span>{{assignment.correct_cnt}}/{{assignment.num_of_qtns}}</span>														
+													</div>
+													<div ng-if="assignment.num_of_qtns != null" style="width: 20%">
+														<span>Redo : {{assignment.redo_count}}</span>
+													</div>										
+													<div ng-if="assignment.num_of_qtns == null" style="width: 40%">
+														<span>Student not yet start the assignment</span>
+													</div>
+													
+												</div>											
+											</ul>
+										</div>
+								
+									</div>
+									<div style="background:#FACFC6" ng-if="(exe.type == '4' || exe.type == '5' || exe.type == '6' || exe.type == '7') && exe.assignment_summary != null">
+										<ul>
+											<div layout="row" flex>
+												<div style="width: 60%">
+													username 
+												</div>
+												<div style="width: 40%">
+													correct / total Questions
+												</div>
+											</div>											
+										</ul>
+										<ul ng-repeat="assignment in exe.assignment_summary">
+											<div layout="row" flex>
+												<div style="width: 60%">
+													{{assignment.name}}
+												</div>
+												<div ng-if="assignment.num_of_qtns != null" style="width: 40%">
+													<span>{{assignment.correct_cnt}}/{{assignment.num_of_qtns}}</span>														
+												</div>										
+												<div ng-if="assignment.num_of_qtns == null" style="width: 40%">
+													<span>Student not yet start the assignment</span>
+												</div>	
+											</div>																						
+										</ul>									
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				
+				
+				-->
+					<div ng-if="tab.tab == 4">
+						<md-tab-body>					
+						
+							<div class="exercise-detail-form-container md-background-bg md-whiteframe-1dp">
+								<div>
+									<h1 style="font-family:Impact, Charcoal, sans-serif" ng-if="language == 'en'">Spell the words</h1>
+									<h1 style="font-family:儷黑 Pro,標楷體;" ng-if="language == 'zh'">拼寫練習</h1>
+								</div>
+								<div>
+									<ul class="ehla-table-list ehla-table-list-header">
+											<li style="width: 20%">
+												<a class="btn btn-xs" ng-click="wdsw = (wdsw == false) ? true : false">
+													<span class="icon s20" ng-class="{
+															'icon-plus': wdsw == false,
+															'icon-minus': wdsw != false
+															}">
+													</span>
+												</a>
+												<span ng-if="language == 'en'">Word</span>
+												<span ng-if="language == 'zh'">生字</span>
+											</li>
+											<li style="width: 10%; text-align: center;">
+													correct / student
+											</li>
+											<li style="width: 10%; text-align: center;">
+													one time correct
+											</li>
+											<li style="width: 10%; text-align: center;">
+													1 Wrong 
+											</li>
+											<li style="width: 10%; text-align: center;">
+													2 Wrong 
+											</li>
+											<li style="width: 10%; text-align: center;">
+													3 Wrong 
+											</li>
+											<li style="width: 10%; text-align: center;">
+													4 Wrong 
+											</li>
+											<li style="width: 10%; text-align: center;">
+													≥5 Wrong 
+											</li>
+									</ul>
+								</div>
+								<div ng-show="wdsw != false">
+									<div ng-show="!wordSpellReport.length" class="ehla-table-empty">No Data</div>
+									<div ng-show="wordSpellReport.length" >
+										<ul class="ehla-table-list" ng-repeat="wk in wordSpellReport" ng-class="[$index % 2 === 0 ? 'ehla-table-list-even' : 'ehla-table-list-odd']">
+											<li style="width: 20%; text-align: left; padding-left:20px;">
+												{{wk.word}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.correct_cnt}} / {{wk.total_user}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.total_correct}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.wrong_one}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.wrong_two}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.wrong_three}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.wrong_forth}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.wrong_over_five}}
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+
+							<div class="exercise-detail-form-container md-background-bg md-whiteframe-1dp">
+								<div>
+									<h1 style="font-family:Impact, Charcoal, sans-serif" ng-if="language == 'en'">Mix and Match</h1>
+									<h1 style="font-family:儷黑 Pro,標楷體;" ng-if="language == 'zh'">語意配對</h1>
+								</div>
+								<div>
+										<ul class="ehla-table-list ehla-table-list-header">												
+												<li style="width: 20%">
+													<a class="btn btn-xs" ng-click="wdmm = (wdmm == false) ? true : false">
+														<span class="icon s20" ng-class="{
+																'icon-plus': wdmm == false,
+																'icon-minus': wdmm != false
+																}">
+														</span>
+													</a>
+													<span ng-if="language == 'en'">Word</span>
+													<span ng-if="language == 'zh'">生字</span>
+												</li>
+												<li style="width: 10%; text-align: center;">
+														correct / student
+												</li>
+												<li style="width: 10%; text-align: center;">
+														one time correct
+												</li>
+												<li style="width: 10%; text-align: center;">
+														1 Wrong 
+												</li>
+												<li style="width: 10%; text-align: center;">
+														2 Wrong 
+												</li>
+												<li style="width: 10%; text-align: center;">
+														3 Wrong 
+												</li>
+												<li style="width: 10%; text-align: center;">
+														4 Wrong 
+												</li>
+												<li style="width: 10%; text-align: center;">
+														≥5 Wrong 
+												</li>
+										</ul>
+								</div>
+								<div ng-show="wdmm != false">
+									<div ng-show="!wordMatchReport.length" class="ehla-table-empty">No Data</div>
+									<div ng-show="wordMatchReport.length" >
+										<ul class="ehla-table-list" ng-repeat="wk in wordMatchReport" ng-class="[$index % 2 === 0 ? 'ehla-table-list-even' : 'ehla-table-list-odd']">
+											<li style="width: 20%; text-align: left; padding-left:20px;">
+												{{wk.word}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.correct_cnt}} / {{wk.total_user}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.total_correct}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.wrong_one}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.wrong_two}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.wrong_three}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.wrong_forth}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.wrong_over_five}}
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+
+							<div class="exercise-detail-form-container md-background-bg md-whiteframe-1dp">
+								<div>
+									<h1 style="font-family:Impact, Charcoal, sans-serif" ng-if="language == 'en'">Fill in the Box</h1>
+									<h1 style="font-family:儷黑 Pro,標楷體;" ng-if="language == 'zh'">詞彙運用</h1>
+								</div>
+								<div>
+										<ul class="ehla-table-list ehla-table-list-header">
+												<li style="width: 20%">
+													<a class="btn btn-xs" ng-click="wdfb = (wdfb == false) ? true : false">
+														<span class="icon s20" ng-class="{
+																'icon-plus': wdfb == false,
+																'icon-minus': wdfb != false
+																}">
+														</span>
+													</a>
+													<span ng-if="language == 'en'">Word</span>
+													<span ng-if="language == 'zh'">生字</span>
+												</li>
+												<li style="width: 10%; text-align: center;">
+														correct / student
+												</li>
+												<li style="width: 10%; text-align: center;">
+														one time correct
+												</li>
+												<li style="width: 10%; text-align: center;">
+														1 Wrong 
+												</li>
+												<li style="width: 10%; text-align: center;">
+														2 Wrong 
+												</li>
+												<li style="width: 10%; text-align: center;">
+														3 Wrong 
+												</li>
+												<li style="width: 10%; text-align: center;">
+														4 Wrong 
+												</li>
+												<li style="width: 10%; text-align: center;">
+														≥5 Wrong 
+												</li>
+										</ul>
+								</div>
+								<div ng-show="wdfb != false">
+									<div ng-show="!wordUsageReport.length" class="ehla-table-empty">No Data</div>
+									<div ng-show="wordUsageReport.length" >
+										<ul class="ehla-table-list" ng-repeat="wk in wordUsageReport" ng-class="[$index % 2 === 0 ? 'ehla-table-list-even' : 'ehla-table-list-odd']">
+											<li style="width: 20%; text-align: left; padding-left:20px;">
+												{{wk.word}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.correct_cnt}} / {{wk.total_user}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.total_correct}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.wrong_one}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.wrong_two}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.wrong_three}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.wrong_forth}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.wrong_over_five}}
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+
+							<div class="exercise-detail-form-container md-background-bg md-whiteframe-1dp">
+								<div>
+									<h1 style="font-family:Impact, Charcoal, sans-serif" ng-if="language == 'en'">Weakness report</h1>
+									<h1 style="font-family:儷黑 Pro,標楷體;" ng-if="language == 'zh'">弱點報告</h1>
+								</div>
+								<div>
+									<ul class="ehla-table-list ehla-table-list-header">
+										<li style="width: 30%">
+											<a class="btn btn-xs" ng-click="wksr = (wksr == false) ? true : false">
+												<span class="icon s20" ng-class="{
+														'icon-plus': wksr == false,
+														'icon-minus': wksr != false
+														}">
+												</span>
+											</a>
+											<span ng-if="language == 'en'">weakness</span>
+											<span ng-if="language == 'zh'">弱點</span>
+										</li>
+										<li style="width: 10%; text-align: center;">
+												correct / total / student
+										</li>
+										<li style="width: 5%; text-align: center;">
+												100% Error
+										</li>
+										<li style="width: 5%; text-align: center;">
+												≥75% Error
+										</li>
+										<li style="width: 5%; text-align: center;">
+												≥50% Error
+										</li>
+										<li style="width: 5%; text-align: center;">
+												≥25% Error
+										</li>
+										<li style="width: 5%; text-align: center;">
+												>0% (0%) Error
+										</li>
+									</ul>
+								</div>
+								<div ng-show="wksr != false">
+									<div ng-show="!weaknessReport.length" class="ehla-table-empty">No Data</div>
+									<div ng-show="weaknessReport.length" >
+										<ul class="ehla-table-list" ng-repeat="wk in weaknessReport" ng-class="[$index % 2 === 0 ? 'ehla-table-list-even' : 'ehla-table-list-odd']">
+											<li style="width: 30%; text-align: left; padding-left:20px;">
+												{{wk.name_en}} <br>{{wk.name_zh}}
+											</li>
+											<li style="width: 10%; text-align: center;">
+												{{wk.correct_cnt}} / {{wk.total_cnt}} / {{wk.total_user}}
+											</li>
+											<li style="width: 5%; text-align: center;">
+												{{wk.percentage_0}}
+											</li>
+											<li style="width: 5%; text-align: center;">
+												{{wk.percentage_25}}
+											</li>
+											<li style="width: 5%; text-align: center;">
+												{{wk.percentage_50}}
+											</li>
+											<li style="width: 5%; text-align: center;">
+												{{wk.percentage_75}}
+											</li>
+											<li style="width: 5%; text-align: center;">
+												{{wk.percentage_100}}
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</md-tab-body>
+					</div>				
+					
+					
+					
+					<div ng-if="tab.tab == 5">		
+						<md-tab-body>			
+							<div class="exercise-detail-form-container md-background-bg md-whiteframe-1dp" style="height:100%">
+								<ul class="ehla-table-list ehla-table-list-header" style="padding: 8px 0;">
+									<li style="width: 10%">
+										<div style="line-height: 1.8">Name</div>
+									</li>
+									<li style="width: 5%; text-align: center;">
+										<div style="line-height: 1.8">Student no.</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">Spell the words</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">Mix and Match</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">Fill in the Box</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">Comprehension Questions</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">Listening Exercise</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">Extended Learning Exercise</div>
+									</li>
+								</ul><ul class="ehla-table-list ehla-table-list-header" style="padding: 8px 0;">
+									<li style="width: 10%">
+									</li>
+									<li style="width: 5%; text-align: center;">
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">({{exerciseHash[1].start_date_display}} - {{exerciseHash[1].end_date_display}})</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">({{exerciseHash[2].start_date_display}} - {{exerciseHash[2].end_date_display}})</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">({{exerciseHash[3].start_date_display}} - {{exerciseHash[3].end_date_display}})</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">({{exerciseHash[4].start_date_display}} - {{exerciseHash[4].end_date_display}})</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">({{exerciseHash[6].start_date_display}} - {{exerciseHash[6].end_date_display}})</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">({{exerciseHash[7].start_date_display}} - {{exerciseHash[7].end_date_display}})</div>
+									</li>
+								</ul>
+												
+								<ul class="ehla-table-list" ng-repeat="ur in userResult" ng-class="[$index % 2 === 0 ? 'ehla-table-list-even' : 'ehla-table-list-odd']">
+									<li style="width: 10%">
+										{{ur.user_id}}
+									</li>
+									<li style="width: 5%; text-align: center;">
+										-
+									</li>
+									<li style="width: 10%; text-align: center;">									
+										<span ng-show="ur.format_exercises['1']['result_detail'] != null">
+											{{ur.format_exercises['1']['correct_cnt']}} / 
+											{{ur.format_exercises['1']['num_of_qtns']}} ({{ur.format_exercises['1']['redo_count']}})
+										</span>
+										<span ng-show="ur.format_exercises['1']['result_detail']  == null"> - </span>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<span ng-show="ur.format_exercises['2']['result_detail'] != null">
+											{{ur.format_exercises['2']['correct_cnt']}} / 
+											{{ur.format_exercises['2']['num_of_qtns']}} ({{ur.format_exercises['2']['redo_count']}})
+										</span>
+										<span ng-show="ur.format_exercises['2']['result_detail']  == null"> - </span>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<span ng-show="ur.format_exercises['3']['result_detail'] != null">
+											{{ur.format_exercises['3']['correct_cnt']}} / 
+											{{ur.format_exercises['3']['num_of_qtns']}} ({{ur.format_exercises['3']['redo_count']}})
+										</span>
+										<span ng-show="ur.format_exercises['3']['result_detail']  == null"> - </span>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<span ng-show="ur.format_exercises['4']['result_detail'] != null">
+											{{ur.format_exercises['4']['correct_cnt']}} / 
+											{{ur.format_exercises['4']['num_of_qtns']}} 
+										</span>
+										<span ng-show="ur.format_exercises['4']['result_detail']  == null"> - </span>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<span ng-show="ur.format_exercises['6']['result_detail'] != null">
+											{{ur.format_exercises['6']['correct_cnt']}} / 
+											{{ur.format_exercises['6']['num_of_qtns']}} 
+										</span>
+										<span ng-show="ur.format_exercises['6']['result_detail']  == null"> - </span>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<span ng-show="ur.format_exercises['7']['result_detail'] != null">
+											{{ur.format_exercises['7']['correct_cnt']}} / 
+											{{ur.format_exercises['7']['num_of_qtns']}} 
+										</span>
+										<span ng-show="ur.format_exercises['7']['result_detail']  == null"> - </span>
+									</li>
+								</ul>			
+								<!--<ul class="ehla-table-list" style="padding: 0 0;">
+									<li style="width: 10%">
+										<div style="line-height: 1.8">Name</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">Student no.</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">Spell the words</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">Mix and Match</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">Fill in the Box</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">Comprehension Questions</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">Listening Exercise</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">Extended Learning Exercise</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">Read-follow Exercise</div>
+									</li>
+									<li style="width: 10%; text-align: center;">
+										<div style="line-height: 1.8">View detail</div>
+									</li>
+								</ul>-->
+							</div>
+						</md-tab-body>
+					</div>		
+					
+					
+				</md-tab>
+			</md-tabs>
+    </div>
+</div>
