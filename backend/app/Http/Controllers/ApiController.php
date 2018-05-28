@@ -53,7 +53,6 @@ class ApiController extends Controller
             'form_params' => [
               'params' => $input
             ]
-
           ]
         );
 
@@ -77,7 +76,7 @@ class ApiController extends Controller
             $result = [
               'status' => false,
               'code' => '',
-              'message' => 'user not found'
+              'message' => 'user not found in school database'
             ];
             return $result;
           }
