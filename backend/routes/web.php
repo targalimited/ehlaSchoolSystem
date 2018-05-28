@@ -41,9 +41,8 @@ Route::get('/addStudent',function (Request $request){
 Route::group(['prefix' => 'v1'], function () {
     Route::group(['middleware' => 'detectDB'], function () {
 
-        Route::get('/user', function (Request $request) {
-            dump(Auth::user());
-        });
+        //Login Controller
+      Route::post('userApi/login', 'LoginController@login');
 
         //reading controller
         Route::post('create_reading_exercise','ReadingController@postReadingExercise');

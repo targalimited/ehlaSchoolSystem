@@ -17,7 +17,7 @@ class ApiController extends Controller
         $access_token = '';
 
 
-        if ($request->function != 'login') {
+
             if ($request->headers->has('access-token'))
                 $access_token = $request->headers->get('access-token');
             if ($request->method() != "GET") {
@@ -26,21 +26,13 @@ class ApiController extends Controller
                     dd('Bad format. Example: {"params":{"username":"hong@gmail.com","password":123456}}');
             } else
                 $input = '';
-        }else{
-            $input = $request->json('params');
-            $input['source'] = 'school_portal';
-        }
+
 
         if (isset($_SERVER['QUERY_STRING']))
             $uri = $request->path() . '?' . $_SERVER['QUERY_STRING'] . '&encode=1&access-token=' . $access_token;
         else
             $uri = $request->path() . '?encode=1&access-token=' . $access_token;
 
-
-
-      $login_user = User::where('email',$input['username'])->first();
-
-      if($login_user && $login_user->can('login')){
 
         $client = new Client();
 
@@ -61,39 +53,14 @@ class ApiController extends Controller
         if(!$data['success']){
           $result = [
             'status' => false,
-            'code' => '401',
-            'message' => 'User not exists or wrong password',
+            'code' => '500',
+            'message' => 'Something went wrong',
             'data' => $data['debug']
           ];
-          return Response()->json($result,401);
-        }
-
-        if ($request->function == 'login') {
-
-          $user = User::where('email',$data['data'][0]['username'])->first();
-
-          if(!$user){
-            $result = [
-              'status' => false,
-              'code' => '',
-              'message' => 'user not found in school database'
-            ];
-            return $result;
-          }
-          Auth::loginUsingId($user->id, true);
-
+          return Response()->json($result,500);
         }
         return $data;
 
-      }else{
-        $result = [
-          'status' => false,
-          'code' => '',
-          'message' => 'You dont have permission to login'
-        ];
-
-        return Response()->json($result,401);
-      }
 
     }
 }
