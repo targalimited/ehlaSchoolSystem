@@ -629,7 +629,7 @@ class UserController extends Controller
 
   public function putSingleTeacher(Request $request){
 
-//    dd($request->all());
+
       $rules = array('email' => 'unique:users,email,'.$request->id);
 
     $validator = Validator::make($request->all(), $rules);
@@ -649,6 +649,8 @@ class UserController extends Controller
       $user->username = $request->username;
       $user->password = $request->password;
       $user->save();
+
+      $user->roles()->sync($request->roles[0]['id']);
 
       $this->init();
 
