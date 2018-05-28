@@ -63,7 +63,7 @@ class ApiController extends Controller
           $result = [
             'status' => false,
             'code' => '401',
-            'message' => 'You dont have permission to login',
+            'message' => 'User not exists or wrong password',
             'data' => $data['debug']
           ];
           return Response()->json($result,401);
