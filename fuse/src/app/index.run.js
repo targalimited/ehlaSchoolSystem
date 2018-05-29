@@ -101,7 +101,9 @@
       // console.log($rootScope.user)
       //$rootScope.user.userGroup.title = 'Teacher'
       return _.some(roleNames, function (roleName) {
-        return $rootScope.user.userGroup.title === roleName;
+        return _.some($rootScope.user.roles, function (role) {
+          return role.name === roleName;
+        })
       });
     }
   }
