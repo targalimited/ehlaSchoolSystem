@@ -25,10 +25,10 @@
       })
         .then(function (res) {
           const result = res.plain();
-          localStorage.setItem('access_token', result.data[0]['user_session']['access_token']);
-          localStorage.setItem('teacherId', result.data[0].user_id);
-          localStorage.setItem('user', JSON.stringify(result.data[0]));
-          $rootScope.user = result.data[0];
+          localStorage.setItem('access_token', result['remember_token']);
+          localStorage.setItem('teacherId', result.user_id);
+          localStorage.setItem('user', JSON.stringify(result));
+          $rootScope.user = result;
           $state.go('app.home');
         })
         .catch(function (err) {

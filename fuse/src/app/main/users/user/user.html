@@ -94,7 +94,7 @@
           <div layout="column" flex="80">
             <md-input-container>
               <md-select ng-model="user.roles[0].id" required
-                         ng-disabled="!isOfRoles(['Teacher', 'Principal', 'Vice Principal', 'Panel Chair'])"
+                         ng-disabled="myself.id == user.id || !isOfRoles(['Teacher', 'Principal', 'Vice Principal', 'Panel Chair'])"
                          class="normal" placeholder="Roles">
                 <md-optgroup label="Roles">
                   <md-option

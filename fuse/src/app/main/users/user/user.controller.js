@@ -6,13 +6,14 @@
     .controller('UserController', UserController);
 
   /** @ngInject */
-  function UserController($scope, $state, breadcrumbs, generalMessage, loadingScreen, Restangular, $q) {
+  function UserController($rootScope, $scope, $state, breadcrumbs, generalMessage, loadingScreen, Restangular, $q) {
     var vm = this;
 
     $scope.breadcrumbs = breadcrumbs;
     $scope.userId = $state.params.userId;
     $scope.action = $scope.userId === 'create' ? 'create' : 'edit';
     $scope.title = _.upperFirst($scope.action);
+    $scope.myself = $rootScope.user;
     // Data
     $scope.user = {};
 
