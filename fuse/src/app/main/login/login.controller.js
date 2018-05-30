@@ -25,7 +25,7 @@
       })
         .then(function (res) {
           const result = res.plain();
-          localStorage.setItem('access_token', result['remember_token']);
+          localStorage.setItem('access_token', result['token']);
           localStorage.setItem('teacherId', result.user_id);
           localStorage.setItem('user', JSON.stringify(result));
           $rootScope.user = result;
