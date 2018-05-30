@@ -795,6 +795,8 @@ class UserController extends Controller
       $user->user_group = 3;
       $user->save();
 
+      $user->roles()->sync($request->roles[0]['id']);
+
       $scs = StudentClassSubject::where('student_id',$request->id)->first();
       $scs->class_id = $request->class_id;
       $scs->student_id = $request->id;
