@@ -14,7 +14,6 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/user', function (Request $request) {
-
 //        $this->visit('/register')
 //            ->type('Taylor', 'name')
 //            ->check('terms')
@@ -41,35 +40,88 @@ Route::get('/addStudent',function (Request $request){
 Route::group(['prefix' => 'v1'], function () {
     Route::group(['middleware' => 'detectDB'], function () {
 
-        Route::get('/dumpuser', function (Request $request) {
-            dump(Auth::dumpuser());
+        Route::get('/user', function (Request $request) {			
+            dump(Auth::user());
         });
 
-        Route::get('/user', function (Request $request) {
-            return Auth::user();
-        });
+		/* new api */
+		
+		
+		//result controller
+		Route::post('get_school_result_report','ResultController@get_school_result_report');
+		Route::post('get_school_weakness_report','ResultController@get_school_weakness_report');
+		Route::post('get_school_result_summary_report','ResultController@get_school_result_summary_report');
+		
+		//item controller
+		Route::post('get_by_category','ItemController@get_by_category');
+		Route::post('get_selected_item_by_category','ItemController@get_selected_item_by_category');
+		Route::post('choose_item','ItemController@choose_item');
+		Route::post('get_pre_chosen_items_by_category','ItemController@get_pre_chosen_items_by_category');
+		Route::post('get_by_ids','ItemController@get_by_ids');		
+		Route::post('get_assignment_by_item_id','ItemController@get_assignment_by_item_id');
+		Route::post('set_assignments','ItemController@set_assignments');
+		Route::post('publish_assignments','ItemController@publish_assignments');
+		Route::post('batch_set_publish_assignments','ItemController@batch_set_publish_assignments');
+		Route::get('get_school_item_summary','ItemController@get_school_item_summary');
+		
+		//Category controller
+		Route::get('get_school_category/subject_id/{subject_id?}','CategoryController@get_school_category');
+		
+		//Classroom controller
+		//Route::post('get_school_classroom_students','ClassroomController@get_school_classroom_students');
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*Route::get('get_homework_by_teacher','HomeworkController@getHomeworkByTeacher');
+		Route::get('get_homework_by_superior','HomeworkController@getHomeworkBySuperior');
+			*/	
+				
+			
 
-        Route::post('login', 'UserController@login');
-        //Login Controller
-      Route::post('userApi/login', 'LoginController@login');
 
+
+
+
+			
         //reading controller
         Route::post('create_reading_exercise','ReadingController@postReadingExercise');
         Route::post('start_reading_assignment','ReadingController@startReadingAssignment');
         Route::get('get_reading_exercise','ReadingController@getReadingExercise');
         Route::delete('delete_reading_exercise','ReadingController@deleteReadingExercise');
 
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
         //User controller
         Route::post('account_teacher','UserController@postTeacher');
         Route::post('account_student','UserController@postStudent');
         Route::get('exportTeacherExcel','UserController@getTeacherExcel');
+        Route::get('billtest','UserController@testBill');
         Route::get('exportStudentExcel','UserController@getStudentExcel');
         Route::post('teacher_single','UserController@postSingleTeacher');
-        Route::put('teacher_single','UserController@putSingleTeacher');
         Route::post('student_single','UserController@postSingleStudent');
-        Route::put('student_single','UserController@putSingleStudent');
-        Route::get('user_list','UserController@getUser');
-        Route::get('user/{id}','UserController@getUserDetails');
 
         //Permission Control
         Route::post('attach_permission','RoleController@attachPermission');
@@ -84,6 +136,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::put('update_role','RoleController@putRole');
         Route::delete('delete_role','RoleController@deleteRole');
         Route::get('read_role','RoleController@readRole');
+
 
         Route::post('userApi/logout', 'LoginController@logout');
         //Subject Controller

@@ -12,9 +12,13 @@ use App\User;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Excel;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use GuzzleHttp\Client;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -51,8 +55,92 @@ class UserController extends Controller
       $this->teacher_subject_class[$v->id]['subject_name'] = $this->subject[$v->subject_id];
     }
 
-
   }
+
+
+  public function login(Request $request){
+
+        // set params to call usermodel
+        $input = $request->json('params');
+        $input['source'] = 'school_portal';
+
+        // call usermodel
+        $client = new Client();
+        $result = $client->request($request->method(), env('USERMODEL_URL') . config('variables.loginUrl'),
+            [
+                'auth' => ['ehl_api', '27150900'],
+                'headers' => [
+                    'User-Agent' => filter_input(INPUT_SERVER, 'HTTP_USER_AGENT')
+                ],
+                'form_params' => [
+                    'params' => $input
+                ]
+            ]
+        );
+        $data = \GuzzleHttp\json_decode($result->getBody()->getContents(), true);
+
+
+        if($data['success']){
+            $userData = $data['data'][0];
+            $userSession = $data['data'][0]['user_session'];
+            unset($userData['user_session']);
+
+            $user = User::where('id', $userData['user_id'])->first();
+            if(!empty($user)){
+                // user exist, update user info and do local auth
+                try{
+                    DB::transaction(function () use ($userData, $userSession) {
+                        DB::table('users')
+                                    ->where('id', $userData['user_id'])
+                                    ->update([
+                                        'user' => json_encode($userData),
+                                        'session' => json_encode($userSession),
+                                        'ex_token' => Str::random(32),
+                                        'expiry_date' => Carbon::now()->addDay(14)->format('Y-m-j')
+                                    ]);
+                    }, 5);
+                } catch (Exception $e) {
+                    return $e;
+                }
+                Auth::login($user, true);
+            } else {
+                // user not exist, insert new user and do local auth
+                // retry 5 times if db deadlock
+                try{
+                    DB::transaction(function () use ($userData, $userSession) {
+                        DB::table('users')->insert([
+                            'id' =>  $userData['user_id'],
+                            'user' => json_encode($userData),
+                            'session' => json_encode($userSession),
+                            'ex_token' => Str::random(32),
+                            'expiry_date' => Carbon::now()->addDay(14)->format('Y-m-j')
+                        ]);
+
+                    }, 5);
+                } catch (Exception $e) {
+                    return $e;
+                }
+
+                $user = User::where('id', $userData['user_id'])->first();
+                Auth::login($user, true);
+
+            }
+            $res = [
+              'success' => true,
+              'token' => $user->ex_token
+            ];
+
+        } else {
+            $res = [
+              'success' => false,
+              'token' => ''
+            ];
+        }
+
+        return $res;
+    }
+
+
 
   public function getTeacherExcel(Request $request)
   {

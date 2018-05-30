@@ -1,0 +1,102 @@
+<div class="doc-page material-docs layout-docs doc-template page-layout simple fullwidth ng-scope layout-column"
+     layout="column">
+
+  <div ncy-breadcrumb></div>
+
+  <div class="content">
+    <div class="widget-group layout-wrap ng-scope layout-row flex-100" layout="row" flex="100" layout-wrap="">
+      <ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="100" flex-gt-md="100"
+                 class="ms-widget ng-isolate-scope layout-column flex-gt-xs-100 flex-gt-md-100 flex-100">
+				<ms-widget-front class="white-bg">
+					<div style="padding-bottom:20px">
+						<div class="pt-8 pb-16" layout="column" layout-align="start center">
+							<div class="orange-fg font-size-30 line-height-30" style="margin:10px">
+								School Name (EHLA SCHOOL)
+							</div>
+						</div>
+						<div>
+							<div layout="row" class="text pt-16 left" style="margin-left:20px; font-size:1.2em">
+								<div flex><span>Total item that can choose : {{total_item_qtt}}</span></div>
+								<div flex><span>Total item for each level : {{level_item_qtt}}</span></div>
+							</div>
+							<div layout="row" class="text pt-16 left" style="margin-left:20px; font-size:1.2em">
+								<div flex><span>Available level : {{display_levels_en}}</span></div>
+								<div flex><span>Chosen Item : {{chosen_item_qtt}}</span></div>
+							</div>
+							<div layout="row" class="text pt-16 left" style="margin-left:20px; font-size:1.2em" ng-repeat="items in itemsArray">
+								<div flex>
+									<span>{{items.name_en}} : {{items.item_ids.length}}</span>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				</ms-widget-front>
+			</ms-widget>
+			<ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="50" flex-gt-md="25"
+								 class="ms-widget ng-isolate-scope layout-column flex-gt-xs-50 flex-gt-md-25 flex-100">
+				<ms-widget-front class="white-bg">
+					<div layout="row" class="text pt-16 left green-fg font-size-22 line-height-22" style="height 200px margin:0 0 20px 20px; text-align:center">
+						<div flex><span>Weekly Fun Reading</span></div>
+					</div>
+					<div layout="row" class="left font-size-14" style= "margin:20px 0 20px 20px;">
+						<div flex><span>Weekly reading blablabla.......</span></div>
+					</div>
+					<div layout="row" class="left font-size-14" style= "margin:20px 0 20px 20px;">
+						<button ng-click="gotoCategory('WR')" style="box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.26); color:#a7603a;margin:6px 8px; padding:6px 8px; width:100px;background-color:#ffffff;">
+							check detail
+						</button>
+					</div>
+				</ms-widget-front>
+			</ms-widget>
+			<ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="50" flex-gt-md="25"
+								 class="ms-widget ng-isolate-scope layout-column flex-gt-xs-50 flex-gt-md-25 flex-100">
+				<ms-widget-front class="white-bg">
+					<div layout="row" class="text pt-16 left green-fg font-size-22 line-height-22" style="height 200px margin:0 0 20px 20px; text-align:center">
+						<div flex><span>Daily Fun Reading</span></div>
+					</div>
+					<div layout="row" class="left font-size-14" style= "margin:20px 0 20px 20px;">
+						<div flex><span>Daily reading blablabla.......</span></div>
+					</div>
+					<div layout="row" class="left font-size-14" style= "margin:20px 0 20px 20px;">
+						<button ng-click="gotoCategory('DR')" style="box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.26); color:#a7603a;margin:6px 8px; padding:6px 8px; width:100px;background-color:#ffffff;">
+							check detail
+						</button>
+					</div>
+				</ms-widget-front>
+			</ms-widget>
+			<ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="50" flex-gt-md="25"
+								 class="ms-widget ng-isolate-scope layout-column flex-gt-xs-50 flex-gt-md-25 flex-100">
+				<ms-widget-front class="white-bg">
+					<div layout="row" class="text pt-16 left green-fg font-size-22 line-height-22" style="height 200px margin:0 0 20px 20px; text-align:center">
+						<div flex><span>Daily Fun Reading (Bridging)</span></div>
+					</div>
+					<div layout="row" class="left font-size-14" style= "margin:20px 0 20px 20px;">
+						<div flex><span>Daily reading blablabla.......</span></div>
+					</div>
+					<div layout="row" class="left font-size-14" style= "margin:20px 0 20px 20px;">
+						<button ng-click="gotoCategory('BR')" style="box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.26); color:#a7603a;margin:6px 8px; padding:6px 8px; width:100px;background-color:#ffffff;">
+							check detail
+						</button>
+					</div>
+				</ms-widget-front>
+			</ms-widget>
+			<ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="50" flex-gt-md="25"
+								 class="ms-widget ng-isolate-scope layout-column flex-gt-xs-50 flex-gt-md-25 flex-100">
+				<ms-widget-front class="white-bg">
+					<div layout="row" class="text pt-16 left green-fg font-size-22 line-height-22" style="height 200px margin:0 0 20px 20px; text-align:center">
+						<div flex><span>Reading Comprehensive Diagnosis</span></div>
+					</div>
+					<div layout="row" class="left font-size-14" style= "margin:20px 0 20px 20px;">
+						<div flex><span>Reading Comprehensive Diagnosis blablabla.......</span></div>
+					</div>
+					<div layout="row" class="left font-size-14" style= "margin:20px 0 20px 20px;">
+						<button ng-click="gotoCategory('RCD')" style="box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.26); color:#a7603a;margin:6px 8px; padding:6px 8px; width:100px;background-color:#ffffff;">
+							check detail
+						</button>
+					</div>
+				</ms-widget-front>
+			</ms-widget>
+    </div>
+  </div>
+</div>

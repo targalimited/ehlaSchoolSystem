@@ -37,8 +37,11 @@ return [
 
     'guards' => [
         'web' => [
-            'driver' => 'session',
+            // 'driver' => 'session',
+            'driver' => 'ehla',
             'provider' => 'users',
+            'authKey' => 'extoken',
+            'inputKey' => 'ex_token',
         ],
 
         'api' => [
