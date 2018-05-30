@@ -42,7 +42,9 @@
           var user = JSON.parse(localStorage.getItem('user'));
           //user.userGroup.title = 'Principal'
           //console.log(user.userGroup.title)
-          return user.userGroup.title === 'Teacher';
+          return _.some(user.roles, function (role) {
+            return role.name === 'Teacher';
+          })
         } catch (e) {
           return true;
         }

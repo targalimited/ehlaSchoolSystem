@@ -1,0 +1,38 @@
+<div class="assignment-item" ng-click="card.ngClick()" style="cursor: pointer; position: relative; background-size: cover" ng-style="{'background-image':'url('+card.background+')'}">
+  <div class="loading-screen" style="position: absolute" ng-show="card.isLoading == true">
+    <div style="position: absolute; top: 50%; left: 50%; ">
+      <md-progress-circular id="toolbar-progress" class="md-accent" style="margin-left: -25px; margin-top: -25px;"
+                            md-mode="indeterminate" md-diameter="50">
+      </md-progress-circular>
+    </div>
+  </div>
+
+  <div class="content pv-24 ph-16">
+    <div class="h3" ng-if="card['name_' + language]">
+
+      <span style="position: absolute;right: 0;top: 15px; margin-right: -1px;">
+        <i class="icon s20" ng-class="card.icon" style="padding: 15px;background-color: #a9a9a9; color: white;"></i>
+			</span>
+
+      <span style="border-bottom: 4px solid #eee; padding: 5px 0;margin-right: 40px;display: block;">{{card['name_' + language]}}</span>
+    </div>
+
+    <div>
+      <div layout="row" class="text pt-16 left" style="padding-top: 20px;" ng-hide="card.deadline === 'hide'">
+        <div flex="initial"><i flex class="icon s20 icon-clock"></i></div>
+        <div flex><span>{{card['deadline_' + language] ? card['deadline_' + language] : '-'}}</span></div>
+      </div>
+
+      <div layout="row" class="text pt-14 left" ng-hide="card.questions === 'hide'">
+        <div flex="initial"><i flex class="icon s20 icon-border-color"></i></div>
+        <div flex><span>{{card['questions_' + language] ? card['questions_' + language] : '-'}}</span></div>
+      </div>
+
+      <div layout="row" class="text pt-14 left" ng-hide="card.remark === 'hide'">
+        <div flex="initial"><i flex class="icon s20 icon-information"></i></div>
+        <div flex><span>{{card['remark_' + language] ? card['remark_' + language] : '-'}}</span></div>
+      </div>
+
+    </div>
+  </div>
+</div>
