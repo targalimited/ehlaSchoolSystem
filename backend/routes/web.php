@@ -49,9 +49,9 @@ Route::group(['prefix' => 'v1'], function () {
             return Auth::user();
         });
 
-        Route::post('login', 'UserController@login');
+        Route::post('userApi/login', 'UserController@login');
         //Login Controller
-      Route::post('userApi/login', 'LoginController@login');
+     // Route::post('userApi/login', 'LoginController@login');
 
         //reading controller
         Route::post('create_reading_exercise','ReadingController@postReadingExercise');

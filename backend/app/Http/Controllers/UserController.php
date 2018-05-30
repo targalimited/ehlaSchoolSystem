@@ -12,11 +12,9 @@ use App\User;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Excel;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 
@@ -86,6 +84,7 @@ class UserController extends Controller
             unset($userData['user_session']);
 
             $user = User::where('id', $userData['user_id'])->first();
+//            dd($user->can('login'));
             if(!empty($user)){
                 // user exist, update user info and do local auth
                 try{
@@ -130,6 +129,7 @@ class UserController extends Controller
               'token' => $user->ex_token
             ];
 
+          //$user = Auth::user()->with('roles')->first();
         } else {
             $res = [
               'success' => false,
