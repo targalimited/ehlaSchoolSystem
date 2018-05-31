@@ -2,28 +2,24 @@
 
 namespace App\Http\Middleware;
 
-use App\User;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-
-class DetectDB
+class RedirectIfNotAdminAuthenticated
 {
-  /**
-   * Handle an incoming request.
-   *
-   * @param  \Illuminate\Http\Request $request
-   * @param  \Closure $next
-   * @param  string|null $guard
-   * @return mixed
-   */
-
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @param  string|null  $guard
+     * @return mixed
+     */
   public function handle($request, Closure $next)
   {
 
     $school_id = (int)$request->header('school-id');
-
 
     $db_name = "school_" . $school_id;
     //$db_name = "school_1";
@@ -45,6 +41,11 @@ class DetectDB
     // config(['database.default'=>'mysql']);
     DB::reconnect();
 
-    return $next($request);
+
+    if ( Auth::check() )
+    {
+      return $next($request);
+    }
+    return redirect('/');
   }
 }
