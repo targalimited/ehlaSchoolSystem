@@ -27,6 +27,7 @@
           const result = res.plain();
           localStorage.setItem('access_token', result['token']);
           localStorage.setItem('teacherId', result.user_id);
+          localStorage.setItem('schoolId', result.school_id);
           localStorage.setItem('user', JSON.stringify(result));
           $rootScope.user = result;
           $state.go('app.home');
