@@ -49,7 +49,7 @@ Route::group(['prefix' => 'v1'], function () {
             return Auth::user();
         });
 
-        Route::post('userApi/login', 'UserController@login');
+
         //Login Controller
      // Route::post('userApi/login', 'LoginController@login');
 
@@ -171,6 +171,8 @@ Route::group(['prefix' => 'v1'], function () {
 
 
     });
+
+  Route::post('userApi/login', 'LoginController@login');
 
     Route::any('{api?}/{function?}/{params?}', 'ApiController@api')->where('params', '(.*)')->middleware('detectDB');
 
