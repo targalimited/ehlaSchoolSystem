@@ -1,5 +1,19 @@
 <?php
 
+for ($i = 1 ;  $i<=2; $i++){
+  $array['school_'.$i]['driver'] = 'mysql';
+  $array['school_'.$i]['host'] = env('DB_HOST_SCHOOL');
+  $array['school_'.$i]['port'] = env('DB_PORT_SCHOOL');
+  $array['school_'.$i]['database'] = 'school_'.$i;
+  $array['school_'.$i]['username'] = env('DB_USERNAME_SCHOOL');
+  $array['school_'.$i]['password'] = env('DB_PASSWORD_SCHOOL');
+  $array['school_'.$i]['charset'] = 'utf8mb4';
+  $array['school_'.$i]['collation'] = 'utf8mb4_unicode_ci';
+  $array['school_'.$i]['prefix'] = env('DB_PREFIX', 'school_');
+  $array['school_'.$i]['strict'] = true;
+  $array['school_'.$i]['engine'] = null;
+}
+
 return [
 
     /*
@@ -31,56 +45,59 @@ return [
     |
     */
 
-    'connections' => [
 
-        'sqlite' => [
-            'driver' => 'sqlite',
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
-            'prefix' => '',
-        ],
-
-        'mysql' => [
-            'driver' => 'mysql',
-            'host' => env('DB_HOST_SCHOOL'),
-            'port' => env('DB_PORT_SCHOOL'),
-            'database' => env('DB_DATABASE_SCHOOL'),
-            'username' => env('DB_USERNAME_SCHOOL'),
-            'password' => env('DB_PASSWORD_SCHOOL'),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
-            'prefix' => env('DB_PREFIX', 'school_'),
-            'strict' => true,
-            'engine' => null,
-        ],
-
-        'school_testing' => [
-            'driver' => 'mysql',
-            'host' => env('DB_HOST_SCHOOL_TESTING', 'db-test.ckjfdmyszhad.ap-southeast-1.rds.amazonaws.com'),
-            'port' => env('DB_PORT_SCHOOL_TESTING', '13310'),
-            'database' => env('DB_DATABASE_SCHOOL_TESTING', 'ehl_user'),
-            'username' => env('DB_USERNAME_SCHOOL_TESTING', 'billchan'),
-            'password' => env('DB_PASSWORD_SCHOOL_TESTING', '4&CdMY-6a9<J934P'),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
-            'prefix' => env('DB_PREFIX', 'school_'),
-            'strict' => true,
-            'engine' => null,
-        ],
-
-        'pgsql' => [
-            'driver' => 'pgsql',
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
-            'prefix' => '',
-            'schema' => 'public',
-            'sslmode' => 'prefer',
-        ],
-
-    ],
+'connections' => $array,
+//    'connections' => [
+//
+//        'sqlite' => [
+//            'driver' => 'sqlite',
+//            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+//            'prefix' => '',
+//        ],
+//
+//
+//        'mysql' => [
+//            'driver' => 'mysql',
+//            'host' => env('DB_HOST_SCHOOL'),
+//            'port' => env('DB_PORT_SCHOOL'),
+//            'database' => env('DB_DATABASE_SCHOOL'),
+//            'username' => env('DB_USERNAME_SCHOOL'),
+//            'password' => env('DB_PASSWORD_SCHOOL'),
+//            'charset' => 'utf8mb4',
+//            'collation' => 'utf8mb4_unicode_ci',
+//            'prefix' => env('DB_PREFIX', 'school_'),
+//            'strict' => true,
+//            'engine' => null,
+//        ],
+//
+//        'school_testing' => [
+//            'driver' => 'mysql',
+//            'host' => env('DB_HOST_SCHOOL_TESTING', 'db-test.ckjfdmyszhad.ap-southeast-1.rds.amazonaws.com'),
+//            'port' => env('DB_PORT_SCHOOL_TESTING', '13310'),
+//            'database' => env('DB_DATABASE_SCHOOL_TESTING', 'ehl_user'),
+//            'username' => env('DB_USERNAME_SCHOOL_TESTING', 'billchan'),
+//            'password' => env('DB_PASSWORD_SCHOOL_TESTING', '4&CdMY-6a9<J934P'),
+//            'charset' => 'utf8mb4',
+//            'collation' => 'utf8mb4_unicode_ci',
+//            'prefix' => env('DB_PREFIX', 'school_'),
+//            'strict' => true,
+//            'engine' => null,
+//        ],
+//
+//        'pgsql' => [
+//            'driver' => 'pgsql',
+//            'host' => env('DB_HOST', '127.0.0.1'),
+//            'port' => env('DB_PORT', '5432'),
+//            'database' => env('DB_DATABASE', 'forge'),
+//            'username' => env('DB_USERNAME', 'forge'),
+//            'password' => env('DB_PASSWORD', ''),
+//            'charset' => 'utf8',
+//            'prefix' => '',
+//            'schema' => 'public',
+//            'sslmode' => 'prefer',
+//        ],
+//
+//    ],
 
     /*
     |--------------------------------------------------------------------------
