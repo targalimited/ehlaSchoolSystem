@@ -45,16 +45,16 @@ class RedirectIfNotAdminAuthenticated
     // config(['database.default'=>'mysql']);
     DB::reconnect();
 
+//    dump(DB::connection()->getPdo());
 
 
     if ( Auth::check() )
     {
       dump(Auth::check());
-      dump(DB::getDatabaseName());
+      dump('auth.OK.'.DB::getDatabaseName());
       return $next($request);
     }
-
-    dd('auth.'.DB::getDatabaseName());
+    dump(DB::getDatabaseName());
     return redirect('/');
   }
 }

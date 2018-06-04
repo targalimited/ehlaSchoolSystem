@@ -17,6 +17,8 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+
+
         $access_token = $request->headers->get('access-token');
 
         if(!isset($_SERVER['QUERY_STRING']))
@@ -27,11 +29,12 @@ class LoginController extends Controller
         $input = '';
 
 
+
         $client = new Client();
 
 
         try {
-            $result = $client->request($request->method(), env('USERMODEL_URL') . $uri,
+            $result = $client->request($request->method(), config('app.usermodel_url') . $uri,
                 [
                     'auth' => ['ehl_api', '27150900'],
                     'headers' => [
@@ -44,7 +47,10 @@ class LoginController extends Controller
                 ]
             );
 
+
+
             $data = \GuzzleHttp\json_decode($result->getBody()->getContents(), true);
+
 
             return $data;
 
@@ -95,8 +101,9 @@ class LoginController extends Controller
         config(['database.connections.school_0.username'=>env('DB_USERNAME_SCHOOL')]);
         config(['database.connections.school_0.password'=>env('DB_PASSWORD_SCHOOL')]);
         config(['database.connections.school_0.prefix'=>'school_']);
-        config(['database.connections.school_0.default'=>'mysql']);
+//        config(['database.connections.school_0.default'=>'school_0']);
         DB::reconnect();
+//        dd(DB::getDatabaseName());
 
       }
 
