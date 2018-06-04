@@ -16,10 +16,10 @@ use Illuminate\Validation\Rule;
 class CategoryController extends Controller {
 	
 	public function get_school_category (Request $request) {
+		
 		//params basic
 		$PBS = New ParamBasicServices($request);
 		$user = $PBS->getUserBasic();
-		
 		//permission
 		$PCS = New PermissionControlServices($request);
 		$permission = $PCS->checkUserPermission($user);

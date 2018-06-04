@@ -9,17 +9,20 @@ use GuzzleHttp\Client;
 //use Illuminate\Support\Facades\DB;
 
 class ParamBasicServices extends Model {
+	private $userJson;
+	private $accessToken;
 	private $userBasic;
 	
 	public function __construct(Request $request) {
 		parent::__construct();
+		$this->userJson = json_decode(\Auth::user(), true);
+		$accessToken = \Auth::retrieveUsermodelAccessToken();
 		
 		$params = $request->params;
 		
-		$this->userBasic['user_id'] = 36;
+		$this->userBasic['user_id'] = $this->userJson['user_id'];
 		$this->userBasic['class_id'] = isset($params['class_id']) ? $params['class_id'] : null;
 		$this->userBasic['subject_id'] = isset($params['subject_id']) ? $params['subject_id'] : null;
-		$this->userBasic['academic_id'] = isset($params['academic_id']) ? $params['academic_id'] : null;
     }
 	
 	public function getStudents() {

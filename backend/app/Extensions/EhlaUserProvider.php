@@ -33,6 +33,12 @@ class EhlaUserProvider implements UserProvider
 		// update via remember token not necessary
 	}
 
+	public function retrieveUsermodelAccessToken () {
+		$user = $this->user;
+		$userRec = $user->first();
+		$userJson = json_decode($userRec['session'], true);
+		return $userJson['access_token'];
+	}
 	public function retrieveByCredentials (array $credentials) {
 		// implementation upto user.
 		// how he wants to implement -

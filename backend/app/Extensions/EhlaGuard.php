@@ -71,7 +71,10 @@ class EhlaGuard implements Guard
 		}
 		return $user;
 	}
-
+	
+	public function retrieveUsermodelAccessToken () {
+		return $this->provider->retrieveUsermodelAccessToken();
+	}
 	
 	public function dumpuser () {
 
