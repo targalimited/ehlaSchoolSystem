@@ -88,16 +88,16 @@ class LoginController extends Controller
       if($userData['school']['id']){
         $db_name = "school_".$userData['school']['id'];
         //$db_name = "school_1";
-        DB::purge('mysql');
-
-        config(['database.connections.mysql.host'=>env('DB_HOST_SCHOOL')]);
-        config(['database.connections.mysql.port'=>env('DB_PORT_SCHOOL')]);
-        config(['database.connections.mysql.database'=>$db_name]);
-        config(['database.connections.mysql.username'=>env('DB_USERNAME_SCHOOL')]);
-        config(['database.connections.mysql.password'=>env('DB_PASSWORD_SCHOOL')]);
-        config(['database.connections.mysql.prefix'=>'school_']);
-        // config(['database.default'=>'mysql']);
+        DB::purge('school_0');
+        config(['database.connections.school_0.host'=>env('DB_HOST_SCHOOL')]);
+        config(['database.connections.school_0.port'=>env('DB_PORT_SCHOOL')]);
+        config(['database.connections.school_0.database'=>$db_name]);
+        config(['database.connections.school_0.username'=>env('DB_USERNAME_SCHOOL')]);
+        config(['database.connections.school_0.password'=>env('DB_PASSWORD_SCHOOL')]);
+        config(['database.connections.school_0.prefix'=>'school_']);
+        config(['database.connections.school_0.default'=>'mysql']);
         DB::reconnect();
+
       }
 
       $user = User::where('id', $userData['user_id'])->first();
@@ -116,7 +116,8 @@ class LoginController extends Controller
                   'session' => json_encode($userSession),
                   'ex_token' => Str::random(32),
                   'expiry_date' => Carbon::now()->addDay(14)->format('Y-m-j'),
-                  'school_id' => $userData['school']['id']
+                  'school_id' => $userData['school']['id'],
+                  'updated_at' => date('Y-m-d H:i:s')
                 ]);
             }, 5);
           } catch (\Exception $e) {
@@ -136,7 +137,9 @@ class LoginController extends Controller
                 'session' => json_encode($userSession),
                 'ex_token' => Str::random(32),
                 'expiry_date' => Carbon::now()->addDay(14)->format('Y-m-j'),
-                'school_id' => $userData['school']['id']
+                'school_id' => $userData['school']['id'],
+                'updated_at' => date('Y-m-d H:i:s'),
+                'created_at' => date('Y-m-d H:i:s')
               ]);
 
             }, 5);

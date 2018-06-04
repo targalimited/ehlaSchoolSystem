@@ -1,6 +1,6 @@
 <?php
 
-for ($i = 1 ;  $i<=2; $i++){
+for ($i = 0 ;  $i<=2; $i++){
   $array['school_'.$i]['driver'] = 'mysql';
   $array['school_'.$i]['host'] = env('DB_HOST_SCHOOL');
   $array['school_'.$i]['port'] = env('DB_PORT_SCHOOL');
@@ -27,7 +27,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'school_0'),
 
     /*
     |--------------------------------------------------------------------------
