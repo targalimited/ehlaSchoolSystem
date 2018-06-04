@@ -36,11 +36,11 @@ class RedirectIfNotAdminAuthenticated
 //        config(['database.connections.mysql.password'=>env('DB_PASSWORD_SCHOOL','JS,J.0>D16GvHZt[(=DrgLk1(=70:bad')]);
 //        config(['database.connections.mysql.prefix'=>'school_']);
 
-    config(['database.connections.school_0.host' => env('DB_HOST_SCHOOL')]);
-    config(['database.connections.school_0.port' => env('DB_PORT_SCHOOL')]);
+    config(['database.connections.school_0.host' => env('DB_HOST_SCHOOL','school-system-rds.ckjfdmyszhad.ap-southeast-1.rds.amazonaws.com')]);
+    config(['database.connections.school_0.port' => env('DB_PORT_SCHOOL','13310')]);
     config(['database.connections.school_0.database' => $db_name]);
-    config(['database.connections.school_0.username' => env('DB_USERNAME_SCHOOL')]);
-    config(['database.connections.school_0.password' => env('DB_PASSWORD_SCHOOL')]);
+    config(['database.connections.school_0.username' => env('DB_USERNAME_SCHOOL','ehlawebusr')]);
+    config(['database.connections.school_0.password' => env('DB_PASSWORD_SCHOOL','JS,J.0>D16GvHZt[(=DrgLk1(=70:bad')]);
     config(['database.connections.school_0.prefix' => 'school_']);
     // config(['database.default'=>'mysql']);
     DB::reconnect();

@@ -11,7 +11,7 @@ RUN chown -R www-data:www-data \
 # RUN chmod 777 storage
 
 RUN php artisan key:generate --force
-RUN php artisan config:clear
 RUN php artisan optimize
+RUN php artisan config:clear
 
 EXPOSE 80
