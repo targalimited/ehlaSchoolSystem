@@ -27,6 +27,8 @@ class RedirectIfNotAdminAuthenticated
     else
       $db_name = "school_0";
 
+    dump($db_name);
+    
     DB::purge('school_0');
 
 //        config(['database.connections.mysql.host'=>env('DB_HOST_SCHOOL','school-system-rds.ckjfdmyszhad.ap-southeast-1.rds.amazonaws.com')]);
