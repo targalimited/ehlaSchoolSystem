@@ -30,6 +30,8 @@ class DetectDB
       $db_name = "school_0";
     //$db_name = "school_1";
 
+    dd($db_name);
+
     DB::purge($db_name);
 
 //        config(['database.connections.mysql.host'=>env('DB_HOST_SCHOOL','school-system-rds.ckjfdmyszhad.ap-southeast-1.rds.amazonaws.com')]);
@@ -47,6 +49,8 @@ class DetectDB
     config(['database.connections.school_0.prefix' => 'school_']);
     // config(['database.default'=>'mysql']);
     DB::reconnect();
+
+    dd(DB::getDatabaseName());
 
     return $next($request);
   }

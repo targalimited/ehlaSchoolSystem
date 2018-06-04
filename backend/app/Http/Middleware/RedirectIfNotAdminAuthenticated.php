@@ -19,6 +19,7 @@ class RedirectIfNotAdminAuthenticated
   public function handle($request, Closure $next)
   {
 
+
     $school_id = (int)$request->header('school-id');
 
     if ($school_id)
@@ -27,7 +28,8 @@ class RedirectIfNotAdminAuthenticated
       $db_name = "school_0";
     //$db_name = "school_1";
 
-    DB::purge($db_name);
+
+    DB::purge('school_0');
 
 //        config(['database.connections.mysql.host'=>env('DB_HOST_SCHOOL','school-system-rds.ckjfdmyszhad.ap-southeast-1.rds.amazonaws.com')]);
 //        config(['database.connections.mysql.port'=>env('DB_PORT_SCHOOL','13310')]);
@@ -44,6 +46,7 @@ class RedirectIfNotAdminAuthenticated
     config(['database.connections.school_0.prefix' => 'school_']);
     // config(['database.default'=>'mysql']);
     DB::reconnect();
+
 
 
     if ( Auth::check() )
