@@ -26,8 +26,6 @@ class RedirectIfNotAdminAuthenticated
       $db_name = "school_" . $school_id;
     else
       $db_name = "school_0";
-    //$db_name = "school_1";
-
 
     DB::purge('school_0');
 
@@ -51,8 +49,12 @@ class RedirectIfNotAdminAuthenticated
 
     if ( Auth::check() )
     {
+      dump(Auth::check());
+      dump(DB::getDatabaseName());
       return $next($request);
     }
+
+    dd('auth.'.DB::getDatabaseName());
     return redirect('/');
   }
 }
