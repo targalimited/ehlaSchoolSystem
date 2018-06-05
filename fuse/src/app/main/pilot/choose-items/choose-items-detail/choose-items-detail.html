@@ -182,158 +182,202 @@
 								
 					<div ng-if="tab.tab == 2">
 						<md-tab-body>
-							<div class="exercise-detail-form-container md-background-bg md-whiteframe-1dp">										
-								<ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="100" flex-gt-md="100">
-									<ms-widget-front class="white-bg">
-										<div class="content-card" layout="column" flex>
-											<div class="content" layout="row" flex>
-												<div class="white-bg md-whiteframe-4dp">							
-													<div id="DataTables_Table_0_wrapper" class="dataTables_wrapper no-footer">
-														<div class="dataTables_length">
-															<label>Show 
-																<select ng-change="entryUpdate(tab)" ng-model="tab.selectedEntry">
-																	<option value="10">10</option>
-																	<option value="25">25</option>
-																	<option value="50">50</option>
-																	<option value="100">100</option>
-																</select>
-																entries
-															</label>
-														</div>
-														<div class="dataTables_filter">
-															<label>Search:<input type="search">
-															</label>
-														</div>								
-													
-														<table class="dataTable row-border hover extra-learning-table">
-															<col width="20%">
-															<col width="50%">
-															<col width="30%">
-															<tbody>
-															<tr ng-repeat="item in tab.data">
-																<td><div><img ng-src="{{ item.thumbnail_path }}" title="{{ item.name_en }}" alt="{{ item.name_en }}"/></div></td>
-																<td>
-																	<div class="title">{{ item['name_en'] }}</div>
-																	<div class="desc">{{ item['info_en'] }}</div>
-																	<div class="desc">{{ item['info_nd_en'] }}</div>
-																</td>
-																<td>
-																
-																	<div>
-																		<span ng-if="validLevels['p1'] == true">
-																			<label>p1
-																				<md-checkbox class="lvCheck" type="checkbox" id="p1" ng-model="item['p1']" ng-true-value="'1'" ng-false-value="'0'" aria-label="p1" ng-disabled="item['is_assign_lock']">
-																			</label>
-																		</span>
-																		<span ng-if="validLevels['p2'] == true">
-																			<label>p2
-																				<md-checkbox class="lvCheck" type="checkbox" id="p2" ng-model="item['p2']" ng-true-value="'1'" ng-false-value="'0'" aria-label="p2">
-																			</label>
-																		</span>
-																		<span ng-if="validLevels['p3'] == true">
-																			<label for="p3">p3
-																				<md-checkbox class="lvCheck" type="checkbox" id="p3" ng-model="item['p3']" ng-true-value="'1'" ng-false-value="'0'" aria-label="p3">
-																			</label>
-																		</span>
-																		<span ng-if="validLevels['p4'] == true">
-																			<label for="p4">p4
-																				<md-checkbox class="lvCheck" type="checkbox" id="p4" ng-model="item['p4']" ng-true-value="'1'" ng-false-value="'0'" aria-label="p4">
-																			</label>
-																		</span>
-																		<span ng-if="validLevels['p5'] == true">
-																			<label for="p5">p5
-																				<md-checkbox class="lvCheck" type="checkbox" id="p5" ng-model="item['p5']" ng-true-value="'1'" ng-false-value="'0'" aria-label="p5">
-																			</label>
-																		</span>
-																		<span ng-if="validLevels['p6'] == true">
-																			<label for="p6">p6
-																				<md-checkbox class="lvCheck" type="checkbox" id="p6" ng-model="item['p6']" ng-true-value="'1'" ng-false-value="'0'" aria-label="p6">
-																			</label>
-																		</span>
-																	</div>
+							<div class="exercise-detail-form-container md-background-bg md-whiteframe-1dp">		
+								<div class="widget-group" layout="row" flex="100" layout-wrap>
 
-																	<div>
-																		<span ng-if="validLevels['s1'] == true">
-																			<label for="s1">s1
-																				<md-checkbox class="lvCheck" type="checkbox" id="s1" ng-model="item['s1']" ng-true-value="'1'" ng-false-value="'0'" aria-label="s1">
-																			</label>
-																		</span>
-																		<span ng-if="validLevels['s2'] == true">
-																			<label for="s2">s2
-																				<md-checkbox class="lvCheck" type="checkbox" id="s2" ng-model="item['s2']" ng-true-value="'1'" ng-false-value="'0'" aria-label="s2">
-																			</label>
-																		</span>
-																		<span ng-if="validLevels['s3'] == true">
-																			<label for="s3">s3
-																				<md-checkbox class="lvCheck" type="checkbox" id="s3" ng-model="item['s3']" ng-true-value="'1'" ng-false-value="'0'" aria-label="s3">
-																			</label>
-																		</span>
-																		<span ng-if="validLevels['s4'] == true">
-																			<label for="s4">s4
-																				<md-checkbox class="lvCheck" type="checkbox" id="s4" ng-model="item['s4']" ng-true-value="'1'" ng-false-value="'0'" aria-label="s4">
-																			</label>
-																		</span>
-																		<span ng-if="validLevels['s5'] == true">
-																			<label for="s5">s5
-																				<md-checkbox class="lvCheck" type="checkbox" id="s5" ng-model="item['s5']" ng-true-value="'1'" ng-false-value="'0'" aria-label="s5">
-																			</label>
-																		</span>
-																		<span ng-if="validLevels['s6'] == true">
-																			<label for="s6">s6
-																				<md-checkbox class="lvCheck" type="checkbox" id="s6" ng-model="item['s6']" ng-true-value="'1'" ng-false-value="'0'" aria-label="s6">
-																			</label>
-																		</span>
-																	</div>
-																</td>
-															</tr>
-															</tbody>
-														</table>							
+
+									<ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="80" flex-gt-md="80">
+										<ms-widget-front class="white-bg">
+											<div>
+												<div class="pt-8 pb-16" layout="column" layout-align="start center">
+													<div class="orange-fg font-size-30" style="margin:10px">
+														(Level) / (Chosen) / (Max)
+													</div>
+													<div>
+														<div><span ng-if="validLevels['p1'] == true">Primary 1 : {{tab.itemLvCnt.p1}} <span ng-show="tab.itemLvCnt.p1c != 0" style="color:red"><span ng-show="tab.itemLvCnt.p1c > 0">+</span><span ng-show="tab.itemLvCnt.p1c < 0">-</span> {{tab.itemLvCnt.p1c | makePositive}}</span>/ {{level_item_qtt}}</span></div>
+														<div><span ng-if="validLevels['p2'] == true">Primary 2 : {{tab.itemLvCnt.p2}} <span ng-show="tab.itemLvCnt.p2c != 0" style="color:red"><span ng-show="tab.itemLvCnt.p2c > 0">+</span><span ng-show="tab.itemLvCnt.p2c < 0">-</span> {{tab.itemLvCnt.p2c | makePositive}}</span>/ {{level_item_qtt}}</span></div>
+														<div><span ng-if="validLevels['p3'] == true">Primary 3 : {{tab.itemLvCnt.p3}} <span ng-show="tab.itemLvCnt.p3c != 0" style="color:red"><span ng-show="tab.itemLvCnt.p3c > 0">+</span><span ng-show="tab.itemLvCnt.p3c < 0">-</span> {{tab.itemLvCnt.p3c | makePositive}}</span>/ {{level_item_qtt}}</span></div>
+														<div><span ng-if="validLevels['p4'] == true">Primary 4 : {{tab.itemLvCnt.p4}} <span ng-show="tab.itemLvCnt.p4c != 0" style="color:red"><span ng-show="tab.itemLvCnt.p4c > 0">+</span><span ng-show="tab.itemLvCnt.p4c < 0">-</span> {{tab.itemLvCnt.p4c | makePositive}}</span>/ {{level_item_qtt}}</span></div>
+														<div><span ng-if="validLevels['p5'] == true">Primary 5 : {{tab.itemLvCnt.p5}} <span ng-show="tab.itemLvCnt.p5c != 0" style="color:red"><span ng-show="tab.itemLvCnt.p5c > 0">+</span><span ng-show="tab.itemLvCnt.p5c < 0">-</span> {{tab.itemLvCnt.p5c | makePositive}}</span>/ {{level_item_qtt}}</span></div>
+														<div><span ng-if="validLevels['p6'] == true">Primary 6 : {{tab.itemLvCnt.p6}} <span ng-show="tab.itemLvCnt.p6c != 0" style="color:red"><span ng-show="tab.itemLvCnt.p6c > 0">+</span><span ng-show="tab.itemLvCnt.p6c < 0">-</span> {{tab.itemLvCnt.p6c | makePositive}}</span>/ {{level_item_qtt}}</span></div>
+														<div><span ng-if="validLevels['s1'] == true">Secondary 7 : {{tab.itemLvCnt.s1}} <span ng-show="tab.itemLvCnt.s1c != 0" style="color:red"><span ng-show="tab.itemLvCnt.s1c > 0">+</span><span ng-show="tab.itemLvCnt.s1c < 0">-</span> {{tab.itemLvCnt.s1c | makePositive}}</span>/ {{level_item_qtt}}</span></div>
+														<div><span ng-if="validLevels['s2'] == true">Secondary 8 : {{tab.itemLvCnt.s2}} <span ng-show="tab.itemLvCnt.s2c != 0" style="color:red"><span ng-show="tab.itemLvCnt.s2c > 0">+</span><span ng-show="tab.itemLvCnt.s2c < 0">-</span> {{tab.itemLvCnt.s2c | makePositive}}</span>/ {{level_item_qtt}}</span></div>
+														<div><span ng-if="validLevels['s3'] == true">Secondary 9 : {{tab.itemLvCnt.s3}} <span ng-show="tab.itemLvCnt.s3c != 0" style="color:red"><span ng-show="tab.itemLvCnt.s3c > 0">+</span><span ng-show="tab.itemLvCnt.s3c < 0">-</span> {{tab.itemLvCnt.s3c | makePositive}}</span>/ {{level_item_qtt}}</span></div>
+														<div><span ng-if="validLevels['s4'] == true">Secondary 10 : {{tab.itemLvCnt.s4}} <span ng-show="tab.itemLvCnt.s4c != 0" style="color:red"><span ng-show="tab.itemLvCnt.s4c > 0">+</span><span ng-show="tab.itemLvCnt.s4c < 0">-</span> {{tab.itemLvCnt.s4c | makePositive}}</span>/ {{level_item_qtt}}</span></div>
+														<div><span ng-if="validLevels['s5'] == true">Secondary 11 : {{tab.itemLvCnt.s5}} <span ng-show="tab.itemLvCnt.s5c != 0" style="color:red"><span ng-show="tab.itemLvCnt.s5c > 0">+</span><span ng-show="tab.itemLvCnt.s5c < 0">-</span> {{tab.itemLvCnt.s5c | makePositive}}</span>/ {{level_item_qtt}}</span></div>
+														<div><span ng-if="validLevels['s6'] == true">Secondary 12 : {{tab.itemLvCnt.s6}} <span ng-show="tab.itemLvCnt.s6c != 0" style="color:red"><span ng-show="tab.itemLvCnt.s6c > 0">+</span><span ng-show="tab.itemLvCnt.s6c < 0">-</span> {{tab.itemLvCnt.s6c | makePositive}}</span>/ {{level_item_qtt}}</span></div>
+													</div>
+												</div>
+											</div>
+										</ms-widget-front>
+									</ms-widget>
+									
+									<ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="20" flex-gt-md="20">
+										<ms-widget-front class="white-bg">
+											<div>
+												<div class="pt-8 pb-16" layout="column" layout-align="start center">
+													<div class="orange-fg font-size-22" style="margin:10px">
+														<button ng-click="chooseItemLevel(tab)" style="box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.26); color:#a7603a;margin:6px 8px; padding:6px 8px; background-color:#ffffff;">
+															confirm
+														</button>
+													</div>
+												</div>
+											</div>
+										</ms-widget-front>
+									</ms-widget>
+
+									<ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="100" flex-gt-md="100">
+										<ms-widget-front class="white-bg">
+											<div class="content-card" layout="column" flex>
+												<div class="content" layout="row" flex>
+													<div class="white-bg md-whiteframe-4dp">							
+														<div id="DataTables_Table_0_wrapper" class="dataTables_wrapper no-footer">
+															<div class="dataTables_length">
+																<label>Show 
+																	<select ng-change="entryUpdate(tab)" ng-model="tab.selectedEntry">
+																		<option value="10">10</option>
+																		<option value="25">25</option>
+																		<option value="50">50</option>
+																		<option value="100">100</option>
+																	</select>
+																	entries
+																</label>
+															</div>
+															<div class="dataTables_filter">
+																<label>Search:<input type="search">
+																</label>
+															</div>
+														
+															<table class="dataTable row-border hover extra-learning-table">
+																<col width="20%">
+																<col width="50%">
+																<col width="30%">
+																<tbody>
+																<tr ng-repeat="item in tab.data">
+																	<td><div><img ng-src="{{ item.thumbnail_path }}" title="{{ item.name_en }}" alt="{{ item.name_en }}"/></div></td>
+																	<td>
+																		<div class="title">{{ item['name_en'] }}</div>
+																		<div class="desc">{{ item['info_en'] }}</div>
+																		<div class="desc">{{ item['info_nd_en'] }}</div>
+																	</td>
+																	<td>
+																	
+																		<div>
+																			<span ng-if="validLevels['p1'] == true">
+																				<label for="p1">p1
+																					<md-checkbox class="lvCheck" type="checkbox" id="p1" ng-model="item['p1']['tick']" ng-change="changeLevelChosen(item.id, tab, 'p1', item['p1']['tick'])" ng-true-value="true" ng-false-value="false" aria-label="p1" ng-disabled="(tab.itemLvCnt.p1c + tab.itemLvCnt.p1 >= level_item_qtt) && (item['p1']['tick'] == false)">
+																				</label>
+																			</span>
+																			<span ng-if="validLevels['p2'] == true">
+																				<label for="p2">p2
+																					<md-checkbox class="lvCheck" type="checkbox" id="p2" ng-model="item['p2']['tick']" ng-change="changeLevelChosen(item.id, tab, 'p2', item['p2']['tick'])" ng-true-value="true" ng-false-value="false" aria-label="p2" ng-disabled="(tab.itemLvCnt.p2c + tab.itemLvCnt.p2 >= level_item_qtt) && (item['p2']['tick'] == false)">
+																				</label>
+																			</span>
+																			<span ng-if="validLevels['p3'] == true">
+																				<label for="p3">p3
+																					<md-checkbox class="lvCheck" type="checkbox" id="p3" ng-model="item['p3']['tick']" ng-change="changeLevelChosen(item.id, tab, 'p3', item['p3']['tick'])" ng-true-value="true" ng-false-value="false" aria-label="p3" ng-disabled="(tab.itemLvCnt.p3c + tab.itemLvCnt.p3 >= level_item_qtt) && (item['p3']['tick'] == false)">
+																				</label>
+																			</span>
+																			<span ng-if="validLevels['p4'] == true">
+																				<label for="p4">p4
+																					<md-checkbox class="lvCheck" type="checkbox" id="p4" ng-model="item['p4']['tick']" ng-change="changeLevelChosen(item.id, tab, 'p4', item['p4']['tick'])" ng-true-value="true" ng-false-value="false" aria-label="p4" ng-disabled="(tab.itemLvCnt.p4c + tab.itemLvCnt.p4 >= level_item_qtt) && (item['p4']['tick'] == false)">
+																				</label>
+																			</span>
+																			<span ng-if="validLevels['p5'] == true">
+																				<label for="p5">p5
+																					<md-checkbox class="lvCheck" type="checkbox" id="p5" ng-model="item['p5']['tick']" ng-change="changeLevelChosen(item.id, tab, 'p5', item['p5']['tick'])" ng-true-value="true" ng-false-value="false" aria-label="p5" ng-disabled="(tab.itemLvCnt.p5c + tab.itemLvCnt.p5 >= level_item_qtt) && (item['p5']['tick'] == false)">
+																				</label>
+																			</span>
+																			<span ng-if="validLevels['p6'] == true">
+																				<label for="p6">p6
+																					<md-checkbox class="lvCheck" type="checkbox" id="p6" ng-model="item['p6']['tick']" ng-change="changeLevelChosen(item.id, tab, 'p6', item['p6']['tick'])" ng-true-value="true" ng-false-value="false" aria-label="p6" ng-disabled="(tab.itemLvCnt.p6c + tab.itemLvCnt.p6 >= level_item_qtt) && (item['p6']['tick'] == false)">
+																				</label>
+																			</span>
+																		</div>
+
+																		<div>
+																			<span ng-if="validLevels['s1'] == true">
+																				<label for="s1">s1
+																					<md-checkbox class="lvCheck" type="checkbox" id="s1" ng-model="item['s1']['tick']" ng-change="changeLevelChosen(item.id, tab, 's1', item['s1']['tick'])" ng-true-value="true" ng-false-value="false" aria-label="s1" ng-disabled="(tab.itemLvCnt.s1c + tab.itemLvCnt.s1 >= level_item_qtt) && (item['s1']['tick'] == false)">
+																				</label>
+																			</span>
+																			<span ng-if="validLevels['s2'] == true">
+																				<label for="s2">s2
+																					<md-checkbox class="lvCheck" type="checkbox" id="s2" ng-model="item['s2']['tick']" ng-change="changeLevelChosen(item.id, tab, 's2', item['s2']['tick'])" ng-true-value="true" ng-false-value="false" aria-label="s2" ng-disabled="(tab.itemLvCnt.s2c + tab.itemLvCnt.s2 >= level_item_qtt) && (item['s2']['tick'] == false)">
+																				</label>
+																			</span>
+																			<span ng-if="validLevels['s3'] == true">
+																				<label for="s3">s3
+																					<md-checkbox class="lvCheck" type="checkbox" id="s3" ng-model="item['s3']['tick']" ng-change="changeLevelChosen(item.id, tab, 's3', item['s3']['tick'])" ng-true-value="true" ng-false-value="false" aria-label="s3" ng-disabled="(tab.itemLvCnt.s3c + tab.itemLvCnt.s3 >= level_item_qtt) && (item['s3']['tick'] == false)">
+																				</label>
+																			</span>
+																			<span ng-if="validLevels['s4'] == true">
+																				<label for="s4">s4
+																					<md-checkbox class="lvCheck" type="checkbox" id="s4" ng-model="item['s4']['tick']" ng-change="changeLevelChosen(item.id, tab, 's4', item['s4']['tick'])" ng-true-value="true" ng-false-value="false" aria-label="s4" ng-disabled="(tab.itemLvCnt.s4c + tab.itemLvCnt.s4 >= level_item_qtt) && (item['s4']['tick'] == false)">
+																				</label>
+																			</span>
+																			<span ng-if="validLevels['s5'] == true">
+																				<label for="s5">s5
+																					<md-checkbox class="lvCheck" type="checkbox" id="s5" ng-model="item['s5']['tick']" ng-change="changeLevelChosen(item.id, tab, 's5', item['s5']['tick'])" ng-true-value="true" ng-false-value="false" aria-label="s5" ng-disabled="(tab.itemLvCnt.s5c + tab.itemLvCnt.s5 >= level_item_qtt) && (item['s5']['tick'] == false)">
+																				</label>
+																			</span>
+																			<span ng-if="validLevels['s6'] == true">
+																				<label for="s6">s6
+																					<md-checkbox class="lvCheck" type="checkbox" id="s6" ng-model="item['s6']['tick']" ng-change="changeLevelChosen(item.id, tab, 's6', item['s6']['tick'])" ng-true-value="true" ng-false-value="false" aria-label="s6" ng-disabled="(tab.itemLvCnt.s6c + tab.itemLvCnt.s6 >= level_item_qtt) && (item['s6']['tick'] == false)">
+																				</label>
+																			</span>
+																		</div>
+																	</td>
+																</tr>
+																</tbody>
+															</table>							
+														
+															<div class="dataTables_info" role="status" ng-show="tab.data.length > 0">
+																Showing {{((tab.currentPage - 1) * tab.limit) + 1}} to {{tab.currentMaxPage}} of {{tab.totalCount}} entries
+															</div>
+															
+															<div class="dataTables_paginate paging_simple_numbers" ng-show="tab.data.length > 0">
+															
+																<a ng-show="tab.currentPage==1" class="paginate_button previous disabled">Previous</a>
+																<a ng-show="tab.currentPage!=1" class="paginate_button previous">Previous</a>
+																
+																<span>
+																	
+																	<a ng-show="tab.currentPage==1" class="paginate_button current" ng-click="pageSelect(tab, 1)">1</a>
+																	<a ng-show="tab.currentPage!=1" class="paginate_button" ng-click="pageSelect(tab, 1)">1</a>
+																	
+																	<span class="ellipsis" ng-show="tab.currentPage >3 && tab.maxPage> 5">…</span>
+																	
+																	<a class="paginate_button current" ng-show="tab.maxPage>2 && tab.currentPage == tab.p1" ng-click="pageSelect(tab, tab.p1)">{{tab.p1}}</a>
+																	<a class="paginate_button" ng-show="tab.maxPage>2 && tab.currentPage != tab.p1" ng-click="pageSelect(tab, tab.p1)">{{tab.p1}}</a>
+																													
+																	<a class="paginate_button current" ng-show="tab.maxPage>3 && tab.currentPage == tab.p2" ng-click="pageSelect(tab, tab.p2)">{{tab.p2}}</a>
+																	<a class="paginate_button" ng-show="tab.maxPage>3 && tab.currentPage != tab.p2" ng-click="pageSelect(tab, tab.p2)">{{tab.p2}}</a>
+																													
+																	<a class="paginate_button current" ng-show="tab.p3 != -1 && tab.maxPage>4 && tab.currentPage == tab.p3" ng-click="pageSelect(tab, tab.p3)">{{tab.p3}}</a>
+																	<a class="paginate_button" ng-show="tab.p3 != -1 && tab.maxPage>4 && tab.currentPage != tab.p3" ng-click="pageSelect(tab, tab.p3)">{{tab.p3}}</a>
+																	
+																	<span class="ellipsis" ng-show="tab.currentPage <tab.maxPage - 2 && tab.maxPage> 5">…</span>
+																	
+																	<a ng-show="tab.currentPage==tab.maxPage && tab.maxPage != 1" class="paginate_button current" ng-show="tab.maxpage > 1" ng-click="pageSelect(tab, tab.maxPage)">{{tab.maxPage}}</a>
+																	<a ng-show="tab.currentPage!=tab.maxPage && tab.maxPage != 1" class="paginate_button" ng-show="tab.maxpage > 1" ng-click="pageSelect(tab, tab.maxPage)">{{tab.maxPage}}</a>
+																	
+																</span>
+																
+																<a ng-show="tab.currentPage==tab.maxPage" class="paginate_button next disabled">Next</a>
+																<a ng-show="tab.currentPage!=tab.maxPage" class="paginate_button next" ng-click="pageSelect(tab, tab.currentPage + 1)">Next</a>
+																
+															</div>
 													
-														<div class="dataTables_info" role="status" ng-show="tab.data.length > 0">
-															Showing {{((tab.currentPage - 1) * tab.limit) + 1}} to {{tab.currentMaxPage}} of {{tab.totalCount}} entries
-														</div>
-														
-														<div class="dataTables_paginate paging_simple_numbers" ng-show="tab.data.length > 0">
-														
-															<a ng-show="tab.currentPage==1" class="paginate_button previous disabled">Previous</a>
-															<a ng-show="tab.currentPage!=1" class="paginate_button previous">Previous</a>
-															
-															<span>
-																
-																<a ng-show="tab.currentPage==1" class="paginate_button current" ng-click="pageSelect(tab, 1)">1</a>
-																<a ng-show="tab.currentPage!=1" class="paginate_button" ng-click="pageSelect(tab, 1)">1</a>
-																
-																<span class="ellipsis" ng-show="tab.currentPage >3 && tab.maxPage> 5">…</span>
-																
-																<a class="paginate_button current" ng-show="tab.maxPage>2 && tab.currentPage == tab.p1" ng-click="pageSelect(tab, tab.p1)">{{tab.p1}}</a>
-																<a class="paginate_button" ng-show="tab.maxPage>2 && tab.currentPage != tab.p1" ng-click="pageSelect(tab, tab.p1)">{{tab.p1}}</a>
-																												
-																<a class="paginate_button current" ng-show="tab.maxPage>3 && tab.currentPage == tab.p2" ng-click="pageSelect(tab, tab.p2)">{{tab.p2}}</a>
-																<a class="paginate_button" ng-show="tab.maxPage>3 && tab.currentPage != tab.p2" ng-click="pageSelect(tab, tab.p2)">{{tab.p2}}</a>
-																												
-																<a class="paginate_button current" ng-show="tab.p3 != -1 && tab.maxPage>4 && tab.currentPage == tab.p3" ng-click="pageSelect(tab, tab.p3)">{{tab.p3}}</a>
-																<a class="paginate_button" ng-show="tab.p3 != -1 && tab.maxPage>4 && tab.currentPage != tab.p3" ng-click="pageSelect(tab, tab.p3)">{{tab.p3}}</a>
-																
-																<span class="ellipsis" ng-show="tab.currentPage <tab.maxPage - 2 && tab.maxPage> 5">…</span>
-																
-																<a ng-show="tab.currentPage==tab.maxPage && tab.maxPage != 1" class="paginate_button current" ng-show="tab.maxpage > 1" ng-click="pageSelect(tab, tab.maxPage)">{{tab.maxPage}}</a>
-																<a ng-show="tab.currentPage!=tab.maxPage && tab.maxPage != 1" class="paginate_button" ng-show="tab.maxpage > 1" ng-click="pageSelect(tab, tab.maxPage)">{{tab.maxPage}}</a>
-																
-															</span>
-															
-															<a ng-show="tab.currentPage==tab.maxPage" class="paginate_button next disabled">Next</a>
-															<a ng-show="tab.currentPage!=tab.maxPage" class="paginate_button next" ng-click="pageSelect(tab, tab.currentPage + 1)">Next</a>
-															
 														</div>
 												
 													</div>
-											
 												</div>
 											</div>
-										</div>
-							
-									</ms-widget-front>
-								</ms-widget>
+								
+										</ms-widget-front>
+									</ms-widget>
+								</div>
 							</div>
 						</md-tab-body>
 					</div>

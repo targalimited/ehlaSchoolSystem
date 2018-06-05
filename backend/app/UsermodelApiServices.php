@@ -119,6 +119,26 @@ class UsermodelApiServices extends Model {
 		
 		return $result;
 	}
+		
+	public function schoolApiChooseItemsForLevel($catGrouper, $addLvItemList, $removeLvItemList, $limit, $page) {	
+		$uri = $this->version."schoolApi/choose_items_for_level".$this->umUrlSuffix;
+		
+		$params['cat_grouper'] = $catGrouper;
+		$params['add_lv_item_list'] = $addLvItemList;
+		$params['remove_lv_item_list'] = $removeLvItemList;
+		$params['limit'] = $limit;
+		$params['page'] = $page;
+		
+		$this->umOption['form_params'] = [
+			'params' => $params
+		];
+		
+		$client = new Client();
+		$data = $client->post($this->umUrlDomain.$uri, $this->umOption);
+		$result = \GuzzleHttp\json_decode($data->getBody()->getContents(), true);
+		
+		return $result;
+	}
 	
 	public function schoolApiGetByCategory($categoryId, $catGrouper, $page, $limit, $preChosenItemIds) {		
 		
