@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Debug;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,15 +20,21 @@ class RedirectIfNotAdminAuthenticated
   public function handle($request, Closure $next)
   {
 
+    $debug = New Debug();
+$debug->context = json_encode($request->header());
+$debug->save();
+
 
     $school_id = (int)$request->header('school-id');
+
+   // dump('school_id.'.$school_id);
 
     if ($school_id)
       $db_name = "school_" . $school_id;
     else
       $db_name = "school_0";
 
-    dump($db_name);
+    //dump($db_name);
     
     DB::purge('school_0');
 
@@ -52,11 +59,11 @@ class RedirectIfNotAdminAuthenticated
 
     if ( Auth::check() )
     {
-      dump(Auth::check());
-      dump('auth.OK.'.DB::getDatabaseName());
+      //dump(Auth::check());
+      //dump('auth.OK.'.DB::getDatabaseName());
       return $next($request);
     }
-    dump(DB::getDatabaseName());
+   // dump(DB::getDatabaseName());
     return redirect('/');
   }
 }
