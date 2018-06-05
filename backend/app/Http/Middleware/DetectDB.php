@@ -30,7 +30,7 @@ class DetectDB
       $db_name = "school_0";
     //$db_name = "school_1";
 
-    dd($db_name);
+    dd('hi');
 
     DB::purge($db_name);
 
