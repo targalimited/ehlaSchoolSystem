@@ -154,6 +154,34 @@ class ItemController extends Controller {
 		return json($output);		
 	}
 	
+	public function choose_item_for_level (Request $request) {
+		//params
+		$params = $request->params;
+		//params basic
+		$PBS = New ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		
+		//permission
+		$PCS = New PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+		
+		//data		
+		$catGrouper = $params['cat_grouper'];
+		$addLvItemList = $params['add_lv_item_list'];
+		$removeLvItemList = $params['remove_lv_item_list'];
+		$page = $params['page'];
+		$limit = $params['limit'];
+
+		//usermodel
+		$UAS = New UsermodelApiServices($request);
+		
+		$result = $UAS->schoolApiChooseItemsForLevel($catGrouper, $addLvItemList, $removeLvItemList, $limit, $page);
+		$output["data"] = $result["data"];
+		$output["metadata"] = $result["metadata"];
+	
+		return json($output);		
+	}
+	
 	
 	
 	public function get_by_ids (Request $request) {

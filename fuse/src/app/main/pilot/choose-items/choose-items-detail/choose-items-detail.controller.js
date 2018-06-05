@@ -3,6 +3,15 @@
 
   angular
     .module('app.pilot.choose-items.choose-items-detail')
+		.filter('makePositive', function() {
+			return function(num) { 
+				if (num != null) {
+					return Math.abs(num);
+				} else {
+					return 0;
+				}
+			}
+		})
     .controller('ChooseItemsDetailController', ChooseItemsDetailController);
 
   /** @ngInject */
@@ -19,7 +28,16 @@
 		$scope.catGrouper = $state.params.catGrouper;
 		
 		$scope.addItemsList = [];
-		$scope.removeItemsList = [];
+		$scope.removeItemsList = [];		
+		
+		$scope.addLvItemList = {
+			p1: [], p2: [], p3: [], p4: [], p5: [], p6: [],
+			s1: [], s2: [], s3: [], s4: [], s5: [], s6: [],
+		};	
+		$scope.removeLvItemList = {
+			p1: [], p2: [], p3: [], p4: [], p5: [], p6: [],
+			s1: [], s2: [], s3: [], s4: [], s5: [], s6: [],
+		};			
 		
 		$scope.validLevels = {
 			p1:false,
@@ -57,11 +75,12 @@
 				data : [],
 				selectedEntry : "10",
 				currentPage : 1,
+				
 				onSelect : function () {
 					setItemLevelSectionData(this);					
 				}}];
 
-    $scope.init = function () {			
+    $scope.init = function () {
 			Restangular
 				.one('get_school_item_summary')
 				.get()
@@ -101,6 +120,55 @@
 			}*/
     }
 		
+		$scope.changeLevelChosen = function (itemId, tab, lv, actionStatus) {			
+			tab.itemLvCnt[lv + 'c'] += (actionStatus) ? 1: -1;
+						
+			for (var i = 0; i< tab.rawData.length; i++) {
+				if (tab.rawData[i].id == itemId) {
+					tab.rawData[i][lv].tick = actionStatus;
+					break;
+				}
+			}
+			
+			if (actionStatus == true) {
+				if ($scope.removeLvItemList[lv].indexOf(itemId) != -1 ) {
+					var index = $scope.removeLvItemList[lv].indexOf(itemId);
+					if (index !== -1) $scope.removeLvItemList[lv].splice(index, 1);
+				} else {
+					$scope.addLvItemList[lv].push(itemId);
+				}
+			} else {
+				if ($scope.addLvItemList[lv].indexOf(itemId) != -1 ) {					
+					var index = $scope.addLvItemList[lv].indexOf(itemId);
+					if (index !== -1) $scope.addLvItemList[lv].splice(index, 1);
+				} else {
+					$scope.removeLvItemList[lv].push(itemId);				
+				} 
+			}			
+		}
+		
+		$scope.chooseItemLevel = function (tab) {
+			var params = {params: { 
+										cat_grouper: $scope.catGrouper, 
+										add_lv_item_list: $scope.addLvItemList, 
+										remove_lv_item_list: $scope.removeLvItemList,
+										page: 1, 
+										limit: 500}};
+
+			Restangular.service('choose_item_for_level').post(params)
+				.then(function (results) {
+					//reset everything
+					
+					tab.rawData = [];
+					setItemLevelSectionData (tab) ;
+				})
+				.catch(function (err) {
+					console.error('Cannot login', err.data);
+				})
+				.finally((function () {
+					$scope.loading = false;
+				}));
+		}
 		
 		$scope.switchSection = function (section) {
       $scope.section = section;	
@@ -351,6 +419,19 @@
 					.then(function (results) {
 						tabDetail.rawData = results.plain().data;
 						tabDetail.totalCount = results.plain().metadata.totalCount;
+						tabDetail.itemLvCnt = results.plain().metadata.itemLvCnt;
+						tabDetail.itemLvCnt['p1c'] = 0;
+						tabDetail.itemLvCnt['p2c'] = 0;
+						tabDetail.itemLvCnt['p3c'] = 0;
+						tabDetail.itemLvCnt['p4c'] = 0;
+						tabDetail.itemLvCnt['p5c'] = 0;
+						tabDetail.itemLvCnt['p6c'] = 0;
+						tabDetail.itemLvCnt['s1c'] = 0;
+						tabDetail.itemLvCnt['s2c'] = 0;
+						tabDetail.itemLvCnt['s3c'] = 0;
+						tabDetail.itemLvCnt['s4c'] = 0;
+						tabDetail.itemLvCnt['s5c'] = 0;
+						tabDetail.itemLvCnt['s6c'] = 0;
 						
 						var start = (tabDetail.currentPage-1) * tabDetail.limit;
 						var end = start + tabDetail.limit;
