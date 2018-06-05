@@ -24,7 +24,7 @@ class RedirectIfNotAdminAuthenticated
     $debug->context = json_encode($request->header());
     $debug->save();
 
-    $db_name = "school_" . (int)$request->header('school-id');
+    $db_name = "school_" . $request->header('school-id');
 
     //dump($db_name);
 
