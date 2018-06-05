@@ -10,7 +10,7 @@
      var schoolId = localStorage.getItem('schoolId');
      if (accessToken) {
       config.headers['access-token'] = accessToken;
-      config.headers['school_id'] = schoolId;
+      config.headers['school-id'] = schoolId;
      }
 
      return config;
@@ -41,7 +41,7 @@
   $translateProvider.useSanitizeValueStrategy('sanitize');
 
 
-  RestangularProvider.setBaseUrl('http://localhost:8000/v1/');
+  RestangularProvider.setBaseUrl('http://api.project-kay.buildonauts.com//v1/');
   $httpProvider.interceptors.push('sessionInjector');
   $mdThemingProvider.theme("success-toast");
   $mdThemingProvider.theme("error-toast");
