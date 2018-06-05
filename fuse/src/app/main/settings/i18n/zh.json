@@ -1,5 +1,8 @@
 {
     "SETTINGS": {
-        "SETTINGS_NAV": "Settings"
+        "SETTINGS_NAV": "設定",
+        "CLASSES_NAV": "班級",
+        "SUBJECTS_NAV": "科目",
+        "ACADEMIC_YEAR_NAV": "學年"
     }
 }

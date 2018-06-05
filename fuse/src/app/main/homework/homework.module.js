@@ -18,7 +18,7 @@
           }
         },
         ncyBreadcrumb: {
-          label: 'Homework'
+          label: '{{ "HOMEWORK1.HOMEWORK_NAV" | translate }}'
         },
         authenticate: true,
       });
@@ -36,7 +36,7 @@
       /*stateParams: {
        'param1': 'page'
        },*/
-      translate: 'HOMEWORK.HOMEWORK_NAV',
+      translate: 'HOMEWORK1.HOMEWORK_NAV',
       weight: 2
     });
   }
