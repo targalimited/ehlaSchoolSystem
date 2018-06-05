@@ -1,10 +1,10 @@
 {
     "PILOT": {
-        "PILOT_NAV": "Pilot 100",
-        "CHOOSE_ITEMS_NAV": "Choose items",
-        "ENGLISH_NAV": "English",
-        "CHINESE_NAV": "Chinese",
-        "MATHEMATICS_NAV": "Mathematics",
-        "REPORT_NAV": "Report"
+        "PILOT_NAV": "試驗 100",
+        "CHOOSE_ITEMS_NAV": "選擇項目",
+        "ENGLISH_NAV": "英文",
+        "CHINESE_NAV": "中文",
+        "MATHEMATICS_NAV": "數學",
+        "REPORT_NAV": "報告"
     }
 }

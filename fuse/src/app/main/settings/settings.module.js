@@ -53,6 +53,7 @@
 
     msNavigationServiceProvider.saveItem('fuse.settings.academic-year', {
       title: 'Academic Year',
+      translate: 'SETTINGS.ACADEMIC_YEAR_NAV',
       state: 'app.settings.academic-year',
     });
     /*msNavigationServiceProvider.saveItem('fuse.settings.levels', {
@@ -61,10 +62,12 @@
     });*/
     msNavigationServiceProvider.saveItem('fuse.settings.subjects', {
       title: 'Subjects',
+      translate: 'SETTINGS.SUBJECTS_NAV',
       state: 'app.settings.subjects',
     });
     msNavigationServiceProvider.saveItem('fuse.settings.classes', {
       title: 'Classes',
+      translate: 'SETTINGS.CLASSES_NAV',
       state: 'app.settings.classes',
     });
   }

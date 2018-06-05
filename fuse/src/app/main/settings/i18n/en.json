@@ -1,5 +1,8 @@
 {
     "SETTINGS": {
-        "SETTINGS_NAV": "Settings"
+        "SETTINGS_NAV": "Settings",
+        "CLASSES_NAV": "Classes",
+        "SUBJECTS_NAV": "Subjects",
+        "ACADEMIC_YEAR_NAV": "Academic Year"
     }
 }
