@@ -9,7 +9,7 @@
      var accessToken = localStorage.getItem('access_token');
      var schoolId = localStorage.getItem('schoolId');
      if (accessToken) {
-      config.headers['access-token'] = accessToken;
+      config.headers['extoken'] = accessToken;
       config.headers['school-id'] = schoolId;
      }
 
@@ -41,7 +41,7 @@
   $translateProvider.useSanitizeValueStrategy('sanitize');
 
 
-  RestangularProvider.setBaseUrl('http://localhost:8000//v1/');
+  RestangularProvider.setBaseUrl('http://localhost:8081/v1/');
   $httpProvider.interceptors.push('sessionInjector');
   $mdThemingProvider.theme("success-toast");
   $mdThemingProvider.theme("error-toast");

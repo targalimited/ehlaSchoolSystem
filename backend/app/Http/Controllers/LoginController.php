@@ -9,6 +9,7 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Extensions\Dbotf;
 use Illuminate\Support\Str;
 
 class LoginController extends Controller
@@ -35,32 +36,41 @@ class LoginController extends Controller
     );
     $data = \GuzzleHttp\json_decode($result->getBody()->getContents(), true);
 
-
     if($data['success']){
       $userData = $data['data'][0];
       $userSession = $data['data'][0]['user_session'];
       unset($userData['user_session']);
 
       if($userData['school']['id']){
-        $db_name = "school_".$userData['school']['id'];
-        //$db_name = "school_1";
-        DB::purge('school_0');
-        config(['database.connections.school_0.host' => env('DB_HOST_SCHOOL','school-system-rds.ckjfdmyszhad.ap-southeast-1.rds.amazonaws.com')]);
-        config(['database.connections.school_0.port' => env('DB_PORT_SCHOOL','13310')]);
-        config(['database.connections.school_0.database' => $db_name]);
-        config(['database.connections.school_0.username' => env('DB_USERNAME_SCHOOL','ehlawebusr')]);
-        config(['database.connections.school_0.password' => env('DB_PASSWORD_SCHOOL','JS,J.0>D16GvHZt[(=DrgLk1(=70:bad')]);
-        config(['database.connections.school_0.prefix' => 'school_']);
-//        config(['database.connections.school_0.default'=>'school_0']);
-        DB::reconnect();
-//        dd(DB::getDatabaseName());
 
+        $db_name = "school_".$userData['school']['id'];
+
+        // DB::purge('school_0');
+        // config(['database.connections.school_0.host' => env('DB_HOST_SCHOOL','school-system-rds.ckjfdmyszhad.ap-southeast-1.rds.amazonaws.com')]);
+        // config(['database.connections.school_0.port' => env('DB_PORT_SCHOOL','13310')]);
+        // config(['database.connections.school_0.database' => $db_name]);
+        // config(['database.connections.school_0.username' => env('DB_USERNAME_SCHOOL','ehlawebusr')]);
+        // config(['database.connections.school_0.password' => env('DB_PASSWORD_SCHOOL','JS,J.0>D16GvHZt[(=DrgLk1(=70:bad')]);
+        // config(['database.connections.school_0.prefix' => 'school_']);
+        // DB::reconnect();
+
+        // switch db
+        new Dbotf(['database' => $db_name]);
+
+      } else {
+        // user do not have school id, reject login.
+        $result = [
+          'status' => false,
+          'code' => '406',
+          'message' => '',
+          'data' => false,
+        ];
+        return Response()->json($result,406);
       }
 
-      $user = User::where('id', $userData['user_id'])->first();
-
-
       if($userData['userGroup']['id'] == 2 || $userData['userGroup']['id'] == 3){
+
+        $user = User::where('id', $userData['user_id'])->first();
         if(!empty($user)){
 
           // user exist, update user info and do local auth
@@ -110,7 +120,15 @@ class LoginController extends Controller
         }
 
         $user = User::where('id',Auth::user()->id)->with('roles')->first()->toArray();
-        return $user;
+        $result = array(
+          "user" => json_decode($user['user']),
+          "ex_token" => $user['ex_token'],
+          "school_id" => $user['school_id'],
+          "roles" => $user['roles'],
+        );
+        
+        return $result;
+
       }else{
         $result = [
           'status' => false,
@@ -132,7 +150,7 @@ class LoginController extends Controller
       $result = [
         'status' => false,
         'code' => '401',
-        'message' => 'User not exists or wrong password',
+        'message' => 'Unauthorized',
         'data' => $data['debug']
       ];
       return Response()->json($result,401);

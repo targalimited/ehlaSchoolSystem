@@ -185,7 +185,8 @@ Route::group(['prefix' => 'v1'], function () {
     });
 	});
 
-  Route::post('userApi/login', 'LoginController@login')->middleware('guest');
+  // Route::post('userApi/login', 'LoginController@login')->middleware('guest');
+  Route::post('userApi/login', 'LoginController@login');
 
   Route::any('{api?}/{function?}/{params?}', 'ApiController@api')->where('params', '(.*)')->middleware('adminAuth');
 
