@@ -28,8 +28,10 @@
           localStorage.setItem('access_token', result['ex_token']);
           localStorage.setItem('teacherId', result.user_id);
           localStorage.setItem('schoolId', result.school_id);
-          localStorage.setItem('user', JSON.stringify(result));
-          $rootScope.user = result;
+          // localStorage.setItem('user', JSON.stringify(result));
+          // $rootScope.user = result;
+          localStorage.setItem('user', result.user);
+          $rootScope.user = result.user;
           $state.go('app.home');
         })
         .catch(function (err) {

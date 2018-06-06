@@ -121,6 +121,7 @@ class LoginController extends Controller
 
         $user = User::where('id',Auth::user()->id)->with('roles')->first()->toArray();
         $result = array(
+          "user_id" => Auth::user()->id,
           "user" => json_decode($user['user']),
           "ex_token" => $user['ex_token'],
           "school_id" => $user['school_id'],
