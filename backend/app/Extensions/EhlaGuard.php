@@ -69,7 +69,12 @@ class EhlaGuard implements Guard
 				$user = $this->provider->retrieveById($id);
 			}
 		}
-		return $user;
+		$result = json_decode($user, true);
+		if (json_last_error() === JSON_ERROR_NONE) {
+			// JSON is valid
+			$user = $result;
+		}
+		return Response()->json($user, 200);
 	}
 	
 	public function retrieveUsermodelAccessToken () {
