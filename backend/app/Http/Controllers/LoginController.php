@@ -41,7 +41,6 @@ class LoginController extends Controller
       $userSession = $data['data'][0]['user_session'];
       unset($userData['user_session']);
 
-
       if($userData['school']['id']){
         $db_name = "school_".$userData['school']['id'];
         //$db_name = "school_1";

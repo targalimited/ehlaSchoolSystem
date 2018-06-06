@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function (Request $request) {
+Route::get('/user', function (Request $request) {
 
 //        $this->visit('/register')
 //            ->type('Taylor', 'name')
@@ -23,7 +23,7 @@ Route::get('/', function (Request $request) {
 //
 //    //return File::get(public_path() . '/dist/index.html');
 //   // Auth::loginUsingId(53,true);
-  dd('hi');
+  dump(Auth::user());
 });
 
 Route::get('/addStudent', function (Request $request) {
@@ -39,7 +39,8 @@ Route::get('/addStudent', function (Request $request) {
 
 
 Route::group(['prefix' => 'v1'], function () {
-  Route::group(['middleware' => ['adminAuth']], function () {
+
+  Route::group(['middleware' => ['chooseDB']], function () {
 
     Route::get('/dumpuser', function (Request $request) {
       dump(Auth::dumpuser());
@@ -49,29 +50,25 @@ Route::group(['prefix' => 'v1'], function () {
       return Auth::user();
     });
 
-	//result controller
-	Route::post('get_school_result_report','ResultController@get_school_result_report');
-	Route::post('get_school_weakness_report','ResultController@get_school_weakness_report');
-	Route::post('get_school_result_summary_report','ResultController@get_school_result_summary_report');
-	
-	//item controller
-	Route::post('get_by_category','ItemController@get_by_category');
-	Route::post('get_selected_item_by_category','ItemController@get_selected_item_by_category');
-	Route::post('choose_item','ItemController@choose_item');
-	Route::post('choose_item_for_level','ItemController@choose_item_for_level');
-	Route::post('get_pre_chosen_items_by_category','ItemController@get_pre_chosen_items_by_category');
-	Route::post('get_by_ids','ItemController@get_by_ids');		
-	Route::post('get_assignment_by_item_id','ItemController@get_assignment_by_item_id');
-	Route::post('set_assignments','ItemController@set_assignments');
-	Route::post('publish_assignments','ItemController@publish_assignments');
-	Route::post('batch_set_publish_assignments','ItemController@batch_set_publish_assignments');
-	Route::get('get_school_item_summary','ItemController@get_school_item_summary');
-	
-	//Category controller
-	Route::get('get_school_category/subject_id/{subject_id?}','CategoryController@get_school_category');
+    //result controller
+    Route::post('get_school_result_report','ResultController@get_school_result_report');
+    Route::post('get_school_weakness_report','ResultController@get_school_weakness_report');
+    Route::post('get_school_result_summary_report','ResultController@get_school_result_summary_report');
 
-    //Login Controller
-    // Route::post('userApi/login', 'LoginController@login');
+    //item controller
+    Route::post('get_by_category','ItemController@get_by_category');
+    Route::post('get_selected_item_by_category','ItemController@get_selected_item_by_category');
+    Route::post('choose_item','ItemController@choose_item');
+    Route::post('get_pre_chosen_items_by_category','ItemController@get_pre_chosen_items_by_category');
+    Route::post('get_by_ids','ItemController@get_by_ids');		
+    Route::post('get_assignment_by_item_id','ItemController@get_assignment_by_item_id');
+    Route::post('set_assignments','ItemController@set_assignments');
+    Route::post('publish_assignments','ItemController@publish_assignments');
+    Route::post('batch_set_publish_assignments','ItemController@batch_set_publish_assignments');
+    Route::get('get_school_item_summary','ItemController@get_school_item_summary');
+
+    //Category controller
+    Route::get('get_school_category/subject_id/{subject_id?}','CategoryController@get_school_category');
 
     //reading controller
     Route::post('create_reading_exercise', 'ReadingController@postReadingExercise');
@@ -186,9 +183,7 @@ Route::group(['prefix' => 'v1'], function () {
 
 
     });
-
 	});
-
 
   Route::post('userApi/login', 'LoginController@login')->middleware('guest');
 
