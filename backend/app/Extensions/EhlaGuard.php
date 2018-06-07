@@ -62,7 +62,7 @@ class EhlaGuard implements Guard
 				DB::table('users')
 				->where('id', $this->user->id)
 				->update([
-					'expiry_date' => Carbon::now()->format('Y-m-j'),
+					'expiry_date' => Carbon::now()->format('Y-m-d H:i:s'),
 					'updated_at' => date('Y-m-d H:i:s')
 				]);
 			}, 5);
@@ -73,23 +73,35 @@ class EhlaGuard implements Guard
 		$this->loggedOut = true;
 	}
 
-	public function user () {
+	public function user() {
+
+		$user = null;
 
 		if (!is_null($this->user)) {
 			return $this->user;
 		}
-		$user = null;
-		// retrieve via token
-		$token = $this->getTokenForRequest();
-
-		if (!empty($token)) {
-			$user = $this->provider->retrieveByToken($this->inputKey, $token);
-		} else {
-			$id = $this->session->get($this->getName());
-			if (! is_null($id)) {
-				$user = $this->provider->retrieveById($id);
+		
+		$sessionUserId = $this->session->get($this->getName());
+		if($sessionUserId){
+			$user = $this->provider->retrieveById($sessionUserId);
+			if(Carbon::parse($user->expiry_date)->lt(Carbon::now())) {
+				return Response()->json('Unauthorized', 401);
 			}
+			return $user;
 		}
+		// retrieve via token
+		// $token = $this->getTokenForRequest();
+		// if (!empty($token)) {
+		// 	$user = $this->provider->retrieveByToken($this->inputKey, $token);
+		// } else {
+		// 	$id = $this->session->get($this->getName());
+		// 	if (! is_null($id)) {
+		// 		$user = $this->provider->retrieveById($id);
+		// 	}
+		// }
+		// if($user->expiry_date <= Carbon::now()->format('Y-m-j H:i:s')) {
+		// 	return Response()->json('Unauthorized', 401);
+		// }
 		return $user;
 	}
 	
@@ -101,13 +113,17 @@ class EhlaGuard implements Guard
 
 		$user = null;
 		if (!is_null($this->user)) {
-			$user = $this->user->toArray();
+			$user = $this->user;
 		} else {
 			// retrieve via token
 			$token = $this->getTokenForRequest();
 			if (!empty($token)) {
 				$user = $this->provider->retrieveByToken($this->inputKey, $token);
 			}
+		}
+
+		if($user->expiry_date <= Carbon::now()->format('Y-m-j H:i:s')) {
+			return Response()->json('Unauthorized', 401);
 		}
 		
 		$result = array(

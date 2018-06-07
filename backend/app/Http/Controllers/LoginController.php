@@ -101,7 +101,7 @@ class LoginController extends Controller
 
         $user = $user->toArray();
         $result = array(
-          "user_id" => Auth::user()->id,
+          "user_id" => $user['id'],
           "user" => json_decode($user['user']),
           "ex_token" => $user['ex_token'],
           "school_id" => $user['school_id'],
@@ -145,9 +145,7 @@ class LoginController extends Controller
 
       $client = new EhlaGuzzleClient();
       $data = $client->post(env('USERMODEL_URL').config('variables.logoutUrl').$access_token, null);
-      if($data['success'] == true){
-        Auth::logout();
-      }
+      Auth::logout();
       return $data;
   }
 

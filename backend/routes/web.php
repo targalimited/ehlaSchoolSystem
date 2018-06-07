@@ -23,7 +23,7 @@ Route::get('/user', function (Request $request) {
 //
 //    //return File::get(public_path() . '/dist/index.html');
 //   // Auth::loginUsingId(53,true);
-  dump(Auth::user());
+  return Auth::user();
 });
 
 Route::get('/addStudent', function (Request $request) {

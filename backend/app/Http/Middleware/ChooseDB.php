@@ -33,7 +33,7 @@ class ChooseDB
 
       $user = User::where('ex_token', $token)->with('roles')->first();
       if(!empty($user)){
-        if($user->expiry_date < Carbon::now()->format('Y-m-j H:i:s')) {
+        if(Carbon::parse($user->expiry_date)->gt(Carbon::now())) {
           Auth::login($user, true);
           return $next($request);
         } else {
