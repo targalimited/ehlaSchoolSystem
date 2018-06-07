@@ -82,7 +82,7 @@ class ItemController extends Controller {
 		
 		//params
 		$params = $request->params;
-	
+		
 		//params basic
 		$PBS = New ParamBasicServices($request);
 		$user = $PBS->getUserBasic();

@@ -15,7 +15,7 @@ class ParamBasicServices extends Model {
 	
 	public function __construct(Request $request) {
 		parent::__construct();
-		$this->userJson = json_decode(\Auth::user(), true);
+		$this->userJson = json_decode(\Auth::user()->user, true);
 		$accessToken = \Auth::retrieveUsermodelAccessToken();
 		
 		$params = $request->params;
