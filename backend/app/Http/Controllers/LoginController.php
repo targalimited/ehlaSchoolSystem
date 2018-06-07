@@ -24,7 +24,7 @@ class LoginController extends Controller
 
     // call usermodel
     $client = new EhlaGuzzleClient();
-    $data = $client->post(env('USERMODEL_URL').config('variables.loginUrl'), $input);
+    $data = $client->post(config('variables.loginUrl'), $input);
 
     if($data['success']){
 
@@ -144,7 +144,7 @@ class LoginController extends Controller
       $access_token = $userSession->access_token;
 
       $client = new EhlaGuzzleClient();
-      $data = $client->post(env('USERMODEL_URL').config('variables.logoutUrl').$access_token, null);
+      $data = $client->post(config('variables.logoutUrl').$access_token, null);
       Auth::logout();
       return $data;
   }

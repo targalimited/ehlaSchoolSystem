@@ -5,35 +5,20 @@ namespace App;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use GuzzleHttp\Client;
+// use GuzzleHttp\Client;
 //use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Extensions\EhlaGuzzleClient;
 
 class UsermodelApiServices extends Model {
 	//usermodel common basic
-	private $umUrlDomain;
-	private $umUrlSuffix;
-	private $umOption;
 	private $request;
-	
-	private $version = "v1/";
+	private $client;
 	
 	public function __construct(Request $request) {
 		parent::__construct();
-		$this->umUrlDomain = env('USERMODEL_URL');
-		$this->umUrlDomain = "https://usermodel.ehlacademy.org/";
-		
 		$this->request = $request;
-		
-		$accessToken = $request->headers->get('access-token');
-		$accessToken = '4236.4370f6cfd42fc4a7f7312495ca037d42ec7451dc'; //TODO remove hardcode access-token
-				
-		$this->umUrlSuffix = '?encode=1'.(!empty($accessToken) ? '&access-token=' . $accessToken : '');
-		
-		$this->umOption = [
-			'auth' => ['ehl_api', '27150900'],
-			'headers' => ['User-Agent' => filter_input(INPUT_SERVER, 'HTTP_USER_AGENT')]
-		];
+		$this->client = new EhlaGuzzleClient();
     }
 	
 	public function schoolApiGetSchoolCategory($subjectId) {
@@ -50,13 +35,13 @@ class UsermodelApiServices extends Model {
 	}
 	
 	public function schoolApiGetSchoolItemSummary() {
-		$uri = $this->version."schoolApi/get_school_item_summary".$this->umUrlSuffix;
-			
-		$client = new Client();
-		
-		$data = $client->get($this->umUrlDomain.$uri, $this->umOption);
-		$result = \GuzzleHttp\json_decode($data->getBody()->getContents(), true);
-		
+
+		$userSession = empty(Auth::user()->session) ? null : json_decode(Auth::user()->session);
+		if(!$userSession) {
+			return response()->json('', 401);
+		}
+		$access_token = $userSession->access_token;
+		$result = $this->client->get(config('variables.schItemSummaryUrl').$access_token);
 		return $result['data'];
 	
 	}
@@ -163,6 +148,7 @@ class UsermodelApiServices extends Model {
 		
 		return $result;
 	}
+
 	public function schoolApiGetSelectedItemByCategory($catGrouper, $page, $limit) {
 		$uri = $this->version."schoolApi/get_selected_item_by_category".$this->umUrlSuffix;
 		
