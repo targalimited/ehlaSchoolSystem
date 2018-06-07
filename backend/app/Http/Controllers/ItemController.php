@@ -93,7 +93,6 @@ class ItemController extends Controller {
 		
 		//usermodel
 		$UAS = new UsermodelApiServices($request);
-		print_r($UAS->schoolApiGetSchoolItemSummary());exit();
 
 		$result = $UAS->schoolApiGetSchoolItemSummary();	
 		return json($result);		

@@ -3,7 +3,7 @@
 
     angular
         .module('app.pilot.choose-items.choose-items-detail')
-				.directive( 'itemlevellist', function(Restangular, generalMessage) {
+				.directive( 'itemlevellist', function(Restangular, generalMessage, $location, $anchorScroll) {
 			return {
 				restrict: "E",
 				scope:{

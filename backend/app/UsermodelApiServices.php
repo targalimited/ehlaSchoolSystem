@@ -14,11 +14,18 @@ class UsermodelApiServices extends Model {
 	//usermodel common basic
 	private $request;
 	private $client;
+	private $accessToken;
 	
 	public function __construct(Request $request) {
 		parent::__construct();
 		$this->request = $request;
 		$this->client = new EhlaGuzzleClient();
+		
+		$userSession = empty(Auth::user()->session) ? null : json_decode(Auth::user()->session);
+		if(!$userSession) {
+			return response()->json('', 401);
+		}
+		$this->accessToken = $userSession->access_token;		
     }
 	
 	public function schoolApiGetSchoolCategory($subjectId) {
@@ -35,13 +42,7 @@ class UsermodelApiServices extends Model {
 	}
 	
 	public function schoolApiGetSchoolItemSummary() {
-
-		$userSession = empty(Auth::user()->session) ? null : json_decode(Auth::user()->session);
-		if(!$userSession) {
-			return response()->json('', 401);
-		}
-		$access_token = $userSession->access_token;
-		$result = $this->client->get(config('variables.schItemSummaryUrl').$access_token);
+		$result = $this->client->get(config('variables.schoolApiGetSchoolItemSummaryUrl').$this->accessToken);
 		return $result['data'];
 	
 	}
@@ -85,23 +86,14 @@ class UsermodelApiServices extends Model {
 		return $exerciseDetails;
 	}
 	
-	public function schoolApiChooseItems($catGrouper, $addItemIds, $removeItemIds, $limit, $page) {		
-		$uri = $this->version."schoolApi/choose_items".$this->umUrlSuffix;
-		
-		$params['cat_grouper'] = $catGrouper;
-		$params['add_item_ids'] = $addItemIds;
-		$params['remove_item_ids'] = $removeItemIds;
-		$params['limit'] = $limit;
-		$params['page'] = $page;
-		
-		$this->umOption['form_params'] = [
-			'params' => $params
-		];
-		
-		$client = new Client();
-		$data = $client->post($this->umUrlDomain.$uri, $this->umOption);
-		$result = \GuzzleHttp\json_decode($data->getBody()->getContents(), true);
-		
+	public function schoolApiChooseItems($catGrouper, $addItemIds, $removeItemIds, $limit, $page) {			
+		$inputs['cat_grouper'] = $catGrouper;
+		$inputs['add_item_ids'] = $addItemIds;
+		$inputs['remove_item_ids'] = $removeItemIds;
+		$inputs['limit'] = $limit;
+		$inputs['page'] = $page;
+				
+		$result = $this->client->post(config('variables.schoolApiChooseItemsUrl').$this->accessToken, $inputs);
 		return $result;
 	}
 		
@@ -126,44 +118,22 @@ class UsermodelApiServices extends Model {
 	}
 	
 	public function schoolApiGetByCategory($categoryId, $catGrouper, $page, $limit, $preChosenItemIds) {		
+		if(isset($categoryId)) {$inputs['id'] = $categoryId;}
+		if(isset($catGrouper)) {$inputs['cat_grouper'] = $catGrouper;}
+		if (isset($preChosenItemIds)) {$inputs['pre_chosen_item_ids'] = $preChosenItemIds;}
+		$inputs['page'] = $page;
+		$inputs['limit'] = $limit;
 		
-		$uri = $this->version."schoolApi/get_by_category".$this->umUrlSuffix;
-		
-		if(isset($categoryId)) {$params['id'] = $categoryId;}
-		if(isset($catGrouper)) {$params['cat_grouper'] = $catGrouper;}
-		$params['page'] = $page;
-		$params['limit'] = $limit;
-		
-		if (isset($preChosenItemIds)) {
-			$params['pre_chosen_item_ids'] = $preChosenItemIds;
-		}
-		
-		$this->umOption['form_params'] = [
-			'params' => $params
-		];			
-		
-		$client = new Client();
-		$data = $client->post($this->umUrlDomain.$uri, $this->umOption);
-		$result = \GuzzleHttp\json_decode($data->getBody()->getContents(), true);
-		
+		$result = $this->client->post(config('variables.schoolApiGetByCategoryUrl').$this->accessToken, $inputs);
 		return $result;
 	}
 
 	public function schoolApiGetSelectedItemByCategory($catGrouper, $page, $limit) {
-		$uri = $this->version."schoolApi/get_selected_item_by_category".$this->umUrlSuffix;
-		
-		$params['cat_grouper'] = $catGrouper;
-		$params['page'] = $page;
-		$params['limit'] = $limit;
+		$inputs['cat_grouper'] = $catGrouper;
+		$inputs['page'] = $page;
+		$inputs['limit'] = $limit;
 
-		$this->umOption['form_params'] = [
-			'params' => $params
-		];
-		
-		$client = new Client();
-		$data = $client->post($this->umUrlDomain.$uri, $this->umOption);
-		$result = \GuzzleHttp\json_decode($data->getBody()->getContents(), true);
-		
+		$result = $this->client->post(config('variables.schoolApiGetSelectedItemByCategoryUrl').$this->accessToken, $inputs);
 		return $result;
 	}
 	
