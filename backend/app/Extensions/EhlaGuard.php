@@ -8,6 +8,8 @@ use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Session\Session;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class EhlaGuard implements Guard
 {
@@ -31,28 +33,47 @@ class EhlaGuard implements Guard
 	}
 
 	protected function updateSession($id)
-    {
-        $this->session->put($this->getName(), $id);
-        $this->session->migrate(true);
-        // print_r($this->session);
-    }
+	{
+		$this->session->put($this->getName(), $id);
+		$this->session->migrate(true);
+		// print_r($this->session);
+	}
 
-    public function getName()
-    {
-         return 'login_'.$this->name.'_'.sha1(static::class);
-    }
+	public function getName()
+	{
+		return 'login_'.$this->name.'_'.sha1(static::class);
+	}
 
 
 
 	public function login(AuthenticatableContract $user, $remember = false)
-    {
-        $this->updateSession($user->getAuthIdentifier());
-        $this->user = $user;
-        $this->loggedOut = false;
-        return $user;
-    }
+	{
+		$this->updateSession($user->getAuthIdentifier());
+		$this->user = $user;
+		$this->loggedOut = false;
+		return $user;
+	}
 
-    public function user () {
+	public function logout()
+	{
+		$this->session->remove($this->getName());
+		try{
+			DB::transaction(function () {
+				DB::table('users')
+				->where('id', $this->user->id)
+				->update([
+					'expiry_date' => Carbon::now()->format('Y-m-j'),
+					'updated_at' => date('Y-m-d H:i:s')
+				]);
+			}, 5);
+		} catch (\Exception $e) {
+			// dd($e);
+		}
+		$this->user = null;
+		$this->loggedOut = true;
+	}
+
+	public function user () {
 
 		if (!is_null($this->user)) {
 			return $this->user;

@@ -10,31 +10,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Extensions\Dbotf;
+use App\Extensions\EhlaGuzzleClient;
 use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
 
-  public function login(Request $request){
+  public function login(Request $request) {
 
     // set params to call usermodel
     $input = $request->json('params');
     $input['source'] = 'school_portal';
 
     // call usermodel
-    $client = new Client();
-    $result = $client->request($request->method(), env('USERMODEL_URL') . config('variables.loginUrl'),
-      [
-        'auth' => ['ehl_api', '27150900'],
-        'headers' => [
-          'User-Agent' => filter_input(INPUT_SERVER, 'HTTP_USER_AGENT')
-        ],
-        'form_params' => [
-          'params' => $input
-        ]
-      ]
-    );
-    $data = \GuzzleHttp\json_decode($result->getBody()->getContents(), true);
+    $client = new EhlaGuzzleClient();
+    $data = $client->post(env('USERMODEL_URL').config('variables.loginUrl'), $input);
 
     if($data['success']){
 
@@ -80,6 +70,7 @@ class LoginController extends Controller
           } catch (\Exception $e) {
             dd($e);
           }
+          $user = User::where('id', $userData['user_id'])->with('roles')->first();
           Auth::login($user, true);
 
         } else {
@@ -140,71 +131,33 @@ class LoginController extends Controller
       ];
       return Response()->json($result,401);
     }
-
-
   }
 
 
+  public function logout(Request $request) {
 
-  public function logout(Request $request)
-    {
+      $userSession = empty(Auth::user()->session) ? null : json_decode(Auth::user()->session);
+      if(!$userSession) {
+        return response()->json('', 200);
+      }
 
+      $access_token = $userSession->access_token;
 
-        $access_token = $request->headers->get('access-token');
-
-        if(!isset($_SERVER['QUERY_STRING']))
-          $_SERVER['QUERY_STRING'] = '';
-
-        $uri = $request->path() . '?' . $_SERVER['QUERY_STRING'] . '&encode=1&access-token=' . $access_token;
-
-        $input = '';
-
-
-
-        $client = new Client();
-
-
-        try {
-            $result = $client->request($request->method(), config('app.usermodel_url') . $uri,
-                [
-                    'auth' => ['ehl_api', '27150900'],
-                    'headers' => [
-                        'User-Agent' => filter_input(INPUT_SERVER, 'HTTP_USER_AGENT')
-                    ],
-                    'form_params' => [
-                        'params' => $input
-                    ]
-
-                ]
-            );
-
-
-
-            $data = \GuzzleHttp\json_decode($result->getBody()->getContents(), true);
-
-
-            return $data;
-
-        } catch (\Exception $e) {
-            // There was another exception.
-            return response()->json(\GuzzleHttp\json_decode($e->getResponse()->getBody()->getContents(), true), 200);
-
-        }
-
-    }
-
+      $client = new EhlaGuzzleClient();
+      $data = $client->post(env('USERMODEL_URL').config('variables.logoutUrl').$access_token, null);
+      if($data['success'] == true){
+        Auth::logout();
+      }
+      return $data;
+  }
 
 
   public function login_backup(Request $request){
 
-
         $access_token = '';
 
-
-
-          $input = $request->json('params');
-          $input['source'] = 'school_portal';
-
+        $input = $request->json('params');
+        $input['source'] = 'school_portal';
 
         if (isset($_SERVER['QUERY_STRING']))
           $uri = $request->path() . '?' . $_SERVER['QUERY_STRING'] . '&encode=1&access-token=' . $access_token;
@@ -269,7 +222,6 @@ class LoginController extends Controller
 
           return Response()->json($result,401);
         }
+  }
 
-
-    }
 }
