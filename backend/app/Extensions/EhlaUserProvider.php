@@ -18,14 +18,14 @@ class EhlaUserProvider implements UserProvider
 
 	public function retrieveById ($id) {
 		$user = $this->user->where('id', $id)->first();
-		return $user ? $user->user : null;
+		return $user ? $user : null;
 	}
 
 	public function retrieveByToken ($identifier, $token) {
 		// $token = $this->token->with('user')->where($identifier, $token)->first();
 		// return $token && $token->user ? $token->user : null;
 		$user = $this->user->where($identifier, $token)->first();
-		return $user ? $user->user : null;
+		return $user ? $user : null;
 
 	}
 

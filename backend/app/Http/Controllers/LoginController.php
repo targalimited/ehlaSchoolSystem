@@ -37,26 +37,15 @@ class LoginController extends Controller
     $data = \GuzzleHttp\json_decode($result->getBody()->getContents(), true);
 
     if($data['success']){
+
       $userData = $data['data'][0];
       $userSession = $data['data'][0]['user_session'];
       unset($userData['user_session']);
 
       if($userData['school']['id']){
-
-        $db_name = "school_".$userData['school']['id'];
-
-        // DB::purge('school_0');
-        // config(['database.connections.school_0.host' => env('DB_HOST_SCHOOL','school-system-rds.ckjfdmyszhad.ap-southeast-1.rds.amazonaws.com')]);
-        // config(['database.connections.school_0.port' => env('DB_PORT_SCHOOL','13310')]);
-        // config(['database.connections.school_0.database' => $db_name]);
-        // config(['database.connections.school_0.username' => env('DB_USERNAME_SCHOOL','ehlawebusr')]);
-        // config(['database.connections.school_0.password' => env('DB_PASSWORD_SCHOOL','JS,J.0>D16GvHZt[(=DrgLk1(=70:bad')]);
-        // config(['database.connections.school_0.prefix' => 'school_']);
-        // DB::reconnect();
-
         // switch db
+        $db_name = "school_".$userData['school']['id'];
         new Dbotf(['database' => $db_name]);
-
       } else {
         // user do not have school id, reject login.
         $result = [
@@ -70,7 +59,8 @@ class LoginController extends Controller
 
       if($userData['userGroup']['id'] == 2 || $userData['userGroup']['id'] == 3){
 
-        $user = User::where('id', $userData['user_id'])->first();
+        $user = User::where('id', $userData['user_id'])->with('roles')->first();
+
         if(!empty($user)){
 
           // user exist, update user info and do local auth
@@ -91,7 +81,6 @@ class LoginController extends Controller
             dd($e);
           }
           Auth::login($user, true);
-
 
         } else {
           // user not exist, insert new user and do local auth
@@ -114,12 +103,12 @@ class LoginController extends Controller
             return $e;
           }
 
-          $user = User::where('id', $userData['user_id'])->first();
+          $user = User::where('id', $userData['user_id'])->with('roles')->first();
           Auth::login($user, true);
 
         }
 
-        $user = User::where('id',Auth::user()->id)->with('roles')->first()->toArray();
+        $user = $user->toArray();
         $result = array(
           "user_id" => Auth::user()->id,
           "user" => json_decode($user['user']),
@@ -131,21 +120,16 @@ class LoginController extends Controller
         return $result;
 
       }else{
+
         $result = [
           'status' => false,
           'code' => '401',
-          'message' => 'User not exists or wrong password',
+          'message' => 'Login is Denied',
           'data' => $data['debug']
         ];
         return Response()->json($result,401);
+
       }
-//      $res = [
-//        'success' => true,
-//        'user' => $userData,
-//        'token' => $user->ex_token
-//      ];
-
-
 
     } else {
       $result = [

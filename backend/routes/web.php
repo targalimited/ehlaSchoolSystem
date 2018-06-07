@@ -42,12 +42,12 @@ Route::group(['prefix' => 'v1'], function () {
 
   Route::group(['middleware' => ['chooseDB']], function () {
 
-    Route::get('/dumpuser', function (Request $request) {
-      dump(Auth::dumpuser());
+    Route::get('/authuser', function (Request $request) {
+      return Auth::user();
     });
 
     Route::get('/user', function (Request $request) {
-      return Auth::user();
+      return Auth::getuser();
     });
 
     //result controller

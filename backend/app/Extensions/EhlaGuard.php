@@ -69,31 +69,36 @@ class EhlaGuard implements Guard
 				$user = $this->provider->retrieveById($id);
 			}
 		}
-		$result = json_decode($user, true);
-		if (json_last_error() === JSON_ERROR_NONE) {
-			// JSON is valid
-			$user = $result;
-		}
-		return Response()->json($user, 200);
+		return $user;
 	}
 	
 	public function retrieveUsermodelAccessToken () {
 		return $this->provider->retrieveUsermodelAccessToken();
 	}
 	
-	public function dumpuser () {
+	public function getuser () {
 
-		if (!is_null($this->user)) {
-			return $this->user;
-		}
 		$user = null;
-		// retrieve via token
-		$token = $this->getTokenForRequest();
-
-		if (!empty($token)) {
-			$user = $this->provider->retrieveByToken($this->inputKey, $token);
+		if (!is_null($this->user)) {
+			$user = $this->user->toArray();
+		} else {
+			// retrieve via token
+			$token = $this->getTokenForRequest();
+			if (!empty($token)) {
+				$user = $this->provider->retrieveByToken($this->inputKey, $token);
+			}
 		}
-		return $this->user = $user;
+		
+		$result = array(
+			"user_id" => $user['id'],
+			"user" => json_decode($user['user']),
+			"ex_token" => $user['ex_token'],
+			"school_id" => $user['school_id'],
+			"roles" => $user['roles'],
+		);
+
+		$this->user = $user;
+		return $result;
 	}
 	
 

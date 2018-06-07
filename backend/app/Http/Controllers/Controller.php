@@ -18,6 +18,7 @@ class Controller extends BaseController
 		// get access token if have
 		// $token = $this->request->header($this->authKey);
 		// print_r($token);exit();
+		// print_r("Testest");exit();
 
 		// $otf = new Dbotf(['database' => 'school_1']);
 		// $school_db = $otf->getTable('users');

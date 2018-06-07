@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use App\Extensions\Dbotf;
 use App\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class ChooseDB
 {
@@ -19,20 +21,27 @@ class ChooseDB
 
   public function handle($request, Closure $next)
   {
-    // get access token if have
-    // $authKey = isset($configuration['authKey']) ? $configuration['authKey'] : 'extoken';
+    // get access token
     $token = $request->header('extoken');
     $sid = $request->header('school-id');
 
     if($sid && $token){
+
+      // switch database
       $dbname = "school_".$sid;
-      $otf = new Dbotf(['database' => $dbname]);
-      $user = User::where('ex_token', $token)->first();
+      new Dbotf(['database' => $dbname]);
+
+      $user = User::where('ex_token', $token)->with('roles')->first();
       if(!empty($user)){
-        return $next($request);
+        if($user->expiry_date < Carbon::now()->format('Y-m-j H:i:s')) {
+          Auth::login($user, true);
+          return $next($request);
+        } else {
+          return Response()->json('Unauthorized : Token expiried', 401);
+        }
       }
     }
-    return Response()->json('Unauthorized', 401);
+    return Response()->json('Unauthorized : No Record', 401);
   }
 
 }

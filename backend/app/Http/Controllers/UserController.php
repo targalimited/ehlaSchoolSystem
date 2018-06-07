@@ -855,14 +855,9 @@ class UserController extends Controller
   public function getUser(Request $request)
   {
 
-
-    // $users = User::withRole(['Student','Teacher'])->get();
-
-    //$users = Role::with('users')->get();
-    //$user = User::where('id','=','719')->first();
     $user = Auth::user();
 
-    if($user && $user->roles()->first()->id == 5){
+    if($user->roles()->first() && $user->roles()->first()->id == 5){
       $teachers = TeacherClassSubject::where('teacher_id','=',$user->id)->pluck('class_id');
       $students = StudentClassSubject::whereIn('class_id',$teachers)->pluck('student_id');
       $users = User::whereIn('id',$students)->WhereHas('roles')->with('roles')->get();
@@ -871,10 +866,7 @@ class UserController extends Controller
     }
 
     $result['data'] = $users;
-    return json($result);
-
-    //$users=$user->hasRole('Teacher');
-    //$users = User::hasRole('Teacher')->get();
+    return Response()->json($result,200);
 
   }
 
