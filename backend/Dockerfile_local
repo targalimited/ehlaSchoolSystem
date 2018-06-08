@@ -1,12 +1,12 @@
-FROM php:7
-RUN apt-get update -y && apt-get install -y openssl zip unzip git
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN docker-php-ext-install pdo mbstring
-RUN docker-php-ext-install pdo_mysql
-WORKDIR /var/www/html
-COPY . /var/www/html
+FROM shin1x1/laravel-on-php7-apache
 
-RUN composer install
+WORKDIR /var/www/html
+RUN mkdir -p /var/www/html/storage/framework/sessions /var/www/html/storage/framework/views /var/www/html/storage/framework/cache /var/www/html/bootstrap/cache
+COPY . .
+
+RUN chown -R www-data:www-data \
+        /var/www/html/storage \
+        /var/www/html/bootstrap/cache
 
 COPY .env.local .env
 
@@ -14,10 +14,7 @@ RUN php artisan key:generate
 
 RUN chmod 777 storage
 
+RUN php artisan optimize
 RUN php artisan config:clear
-
-RUN php artisan config:cache
-
-CMD php artisan serve  --port=8081 --host=0.0.0.0
 
 EXPOSE 8081
