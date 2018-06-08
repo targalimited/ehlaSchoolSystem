@@ -11,13 +11,14 @@ services:
       - ./storage/logs:/var/www/html/storage/logs
     tty: true
     ports:
-      - "8081:8081"
+      - "8081:80"
+    env_file: .env.local
     links:
         - database
     environment:
       NODE_ENV: development
       DB_HOST: mysql
-      DB_DATABASE: school_0
+      DB_DATABASE: school_x
       DB_USERNAME: homestead
       DB_PASSWORD: secret
     tty: true
@@ -27,7 +28,7 @@ services:
     volumes:
       - ./dbdata:/var/lib/mysql
     environment:
-      - "MYSQL_DATABASE=school_0"
+      - "MYSQL_DATABASE=school_x"
       - "MYSQL_USER=homestead"
       - "MYSQL_PASSWORD=secret"
       - "MYSQL_ROOT_PASSWORD=secret"

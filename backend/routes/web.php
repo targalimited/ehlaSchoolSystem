@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 
 Route::get('/user', function (Request $request) {
 
+  dd(DB::getDatabaseName());
 //        $this->visit('/register')
 //            ->type('Taylor', 'name')
 //            ->check('terms')
@@ -189,7 +190,7 @@ Route::group(['prefix' => 'v1'], function () {
   // Route::post('userApi/login', 'LoginController@login')->middleware('guest');
   Route::post('userApi/login', 'LoginController@login');
 
-  Route::any('{api?}/{function?}/{params?}', 'ApiController@api')->where('params', '(.*)')->middleware('adminAuth');
+  Route::any('{api?}/{function?}/{params?}', 'ApiController@api')->where('params', '(.*)')->middleware('chooseDB');
 
 });
 
