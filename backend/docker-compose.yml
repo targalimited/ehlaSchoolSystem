@@ -14,20 +14,19 @@ services:
       - "8081:80"
     env_file: .env.local
     links:
-        - database
+        - db
     environment:
       NODE_ENV: development
-      DB_HOST: mysql
-      DB_DATABASE: school_x
-      DB_USERNAME: homestead
-      DB_PASSWORD: secret
+      DB_HOST: db
+      DB_PORT: 3306
     tty: true
 
-  database:
+  db:
     image: mysql:5.7
     volumes:
       - ./dbdata:/var/lib/mysql
     environment:
+      - "MYSQL_DATABASE=homestead"
       - "MYSQL_USER=homestead"
       - "MYSQL_PASSWORD=secret"
       - "MYSQL_ROOT_PASSWORD=secret"
