@@ -18,6 +18,8 @@
 					$scope.addItemsList = [];
 					$scope.removeItemsList = [];	
 					
+					$scope.selectedSearchTag = [];
+					
 					$scope.setChooseItemSectionData = function(successMsg) {
 						if ($scope.tab.rawData.length == 0) {
 							
@@ -38,11 +40,14 @@
 								.then(function (results) {
 									$scope.tab.rawData = results.plain().data;
 									$scope.tab.totalCount = results.plain().metadata.totalCount;
+									$scope.searchTag = results.plain().metadata.searchTag;
 									
 									var start = ($scope.tab.currentPage-1) * $scope.tab.limit;
 									var end = start + $scope.tab.limit;
 									
-									$scope.tab.data = $scope.tab.rawData.slice(start, end);
+									$scope.tab.filteringData = $scope.tab.rawData;
+									
+									$scope.tab.data = $scope.tab.filteringData.slice(start, end);
 									setPaging($scope.tab);
 									
 									if (successMsg) {
@@ -60,8 +65,8 @@
 								if ($scope.tabs[i] == $scope.tab) {
 									var start = ($scope.tab.currentPage-1) * $scope.tab.limit;
 									var end = start + $scope.tab.limit;
-									
-									$scope.tabs[i].data = $scope.tab.rawData.slice(start, end);
+																		
+									$scope.tabs[i].data = $scope.tab.filteringData.slice(start, end);
 									setPaging($scope.tab);
 								} else {
 									if ($scope.tabs[i].data.length > 4) {
@@ -73,6 +78,89 @@
 					}	
 					
 					$scope.setFn({theDirFn: $scope.setChooseItemSectionData});
+				
+					$scope.selectedTag = function (key, valueObj) {		
+						//check if key exist, if not, create key
+						
+						//check if exist, 
+						//if exist, then remove
+						//if key becomes empty, then remove key
+						
+						//if not exist, push
+						if (!$scope.selectedSearchTag.hasOwnProperty(key)) {
+							$scope.selectedSearchTag[key] = [];
+						}
+						
+						var isExist = false;
+						for (var i=0; i<$scope.selectedSearchTag[key].length; i++) {
+							if ($scope.selectedSearchTag[key][i]['value'] == valueObj['value']) {
+								$scope.selectedSearchTag[key].splice(i,1);
+								isExist = true;
+							}
+						}
+						if (isExist) {
+							if ($scope.selectedSearchTag[key].length == 0) {
+								delete $scope.selectedSearchTag[key];
+							}
+						} else {
+							$scope.selectedSearchTag[key].push(valueObj);
+						}			
+						
+					}
+					
+					$scope.search = function() {
+						console.error('search tag', $scope.selectedSearchTag['difficulty']);
+						
+						$scope.tab.currentPage = 1;
+						
+						var start = ($scope.tab.currentPage-1) * $scope.tab.limit;
+						var end = start + $scope.tab.limit;
+						
+						$scope.tab.filteringData = $scope.tab.rawData;
+						/*
+						if (!jQuery.isEmptyObject($scope.selectedSearchTag)) {							
+							var eiLevel = $scope.selectedSearchTag['level'];
+							var eiDifficulty = $scope.selectedSearchTag['difficulty'];
+							var eiTextType = $scope.selectedSearchTag['texttype'];
+							var eiTheme = $scope.selectedSearchTag['theme'];
+							var eiSubTheme = $scope.selectedSearchTag['subtheme'];
+							var eiWeakness = $scope.selectedSearchTag['weakness'];
+							var eiWords = $scope.selectedSearchTag['word'];							
+							
+							
+							$scope.tab.filteringData = [];
+							_.each($scope.tab.rawData, function(rawData, index, rawDatas) {
+								//console.log('level: ' + JSON.stringify(rawData));
+								var isMatch = false;
+								
+								if (typeof eiLevel !== "undefined") {
+									_.each(eiLevel, function(value, idx, values) {
+										if (rawData.ei_level) {
+										
+										}
+									});
+								}
+								if (typeof eiDifficulty !== "undefined") {console.log('eiDifficulty');}
+								if (typeof eiTextType !== "undefined") {console.log('eiTextType');}
+								if (typeof eiTheme !== "undefined") {console.log('eiTheme');}
+								if (typeof eiSubTheme !== "undefined") {console.log('eiSubTheme');}
+								if (typeof eiWeakness !== "undefined") {console.log('eiWeakness');}
+								if (typeof eiWords !== "undefined") {console.log('eiWords');}
+								
+								if (isMatch == true) {
+									$scope.tab.filteringData.push(rawData);
+								}
+							});
+						}*/
+						
+						/*for (var key in $scope.selectedSearchTag) {							
+							console.log('data: ' + JSON.stringify($scope.selectedSearchTag[key]));
+							
+						}*/
+						
+						$scope.tab.data = $scope.tab.filteringData.slice(start, end);
+						setPaging($scope.tab);
+					}
 				
           $scope.chooseItem = function (itemId, idx) {
 						var cPage = $scope.tab.currentPage - 1;
@@ -89,8 +177,8 @@
 						if ($scope.chosenItemQtt >= 10) {
 							generalMessage.showMessageToast('error', 'Reach limit ' + ($scope.chosenItemQtt));
 						} else {
-							($scope.addItemsList).push($scope.tab.rawData[actualIdx]);
-							$scope.tab.rawData[actualIdx].tmpAdd = true;
+							($scope.addItemsList).push($scope.tab.filteringData[actualIdx]);
+							$scope.tab.filteringData[actualIdx].tmpAdd = true;
 							$scope.tab.data[idx].tmpAdd = true;
 							$scope.chosenItemQtt++;
 						}
@@ -107,7 +195,7 @@
 								$scope.addItemsList.splice(i, 1);
 							}
 						}
-						$scope.tab.rawData[actualIdx].tmpAdd = false;
+						$scope.tab.filteringData[actualIdx].tmpAdd = false;
 						$scope.tab.data[idx].tmpAdd = false;
 						$scope.chosenItemQtt--;
 					}
@@ -123,8 +211,8 @@
 								return;
 							}
 						}
-						($scope.removeItemsList).push($scope.tab.rawData[actualIdx]);
-						$scope.tab.rawData[actualIdx].tmpRemove = true;
+						($scope.removeItemsList).push($scope.tab.filteringData[actualIdx]);
+						$scope.tab.filteringData[actualIdx].tmpRemove = true;
 						$scope.tab.data[idx].tmpRemove = true;
 						$scope.chosenItemQtt--;
 					}
@@ -144,7 +232,7 @@
 								}
 							}
 							
-							$scope.tab.rawData[actualIdx].tmpRemove = false;
+							$scope.tab.filteringData[actualIdx].tmpRemove = false;
 							$scope.tab.data[idx].tmpRemove = false;
 							$scope.chosenItemQtt++;
 						}
@@ -193,7 +281,7 @@
 						
 						var start = ($scope.tab.currentPage-1) * $scope.tab.limit;
 						var end = start + $scope.tab.limit;
-						$scope.tab.data = $scope.tab.rawData.slice(start, end);
+						$scope.tab.data = $scope.tab.filteringData.slice(start, end);
 						
 						setPaging();
 					}
@@ -208,13 +296,13 @@
 						var start = ($scope.tab.currentPage-1) * $scope.tab.limit;
 						var end = start + $scope.tab.limit;
 									
-						$scope.tab.data = $scope.tab.rawData.slice(start, end);
+						$scope.tab.data = $scope.tab.filteringData.slice(start, end);
 						
 						setPaging();
 					}
 					
 					function setPaging () {
-						$scope.tab.maxPage = Math.ceil($scope.tab.rawData.length / $scope.tab.limit);
+						$scope.tab.maxPage = Math.ceil($scope.tab.filteringData.length / $scope.tab.limit);
 						
 						$scope.tab.currentMaxPage = Math.min(((($scope.tab.currentPage) * $scope.tab.limit)), $scope.tab.totalCount);
 						

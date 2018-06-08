@@ -123,6 +123,9 @@ class UsermodelApiServices extends Model {
 		if (isset($preChosenItemIds)) {$inputs['pre_chosen_item_ids'] = $preChosenItemIds;}
 		$inputs['page'] = $page;
 		$inputs['limit'] = $limit;
+		$inputs['req_gen_srh'] = 1;
+		$inputs['req_wks_srh'] = 1;
+		$inputs['req_wd_srh'] = 1;	
 		
 		$result = $this->client->post(config('variables.schoolApiGetByCategoryUrl').$this->accessToken, $inputs);
 		return $result;
@@ -132,6 +135,10 @@ class UsermodelApiServices extends Model {
 		$inputs['cat_grouper'] = $catGrouper;
 		$inputs['page'] = $page;
 		$inputs['limit'] = $limit;
+		
+		$inputs['req_gen_srh'] = 1;
+		$inputs['req_wks_srh'] = 1;
+		$inputs['req_wd_srh'] = 1;		
 
 		$result = $this->client->post(config('variables.schoolApiGetSelectedItemByCategoryUrl').$this->accessToken, $inputs);
 		return $result;
