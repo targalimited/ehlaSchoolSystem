@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 
 Route::get('/user', function (Request $request) {
 
-  dd(DB::getDatabaseName());
+ // dd(DB::getDatabaseName());
 //        $this->visit('/register')
 //            ->type('Taylor', 'name')
 //            ->check('terms')
@@ -24,6 +24,7 @@ Route::get('/user', function (Request $request) {
 //
 //    //return File::get(public_path() . '/dist/index.html');
 //   // Auth::loginUsingId(53,true);
+  dd(\App\User::all());
   return Auth::user();
 });
 
