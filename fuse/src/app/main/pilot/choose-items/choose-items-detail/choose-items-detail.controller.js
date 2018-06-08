@@ -19,9 +19,11 @@
     var vm = this;
     
 		$scope.setDirectiveTabOneFn = function(directiveFn) {
+					console.log('c1');
         $scope.setChooseItemSectionData = directiveFn;
     };
 		$scope.setDirectiveTabTwoFn = function(directiveFn) {
+			console.log('c2');
         $scope.setItemLevelSectionData = directiveFn;
     };
 		
@@ -49,6 +51,7 @@
 				selectedEntry : "10",
 				currentPage : 1,
 				onSelect : function () {	
+					console.log('c3');
 					$scope.setChooseItemSectionData(false);			
 				}},
 			{tab:2,
@@ -61,6 +64,7 @@
 				currentPage : 1,
 				
 				onSelect : function () {
+					console.log('c4');
 					$scope.setItemLevelSectionData(false);					
 				}}];
 		
