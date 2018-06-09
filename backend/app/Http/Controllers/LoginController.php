@@ -9,59 +9,48 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Extensions\Dbotf;
+use App\Extensions\EhlaGuzzleClient;
 use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
 
-  public function login(Request $request){
+  public function login(Request $request) {
 
     // set params to call usermodel
     $input = $request->json('params');
     $input['source'] = 'school_portal';
 
     // call usermodel
-    $client = new Client();
-    $result = $client->request($request->method(), env('USERMODEL_URL') . config('variables.loginUrl'),
-      [
-        'auth' => ['ehl_api', '27150900'],
-        'headers' => [
-          'User-Agent' => filter_input(INPUT_SERVER, 'HTTP_USER_AGENT')
-        ],
-        'form_params' => [
-          'params' => $input
-        ]
-      ]
-    );
-    $data = \GuzzleHttp\json_decode($result->getBody()->getContents(), true);
-
+    $client = new EhlaGuzzleClient();
+    $data = $client->post(config('variables.loginUrl'), $input);
 
     if($data['success']){
+
       $userData = $data['data'][0];
       $userSession = $data['data'][0]['user_session'];
       unset($userData['user_session']);
 
-
       if($userData['school']['id']){
+        // switch db
         $db_name = "school_".$userData['school']['id'];
-        //$db_name = "school_1";
-        DB::purge('school_0');
-        config(['database.connections.school_0.host' => env('DB_HOST_SCHOOL','school-system-rds.ckjfdmyszhad.ap-southeast-1.rds.amazonaws.com')]);
-        config(['database.connections.school_0.port' => env('DB_PORT_SCHOOL','13310')]);
-        config(['database.connections.school_0.database' => $db_name]);
-        config(['database.connections.school_0.username' => env('DB_USERNAME_SCHOOL','ehlawebusr')]);
-        config(['database.connections.school_0.password' => env('DB_PASSWORD_SCHOOL','JS,J.0>D16GvHZt[(=DrgLk1(=70:bad')]);
-        config(['database.connections.school_0.prefix' => 'school_']);
-//        config(['database.connections.school_0.default'=>'school_0']);
-        DB::reconnect();
-//        dd(DB::getDatabaseName());
-
+        new Dbotf(['database' => $db_name]);
+      } else {
+        // user do not have school id, reject login.
+        $result = [
+          'status' => false,
+          'code' => '406',
+          'message' => '',
+          'data' => false,
+        ];
+        return Response()->json($result,406);
       }
 
-      $user = User::where('id', $userData['user_id'])->first();
-
-
       if($userData['userGroup']['id'] == 2 || $userData['userGroup']['id'] == 3){
+
+        $user = User::where('id', $userData['user_id'])->with('roles')->first();
+
         if(!empty($user)){
 
           // user exist, update user info and do local auth
@@ -81,8 +70,8 @@ class LoginController extends Controller
           } catch (\Exception $e) {
             dd($e);
           }
+          $user = User::where('id', $userData['user_id'])->with('roles')->first();
           Auth::login($user, true);
-
 
         } else {
           // user not exist, insert new user and do local auth
@@ -105,104 +94,68 @@ class LoginController extends Controller
             return $e;
           }
 
-          $user = User::where('id', $userData['user_id'])->first();
+          $user = User::where('id', $userData['user_id'])->with('roles')->first();
           Auth::login($user, true);
 
         }
 
-        $user = User::where('id',Auth::user()->id)->with('roles')->first()->toArray();
-        return $user;
+        $user = $user->toArray();
+        $result = array(
+          "user_id" => $user['id'],
+          "user" => json_decode($user['user']),
+          "ex_token" => $user['ex_token'],
+          "school_id" => $user['school_id'],
+          "roles" => $user['roles'],
+        );
+        
+        return $result;
+
       }else{
+
         $result = [
           'status' => false,
           'code' => '401',
-          'message' => 'User not exists or wrong password',
+          'message' => 'Login is Denied',
           'data' => $data['debug']
         ];
         return Response()->json($result,401);
+
       }
-//      $res = [
-//        'success' => true,
-//        'user' => $userData,
-//        'token' => $user->ex_token
-//      ];
-
-
 
     } else {
       $result = [
         'status' => false,
         'code' => '401',
-        'message' => 'User not exists or wrong password',
+        'message' => 'Unauthorized',
         'data' => $data['debug']
       ];
       return Response()->json($result,401);
     }
-
-
   }
 
 
+  public function logout(Request $request) {
 
-  public function logout(Request $request)
-    {
+      $userSession = empty(Auth::user()->session) ? null : json_decode(Auth::user()->session);
+      if(!$userSession) {
+        return response()->json('', 200);
+      }
 
+      $access_token = $userSession->access_token;
 
-        $access_token = $request->headers->get('access-token');
-
-        if(!isset($_SERVER['QUERY_STRING']))
-          $_SERVER['QUERY_STRING'] = '';
-
-        $uri = $request->path() . '?' . $_SERVER['QUERY_STRING'] . '&encode=1&access-token=' . $access_token;
-
-        $input = '';
-
-
-
-        $client = new Client();
-
-
-        try {
-            $result = $client->request($request->method(), config('app.usermodel_url') . $uri,
-                [
-                    'auth' => ['ehl_api', '27150900'],
-                    'headers' => [
-                        'User-Agent' => filter_input(INPUT_SERVER, 'HTTP_USER_AGENT')
-                    ],
-                    'form_params' => [
-                        'params' => $input
-                    ]
-
-                ]
-            );
-
-
-
-            $data = \GuzzleHttp\json_decode($result->getBody()->getContents(), true);
-
-
-            return $data;
-
-        } catch (\Exception $e) {
-            // There was another exception.
-            return response()->json(\GuzzleHttp\json_decode($e->getResponse()->getBody()->getContents(), true), 200);
-
-        }
-
-    }
-
+      $client = new EhlaGuzzleClient();
+      $data = $client->post(config('variables.logoutUrl').$access_token, null);
+      Auth::logout();
+      return $data;
+  }
 
 
   public function login_backup(Request $request){
 
-
         $access_token = '';
 
-
-
-          $input = $request->json('params');
-          $input['source'] = 'school_portal';
-
+        $input = $request->json('params');
+        $input['source'] = 'school_portal';
 
         if (isset($_SERVER['QUERY_STRING']))
           $uri = $request->path() . '?' . $_SERVER['QUERY_STRING'] . '&encode=1&access-token=' . $access_token;
@@ -267,7 +220,6 @@ class LoginController extends Controller
 
           return Response()->json($result,401);
         }
+  }
 
-
-    }
 }

@@ -33,7 +33,7 @@
 						
 					})
 					.catch(function (err) {
-						console.error('Cannot login', err.data);
+						console.error('get_school_item_summary', err);
 					});	
 			}
 

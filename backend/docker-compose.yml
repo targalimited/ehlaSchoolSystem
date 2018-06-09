@@ -9,24 +9,30 @@ services:
       - .:/var/www/html
       - ./storage/app:/var/www/html/storage/app
       - ./storage/logs:/var/www/html/storage/logs
-    environment:
-        NODE_ENV: development
     tty: true
     ports:
-      - "8081:8081"
+      - "8081:80"
+    env_file: .env.local
     links:
-      - "mysql:database"
-  mysql:
-    container_name: school_mysql
-    restart: always
-    image: mysql:5.7
+        - db
     environment:
-      - MYSQL_ROOT_HOST=%
-      - MYSQL_ROOT_PASSWORD=secret
-      - MYSQL_DATABASE=school_1
-      - MYSQL_USER=homestead
-      - MYSQL_PASSWORD=secret
+      NODE_ENV: development
+      DB_HOST: db
+      DB_PORT: 3306
+    tty: true
+
+  db:
+    image: mysql:5.7
     volumes:
-      - ./mysql_data:/var/lib/mysql
+      - ./dbdata:/var/lib/mysql
+    environment:
+      - "MYSQL_DATABASE=homestead"
+      - "MYSQL_USER=homestead"
+      - "MYSQL_PASSWORD=secret"
+      - "MYSQL_ROOT_PASSWORD=secret"
     ports:
-      - "3331:3306"
+        - "33061:3306"
+
+volumes:
+  dbdata:
+

@@ -22,11 +22,11 @@ class ItemController extends Controller {
 		$params = $request->params;
 	
 		//params basic
-		$PBS = New ParamBasicServices($request);
+		$PBS = new ParamBasicServices($request);
 		$user = $PBS->getUserBasic();
 		
 		//permission
-		$PCS = New PermissionControlServices($request);
+		$PCS = new PermissionControlServices($request);
 		$permission = $PCS->checkUserPermission($user);
 		
 		//data
@@ -41,7 +41,7 @@ class ItemController extends Controller {
 		$limit = $params['limit'];
 
 		//usermodel
-		$UAS = New UsermodelApiServices($request);
+		$UAS = new UsermodelApiServices($request);
 		$result = $UAS->schoolApiGetByCategory($categoryId, $catGrouper, $page, $limit, null);	
 		$output["data"] = $result["data"];
 		$output["metadata"] = $result["metadata"];
@@ -54,11 +54,11 @@ class ItemController extends Controller {
 		$params = $request->params;
 	
 		//params basic
-		$PBS = New ParamBasicServices($request);
+		$PBS = new ParamBasicServices($request);
 		$user = $PBS->getUserBasic();
 		
 		//permission
-		$PCS = New PermissionControlServices($request);
+		$PCS = new PermissionControlServices($request);
 		$permission = $PCS->checkUserPermission($user);
 
 		//get class level mapper
@@ -70,7 +70,7 @@ class ItemController extends Controller {
 		$limit = $params['limit'];
 
 		//usermodel
-		$UAS = New UsermodelApiServices($request);
+		$UAS = new UsermodelApiServices($request);
 		$result = $UAS->schoolApiGetSelectedItemByCategory($catGrouper, $page, $limit);	
 		$output["data"] = $result["data"];
 		$output["metadata"] = $result["metadata"];
@@ -82,17 +82,18 @@ class ItemController extends Controller {
 		
 		//params
 		$params = $request->params;
-	
+		
 		//params basic
-		$PBS = New ParamBasicServices($request);
+		$PBS = new ParamBasicServices($request);
 		$user = $PBS->getUserBasic();
 	
 		//permission
-		$PCS = New PermissionControlServices($request);
+		$PCS = new PermissionControlServices($request);
 		$permission = $PCS->checkUserPermission($user);
 		
 		//usermodel
-		$UAS = New UsermodelApiServices($request);
+		$UAS = new UsermodelApiServices($request);
+
 		$result = $UAS->schoolApiGetSchoolItemSummary();	
 		return json($result);		
 	}
@@ -102,11 +103,11 @@ class ItemController extends Controller {
 		$params = $request->params;
 	
 		//params basic
-		$PBS = New ParamBasicServices($request);
+		$PBS = new ParamBasicServices($request);
 		$user = $PBS->getUserBasic();
 		
 		//permission
-		$PCS = New PermissionControlServices($request);
+		$PCS = new PermissionControlServices($request);
 		$permission = $PCS->checkUserPermission($user);
 		
 		//data
@@ -117,7 +118,7 @@ class ItemController extends Controller {
 		//$preChosenItemIds = search in db;
 
 		//usermodel
-		$UAS = New UsermodelApiServices($request);
+		$UAS = new UsermodelApiServices($request);
 		$result = $UAS->schoolApiGetByCategory($categoryId, $page, $limit);	
 		$output["data"] = $result["data"];
 		$output["metadata"] = $result["metadata"];
@@ -129,11 +130,11 @@ class ItemController extends Controller {
 		//params
 		$params = $request->params;
 		//params basic
-		$PBS = New ParamBasicServices($request);
+		$PBS = new ParamBasicServices($request);
 		$user = $PBS->getUserBasic();
 		
 		//permission
-		$PCS = New PermissionControlServices($request);
+		$PCS = new PermissionControlServices($request);
 		$permission = $PCS->checkUserPermission($user);
 		
 		//data
@@ -145,7 +146,7 @@ class ItemController extends Controller {
 		$limit = $params['limit'];
 
 		//usermodel
-		$UAS = New UsermodelApiServices($request);
+		$UAS = new UsermodelApiServices($request);
 		
 		$result = $UAS->schoolApiChooseItems($catGrouper, $addItemIds, $removeItemIds, $limit, $page);
 		$output["data"] = $result["data"];
@@ -158,11 +159,11 @@ class ItemController extends Controller {
 		//params
 		$params = $request->params;
 		//params basic
-		$PBS = New ParamBasicServices($request);
+		$PBS = new ParamBasicServices($request);
 		$user = $PBS->getUserBasic();
 		
 		//permission
-		$PCS = New PermissionControlServices($request);
+		$PCS = new PermissionControlServices($request);
 		$permission = $PCS->checkUserPermission($user);
 		
 		//data		
@@ -173,7 +174,7 @@ class ItemController extends Controller {
 		$limit = $params['limit'];
 
 		//usermodel
-		$UAS = New UsermodelApiServices($request);
+		$UAS = new UsermodelApiServices($request);
 		
 		$result = $UAS->schoolApiChooseItemsForLevel($catGrouper, $addLvItemList, $removeLvItemList, $limit, $page);
 		$output["data"] = $result["data"];
@@ -189,11 +190,11 @@ class ItemController extends Controller {
 		$params = $request->params;
 	
 		//params basic
-		$PBS = New ParamBasicServices($request);
+		$PBS = new ParamBasicServices($request);
 		$user = $PBS->getUserBasic();
 		
 		//permission
-		$PCS = New PermissionControlServices($request);
+		$PCS = new PermissionControlServices($request);
 		$permission = $PCS->checkUserPermission($user);
 		
 		//TODO check valid item for class
@@ -201,7 +202,7 @@ class ItemController extends Controller {
 		$itemId = $params['item_id'];
 
 		//usermodel
-		$UAS = New UsermodelApiServices($request);
+		$UAS = new UsermodelApiServices($request);
 		$result = $UAS->schoolApiGetByIds($itemId);
 		$output["data"] = $result["data"];
 		$output["metadata"] = $result["metadata"];
@@ -214,11 +215,11 @@ class ItemController extends Controller {
 		$params = $request->params;
 	
 		//params basic
-		$PBS = New ParamBasicServices($request);
+		$PBS = new ParamBasicServices($request);
 		$user = $PBS->getUserBasic();
 		
 		//permission
-		$PCS = New PermissionControlServices($request);
+		$PCS = new PermissionControlServices($request);
 		$permission = $PCS->checkUserPermission($user);
 		
 		//TODO check valid item for class
@@ -230,7 +231,7 @@ class ItemController extends Controller {
 		$subjectId = $user['subject_id'];
 		
 		//usermodel
-		$UAS = New UsermodelApiServices($request);		
+		$UAS = new UsermodelApiServices($request);		
 		$data = $UAS->schoolApiGetAssignmentByItemId($itemId, $itemType, $academicId, $classId, $subjectId);
 		$output["data"] = $data["data"];
 		
@@ -242,11 +243,11 @@ class ItemController extends Controller {
 		$params = $request->params;
 		
 		//params basic
-		$PBS = New ParamBasicServices($request);
+		$PBS = new ParamBasicServices($request);
 		$user = $PBS->getUserBasic();
 		
 		//permission
-		$PCS = New PermissionControlServices($request);
+		$PCS = new PermissionControlServices($request);
 		$permission = $PCS->checkUserPermission($user);
 		
 		//TODO check valid item for class
@@ -264,7 +265,7 @@ class ItemController extends Controller {
 		$remark = (isset($params['remark'])) ? $params['remark'] : null;
 		
 		//usermodel
-		$UAS = New UsermodelApiServices($request);
+		$UAS = new UsermodelApiServices($request);
 		$data = $UAS->schoolApiSetAssignments($academicId, $classId, $subjectId, $itemId, $itemType, $homeworkType, $targetIds, $startDate, $endDate, $remark);
 		
 		if ($params['is_published'] == '1') {
@@ -286,11 +287,11 @@ class ItemController extends Controller {
 		$params = $request->params;
 		
 		//params basic
-		$PBS = New ParamBasicServices($request);
+		$PBS = new ParamBasicServices($request);
 		$user = $PBS->getUserBasic();
 		
 		//permission
-		$PCS = New PermissionControlServices($request);
+		$PCS = new PermissionControlServices($request);
 		$permission = $PCS->checkUserPermission($user);
 		
 		//TODO check valid item for class
@@ -308,7 +309,7 @@ class ItemController extends Controller {
 		$remark = (isset($params['remark'])) ? $params['remark'] : null;
 		
 		//usermodel
-		$UAS = New UsermodelApiServices($request);
+		$UAS = new UsermodelApiServices($request);
 		$data = $UAS->schoolApiSetAssignments($academicId, $classId, $subjectId, $itemId, $itemType, $homeworkType, $targetIds, $startDate, $endDate, $remark);
 				
 		return json($data);		
@@ -318,11 +319,11 @@ class ItemController extends Controller {
 		$params = $request->params;
 	
 		//params basic
-		$PBS = New ParamBasicServices($request);
+		$PBS = new ParamBasicServices($request);
 		$user = $PBS->getUserBasic();
 		
 		//permission
-		$PCS = New PermissionControlServices($request);
+		$PCS = new PermissionControlServices($request);
 		$permission = $PCS->checkUserPermission($user);
 		
 		//TODO check valid item for class
@@ -331,7 +332,7 @@ class ItemController extends Controller {
 		$assignmentIds = $params['assignment_ids'];
 		
 		//usermodel
-		$UAS = New UsermodelApiServices($request);
+		$UAS = new UsermodelApiServices($request);
 		$data = $UAS->schoolApiPublishAssignments($studentIds, $assignmentIds);
 				
 		return json($data);		
@@ -500,7 +501,7 @@ class ItemController extends Controller {
 			}
 			
 			//insert record in usermodel
-			$UAS = New UsermodelApiServices($request);
+			$UAS = new UsermodelApiServices($request);
 			$data = $UAS->schoolApiInsertHomeworks($studentIds, $batch);
 		}
 		
@@ -511,10 +512,10 @@ class ItemController extends Controller {
 		$subjectId = $user['subject_id'];
 		
 		//usermodel
-		$UAS = New UsermodelApiServices($request);
+		$UAS = new UsermodelApiServices($request);
 		$data = $UAS->schoolApiGetReadingHomeworkByItemId($itemId);
 				
-		$homework = New Homework();
+		$homework = new Homework();
 		$homework->decorateHomeworkListDetail($data["data"], $itemId, $academicId, $classId, $subjectId);
 		
 		$output["data"] = $data["data"];

@@ -1,0 +1,170 @@
+<div class="exercise-detail-form-container md-background-bg md-whiteframe-1dp">
+	<div class="widget-group" layout="row" flex="100" layout-wrap>
+		<ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="40" flex-gt-md="40">
+			<ms-widget-front class="white-bg">
+				<div>
+					<div class="pt-8 pb-16" layout="column" layout-align="start center">
+						<div class="orange-fg font-size-30" style="margin:10px">
+							Add Item List 
+						</div>
+						<div class="scrollable" ms-scroll style="max-height:100px">
+							<div ng-repeat="item in addItemsList">
+								{{item.name_en}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</ms-widget-front>
+		</ms-widget>
+		<ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="40" flex-gt-md="40">
+			<ms-widget-front class="white-bg">
+				<div>
+					<div class="pt-8 pb-16" layout="column" layout-align="start center">
+						<div class="orange-fg font-size-30" style="margin:10px">
+							Remove Item List
+						</div>
+						<div class="scrollable" ms-scroll style="max-height:100px">
+							<div ng-repeat="item in removeItemsList">
+								{{item.name_en}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</ms-widget-front>
+		</ms-widget>
+		<ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="20" flex-gt-md="20">
+			<ms-widget-front class="white-bg">
+				<div>
+					<div class="pt-8 pb-16" layout="column" layout-align="start center">
+						<div class="orange-fg font-size-22" style="margin:10px">
+							<p>Total chosen: {{chosenItemQtt}}</p>
+							<button ng-click="confirmUpdate()" class="btn-large">
+								confirm
+							</button>
+						</div>
+					</div>
+				</div>
+			</ms-widget-front>
+		</ms-widget>
+		
+		<ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="100" flex-gt-md="100">
+			<ms-widget-front class="white-bg">
+				<div>
+					<div class="pt-8 pb-16" layout="column" layout-align="start center">
+						<div class="orange-fg font-size-30" style="margin:10px">
+							Search Panel 
+							<span ng-show="onShow != true" ng-click="onShow = true">+</span>
+							<span ng-show="onShow == true" ng-click="onShow = false">-</span> 
+							<button class="btn-large">Reset</button>
+							<button class="btn-large" ng-click="search()">Search</button>
+						</div>
+						
+						<div ng-show="onShow == true">
+							<div ng-repeat="sTag in searchTag">
+								<p>
+									{{sTag.key_name_en}} 
+									<span ng-show="sTag.onShow != true" ng-click="sTag.onShow = true">+</span>
+									<span ng-show="sTag.onShow == true" ng-click="sTag.onShow = false">-</span>
+								</p>
+								
+								<div ng-show="sTag.onShow == true" class="widget-group" layout="row" flex="100" layout-wrap>
+									<ms-widget ng-repeat="value in sTag.values" flippable="true" layout="column" flex="25" flex-gt-xs="20" flex-gt-md="20">
+										<ms-widget-front class="white-bg">
+											<button class="btn" ng-click='selectedTag(sTag.key, value); value.click = !value.click' ng-class="value.click ? 'chosen-btn-clicked': 'chosen-btn'" >{{value.value_name_en}}</button>											
+										</ms-widget-front>
+									</ms-widget>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</ms-widget-front>
+		</ms-widget>
+		
+		<ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="100" flex-gt-md="100">
+			<ms-widget-front class="white-bg">
+				<div class="content-card" layout="column" flex>
+					<div class="content" layout="row" flex>
+						<div class="white-bg md-whiteframe-4dp">							
+							<div id="DataTables_Table_0_wrapper" class="dataTables_wrapper no-footer">
+								<div class="dataTables_length">
+									<label>Show 
+										<select ng-change="entryUpdate()" ng-model="tab.selectedEntry">
+											<option value="10">10</option>
+											<option value="25">25</option>
+											<option value="50">50</option>
+											<option value="100">100</option>
+										</select>
+										entries
+									</label>
+								</div>								
+							
+								<table class="dataTable row-border hover extra-learning-table">
+									<tbody>
+									<tr ng-repeat="item in tab.data">
+										<td><div><img ng-src="{{ item.thumbnail_path }}" title="{{ item.name_en }}" alt="{{ item.name_en }}"/></div></td>
+										<td>
+											<div class="title">{{ item['name_en'] }}</div>
+											<div class="desc">{{ item['info_en'] }}</div>
+											<div class="desc">{{ item['info_nd_en'] }}</div>
+											<button>preview</button>
+											<button>preview article</button>
+										</td>
+										<td>
+											<a ng-if="item.chose === false && item.tmpAdd != true" class="access-btn" ng-click="chooseItem(item.id, $index)">add to list</a>
+											<a ng-if="item.chose === false && item.tmpAdd == true" class="access-btn" ng-click="cancelChooseItem(item.id, $index)">cancel add</a>
+											<a ng-if="item.chose === true && item.lock_status === false && item.tmpRemove != true" class="preview-btn" ng-click="removeItem(item.id, $index)">remove list</a>
+											<a ng-if="item.chose === true && item.lock_status === false && item.tmpRemove == true" class="preview-btn" ng-click="cancelRemoveItem(item.id, $index)">cancel remove</a>
+											<p ng-if="item.chose === true && item.lock_status === true">This item has been chosen for certain levels</p>
+										</td>
+									</tr>
+									</tbody>
+								</table>							
+							
+								<div class="dataTables_info" role="status" ng-show="tab.data.length > 0">
+									Showing {{((tab.currentPage - 1) * tab.limit) + 1}} to {{tab.currentMaxPage}} of {{tab.totalCount}} entries
+								</div>
+								
+								<div class="dataTables_paginate paging_simple_numbers" ng-show="tab.data.length > 0">
+								
+									<a ng-show="tab.currentPage==1" class="paginate_button previous disabled">Previous</a>
+									<a ng-show="tab.currentPage!=1" class="paginate_button previous">Previous</a>
+									
+									<span>
+										
+										<a ng-show="tab.currentPage==1" class="paginate_button current" ng-click="pageSelect(1)">1</a>
+										<a ng-show="tab.currentPage!=1" class="paginate_button" ng-click="pageSelect(1)">1</a>
+										
+										<span class="ellipsis" ng-show="tab.currentPage >3 && tab.maxPage> 5">…</span>
+										
+										<a class="paginate_button current" ng-show="tab.maxPage>2 && tab.currentPage == tab.p1" ng-click="pageSelect(tab.p1)">{{tab.p1}}</a>
+										<a class="paginate_button" ng-show="tab.maxPage>2 && tab.currentPage != tab.p1" ng-click="pageSelect(tab.p1)">{{tab.p1}}</a>
+
+										<a class="paginate_button current" ng-show="tab.maxPage>3 && tab.currentPage == tab.p2" ng-click="pageSelect(tab.p2)">{{tab.p2}}</a>
+										<a class="paginate_button" ng-show="tab.maxPage>3 && tab.currentPage != tab.p2" ng-click="pageSelect(tab.p2)">{{tab.p2}}</a>
+
+										<a class="paginate_button current" ng-show="tab.p3 != -1 && tab.maxPage>4 && tab.currentPage == tab.p3" ng-click="pageSelect(tab.p3)">{{tab.p3}}</a>
+										<a class="paginate_button" ng-show="tab.p3 != -1 && tab.maxPage>4 && tab.currentPage != tab.p3" ng-click="pageSelect(tab.p3)">{{tab.p3}}</a>
+										
+										<span class="ellipsis" ng-show="tab.currentPage <tab.maxPage - 2 && tab.maxPage> 5">…</span>
+										
+										<a ng-show="tab.currentPage==tab.maxPage && tab.maxPage != 1" class="paginate_button current" ng-show="tab.maxpage > 1" ng-click="pageSelect(tab.maxPage)">{{tab.maxPage}}</a>
+										<a ng-show="tab.currentPage!=tab.maxPage && tab.maxPage != 1" class="paginate_button" ng-show="tab.maxpage > 1" ng-click="pageSelect(tab.maxPage)">{{tab.maxPage}}</a>
+										
+									</span>
+									
+									<a ng-show="tab.currentPage==tab.maxPage" class="paginate_button next disabled">Next</a>
+									<a ng-show="tab.currentPage!=tab.maxPage" class="paginate_button next" ng-click="pageSelect(tab.currentPage + 1)">Next</a>
+									
+								</div>
+						
+							</div>
+					
+						</div>
+					</div>
+				</div>
+	
+			</ms-widget-front>
+		</ms-widget>
+	</div>
+</div>

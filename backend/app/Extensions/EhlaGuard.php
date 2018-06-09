@@ -8,6 +8,8 @@ use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Session\Session;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class EhlaGuard implements Guard
 {
@@ -31,44 +33,75 @@ class EhlaGuard implements Guard
 	}
 
 	protected function updateSession($id)
-    {
-        $this->session->put($this->getName(), $id);
-        $this->session->migrate(true);
-        // print_r($this->session);
-    }
+	{
+		$this->session->put($this->getName(), $id);
+		$this->session->migrate(true);
+		// print_r($this->session);
+	}
 
-    public function getName()
-    {
-         return 'login_'.$this->name.'_'.sha1(static::class);
-    }
+	public function getName()
+	{
+		return 'login_'.$this->name.'_'.sha1(static::class);
+	}
 
 
 
 	public function login(AuthenticatableContract $user, $remember = false)
-    {
-        $this->updateSession($user->getAuthIdentifier());
-        $this->user = $user;
-        $this->loggedOut = false;
-        return $user;
-    }
+	{
+		$this->updateSession($user->getAuthIdentifier());
+		$this->user = $user;
+		$this->loggedOut = false;
+		return $user;
+	}
 
-    public function user () {
+	public function logout()
+	{
+		$this->session->remove($this->getName());
+		try{
+			DB::transaction(function () {
+				DB::table('users')
+				->where('id', $this->user->id)
+				->update([
+					'expiry_date' => Carbon::now()->format('Y-m-d H:i:s'),
+					'updated_at' => date('Y-m-d H:i:s')
+				]);
+			}, 5);
+		} catch (\Exception $e) {
+			// dd($e);
+		}
+		$this->user = null;
+		$this->loggedOut = true;
+	}
+
+	public function user() {
+
+		$user = null;
 
 		if (!is_null($this->user)) {
 			return $this->user;
 		}
-		$user = null;
-		// retrieve via token
-		$token = $this->getTokenForRequest();
-
-		if (!empty($token)) {
-			$user = $this->provider->retrieveByToken($this->inputKey, $token);
-		} else {
-			$id = $this->session->get($this->getName());
-			if (! is_null($id)) {
-				$user = $this->provider->retrieveById($id);
+		
+		$sessionUserId = $this->session->get($this->getName());
+		if($sessionUserId){
+			$user = $this->provider->retrieveById($sessionUserId);
+			if(Carbon::parse($user->expiry_date)->lt(Carbon::now())) {
+				return Response()->json('Unauthorized', 401);
 			}
+			return $user;
 		}
+		// retrieve via token
+		// $token = $this->getTokenForRequest();
+		// if (!empty($token)) {
+		// 	$user = $this->provider->retrieveByToken($this->inputKey, $token);
+		// } else {
+		// 	$id = $this->session->get($this->getName());
+		// 	if (! is_null($id)) {
+		// 		$user = $this->provider->retrieveById($id);
+		// 	}
+		// }
+		// if($user->expiry_date <= Carbon::now()->format('Y-m-j H:i:s')) {
+		// 	return Response()->json('Unauthorized', 401);
+		// }
 		return $user;
 	}
 	
@@ -76,19 +109,33 @@ class EhlaGuard implements Guard
 		return $this->provider->retrieveUsermodelAccessToken();
 	}
 	
-	public function dumpuser () {
+	public function getuser () {
 
-		if (!is_null($this->user)) {
-			return $this->user;
-		}
 		$user = null;
-		// retrieve via token
-		$token = $this->getTokenForRequest();
-
-		if (!empty($token)) {
-			$user = $this->provider->retrieveByToken($this->inputKey, $token);
+		if (!is_null($this->user)) {
+			$user = $this->user;
+		} else {
+			// retrieve via token
+			$token = $this->getTokenForRequest();
+			if (!empty($token)) {
+				$user = $this->provider->retrieveByToken($this->inputKey, $token);
+			}
 		}
-		return $this->user = $user;
+
+		if($user->expiry_date <= Carbon::now()->format('Y-m-j H:i:s')) {
+			return Response()->json('Unauthorized', 401);
+		}
+		
+		$result = array(
+			"user_id" => $user['id'],
+			"user" => json_decode($user['user']),
+			"ex_token" => $user['ex_token'],
+			"school_id" => $user['school_id'],
+			"roles" => $user['roles'],
+		);
+
+		$this->user = $user;
+		return $result;
 	}
 	
 

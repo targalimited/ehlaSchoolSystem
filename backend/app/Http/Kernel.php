@@ -19,7 +19,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
 //      \App\Http\Middleware\CORS::class
-      \Barryvdh\Cors\HandleCors::class,
+        \Barryvdh\Cors\HandleCors::class,
     ];
 
     /**
@@ -59,6 +59,7 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'adminAuth' => \App\Http\Middleware\RedirectIfNotAdminAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'cors' => \App\Http\Middleware\CORS::class
+        'cors' => \App\Http\Middleware\CORS::class,
+        'chooseDB' => \App\Http\Middleware\ChooseDB::class,
     ];
 }
