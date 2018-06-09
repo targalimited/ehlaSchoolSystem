@@ -178,7 +178,7 @@
           vm.ngFlowOptions = {
             student: {
               // You can configure the ngFlow from here
-              target                   : 'http://localhost:8000/v1/account_student',
+              target                   : 'http://localhost:8081/v1/account_student',
               chunkSize                : 15 * 1024 * 1024,
               maxChunkRetries          : 1,
               simultaneousUploads      : 1,
@@ -187,7 +187,7 @@
             },
             teacher: {
               // You can configure the ngFlow from here
-              target                   : 'http://localhost:8000/v1/account_teacher',
+              target                   : 'http://localhost:8081/v1/account_teacher',
               chunkSize                : 15 * 1024 * 1024,
               maxChunkRetries          : 1,
               simultaneousUploads      : 1,
