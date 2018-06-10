@@ -41,8 +41,10 @@ class MigrateAllCommand extends Command
 
       foreach (\Config::get('database.connections') as $name => $details)
       {
-        $this->info('Running migration for "' . $name . '"');
-        $this->call('migrate', ['--database' => $name]);
+       if($name !== 'mysql'){
+          $this->info('Running migration for "' . $name . '"');
+          $this->call('migrate', ['--database' => $name]);
+       }
         //$this->call('migrate', array('--database' => $name, '--path' => 'app/database/migrations/' . $name));
       }
     }
