@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->json('session');
             $table->string('ex_token')->nullable();
             $table->dateTime('expiry_date')->nullable();
-          $table->integer('school_id');
+            $table->integer('school_id');
             $table->timestamps();
         });
     }
