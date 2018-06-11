@@ -20,14 +20,16 @@
 
       <div slot="item" slot-scope="{item}" class="vi-table__row">
 
-        <vi-table-col class="ellipsis">
-
+        <vi-table-col>
           <reading-item :item="item"/>
         </vi-table-col>
 
         <vi-table-col>
+          <vi-button @click="previewReading(item)" color="brand" outline>Preview</vi-button>
+        </vi-table-col>
+
+        <vi-table-col>
           <vi-checkbox-boolean
-            :circular="true"
             @input="toggleReading(item)"
             :disabled="item.lock_status || loading"
             :value="item.chose"/>
@@ -38,6 +40,7 @@
 </template>
 
 <script>
+  import {previewDialog} from '../dialogs'
   import ReadingItem from '../components/reading-item'
 
   const map = {
@@ -67,6 +70,9 @@
         headers: [
           {
             text: 'name'
+          },
+          {
+            text: ''
           },
           {
             text: ''
@@ -109,6 +115,13 @@
         })
         this.loading = false
         this.$message('Reading removed')
+      },
+      async previewReading (item) {
+        this.loading = true
+        await this.$store.dispatch('shelf/getPreview', {
+          id: item.id
+        })
+        this.loading = false
       }
     },
 
@@ -116,6 +129,7 @@
       this.$store.dispatch('shelf/getItemsByCategory', {
         key: this.$key
       })
+      // previewDialog()
     }
   }
 </script>
@@ -128,5 +142,8 @@
 
     &:nth-child(2)
       width 50px
+
+    &:nth-child(3)
+      width 100px
 
 </style>

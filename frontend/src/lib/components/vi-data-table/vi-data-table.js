@@ -183,7 +183,7 @@ export default {
 
   mounted () {
     if (this.infiniteScroll) {
-      const offset = Number.isInteger(this.infiniteScroll) ? this.infiniteScroll : 200
+      const offset = Number.isInteger(this.infiniteScroll) ? this.infiniteScroll : 400
       document.addEventListener('scroll', e => {
         if ((window.innerHeight + window.scrollY) + offset >= document.body.scrollHeight) {
           this.showMore()
