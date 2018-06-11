@@ -164,7 +164,6 @@ export default {
         page: 1,
         limit: 500
       })
-      console.log(res)
       const result = res.data
       commit('gotItemsByCategory', {
         items: result,
@@ -190,7 +189,6 @@ export default {
     selectedCount (state, getters) {
       let count = 0
       for (let key in getters.categories) {
-        console.log(getters.categories[key])
         count += getters.categories[key].item_ids.length
       }
       return count
