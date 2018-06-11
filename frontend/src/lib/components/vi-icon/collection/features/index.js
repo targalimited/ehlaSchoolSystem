@@ -1,0 +1,7 @@
+import './contributors'
+import './coupons'
+import './school'
+import './diagnosis-reading'
+import './daily-reading'
+import './weekly-reading'
+import './shelf'
