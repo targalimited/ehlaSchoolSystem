@@ -171,12 +171,19 @@ export default {
       })
     },
 
+    async getReadingDetails ({commit}, {id}) {
+      const res = await new AuthHttp().post('/itemApi/get_by_ids', {
+        id: [id],
+        details: 1
+      })
+      return res.data && res.data[0]
+    },
+
     async getPreview ({commit}, {id}) {
       const res = await new AuthHttp().post('/itemApi/get_preview_by_item_id', {
         id: id
       })
-      console.log(res)
-      return res
+      return res.data && res.data[0]
     }
   },
 

@@ -117,11 +117,7 @@
         this.$message('Reading removed')
       },
       async previewReading (item) {
-        this.loading = true
-        await this.$store.dispatch('shelf/getPreview', {
-          id: item.id
-        })
-        this.loading = false
+        previewDialog(item.id)
       }
     },
 
@@ -129,7 +125,6 @@
       this.$store.dispatch('shelf/getItemsByCategory', {
         key: this.$key
       })
-      // previewDialog()
     }
   }
 </script>
