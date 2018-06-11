@@ -35,7 +35,7 @@
 
     data () {
       return {
-        newSelected: this.selected || []
+        newSelected: []
       }
     },
 
@@ -50,6 +50,12 @@
       onSubmit () {
         this.$close(this.newSelected)
       }
+    },
+
+    created () {
+//      if (Array.isArray(this.newSelected)) {
+//        this.newSelected = this.selected
+//      }
     }
   }
 </script>

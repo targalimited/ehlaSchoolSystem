@@ -114,7 +114,7 @@ export default {
     // get the list of selected items
     async getSelectedItems ({commit, getters, dispatch}) {
       // const keys = getters.categoryKeyList
-      const keys = ['WR', 'DR', 'BR', 'RCD']
+      const keys = ['WR', 'DR', 'RCD']
 
       const resArray = await Promise.all(keys.map(key => dispatch('getSelectedItemsByCategory', {key})))
 
@@ -164,12 +164,19 @@ export default {
         page: 1,
         limit: 500
       })
-      console.log(res)
       const result = res.data
       commit('gotItemsByCategory', {
         items: result,
         category: key
       })
+    },
+
+    async getPreview ({commit}, {id}) {
+      const res = await new AuthHttp().post('/itemApi/get_preview_by_item_id', {
+        id: id
+      })
+      console.log(res)
+      return res
     }
   },
 
@@ -190,7 +197,6 @@ export default {
     selectedCount (state, getters) {
       let count = 0
       for (let key in getters.categories) {
-        console.log(getters.categories[key])
         count += getters.categories[key].item_ids.length
       }
       return count

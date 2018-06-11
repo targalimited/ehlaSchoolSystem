@@ -116,6 +116,7 @@
       },
       chooseLevel (levels) {
         // TODO API call
+        levels = levels || []
         levelDialog(levels).then(v => {
           console.log('CALL API with the selected levels', v)
         })

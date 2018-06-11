@@ -86,37 +86,12 @@
 </template>
 
 <script>
-import {createCouponDialog} from '../dialogs'
-
 export default {
   name: 'home',
-
-  data () {
-    return {
-      search: '',
-      headers: [
-        {
-          text: 'Name'
-        },
-        {
-          text: 'cat'
-        },
-        {
-          text: 'level'
-        },
-        {
-          text: ''
-        }
-      ]
-    }
-  },
 
   computed: {
     summary () {
       return this.$store.state.shelf.summary
-    },
-    selectedItems () {
-      return this.$store.state.shelf.selectedItems
     },
     readingCategories () {
       return this.$store.getters['shelf/categories']
@@ -126,33 +101,7 @@ export default {
     }
   },
 
-  methods: {
-    goToDetails (id) {
-      this.$router.push({
-        name: 'coupon',
-        params: {
-          id: id
-        }
-      })
-    },
-
-    async createCoupon () {
-      const res = await createCouponDialog({title: 'Create coupon'})
-      const {typeId, expiryDays, expiryDate, startDate, maxNewCustomers, count, minTotalAmount} = res
-      this.$store.dispatch('createCoupon', {
-        typeId, expiryDays, expiryDate, startDate, maxNewCustomers, count, minTotalAmount
-      })
-    },
-
-    onSelect (v) {
-      console.log('on select', v)
-      this.$bus.$emit('coupons', 'abc')
-    }
-  },
-
   mounted () {
-    console.log('home page')
-    // this.$store.dispatch('shelf/getSummary')
     this.$store.dispatch('shelf/getDashboard')
   }
 }
