@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\MigrateAllCommand::class
+        Commands\MigrateAllCommand::class,
+        Commands\MigrateRollbackAllCommand::class
     ];
 
     /**

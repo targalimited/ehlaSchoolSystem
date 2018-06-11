@@ -15,6 +15,9 @@ class UsermodelApiServices extends Model {
 	private $request;
 	private $client;
 	private $accessToken;
+	private $encodeField = '?encode=1';
+	private $accessTokenField = '&access-token=';
+	private $suffix;
 	
 	public function __construct(Request $request) {
 		parent::__construct();
@@ -25,65 +28,48 @@ class UsermodelApiServices extends Model {
 		if(!$userSession) {
 			return response()->json('', 401);
 		}
-		$this->accessToken = $userSession->access_token;		
+		$this->accessToken = $userSession->access_token;
+		$this->suffix = '?encode=1&access-token='.$userSession->access_token;
     }
 	
-	public function schoolApiGetSchoolCategory($subjectId) {
-		if (isset($subjectId) && is_numeric($subjectId)) {
-			$uri = $this->version."schoolApi/get_school_category/subject_id/".$subjectId.$this->umUrlSuffix;
-			$client = new Client();
-			
-			$data = $client->get($this->umUrlDomain.$uri, $this->umOption);
-			$result = \GuzzleHttp\json_decode($data->getBody()->getContents(), true);
-			return $result['data'];
-		} else {
-			return null;
-		}
+	public function schoolApiGetSchoolCategory($subjectId) {		
+		$result = $this->client->get(config('variables.schoolApiGetSchoolCategoryUrl').$subjectId.$this->suffix);
+		return $result['data'];
 	}
 	
 	public function schoolApiGetSchoolItemSummary() {
-		$result = $this->client->get(config('variables.schoolApiGetSchoolItemSummaryUrl').$this->accessToken);
-		return $result['data'];
-	
+		$url = config('variables.schoolApiGetSchoolItemSummaryUrl').$this->suffix;
+		
+		$result = $this->client->get($url);
+		return $result['data'];	
 	}
 	
 	public function schoolApiSetAssignments($academicId, $classId, $subjectId, $itemId, $itemType, $homeworkType, $targetIds, $startDate, $endDate, $remark) {
-		$uri = $this->version."schoolApi/set_assignments/".$this->umUrlSuffix;
-		
-		$this->umOption['form_params'] = [
-			'params' => ['academic_id' => $academicId,
-						'class_id' => $classId,
-						'subject_id' => $subjectId,
-						'item_id' => $itemId,
-						'item_type' => $itemType,
-						'homework_type' => $homeworkType,
-						'target_ids' => $targetIds,
-						'start_date' => $startDate,
-						'end_date' => $endDate,
-						'remark' => $remark]
+		$inputs = [
+			'academic_id' => $academicId,
+			'class_id' => $classId,
+			'subject_id' => $subjectId,
+			'item_id' => $itemId,
+			'item_type' => $itemType,
+			'homework_type' => $homeworkType,
+			'target_ids' => $targetIds,
+			'start_date' => $startDate,
+			'end_date' => $endDate,
+			'remark' => $remark
 		];		
 		
-		$client = new Client();
-		
-		$data = $client->post($this->umUrlDomain.$uri, $this->umOption);
-		$result = \GuzzleHttp\json_decode($data->getBody()->getContents(), true);
-		$exerciseDetails = $result['data'];
-		return $exerciseDetails;
+		$result = $this->client->post(config('variables.schoolApiSetAssignmentsUrl').$this->suffix, $inputs);
+		return $result['data'];
 	}
 	
-	public function schoolApiPublishAssignments($studentIds, $assignmentIds) {
-		$uri = $this->version."schoolApi/publish_assignments/".$this->umUrlSuffix;
-		
-		$this->umOption['form_params'] = [
-			'params' => ['student_ids' => $studentIds,
-						'assignment_ids' => $assignmentIds]
+	public function schoolApiPublishAssignments($studentIds, $assignmentIds) {		
+		$inputs = [
+			'student_ids' => $studentIds,
+			'assignment_ids' => $assignmentIds
 		];		
-		$client = new Client();
 		
-		$data = $client->post($this->umUrlDomain.$uri, $this->umOption);
-		$result = \GuzzleHttp\json_decode($data->getBody()->getContents(), true);
-		$exerciseDetails = $result['data'];
-		return $exerciseDetails;
+		$result = $this->client->post(config('variables.schoolApiPublishAssignmentsUrl').$this->suffix, $inputs);
+		return $result['data'];
 	}
 	
 	public function schoolApiChooseItems($catGrouper, $addItemIds, $removeItemIds, $limit, $page) {			
@@ -93,27 +79,18 @@ class UsermodelApiServices extends Model {
 		$inputs['limit'] = $limit;
 		$inputs['page'] = $page;
 				
-		$result = $this->client->post(config('variables.schoolApiChooseItemsUrl').$this->accessToken, $inputs);
+		$result = $this->client->post(config('variables.schoolApiChooseItemsUrl').$this->suffix, $inputs);
 		return $result;
 	}
 		
 	public function schoolApiChooseItemsForLevel($catGrouper, $addLvItemList, $removeLvItemList, $limit, $page) {	
-		$uri = $this->version."schoolApi/choose_items_for_level".$this->umUrlSuffix;
+		$inputs['cat_grouper'] = $catGrouper;
+		$inputs['add_lv_item_list'] = $addLvItemList;
+		$inputs['remove_lv_item_list'] = $removeLvItemList;
+		$inputs['limit'] = $limit;
+		$inputs['page'] = $page;
 		
-		$params['cat_grouper'] = $catGrouper;
-		$params['add_lv_item_list'] = $addLvItemList;
-		$params['remove_lv_item_list'] = $removeLvItemList;
-		$params['limit'] = $limit;
-		$params['page'] = $page;
-		
-		$this->umOption['form_params'] = [
-			'params' => $params
-		];
-		
-		$client = new Client();
-		$data = $client->post($this->umUrlDomain.$uri, $this->umOption);
-		$result = \GuzzleHttp\json_decode($data->getBody()->getContents(), true);
-		
+		$result = $this->client->post(config('variables.schoolApiChooseItemsForLevelUrl').$this->suffix, $inputs);
 		return $result;
 	}
 	
@@ -127,7 +104,7 @@ class UsermodelApiServices extends Model {
 		$inputs['req_wks_srh'] = 1;
 		$inputs['req_wd_srh'] = 1;	
 		
-		$result = $this->client->post(config('variables.schoolApiGetByCategoryUrl').$this->accessToken, $inputs);
+		$result = $this->client->post(config('variables.schoolApiGetByCategoryUrl').$this->suffix, $inputs);
 		return $result;
 	}
 
@@ -136,56 +113,34 @@ class UsermodelApiServices extends Model {
 		$inputs['page'] = $page;
 		$inputs['limit'] = $limit;
 		
+		$inputs['sort_by'] = 'level';
+		$inputs['sort_order'] = 'asc';
 		$inputs['req_gen_srh'] = 1;
 		$inputs['req_wks_srh'] = 1;
 		$inputs['req_wd_srh'] = 1;		
 
-		$result = $this->client->post(config('variables.schoolApiGetSelectedItemByCategoryUrl').$this->accessToken, $inputs);
+		$result = $this->client->post(config('variables.schoolApiGetSelectedItemByCategoryUrl').$this->suffix, $inputs);
 		return $result;
 	}
 	
 	public function schoolApiGetByIds($id) {
-		if (isset($id) && is_numeric($id)) {
-			$uri = $this->version."schoolApi/get_by_ids".$this->umUrlSuffix;
-			
-			$this->umOption['form_params'] = [
-				'params' => ['ids' => [$id]]
-			];			
-			
-			$client = new Client();
-			
-			$data = $client->post($this->umUrlDomain.$uri, $this->umOption);
-			$result = \GuzzleHttp\json_decode($data->getBody()->getContents(), true);
-			
-			return $result;
-		} else {
-			return null;
-		}
+		$inputs['ids'] = $id;
+		
+		$result = $this->client->post(config('variables.schoolApiGetByIdsUrl').$this->suffix, $inputs);
+		return $result;
 	}
 	
 	public function schoolApiGetAssignmentByItemId($id, $itemType, $academicId, $classId, $subjectId) {
-		if (isset($id) && is_numeric($id)) {
-			$uri = $this->version."schoolApi/get_assignment_by_item_id".$this->umUrlSuffix;
-			
-			$this->umOption['form_params'] = [
-				'params' => [
-					'id' => $id,
-					'item_type' => $itemType,
-					'academic_id' => $academicId,
-					'class_id' => $classId,
-					'subject_id' => $subjectId,
-				]
-			];			
-			
-			$client = new Client();
-			
-			$data = $client->post($this->umUrlDomain.$uri, $this->umOption);
-			$result = \GuzzleHttp\json_decode($data->getBody()->getContents(), true);
-			
-			return $result;
-		} else {
-			return null;
-		}
+		$inputs = [
+				'id' => $id,
+				'item_type' => $itemType,
+				'academic_id' => $academicId,
+				'class_id' => $classId,
+				'subject_id' => $subjectId
+		];
+		
+		$result = $this->client->post(config('variables.schoolApiGetAssignmentByItemIdUrl').$this->suffix, $inputs);
+		return $result['data'];
 	}
 	
 	/*
@@ -196,21 +151,14 @@ class UsermodelApiServices extends Model {
 	  }
 	}
 	*/
-	public function resultApiGetSchoolResultSummaryReport($academicId, $studentIds, $itemId) {
-		$uri = $this->version."resultApi/get_school_result_summary_report".$this->umUrlSuffix;
-		
-		$this->umOption['form_params'] = [
-			'params' => [
+	public function resultApiGetSchoolResultSummaryReport($academicId, $studentIds, $itemId) {		
+		$inputs = [
 				'academic_id' => $academicId,
 				'student_ids' => $studentIds,
 				'assessment_item_id' => $itemId
-			]
 		];			
-		$client = new Client();
 		
-		$data = $client->post($this->umUrlDomain.$uri, $this->umOption);
-		$result = \GuzzleHttp\json_decode($data->getBody()->getContents(), true);
-		
+		$result = $this->client->post(config('variables.schoolApiGetSchoolResultSummaryReportUrl').$this->suffix, $inputs);
 		return $result;
 	}
 	
@@ -222,21 +170,15 @@ class UsermodelApiServices extends Model {
 	  }
 	}
 	*/
-	public function resultApiGetSchoolResultReport($academicId, $studentIds, $itemId) {
-		$uri = $this->version."resultApi/get_school_result_report".$this->umUrlSuffix;
-		
-		$this->umOption['form_params'] = [
-			'params' => [
+	public function resultApiGetSchoolResultReport($academicId, $studentIds, $itemId) {		
+		$inputs = [
 				'academic_id' => $academicId,
 				'student_ids' => $studentIds,
 				'assessment_item_id' => $itemId
-			]
-		];			
-		$client = new Client();
+		];		
 		
-		$data = $client->post($this->umUrlDomain.$uri, $this->umOption);
-		$result = \GuzzleHttp\json_decode($data->getBody()->getContents(), true);
-		
+		$result = $this->client->post(config('variables.schoolApiGetSchoolResultReportUrl').$this->suffix, $inputs);
+			
 		foreach ($result['data'] as &$assignmentId) {
 			foreach ($studentIds as $sid) {
 				$assignmentId[$sid]['name'] = $sid;
@@ -259,23 +201,15 @@ class UsermodelApiServices extends Model {
 	  }
 	}
 	*/
-	public function resultApiGetSchoolWeaknessReport($academicId, $studentIds, $itemId, $reportType) {	
-		$uri = $this->version."resultApi/get_school_weakness_report".$this->umUrlSuffix;
+	public function resultApiGetSchoolWeaknessReport($academicId, $studentIds, $itemId, $reportType) {			
+		$inputs = [
+			'academic_id' => $academicId,
+			'student_ids' => $studentIds,
+			'assessment_item_id' => $itemId,
+			'report_type' => $reportType
+		];
 		
-		$this->umOption['form_params'] = [
-			'params' => [
-				'academic_id' => $academicId,
-				'student_ids' => $studentIds,
-				'assessment_item_id' => $itemId,
-				'report_type' => $reportType
-			]
-		];			
-		
-		$client = new Client();
-		
-		$data = $client->post($this->umUrlDomain.$uri, $this->umOption);
-		$result = \GuzzleHttp\json_decode($data->getBody()->getContents(), true);
-		
+		$result = $this->client->post(config('variables.schoolApiGetSchoolWeaknessReportUrl').$this->suffix, $inputs);				
 		return $result;
 	}
 	

@@ -17,14 +17,17 @@
   /** @ngInject */
   function ChooseItemsDetailController($timeout, $q, $sce, $rootScope, msUtils, loadingScreen, Restangular, $scope, $state, $mdDialog, generalMessage, $location, $anchorScroll) {
     var vm = this;
+		$scope.firstCalled = false;
     
 		$scope.setDirectiveTabOneFn = function(directiveFn) {
-					console.log('c1');
-        $scope.setChooseItemSectionData = directiveFn;
+			$scope.setChooseItemSectionData = directiveFn;
+			//ordering problem, sometime call before linkage is set
+			if (!$scope.firstCalled) {
+				$scope.setChooseItemSectionData(false);
+			}
     };
 		$scope.setDirectiveTabTwoFn = function(directiveFn) {
-			console.log('c2');
-        $scope.setItemLevelSectionData = directiveFn;
+			$scope.setItemLevelSectionData = directiveFn;
     };
 		
 		$scope.section = 1;
@@ -51,8 +54,11 @@
 				selectedEntry : "10",
 				currentPage : 1,
 				onSelect : function () {	
-					console.log('c3');
-					$scope.setChooseItemSectionData(false);			
+					//ordering problem, sometime call before linkage is set
+					if (typeof $scope.setChooseItemSectionData != 'undefined') {
+						$scope.firstCalled = true;
+						$scope.setChooseItemSectionData(false);			
+					}
 				}},
 			{tab:2,
 				label_en : "Edit Selected Items",
@@ -64,7 +70,6 @@
 				currentPage : 1,
 				
 				onSelect : function () {
-					console.log('c4');
 					$scope.setItemLevelSectionData(false);					
 				}}];
 		

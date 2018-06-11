@@ -37,7 +37,7 @@
        },*/
       translate: 'SETTINGS.SETTINGS_NAV',
       weight: 6,
-      hidden: function () {
+      /*hidden: function () {
         try {
           var user = JSON.parse(localStorage.getItem('user'));
           //user.userGroup.title = 'Principal'
@@ -48,7 +48,7 @@
         } catch (e) {
           return true;
         }
-      }
+      }*/
     });
 
     msNavigationServiceProvider.saveItem('fuse.settings.academic-year', {

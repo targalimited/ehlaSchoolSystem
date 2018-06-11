@@ -11,6 +11,7 @@
 					tab: '=tab',
 					tabs: '=tabs',
 					catGrouper: '=catGrouper',
+					totalItemQtt: '=totalItemQtt',
 					chosenItemQtt: '=chosenItemQtt'
 				},
 				link: function($scope, $element, $attrs){			
@@ -174,7 +175,7 @@
 							}
 						}
 						
-						if ($scope.chosenItemQtt >= 10) {
+						if ($scope.chosenItemQtt >= $scope.totalItemQtt) {
 							generalMessage.showMessageToast('error', 'Reach limit ' + ($scope.chosenItemQtt));
 						} else {
 							($scope.addItemsList).push($scope.tab.filteringData[actualIdx]);
@@ -223,7 +224,7 @@
 						
 						var actualIdx = idx + cPage * sEntry;
 									
-						if ($scope.chosenItemQtt >= 10) {
+						if ($scope.chosenItemQtt >= $scope.totalItemQtt) {
 							generalMessage.showMessageToast('error', 'Reach limit ' + ($scope.chosenItemQtt));
 						} else {
 							for(var i=0; i<$scope.removeItemsList.length; i++) {
