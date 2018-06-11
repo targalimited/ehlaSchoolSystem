@@ -42,6 +42,43 @@
 			</ms-widget-front>
 		</ms-widget>
 
+		
+		<ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="100" flex-gt-md="100">
+			<ms-widget-front class="white-bg">
+				<div>
+					<div class="pt-8 pb-16" layout="column" layout-align="start">
+						<div class="orange-fg font-size-30" style="margin:10px">
+							Search Panel 
+							<span ng-show="onShow != true" ng-click="onShow = true">+</span>
+							<span ng-show="onShow == true" ng-click="onShow = false">-</span> 
+							<button class="btn-large pull-right">Reset</button>
+							<button class="btn-large pull-right" ng-click="search()">Search</button>
+						</div>
+						
+						<div class="font-size-22" ng-show="onShow == true">
+							<div ng-repeat="sTag in searchTag">
+								<p style="margin-left:20px" class="desc">
+									{{sTag.key_name_en}} 
+									<span ng-show="sTag.onShow != true" ng-click="sTag.onShow = true">+</span>
+									<span ng-show="sTag.onShow == true" ng-click="sTag.onShow = false">-</span>
+								</p>
+								
+								<div ng-show="sTag.onShow == true" class="widget-group" layout="row" flex="100" layout-wrap>
+									<ms-widget ng-repeat="value in sTag.values" flippable="true" layout="column" flex="25" flex-gt-xs="20" flex-gt-md="20">
+										<ms-widget-front class="white-bg">
+											<button class="btn" style="padding:5px; font-size:16px" ng-click='selectedTag(sTag.key, value); value.click = !value.click' ng-class="value.click ? 'chosen-btn-clicked': 'chosen-btn'" >{{value.value_name_en}}</button>											
+										</ms-widget-front>
+									</ms-widget>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</ms-widget-front>
+		</ms-widget>
+		
+		
+		
 		<ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="100" flex-gt-md="100">
 			<ms-widget-front class="white-bg">
 				<div class="content-card" layout="column" flex>

@@ -105,60 +105,57 @@
 							}
 						} else {
 							$scope.selectedSearchTag[key].push(valueObj);
-						}			
-						
+						}
 					}
 					
+					function getMatch(seiCri, data) {								
+						if (typeof seiCri !== "undefined") {
+							for(var j=0; j<data.length; j++) {
+								for(var k=0; k<seiCri.length; k++) {
+									if (data[j] == seiCri[k].value) {										
+										return true;
+									}
+								}
+							}
+							return false;
+						} 
+						return true;
+					}
+					
+					
 					$scope.search = function() {
-						console.error('search tag', $scope.selectedSearchTag['difficulty']);
-						
 						$scope.tab.currentPage = 1;
 						
 						var start = ($scope.tab.currentPage-1) * $scope.tab.limit;
 						var end = start + $scope.tab.limit;
 						
 						$scope.tab.filteringData = $scope.tab.rawData;
-						/*
+						
 						if (!jQuery.isEmptyObject($scope.selectedSearchTag)) {							
-							var eiLevel = $scope.selectedSearchTag['level'];
-							var eiDifficulty = $scope.selectedSearchTag['difficulty'];
-							var eiTextType = $scope.selectedSearchTag['texttype'];
-							var eiTheme = $scope.selectedSearchTag['theme'];
-							var eiSubTheme = $scope.selectedSearchTag['subtheme'];
-							var eiWeakness = $scope.selectedSearchTag['weakness'];
-							var eiWords = $scope.selectedSearchTag['word'];							
-							
-							
+							var seiLevel = $scope.selectedSearchTag['level'];
+							var seiDifficulty = $scope.selectedSearchTag['difficulty'];
+							var seiTextType = $scope.selectedSearchTag['texttype'];
+							var seiTheme = $scope.selectedSearchTag['theme'];
+							var seiSubTheme = $scope.selectedSearchTag['subtheme'];
+							var seiWeakness = $scope.selectedSearchTag['weakness'];
+							var seiWords = $scope.selectedSearchTag['word'];							
+														
 							$scope.tab.filteringData = [];
-							_.each($scope.tab.rawData, function(rawData, index, rawDatas) {
-								//console.log('level: ' + JSON.stringify(rawData));
-								var isMatch = false;
-								
-								if (typeof eiLevel !== "undefined") {
-									_.each(eiLevel, function(value, idx, values) {
-										if (rawData.ei_level) {
-										
-										}
-									});
-								}
-								if (typeof eiDifficulty !== "undefined") {console.log('eiDifficulty');}
-								if (typeof eiTextType !== "undefined") {console.log('eiTextType');}
-								if (typeof eiTheme !== "undefined") {console.log('eiTheme');}
-								if (typeof eiSubTheme !== "undefined") {console.log('eiSubTheme');}
-								if (typeof eiWeakness !== "undefined") {console.log('eiWeakness');}
-								if (typeof eiWords !== "undefined") {console.log('eiWords');}
-								
-								if (isMatch == true) {
-									$scope.tab.filteringData.push(rawData);
-								}
-							});
-						}*/
-						
-						/*for (var key in $scope.selectedSearchTag) {							
-							console.log('data: ' + JSON.stringify($scope.selectedSearchTag[key]));
 							
-						}*/
-						
+							for (var i=0; i<$scope.tab.rawData.length; i++) {
+								var raw = $scope.tab.rawData[i];
+								
+								if (!getMatch(seiLevel, raw.ei_level)) {continue;}								
+								if (!getMatch(seiDifficulty, raw.ei_difficulty)) {continue;}
+								if (!getMatch(seiTextType, raw.ei_textType)) {continue;}
+								if (!getMatch(seiTheme, raw.ei_theme)) {continue;}
+								if (!getMatch(seiSubTheme, raw.ei_subtheme)) {continue;}
+								if (!getMatch(seiWeakness, raw.ei_weakness)) {continue;}
+								if (!getMatch(seiWords, raw.ei_words)) {continue;}
+								
+								$scope.tab.filteringData.push($scope.tab.rawData[i]);
+							}
+						}
 						$scope.tab.data = $scope.tab.filteringData.slice(start, end);
 						setPaging($scope.tab);
 					}
