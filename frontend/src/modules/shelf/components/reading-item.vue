@@ -29,7 +29,7 @@
   }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
   @import '../../../lib/stylus/main.styl'
 
   .reading-item

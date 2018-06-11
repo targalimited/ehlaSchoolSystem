@@ -1,6 +1,4 @@
-import Dialog from './coupons-dialog'
-import AssignCouponDialog from './assign-coupon-dialog'
+import LevelDialog from './level-dialog'
 import {create} from 'vue-modal-dialogs'
-const createCouponDialog = create(Dialog)
-const assignCouponDialog = create(AssignCouponDialog)
-export {createCouponDialog, assignCouponDialog}
+const levelDialog = create(LevelDialog, 'selected')
+export {levelDialog}

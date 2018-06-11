@@ -101,6 +101,14 @@ export default {
        font-size 18px
        font-weight bold
 
+  .vi-link
+    cursor pointer
+    display inline
+    color $brand
+
+    &:hover
+      border-bottom 1px solid currentColor
+
     .search-input
       background none
       border-bottom 1px solid white !important
@@ -191,4 +199,5 @@ export default {
 
   .vdp-datepicker__calendar
     border none
+
 </style>

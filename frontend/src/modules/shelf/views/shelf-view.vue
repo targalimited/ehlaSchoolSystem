@@ -39,10 +39,11 @@
           <vi-table-col>
             <div>
               <template v-if="item.levels.length === 0">
-                empty
+                <a @click="chooseLevel" class="ui-link">Assign levels</a>
               </template>
               <template v-else>
                 {{item.levels | join}}
+                <a @click="chooseLevel(item.levels)" class="ui-link">Edit</a>
               </template>
             </div>
           </vi-table-col>
@@ -59,7 +60,7 @@
 </template>
 
 <script>
-  import {createCouponDialog} from '../dialogs'
+  import {levelDialog} from '../dialogs'
   import ReadingItem from '../components/reading-item'
 
   export default {
@@ -112,6 +113,12 @@
         })
         this.loading = false
         this.$message('Reading removed')
+      },
+      chooseLevel (levels) {
+        // TODO API call
+        levelDialog(levels).then(v => {
+          console.log('CALL API with the selected levels', v)
+        })
       }
     },
 

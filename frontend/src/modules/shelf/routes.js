@@ -10,7 +10,7 @@ export default [
     component: HomeView
   },
   {
-    path: '/manage-reading',
+    path: '/selected-reading',
     name: 'shelf',
     component: ShelfView
   },
