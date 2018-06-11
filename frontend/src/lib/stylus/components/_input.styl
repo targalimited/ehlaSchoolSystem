@@ -1,0 +1,133 @@
+@import '../main.styl'
+$pad = 10px
+
+.vi-input
+  display flex
+  padding 0 $pad
+  align-items center
+  border 1px solid $border-color
+  background-color: white;
+  background-image: none;
+  font-size: 16px;
+  color: $dark-grey;
+  border-radius: $border-radius;
+  transition: $transition;
+  outline none
+  min-height 40px
+
+  &--line
+    border-top none
+    border-left none
+    border-right none
+    border-radius 0
+    padding 0
+    background transparent
+
+    .vi-input__inner
+      padding 5px 0
+
+  &--darker
+    border-color $dark-border-color
+
+  &:hover, &--focused
+    border-color $grey-3
+
+    &.vi-input--darker
+      border-color $grey-4
+
+  &--focused
+    &:not(.vi-input--line)
+      box-shadow 0 0 6px 0 rgba(0,0,0,0.15)
+
+    .vi-input__prefix, .vi-input__suffix
+      .vi-icon
+        color $dark-grey
+
+  &--selected
+    .vi-input__prefix, .vi-input__suffix
+      .vi-icon
+        color $dark-grey
+
+  &--disabled
+    background $grey-2 !important
+    border-color $dark-border-color !important
+    color $light-grey !important
+
+    input
+      color $light-grey
+      cursor no-drop
+
+  &--readonly
+    border-color $border-color !important // override hover color change
+    color $light-grey !important
+    box-shadow none !important
+
+    &.vi-input--darker
+      border-color $dark-border-color !important
+
+    input
+      cursor no-drop
+
+  &--clickable
+
+    input
+      cursor pointer
+
+  &--error
+    border-color $error-color !important
+
+  &__prefix, &__suffix
+    display inline-flex
+
+    > .vi-icon
+      color $light-grey
+      width 20px
+      height 20px
+
+  &__prefix
+    margin-right $pad
+
+  &__suffix
+    margin-left $pad
+
+    .vi-icon__clear
+      margin-right -10px
+
+  &--no-resize
+    textarea
+      resize none
+
+  &__inner
+    display block
+    resize vertical
+    padding 9px 0
+    box-sizing border-box
+    width 100%
+    border-radius inherit
+    font-size inherit
+    color $dark-grey
+    border none
+    background none
+    outline none
+    font-family 'Lato', sans-serif
+    min-width 0
+    flex 1
+
+    &::placeholder
+      color: $light-grey
+
+    &--textarea
+      padding 20px
+      font-size 16px
+      line-height 28px
+
+  &__selection
+    display flex
+    flex-wrap wrap
+    width 100%
+    align-items center
+
+.vi-input-label
+  font-size 16px
+  font-weight bold
+  line-height 1
