@@ -1,0 +1,42 @@
+@import '../variables.styl'
+
+html, body
+  height: 100%
+  min-height: 100%
+  position: relative
+  width: 100%
+
+html
+  font-size: $font-size-root
+  text-rendering: optimizeLegibility
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+  overflow-x: hidden
+
+body
+  font-family: $font-family
+  line-height: $line-height-root
+
+header
+  transition: .3s padding $transition
+  width: 100%
+  z-index: 1
+
+main
+  transition: .3s padding $transition
+  will-change: padding-left
+
+a
+  color: inherit // cliff
+  text-decoration: none // cliff
+
+ol, ul, li
+  list-style: none // cliff
+
+img
+  max-width: 100% // cliff
+
+::-ms-clear
+::-ms-reveal
+  display: none

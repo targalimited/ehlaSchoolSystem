@@ -100,9 +100,14 @@ class LoginController extends Controller
         }
 
         $user = $user->toArray();
+
+        // attach roles into user object
+        $userInfo = json_decode($user['user']);
+        $userInfo->roles = $user['roles'];
+
         $result = array(
           "user_id" => $user['id'],
-          "user" => json_decode($user['user']),
+          "user" => $userInfo,
           "ex_token" => $user['ex_token'],
           "school_id" => $user['school_id'],
           "roles" => $user['roles'],
@@ -144,7 +149,7 @@ class LoginController extends Controller
       $access_token = $userSession->access_token;
 
       $client = new EhlaGuzzleClient();
-      $data = $client->post(config('variables.logoutUrl').$access_token, null);
+      $data = $client->post(env('USERMODEL_URL').config('variables.logoutUrl').$access_token, null);
       Auth::logout();
       return $data;
   }
@@ -161,7 +166,6 @@ class LoginController extends Controller
           $uri = $request->path() . '?' . $_SERVER['QUERY_STRING'] . '&encode=1&access-token=' . $access_token;
         else
           $uri = $request->path() . '?encode=1&access-token=' . $access_token;
-
 
 
         $login_user = User::where('email',$input['username'])->first();

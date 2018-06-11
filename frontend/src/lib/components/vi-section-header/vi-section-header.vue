@@ -1,0 +1,42 @@
+<template>
+  <div class="vi-section-header">
+    <div class="vi-section-header__title">
+      <slot></slot>
+    </div>
+    <div class="vi-section-header__spacer"></div>
+    <slot name="right"></slot>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'vi-section-header'
+  }
+</script>
+
+<style lang="stylus">
+  @import '../../stylus/main.styl'
+
+  .vi-section-header
+    flex-row 45px 0
+    align-items center
+    border-bottom 1px solid $border-color
+    margin 20px 0
+    font-size 20px
+
+    &:first-child
+      margin-top 0
+
+    &__title
+      color $brand
+      display inline-flex
+      padding-bottom 10px
+      align-items center
+      line-height 1.2
+      border-bottom 1px solid $brand
+      position relative
+      height 45px
+
+    &__spacer
+      flex 1
+</style>
