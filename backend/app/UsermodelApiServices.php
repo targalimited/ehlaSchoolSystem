@@ -83,6 +83,14 @@ class UsermodelApiServices extends Model {
 		return $result;
 	}
 		
+	public function schoolApiChooseItemForLevel($itemId, $itemLv) {	
+		$inputs['item_id'] = $itemId;
+		$inputs['item_lv'] = $itemLv;
+		
+		$result = $this->client->post(config('variables.schoolApiChooseItemForLevelUrl').$this->suffix, $inputs);
+		return $result;
+	}
+		
 	public function schoolApiChooseItemsForLevel($catGrouper, $addLvItemList, $removeLvItemList, $limit, $page) {	
 		$inputs['cat_grouper'] = $catGrouper;
 		$inputs['add_lv_item_list'] = $addLvItemList;
@@ -123,10 +131,17 @@ class UsermodelApiServices extends Model {
 		return $result;
 	}
 	
-	public function schoolApiGetByIds($id) {
-		$inputs['ids'] = $id;
+	public function schoolApiGetByIds($ids) {
+		$inputs['ids'] = $ids;
 		
 		$result = $this->client->post(config('variables.schoolApiGetByIdsUrl').$this->suffix, $inputs);
+		return $result;
+	}
+	
+	public function schoolApiGetPreviewById($id) {
+		$inputs['id'] = $id;
+		
+		$result = $this->client->post(config('variables.schoolApiGetPreviewByIdUrl').$this->suffix, $inputs);
 		return $result;
 	}
 	

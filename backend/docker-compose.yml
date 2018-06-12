@@ -26,7 +26,7 @@ services:
     volumes:
       - ./dbdata:/var/lib/mysql
     environment:
-      - "MYSQL_DATABASE=homestead"
+      - "MYSQL_DATABASE=school_1"
       - "MYSQL_USER=homestead"
       - "MYSQL_PASSWORD=secret"
       - "MYSQL_ROOT_PASSWORD=secret"

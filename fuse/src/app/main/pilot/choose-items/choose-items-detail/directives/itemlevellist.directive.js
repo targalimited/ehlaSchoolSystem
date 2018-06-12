@@ -25,6 +25,7 @@
 						p1: [], p2: [], p3: [], p4: [], p5: [], p6: [],
 						s1: [], s2: [], s3: [], s4: [], s5: [], s6: [],
 					};	
+					$scope.selectedSearchTag = [];
 					
 					$scope.setItemLevelSectionData = function (successMsg) {
 						if ($scope.tab.rawData.length == 0) {
@@ -45,6 +46,7 @@
 								.then(function (results) {
 									$scope.tab.rawData = results.plain().data;
 									$scope.tab.totalCount = results.plain().metadata.totalCount;
+									$scope.searchTag = results.plain().metadata.searchTag;
 									$scope.tab.itemLvCnt = results.plain().metadata.itemLvCnt;
 									$scope.tab.itemLvCnt['p1c'] = 0;
 									$scope.tab.itemLvCnt['p2c'] = 0;
@@ -119,6 +121,87 @@
 								$scope.removeLvItemList[lv].push(itemId);				
 							} 
 						}	
+					}
+					
+					$scope.selectedTag = function (key, valueObj) {		
+						//check if key exist, if not, create key
+						
+						//check if exist, 
+						//if exist, then remove
+						//if key becomes empty, then remove key
+						
+						//if not exist, push
+						if (!$scope.selectedSearchTag.hasOwnProperty(key)) {
+							$scope.selectedSearchTag[key] = [];
+						}
+						
+						var isExist = false;
+						for (var i=0; i<$scope.selectedSearchTag[key].length; i++) {
+							if ($scope.selectedSearchTag[key][i]['value'] == valueObj['value']) {
+								$scope.selectedSearchTag[key].splice(i,1);
+								isExist = true;
+							}
+						}
+						if (isExist) {
+							if ($scope.selectedSearchTag[key].length == 0) {
+								delete $scope.selectedSearchTag[key];
+							}
+						} else {
+							$scope.selectedSearchTag[key].push(valueObj);
+						}			
+						
+					}
+					
+					function getMatch(seiCri, data) {								
+						if (typeof seiCri !== "undefined") {
+							for(var j=0; j<data.length; j++) {
+								for(var k=0; k<seiCri.length; k++) {
+									if (data[j] == seiCri[k].value) {										
+										return true;
+									}
+								}
+							}
+							return false;
+						} 
+						return true;
+					}
+					
+					$scope.search = function() {
+						$scope.tab.currentPage = 1;
+						
+						var start = ($scope.tab.currentPage-1) * $scope.tab.limit;
+						var end = start + $scope.tab.limit;
+						
+						$scope.tab.filteringData = $scope.tab.rawData;
+						
+						if (!jQuery.isEmptyObject($scope.selectedSearchTag)) {							
+							var seiLevel = $scope.selectedSearchTag['level'];
+							var seiDifficulty = $scope.selectedSearchTag['difficulty'];
+							var seiTextType = $scope.selectedSearchTag['texttype'];
+							var seiTheme = $scope.selectedSearchTag['theme'];
+							var seiSubTheme = $scope.selectedSearchTag['subtheme'];
+							var seiWeakness = $scope.selectedSearchTag['weakness'];
+							var seiWords = $scope.selectedSearchTag['word'];							
+							
+							
+							$scope.tab.filteringData = [];
+							
+							for (var i=0; i<$scope.tab.rawData.length; i++) {
+								var raw = $scope.tab.rawData[i];
+								
+								if (!getMatch(seiLevel, raw.ei_level)) {continue;}								
+								if (!getMatch(seiDifficulty, raw.ei_difficulty)) {continue;}
+								if (!getMatch(seiTextType, raw.ei_textType)) {continue;}
+								if (!getMatch(seiTheme, raw.ei_theme)) {continue;}
+								if (!getMatch(seiSubTheme, raw.ei_subtheme)) {continue;}
+								if (!getMatch(seiWeakness, raw.ei_weakness)) {continue;}
+								if (!getMatch(seiWords, raw.ei_words)) {continue;}
+								
+								$scope.tab.filteringData.push($scope.tab.rawData[i]);
+							}
+						}
+						$scope.tab.data = $scope.tab.filteringData.slice(start, end);
+						setPaging($scope.tab);
 					}
 					
 					$scope.chooseItemLevel = function () {
