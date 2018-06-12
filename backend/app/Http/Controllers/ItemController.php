@@ -155,7 +155,7 @@ class ItemController extends Controller {
 		return json($output);		
 	}
 	
-	public function choose_item_for_level (Request $request) {
+	public function choose_items_for_level (Request $request) {
 		//params
 		$params = $request->params;
 		//params basic
@@ -183,7 +183,30 @@ class ItemController extends Controller {
 		return json($output);		
 	}
 	
-	
+	public function choose_item_for_level (Request $request) {
+		//params
+		$params = $request->params;
+		//params basic
+		$PBS = new ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		
+		//permission
+		$PCS = new PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+		
+		//data
+		$itemId = $params['item_id'];
+		$itemLv = $params['item_lv'];
+		
+		//usermodel
+		$UAS = new UsermodelApiServices($request);
+		
+		$result = $UAS->schoolApiChooseItemForLevel($itemId, $itemLv);
+		$output["status"] = $result["data"]['status'];
+		$output['message'] = $result["data"]['message'];
+		
+		return json($output);		
+	}
 	
 	public function get_by_ids (Request $request) {
 		//params
@@ -199,11 +222,37 @@ class ItemController extends Controller {
 		
 		//TODO check valid item for class
 		//data
-		$itemId = $params['item_id'];
+		$ids = $params['ids'];
 
 		//usermodel
 		$UAS = new UsermodelApiServices($request);
-		$result = $UAS->schoolApiGetByIds($itemId);
+		$result = $UAS->schoolApiGetByIds($ids);
+		$output["data"] = $result["data"];
+		$output["metadata"] = $result["metadata"];
+	
+		return json($output);
+	}	
+	
+	
+	public function get_preview_by_id (Request $request) {
+		//params
+		$params = $request->params;
+	
+		//params basic
+		$PBS = new ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		
+		//permission
+		$PCS = new PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+		
+		//TODO check valid item for class
+		//data
+		$id = $params['id'];
+
+		//usermodel
+		$UAS = new UsermodelApiServices($request);
+		$result = $UAS->schoolApiGetPreviewById($id);
 		$output["data"] = $result["data"];
 		$output["metadata"] = $result["metadata"];
 	

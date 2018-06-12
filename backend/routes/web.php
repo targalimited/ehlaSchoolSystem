@@ -62,8 +62,9 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('get_selected_item_by_category','ItemController@get_selected_item_by_category');
     Route::post('choose_item','ItemController@choose_item');
     Route::post('choose_item_for_level','ItemController@choose_item_for_level');
+    Route::post('choose_items_for_level','ItemController@choose_items_for_level');
     Route::post('get_pre_chosen_items_by_category','ItemController@get_pre_chosen_items_by_category');
-    Route::post('get_by_ids','ItemController@get_by_ids');		
+    Route::post('get_preview_by_id','ItemController@get_preview_by_id');		
     Route::post('get_assignment_by_item_id','ItemController@get_assignment_by_item_id');
     Route::post('set_assignments','ItemController@set_assignments');
     Route::post('publish_assignments','ItemController@publish_assignments');
