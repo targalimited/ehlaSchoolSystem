@@ -1,5 +1,16 @@
 <template>
-  <div>profile</div>
+  <div>
+    <div class="vi-banner">
+      <vi-icon class="vi-banner__icon" name="avatar" size="60"/>
+      <div class="vi-banner__title">Profile</div>
+    </div>
+    <vi-container>
+      <vi-section-header>Change password</vi-section-header>
+      <vi-input v-model="oldPw" placeholder="Enter your current password"/>
+      <vi-input v-model="newPw" placeholder="Enter your new password"/>
+      <vi-button @click="submit" color="brand">Submit</vi-button>
+    </vi-container>
+  </div>
 </template>
 
 <script>
@@ -8,8 +19,8 @@ export default {
 
   data () {
     return {
-      username: '',
-      password: '',
+      oldPw: '',
+      newPw: '',
       error: false
     }
   },
@@ -33,45 +44,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  // @import '~dali/src/stylus/main'
-
-  .login
-    background #2585b4
-
-  .input-group
-    margin-bottom 16px
-
-  .vi-card
-    width 360px
-    margin 80px auto
-    box-shadow 2px 2px 22px 0 rgba(0,0,0,0.1)
+  .vi-input
+    margin-bottom 20px
+    width 300px
 
   .vi-button
-    width 100%
-    margin-top 24px
-    height 40px
-
-  .header
-    margin 24px 0 32px
-
-  .title
-    font-size 30px
-    margin-bottom 6px
-    line-height 1
-
-  .subtitle
-    font-size 18px
-    color #777
-    font-style italic
-    line-height 1
-
-  #layout-1 > polygon, #layout-1 > path
-    fill black
-
-  .vi-toolbar-logo
-    height 40px
-    margin-left 0
-
-    svg
-      width auto
+    width 300px
 </style>
