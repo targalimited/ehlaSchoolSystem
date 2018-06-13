@@ -10,10 +10,13 @@ return [
 	
 	'schoolApiGetByCategoryUrl' => env('USERMODEL_URL').'v1/schoolApi/get_by_category',
 	'schoolApiGetSelectedItemByCategoryUrl' => env('USERMODEL_URL').'v1/schoolApi/get_selected_item_by_category',
+	'schoolApiGetSelectedItemUrl' => env('USERMODEL_URL').'v1/schoolApi/get_selected_item',
 	'schoolApiGetByIdsUrl' => env('USERMODEL_URL').'v1/schoolApi/get_by_ids',
+	'schoolApiGetPreviewByIdUrl' => env('USERMODEL_URL').'v1/schoolApi/get_preview_by_id',
 	
 	'schoolApiChooseItemsUrl' => env('USERMODEL_URL').'v1/schoolApi/choose_items',
 	'schoolApiChooseItemsForLevelUrl' => env('USERMODEL_URL').'v1/schoolApi/choose_items_for_level',
+	'schoolApiChooseItemForLevelUrl' => env('USERMODEL_URL').'v1/schoolApi/choose_item_for_level',
 	
 	'schoolApiSetAssignmentsUrl' => env('USERMODEL_URL').'v1/schoolApi/set_assignments',
 	'schoolApiPublishAssignmentsUrl' => env('USERMODEL_URL').'v1/schoolApi/publish_assignments',

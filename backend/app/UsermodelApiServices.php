@@ -83,6 +83,14 @@ class UsermodelApiServices extends Model {
 		return $result;
 	}
 		
+	public function schoolApiChooseItemForLevel($itemId, $itemLv) {	
+		$inputs['item_id'] = $itemId;
+		$inputs['item_lv'] = $itemLv;
+		
+		$result = $this->client->post(config('variables.schoolApiChooseItemForLevelUrl').$this->suffix, $inputs);
+		return $result;
+	}
+		
 	public function schoolApiChooseItemsForLevel($catGrouper, $addLvItemList, $removeLvItemList, $limit, $page) {	
 		$inputs['cat_grouper'] = $catGrouper;
 		$inputs['add_lv_item_list'] = $addLvItemList;
@@ -102,7 +110,7 @@ class UsermodelApiServices extends Model {
 		$inputs['limit'] = $limit;
 		$inputs['req_gen_srh'] = 1;
 		$inputs['req_wks_srh'] = 1;
-		$inputs['req_wd_srh'] = 1;	
+		$inputs['req_wd_srh'] = 0;	
 		
 		$result = $this->client->post(config('variables.schoolApiGetByCategoryUrl').$this->suffix, $inputs);
 		return $result;
@@ -122,11 +130,23 @@ class UsermodelApiServices extends Model {
 		$result = $this->client->post(config('variables.schoolApiGetSelectedItemByCategoryUrl').$this->suffix, $inputs);
 		return $result;
 	}
+
+	public function schoolApiGetSelectedItem() {
+		$result = $this->client->post(config('variables.schoolApiGetSelectedItemUrl').$this->suffix, $inputs);
+		return $result;
+	}
 	
-	public function schoolApiGetByIds($id) {
-		$inputs['ids'] = $id;
+	public function schoolApiGetByIds($ids) {
+		$inputs['ids'] = $ids;
 		
 		$result = $this->client->post(config('variables.schoolApiGetByIdsUrl').$this->suffix, $inputs);
+		return $result;
+	}
+	
+	public function schoolApiGetPreviewById($id) {
+		$inputs['id'] = $id;
+		
+		$result = $this->client->post(config('variables.schoolApiGetPreviewByIdUrl').$this->suffix, $inputs);
 		return $result;
 	}
 	

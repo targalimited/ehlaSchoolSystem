@@ -32,6 +32,7 @@
 
 <script>
 export default {
+
   name: 'login',
 
   data () {
@@ -50,7 +51,7 @@ export default {
         username: this.username,
         password: this.password
       })
-      if (res) {
+      if (res && this.$store.getters.isAuthenticated) {
         this.$router.push({
           name: 'home'
         })

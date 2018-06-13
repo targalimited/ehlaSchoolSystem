@@ -3,6 +3,7 @@
     <dialogs-wrapper wrapper-name="default" />
 
     <div class="app__sidebar" v-if="$route.name !== 'login'">
+      
       <vi-toolbar-logo/>
 
       <router-link :to="{name: 'home'}">
@@ -72,6 +73,7 @@ export default {
 </script>
 
 <style lang="stylus">
+
   @import url('https://fonts.googleapis.com/css?family=Lato:300,400,700');
   @import './lib/stylus/main.styl'
 
@@ -202,5 +204,4 @@ export default {
 
   .vdp-datepicker__calendar
     border none
-
 </style>
