@@ -16,10 +16,11 @@
       <vi-icon name="alert" size="26"/>
       You have readings that has not been assigned to any levels</div>
 
-    <div class="app__scroll" v-if="selectedItems">
+    <div v-if="selectedItems">
 
       <vi-data-table
         class="selected-item-table"
+        :pagination.sync="pagination"
         :sticky="140"
         :items="selectedItems"
         :headers="headers"
@@ -71,6 +72,7 @@
     data () {
       return {
         loading: false,
+        pagination: {},
         search: '',
         headers: [
           {

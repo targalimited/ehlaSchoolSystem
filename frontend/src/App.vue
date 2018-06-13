@@ -3,7 +3,7 @@
     <dialogs-wrapper wrapper-name="default" />
 
     <div class="app__sidebar" v-if="$route.name !== 'login'">
-      
+
       <vi-toolbar-logo/>
 
       <router-link :to="{name: 'home'}">
@@ -198,6 +198,7 @@ export default {
 
   .app__scroll
     margin-left 260px
+    width 100%
 
     +screen(900px)
       margin-left 74px
