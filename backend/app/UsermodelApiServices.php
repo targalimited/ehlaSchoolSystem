@@ -110,7 +110,7 @@ class UsermodelApiServices extends Model {
 		$inputs['limit'] = $limit;
 		$inputs['req_gen_srh'] = 1;
 		$inputs['req_wks_srh'] = 1;
-		$inputs['req_wd_srh'] = 1;	
+		$inputs['req_wd_srh'] = 0;	
 		
 		$result = $this->client->post(config('variables.schoolApiGetByCategoryUrl').$this->suffix, $inputs);
 		return $result;
@@ -128,6 +128,11 @@ class UsermodelApiServices extends Model {
 		$inputs['req_wd_srh'] = 1;		
 
 		$result = $this->client->post(config('variables.schoolApiGetSelectedItemByCategoryUrl').$this->suffix, $inputs);
+		return $result;
+	}
+
+	public function schoolApiGetSelectedItem() {
+		$result = $this->client->post(config('variables.schoolApiGetSelectedItemUrl').$this->suffix, $inputs);
 		return $result;
 	}
 	

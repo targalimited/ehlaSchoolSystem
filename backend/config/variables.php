@@ -10,6 +10,7 @@ return [
 	
 	'schoolApiGetByCategoryUrl' => env('USERMODEL_URL').'v1/schoolApi/get_by_category',
 	'schoolApiGetSelectedItemByCategoryUrl' => env('USERMODEL_URL').'v1/schoolApi/get_selected_item_by_category',
+	'schoolApiGetSelectedItemUrl' => env('USERMODEL_URL').'v1/schoolApi/get_selected_item',
 	'schoolApiGetByIdsUrl' => env('USERMODEL_URL').'v1/schoolApi/get_by_ids',
 	'schoolApiGetPreviewByIdUrl' => env('USERMODEL_URL').'v1/schoolApi/get_preview_by_id',
 	

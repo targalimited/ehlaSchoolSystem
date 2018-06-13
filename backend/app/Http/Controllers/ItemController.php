@@ -78,6 +78,30 @@ class ItemController extends Controller {
 		return json($output);
 	}
 	
+	public function get_selected_item (Request $request) {
+		//params
+		$params = $request->params;
+	
+		//params basic
+		$PBS = new ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		
+		//permission
+		$PCS = new PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+
+		//get class level mapper
+		
+		
+		//usermodel
+		$UAS = new UsermodelApiServices($request);
+		$result = $UAS->schoolApiGetSelectedItem();	
+		$output["data"] = $result["data"];
+		$output["metadata"] = $result["metadata"];
+	
+		return json($output);
+	}
+	
 	public function get_school_item_summary(Request $request) {
 		
 		//params
@@ -154,6 +178,35 @@ class ItemController extends Controller {
 	
 		return json($output);		
 	}
+	public function choose_items (Request $request) {
+		//params
+		$params = $request->params;
+		//params basic
+		$PBS = new ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		
+		//permission
+		$PCS = new PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+		
+		//data
+		
+		$catGrouper = $params['cat_grouper'];
+		$addItemIds = $params['add_item_ids'];
+		$removeItemIds = $params['remove_item_ids'];		
+		$page = $params['page'];
+		$limit = $params['limit'];
+
+		//usermodel
+		$UAS = new UsermodelApiServices($request);
+		
+		$result = $UAS->schoolApiChooseItems($catGrouper, $addItemIds, $removeItemIds, $limit, $page);
+		
+		$output["success"] = $result["data"]['success'];
+		$output['message'] = $result["data"]['msg'];
+		
+		return json($output);	
+	}
 	
 	public function choose_items_for_level (Request $request) {
 		//params
@@ -202,8 +255,8 @@ class ItemController extends Controller {
 		$UAS = new UsermodelApiServices($request);
 		
 		$result = $UAS->schoolApiChooseItemForLevel($itemId, $itemLv);
-		$output["status"] = $result["data"]['status'];
-		$output['message'] = $result["data"]['message'];
+		$output["success"] = $result["data"]['success'];
+		$output['message'] = $result["data"]['msg'];
 		
 		return json($output);		
 	}

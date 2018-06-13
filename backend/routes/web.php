@@ -58,19 +58,22 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('get_school_result_summary_report','ResultController@get_school_result_summary_report');
 
     //item controller
-    Route::post('get_by_category','ItemController@get_by_category');
-    Route::post('get_selected_item_by_category','ItemController@get_selected_item_by_category');
+    Route::get('get_school_item_summary','ItemController@get_school_item_summary');
+    Route::post('get_preview_by_id','ItemController@get_preview_by_id');	
+	Route::post('get_by_category','ItemController@get_by_category');
+    Route::post('get_selected_item','ItemController@get_selected_item');
+    Route::post('choose_items','ItemController@choose_items');
+    Route::post('choose_item_for_level','ItemController@choose_item_for_level');	
+    
+	Route::post('get_selected_item_by_category','ItemController@get_selected_item_by_category');
     Route::post('choose_item','ItemController@choose_item');
-    Route::post('choose_item_for_level','ItemController@choose_item_for_level');
     Route::post('choose_items_for_level','ItemController@choose_items_for_level');
     Route::post('get_pre_chosen_items_by_category','ItemController@get_pre_chosen_items_by_category');
-    Route::post('get_preview_by_id','ItemController@get_preview_by_id');		
     Route::post('get_assignment_by_item_id','ItemController@get_assignment_by_item_id');
     Route::post('set_assignments','ItemController@set_assignments');
     Route::post('publish_assignments','ItemController@publish_assignments');
     Route::post('batch_set_publish_assignments','ItemController@batch_set_publish_assignments');
-    Route::get('get_school_item_summary','ItemController@get_school_item_summary');
-
+    
     //Category controller
     Route::get('get_school_category/subject_id/{subject_id?}','CategoryController@get_school_category');
 
