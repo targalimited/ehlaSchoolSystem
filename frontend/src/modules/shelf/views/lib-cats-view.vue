@@ -9,7 +9,7 @@
     <vi-container>
 
       <router-link
-        class="reading-cat" v-for="cat in readingCategories"
+        class="reading-cat" v-for="cat in readingCategories" :key="cat.key"
         :to="{name: 'lib', params: {key: cat.key}}">
 
         <vi-icon :name="cat.icon" size="100"/>

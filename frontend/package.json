@@ -5,13 +5,15 @@
   "author": "cliff <cliff@vivovii.com>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "webpack-dev-server --inline --watch --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config build/webpack.dev.conf.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "cross-env": "^5.1.6",
     "moment": "^2.22.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
