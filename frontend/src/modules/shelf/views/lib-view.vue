@@ -12,7 +12,7 @@
     </div>
 
     <vi-row mt-2 px-10>
-      <vi-col>
+      <vi-col v-if="levelOptions">
         <vi-select
           v-model="levelList"
           :options="levelOptions"
@@ -21,7 +21,7 @@
           :chip="true">
         </vi-select>
       </vi-col>
-      <vi-col>
+      <vi-col v-if="difficultyOptions">
         <vi-select
           v-model="difficultyList"
           :options="difficultyOptions"
@@ -30,7 +30,7 @@
           :chip="true">
         </vi-select>
       </vi-col>
-      <vi-col>
+      <vi-col v-if="texttypeOptions">
         <vi-select
           v-model="texttypeList"
           :options="texttypeOptions"
@@ -41,7 +41,7 @@
       </vi-col>
     </vi-row>
     <vi-row px-10>
-      <vi-col>
+      <vi-col v-if="themeOptions">
         <vi-select
           v-model="themeList"
           :options="themeOptions"
@@ -50,7 +50,7 @@
           :chip="true">
         </vi-select>
       </vi-col>
-      <vi-col>
+      <vi-col v-if="subthemeOptions">
         <vi-select
           v-model="subthemeList"
           :options="subthemeOptions"
@@ -59,7 +59,7 @@
           :chip="true">
         </vi-select>
       </vi-col>
-      <vi-col>
+      <vi-col v-if="weaknessOptions">
         <vi-select
           v-model="weaknessList"
           :options="weaknessOptions"
@@ -239,12 +239,20 @@
         key: this.$key
       }).then(metadata => {
         const searchTags = metadata.searchTag
-        this.levelOptions = searchTags.find(item => item.key === 'level').values
-        this.difficultyOptions = searchTags.find(item => item.key === 'difficulty').values
-        this.texttypeOptions = searchTags.find(item => item.key === 'texttype').values
-        this.themeOptions = searchTags.find(item => item.key === 'theme').values
-        this.subthemeOptions = searchTags.find(item => item.key === 'subtheme').values
-        this.weaknessOptions = searchTags.find(item => item.key === 'weakness').values
+
+        const level = searchTags.find(item => item.key === 'level')
+        const difficulty = searchTags.find(item => item.key === 'difficulty')
+        const texttype = searchTags.find(item => item.key === 'texttype')
+        const theme = searchTags.find(item => item.key === 'theme')
+        const subtheme = searchTags.find(item => item.key === 'subtheme')
+        const weakness = searchTags.find(item => item.key === 'weakness')
+
+        this.levelOptions = level && level.values
+        this.difficultyOptions = difficulty && difficulty.values
+        this.texttypeOptions = texttype && texttype.values
+        this.themeOptions = theme && theme.values
+        this.subthemeOptions = subtheme && subtheme.values
+        this.weaknessOptions = weakness && weakness.values
         this.catChosen = metadata.catChosen
         this.catMax = metadata.catMax
       })
