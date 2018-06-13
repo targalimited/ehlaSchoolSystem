@@ -3,7 +3,7 @@ import router from '@/router'
 
 class Http {
   http = Axios.create({
-    baseURL: '/v1',
+    baseURL: (process.env.API_BASE_URL || '') + '/v1',
     timeout: 10000
   })
 
