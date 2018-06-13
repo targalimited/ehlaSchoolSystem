@@ -50,7 +50,7 @@ export default {
       const row = this.$scopedSlots.item({
         item: item,
         checked: this.value && this.value.includes(item[this.itemKey]),
-        parent: this
+        toggle: this.toggle
       })
       const children = [row]
       const data = {}

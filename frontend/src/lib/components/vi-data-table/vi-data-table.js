@@ -17,6 +17,10 @@ export default {
       type: Boolean,
       default: false
     },
+    pagination: {
+      type: Object,
+      default: () => {}
+    },
     infiniteScroll: {
       type: [Boolean, Number],
       default: true
@@ -92,13 +96,13 @@ export default {
   data () {
     return {
       searchLength: 0,
-      pagination: {
+      defaultPagination: {
         descending: false,
         page: 1,
         rowsPerPage: 20,
         sortBy: null,
         totalItems: 0
-      },
+      }
     }
   },
 
@@ -123,16 +127,29 @@ export default {
         this.pagination.descending
       )
 
-      const rowsPerPage = this.pagination.rowsPerPage
-      const pageStart = this.pagination.page - 1
-      const from = rowsPerPage * pageStart
-      const to = from + rowsPerPage
+      let from, to
+      if (this.infiniteScroll) {
+        from = 0
+        to = this.pagination.page * this.pagination.rowsPerPage
+      } else {
+        const rowsPerPage = this.pagination.rowsPerPage
+        const pageStart = this.pagination.page - 1
+        from = rowsPerPage * pageStart
+        to = from + rowsPerPage
+      }
       items = items.slice(from, to)
       return items
     },
+
     itemsLength () {
       if (this.search) return this.searchLength
       return this.items.length
+    },
+
+    hasPagination () {
+      const pagination = this.pagination || {}
+
+      return Object.keys(pagination).length > 0
     }
   },
 
@@ -161,32 +178,42 @@ export default {
         this.updatePagination({ sortBy: index, descending: false })
       }
     },
+
+    /**
+     * called during init and whenever sorting, nextPage is updated
+     * user can got the updatedPagination from prop :pagination.sync
+     */
     updatePagination (val) {
-      this.pagination = Object.assign({}, this.pagination, val)
+      const pagination = this.hasPagination ? this.pagination : this.defaultPagination
+      const updatedPagination = Object.assign({}, pagination, val)
+      this.$emit('update:pagination', updatedPagination)
     },
+
+    initPagination () {
+      this.updatePagination(
+        Object.assign({}, this.defaultPagination, this.pagination)
+      )
+    },
+
     nextPage () {
       const {page, rowsPerPage} = this.pagination
       if (page * rowsPerPage > this.itemsLength) return
       this.updatePagination({
         page: page + 1
       })
-    },
-    showMore () {
-      if (!this.infiniteScroll) return
-      const {page, rowsPerPage} = this.pagination
-      if (page * rowsPerPage > this.itemsLength) return
-      this.updatePagination({
-        rowsPerPage: rowsPerPage * 2
-      })
     }
+  },
+
+  created () {
+    this.initPagination()
   },
 
   mounted () {
     if (this.infiniteScroll) {
-      const offset = Number.isInteger(this.infiniteScroll) ? this.infiniteScroll : 400
+      const offset = Number.isInteger(this.infiniteScroll) ? this.infiniteScroll : 200
       document.addEventListener('scroll', e => {
         if ((window.innerHeight + window.scrollY) + offset >= document.body.scrollHeight) {
-          this.showMore()
+          this.nextPage()
         }
       })
     }

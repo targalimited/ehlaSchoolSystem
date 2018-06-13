@@ -165,10 +165,14 @@ export default {
         limit: 500
       })
       const result = res.data
+      const searchTags = res.metadata.searchTag
+
       commit('gotItemsByCategory', {
         items: result,
         category: key
       })
+
+      return searchTags
     },
 
     async getReadingDetails ({commit}, {id}) {
@@ -188,11 +192,6 @@ export default {
   },
 
   getters: {
-    categoryKeyList (state) {
-      if (!state.summary) return
-      return Object.keys(state.summary.items)
-    },
-
     categories (state) {
       const cats = state.summary && state.summary.items || {}
       for (let key in cats) {

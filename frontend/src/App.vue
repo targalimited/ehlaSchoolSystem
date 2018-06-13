@@ -76,7 +76,6 @@ export default {
   @import './lib/stylus/main.styl'
 
   html, body
-    overflow: hidden
     font-size 18px
 
   .vi-banner
@@ -127,7 +126,10 @@ export default {
     font-size 18px
 
   .app__sidebar
-    height 100%
+    position fixed
+    left 0
+    top 0
+    bottom 0
     background #686868
     width 260px
     flex-shrink 0
@@ -193,9 +195,10 @@ export default {
       flex-direction column
 
   .app__scroll
-    flex 1 0 0
-    overflow-y auto
-    height 100%
+    margin-left 260px
+
+    +screen(900px)
+      margin-left 74px
 
   .vdp-datepicker__calendar
     border none
