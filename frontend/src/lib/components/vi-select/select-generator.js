@@ -165,7 +165,6 @@ export default {
           },
           on: {
             remove: e => {
-              e.stopPropagation()
               this.remove(s)
             }
           }

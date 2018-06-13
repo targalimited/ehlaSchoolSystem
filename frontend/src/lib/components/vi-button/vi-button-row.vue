@@ -25,7 +25,7 @@
   .vi-button-row
     display flex
     width 100%
-    justify-content space-between
+    justify-content center
 
     .vi-button
       &:not(:first-child)

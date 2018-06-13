@@ -1,50 +1,73 @@
 <template>
   <div class="lib-view">
 
-    <div class="vi-banner">
-      <vi-icon class="vi-banner__icon" name="daily-reading" size="60"/>
-      <div class="vi-banner__title">{{catName}}  <small v-if="readings">({{readings.length}} items)</small></div>
+    <div class="ui-banner">
+      <vi-row align-center>
+        <!--<vi-icon class="ui-banner__icon" name="daily-reading" size="36"/>-->
+        <span class="ui-banner__title">{{catName}}</span>
+      </vi-row>
+      <div class="ui-banner__info" v-if="catMax">
+        {{catChosen}} Reading Selected <small>(out of {{catMax}} quota)</small>
+      </div>
     </div>
 
-    <vi-row>
-      <vi-select
-        v-model="levelList"
-        :options="levelOptions"
-        option-name="value_name_en"
-        :chip="true">
-      </vi-select>
-      <vi-select
-        v-model="difficultyList"
-        :options="difficultyOptions"
-        option-name="value_name_en"
-        :chip="true">
-      </vi-select>
-      <vi-select
-        v-model="texttypeList"
-        :options="texttypeOptions"
-        option-name="value_name_en"
-        :chip="true">
-      </vi-select>
+    <vi-row mt-2 px-10>
+      <vi-col>
+        <vi-select
+          v-model="levelList"
+          :options="levelOptions"
+          option-name="value_name_en"
+          placeholder="Filter by levels"
+          :chip="true">
+        </vi-select>
+      </vi-col>
+      <vi-col>
+        <vi-select
+          v-model="difficultyList"
+          :options="difficultyOptions"
+          placeholder="Filter by difficulties"
+          option-name="value_name_en"
+          :chip="true">
+        </vi-select>
+      </vi-col>
+      <vi-col>
+        <vi-select
+          v-model="texttypeList"
+          :options="texttypeOptions"
+          placeholder="Filter by texttypes"
+          option-name="value_name_en"
+          :chip="true">
+        </vi-select>
+      </vi-col>
     </vi-row>
-    <vi-row>
-      <vi-select
-        v-model="themeList"
-        :options="themeOptions"
-        option-name="value_name_en"
-        :chip="true">
-      </vi-select>
-      <vi-select
-        v-model="subthemeList"
-        :options="subthemeOptions"
-        option-name="value_name_en"
-        :chip="true">
-      </vi-select>
-      <vi-select
-        v-model="weaknessList"
-        :options="weaknessOptions"
-        option-name="value_name_en"
-        :chip="true">
-      </vi-select>
+    <vi-row px-10>
+      <vi-col>
+        <vi-select
+          v-model="themeList"
+          :options="themeOptions"
+          placeholder="Filter by themes"
+          option-name="value_name_en"
+          :chip="true">
+        </vi-select>
+      </vi-col>
+      <vi-col>
+        <vi-select
+          v-model="subthemeList"
+          :options="subthemeOptions"
+          placeholder="Filter by subthemes"
+          option-name="value_name_en"
+          :chip="true">
+        </vi-select>
+      </vi-col>
+      <vi-col>
+        <vi-select
+          v-model="weaknessList"
+          :options="weaknessOptions"
+          placeholder="Filter by weaknesses"
+          option-name="value_name_en"
+          :chip="true">
+        </vi-select>
+      </vi-col>
     </vi-row>
 
     <vi-row v-if="!readings" justify-center style="margin-top: 40px">
@@ -133,7 +156,9 @@
         texttypeOptions: [],
         themeOptions: [],
         subthemeOptions: [],
-        weaknessOptions: []
+        weaknessOptions: [],
+        catMax: null,
+        catChosen: null,
       }
     },
 
@@ -146,6 +171,10 @@
       },
       readings () {
         return this.$store.getters['shelf/readings'](this.$key)
+      },
+      // selection reach the max - cannot add new anymore
+      isMax () {
+        return this.catChosen >= this.catMax
       }
     },
 
@@ -155,6 +184,14 @@
         else this.addReading(i.id)
       },
       async addReading (id) {
+        if (!this.isMax) {
+          this.$messageBox({
+            title: 'Cannot add more reading!',
+            message: 'You have reach the maximun selection quota',
+            cancel: null
+          })
+          return
+        }
         this.loading = true
         await this.$store.dispatch('shelf/add', {
           id,
@@ -200,13 +237,16 @@
     created () {
       this.$store.dispatch('shelf/getItemsByCategory', {
         key: this.$key
-      }).then(searchTags => {
+      }).then(metadata => {
+        const searchTags = metadata.searchTag
         this.levelOptions = searchTags.find(item => item.key === 'level').values
         this.difficultyOptions = searchTags.find(item => item.key === 'difficulty').values
         this.texttypeOptions = searchTags.find(item => item.key === 'texttype').values
         this.themeOptions = searchTags.find(item => item.key === 'theme').values
         this.subthemeOptions = searchTags.find(item => item.key === 'subtheme').values
         this.weaknessOptions = searchTags.find(item => item.key === 'weakness').values
+        this.catChosen = metadata.catChosen
+        this.catMax = metadata.catMax
       })
     }
   }
@@ -224,4 +264,32 @@
     &:nth-child(3)
       width 100px
 
+  .ui-banner
+    /*display flex*/
+    /*align-items center*/
+    background $brand
+    color white
+    padding 16px 24px
+    height 90px
+
+    small
+      font-size 0.75em
+      margin-left 0.2em
+
+    &__icon
+      margin-right 16px
+
+    &__title
+      font-size 22px
+      font-weight bold
+
+    &__info
+      font-size 16px
+      font-weight bold
+
+      small
+        font-size 14px
+
+  .vi-col
+    width 33%
 </style>

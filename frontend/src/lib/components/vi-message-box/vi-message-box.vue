@@ -19,7 +19,7 @@
       </vi-card-content>
 
       <vi-button-row>
-        <vi-button v-if="onCancel" @click="onCancel">{{cancel}}</vi-button>
+        <vi-button v-if="cancel" @click="onCancel">{{cancel}}</vi-button>
         <vi-button @click="onConfirm" primary>{{confirm}}</vi-button>
       </vi-button-row>
     </vi-card>

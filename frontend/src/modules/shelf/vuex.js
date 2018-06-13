@@ -113,7 +113,6 @@ export default {
 
     // get the list of selected items
     async getSelectedItems ({commit, getters, dispatch}) {
-      // const keys = getters.categoryKeyList
       const keys = ['WR', 'DR', 'RCD']
 
       const resArray = await Promise.all(keys.map(key => dispatch('getSelectedItemsByCategory', {key})))
@@ -165,14 +164,12 @@ export default {
         limit: 500
       })
       const result = res.data
-      const searchTags = res.metadata.searchTag
-
       commit('gotItemsByCategory', {
         items: result,
         category: key
       })
 
-      return searchTags
+      return res.metadata
     },
 
     async getReadingDetails ({commit}, {id}) {
