@@ -4,7 +4,7 @@ import { isCookieEnabled, getCookie, setCookie, removeCookie } from 'tiny-cookie
 
 class AuthHttp {
   http = Axios.create({
-    baseURL: '/v1',
+    baseURL: (process.env.API_BASE_URL || '') + '/v1',
     timeout: 10000,
     headers: {
       'extoken': getCookie('ex_token'),

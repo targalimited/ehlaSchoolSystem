@@ -9,7 +9,9 @@
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js",
-    "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config build/webpack.dev.conf.js"
+    "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config build/webpack.dev.conf.js",
+    "build": "node build/build.js",
+    "build:staging": "node build/build-staging.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
