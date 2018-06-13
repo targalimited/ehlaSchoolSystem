@@ -184,10 +184,10 @@ export default {
     },
 
     async getPreview ({commit}, {id}) {
-      const res = await new AuthHttp().post('/itemApi/get_preview_by_item_id', {
+      const res = await new AuthHttp().post('/get_preview_by_id', {
         id: id
       })
-      return res.data && res.data[0]
+      return res.data
     }
   },
 

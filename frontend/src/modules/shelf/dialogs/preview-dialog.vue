@@ -1,11 +1,11 @@
 <template>
-  <vi-dialog :value="true" width="600">
-    <vi-tabs>
+  <vi-dialog :value="true" width="600" content-class="preview-dialog">
+    <vi-tabs :border="true">
       <vi-tab name="Preview">
-        <div v-if="html" v-html="html.preview_en"></div>
+        <div v-if="html" v-html="html"></div>
       </vi-tab>
-      <vi-tab name="Reading">
-        reading
+      <vi-tab name="Article">
+        <div class="article">{{article}}</div>
       </vi-tab>
     </vi-tabs>
   </vi-dialog>
@@ -31,17 +31,11 @@
     },
 
     created () {
-//      this.$store.dispatch('shelf/getReadingDetails', {
-//        id: this.id
-//      }).then(res => {
-//        this.html = res
-//      })
-      // TODO
       this.$store.dispatch('shelf/getPreview', {
         id: this.id
       }).then(res => {
-        console.log(res)
-        this.html = res
+        this.html = res.preview_en
+        this.article = res.article
       })
     }
   }
@@ -56,4 +50,16 @@
 
   .vi-checkbox
     margin-bottom 16px
+
+  .article
+    padding 36px
+    background #fafafa
+</style>
+
+<style lang="stylus">
+  .preview-dialog
+    min-height 500px
+
+  .preview-dialog .vi-tabs__list
+    padding 0 24px !important
 </style>
