@@ -7,8 +7,8 @@ class AuthHttp {
     baseURL: (process.env.API_BASE_URL || '') + '/v1',
     timeout: 10000,
     headers: {
-      'extoken': getCookie('ex_token'),
-      'school_id': getCookie('school_id')
+      'extoken': localStorage.getItem('extoken'),
+      'school-id': localStorage.getItem('school_id')
     }
   })
 

@@ -4,23 +4,24 @@ import { isCookieEnabled, getCookie, setCookie, removeCookie } from 'tiny-cookie
 export default {
   state: {
     extoken: localStorage.getItem('extoken') || '',
-    status: ''
+    authStatus: ''
   },
 
   getters: {
     isAuthenticated: state => !!state.extoken,
-    authStatus: state => state.status
+    authStatus: state => state.authStatus
   },
 
   mutations: {
     login (state) {
-      state.status = 'loading'
+      state.authStatus = 'loading'
     },
     login_success (state, res) {
-      state.status = 'success'
+      state.authStatus = 'success'
       state.extoken = res['ex_token']
     },
     logout (state) {
+      state.authStatus = 'fail'
       state.extoken = ''
     }
   },
@@ -34,8 +35,8 @@ export default {
       })
       localStorage.setItem("extoken", res['ex_token']);
       localStorage.setItem("school_id", res['school_id']);
-      setCookie('ex_token', res['ex_token'])
-      setCookie('school_id', res['school_id'])
+      // setCookie('ex_token', res['ex_token'])
+      // setCookie('school_id', res['school_id'])
       commit('login_success', res);
       return res
     },
@@ -44,9 +45,14 @@ export default {
       const res = await new AuthHttp().post('/userApi/logout')
       localStorage.removeItem("extoken");
       localStorage.removeItem("school_id");
-      removeCookie('ex_token')
-      removeCookie('school_id')
+      // removeCookie('ex_token')
+      // removeCookie('school_id')
       commit('logout');
+      return res
+    },
+
+    async changepw({commit}, {oldpw, newpw}) {
+      const res = await new AuthHttp().post('/userApi/changepw')
       return res
     }
   }

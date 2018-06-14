@@ -109,6 +109,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::delete('delete_role', 'RoleController@deleteRole');
     Route::get('read_role', 'RoleController@readRole');
 
+    Route::post('userApi/changepw', 'UserController@changepw');
     Route::post('userApi/logout', 'LoginController@logout');
     //Subject Controller
     Route::get('classes/teachers/{teacher_id?}', 'SubjectController@getAllClasses')->name('allClasses');

@@ -8,9 +8,9 @@ export default {
 
   created () {
     this.$store.dispatch('logout').then(() => {
-      this.$router.replace({
-        name: 'login'
-      })
+      this.$router.push({
+          name: 'login'
+        })
     })
   }
 }

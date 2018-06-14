@@ -1,6 +1,5 @@
 <template>
   <vi-app class="app">
-    <dialogs-wrapper wrapper-name="default" />
 
     <div class="app__sidebar" v-if="$route.name !== 'login'">
 
@@ -48,6 +47,8 @@
     <div class="app__scroll">
       <router-view/>
     </div>
+
+    <dialogs-wrapper wrapper-name="default" />
   </vi-app>
 </template>
 

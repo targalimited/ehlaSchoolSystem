@@ -3,6 +3,7 @@
 return [
 	'loginUrl' => env('USERMODEL_URL').'v1/userApi/login?encode=1',
 	'logoutUrl' => env('USERMODEL_URL').'v1/userApi/logout?access-token=',
+	'changePWUrl' => env('USERMODEL_URL').'v1/userApi/changepw?encode=1&access-token=',
 	// school items
 	'schoolApiGetSchoolItemSummaryUrl' => env('USERMODEL_URL').'v1/schoolApi/get_school_item_summary',
 	

@@ -5,7 +5,7 @@ export function ifNotAuthenticated(to, from, next) {
     next()
     return
   }
-  next('/')
+  next('/home')
 }
 
 export function ifAuthenticated(to, from, next) {

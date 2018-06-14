@@ -15,6 +15,7 @@ use Excel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\Extensions\EhlaGuzzleClient;
 
 use Carbon\Carbon;
 
@@ -56,7 +57,19 @@ class UserController extends Controller
   }
 
 
+  public function changepw(Request $request){
 
+    $input = $request->json('params');
+    $userSession = empty(Auth::user()->session) ? null : json_decode(Auth::user()->session);
+    if(!$userSession) {
+      return response()->json('', 401);
+    }
+    $access_token = $userSession->access_token;
+
+    $client = new EhlaGuzzleClient();
+    $data = $client->post(config('variables.changePWUrl').$access_token, $input);
+    return $data;
+  }
 
 
   public function getTeacherExcel(Request $request)

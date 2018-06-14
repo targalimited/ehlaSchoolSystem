@@ -8,14 +8,20 @@
       <vi-section-header>Change password</vi-section-header>
       <vi-input v-model="oldPw" placeholder="Enter your current password"/>
       <vi-input v-model="newPw" placeholder="Enter your new password"/>
-      <vi-button @click="submit" color="brand">Submit</vi-button>
+      <vi-button @click="changePW" color="brand">Submit</vi-button>
     </vi-container>
   </div>
 </template>
 
 <script>
+
+import ConfirmDialog from '@/modules/dialogs/confirmDialog.vue'
+import { create } from 'vue-modal-dialogs'
+const confirmBox = create(ConfirmDialog, 'content')
+
 export default {
-  name: 'login',
+
+  name: 'profile',
 
   data () {
     return {
@@ -26,15 +32,16 @@ export default {
   },
 
   methods: {
-    async submit () {
-      const res = await this.$store.dispatch('login', {
-        username: this.username,
-        password: this.password
+    async changePW () {
+      const res = await this.$store.dispatch('changepw', {
+        oldpw: this.oldPw,
+        newpw: this.newPw
       })
-      if (res) {
-        this.$router.push({
-          name: 'home'
-        })
+      if (res && res.success) {
+        confirmBox(res)
+        // this.$router.push({
+        //   name: 'home'
+        // })
       } else {
         this.error = true
       }
