@@ -184,7 +184,7 @@
         else this.addReading(i.id)
       },
       async addReading (id) {
-        if (!this.isMax) {
+        if (this.isMax) {
           this.$messageBox({
             title: 'Cannot add more reading!',
             message: 'You have reach the maximun selection quota',

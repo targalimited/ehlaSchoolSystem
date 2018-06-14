@@ -33,7 +33,7 @@
           </vi-table-col>
 
           <vi-table-col>
-            <vi-chip>{{item.cat_name}}</vi-chip>
+            <vi-chip>{{item.cat_type}}</vi-chip>
 
           </vi-table-col>
 
@@ -93,7 +93,7 @@
 
     computed: {
       summary () {
-        return this.$store.state.shelf.summary
+        return this.$store.state.shelf.summary || {}
       },
       selectedItems () {
         return this.$store.state.shelf.selectedItems

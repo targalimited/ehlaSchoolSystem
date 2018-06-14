@@ -113,27 +113,11 @@ export default {
 
     // get the list of selected items
     async getSelectedItems ({commit, getters, dispatch}) {
-      const keys = ['WR', 'DR', 'RCD']
-
-      const resArray = await Promise.all(keys.map(key => dispatch('getSelectedItemsByCategory', {key})))
-
-      let items = []
-      resArray.forEach(arr => {
-        items = [...items, ...arr]
-      })
-
-      commit('gotSelectedItems', items)
-      return items
-    },
-
-    async getSelectedItemsByCategory ({commit}, {key}) {
-      const res = await new AuthHttp().post('/get_selected_item_by_category', {
-        cat_grouper: key,
+      const res = await new AuthHttp().post('/get_selected_item', {
         limit: 500,
         page: 1
       })
-
-      const result = res.data
+      let result = res.data
 
       // post-process the API data
       result.forEach(item => {
@@ -146,15 +130,9 @@ export default {
           if (item['s' + i].tick) lv.push('s' + i)
         }
         item.levels = lv
-
-        // add `item.cat_grouper`
-        item.cat_grouper = key
-
-        // add `item.cat_name`
-        item.cat_name = categories[key].name_en
       })
 
-      return result
+      commit('gotSelectedItems', result)
     },
 
     async getItemsByCategory ({commit}, {key}) {

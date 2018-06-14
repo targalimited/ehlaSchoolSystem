@@ -31,10 +31,6 @@
       readingCategories () {
         return this.$store.getters['shelf/categories']
       }
-    },
-
-    mounted () {
-      this.$store.dispatch('shelf/getDashboard')
     }
   }
 </script>

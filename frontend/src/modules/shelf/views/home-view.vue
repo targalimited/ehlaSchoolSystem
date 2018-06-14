@@ -60,26 +60,6 @@
             </router-link>
           </div>
         </vi-col>
-        <!--<vi-col v-for="cat in readingCategories">-->
-        <!--<vi-row align-center justify-center>-->
-        <!--<div class="stat stat--small">-->
-        <!--<vi-item height="auto">-->
-        <!--<vi-item-avatar>-->
-        <!--<vi-icon class="stat__icon" :name="cat.icon" size="40"/>-->
-        <!--</vi-item-avatar>-->
-        <!--<vi-item-content>-->
-        <!--<vi-row align-center>-->
-        <!--<div class="stat__int">{{cat.item_ids.length}}</div>-->
-        <!--<div class="stat__name">{{cat.name_en}}</div>-->
-        <!--</vi-row>-->
-        <!--</vi-item-content>-->
-        <!--</vi-item>-->
-        <!--</div>-->
-        <!--<vi-button class="add-button" color="green" small>-->
-        <!--Add-->
-        <!--</vi-button>-->
-        <!--</vi-row>-->
-        <!--</vi-col>-->
       </vi-row>
     </div>
   </div>
@@ -102,7 +82,7 @@ export default {
   },
 
   mounted () {
-    this.$store.dispatch('shelf/getDashboard')
+    this.$store.dispatch('shelf/getSummary')
   }
 }
 </script>
