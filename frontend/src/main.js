@@ -11,7 +11,7 @@ import Loading from 'vue-loading-overlay';
 
 Vue.use(Dali)
 Vue.use(ModalDialogs)
- Vue.use(Loading)
+Vue.use(Loading)
 
 Vue.config.productionTip = false
 

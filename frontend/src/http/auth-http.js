@@ -1,6 +1,6 @@
 import Axios from 'axios'
 import router from '@/router'
-import { isCookieEnabled, getCookie, setCookie, removeCookie } from 'tiny-cookie'
+import store from '@/store'
 
 class AuthHttp {
   http = Axios.create({
@@ -51,7 +51,8 @@ class AuthHttp {
   }
 
   handleException (e) {
-    if (e.response.status === 401) {
+    if (e.response && e.response.status === 401) {
+      store.commit('logout')
       router.replace('/login')
       return
     }
