@@ -41,8 +41,7 @@
 
     computed: {
       levels () {
-        // TODO hard code
-        return ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 's1', 's2', 's3', 's4', 's5', 's6']
+        return this.$store.getters['shelf/levelOptions']
       }
     },
 

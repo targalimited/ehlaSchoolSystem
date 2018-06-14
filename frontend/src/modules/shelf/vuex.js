@@ -90,13 +90,10 @@ export default {
     },
 
     // TODO api definition and payload
-    async assignLevels ({commit, dispatch}) {
-      return await new AuthHttp().post('/choose_item_for_level', {
-        add_lv_item_list: [],
-        cat_grouper,
-        limit: 500,
-        page: 1,
-        remove_lv_item_list: []
+    async assignLevels ({commit, dispatch}, {id, levels}) {
+      return await new AuthHttp().post('/schoolApi/choose_item_for_level', {
+        item_id: id,
+        item_lv: levels
       })
     },
 
@@ -167,12 +164,19 @@ export default {
   },
 
   getters: {
+    /**
+     * get the 4 category basic info and the num of selected item inside the category
+     */
     categories (state) {
       const cats = state.summary && state.summary.items || {}
       for (let key in cats) {
         categories[key].item_ids = cats[key].item_ids
       }
       return categories
+    },
+
+    levelOptions (state) {
+      return state.summary.valid_levels
     },
 
     selectedCount (state, getters) {
@@ -183,6 +187,10 @@ export default {
       return count
     },
 
+    /**
+     * get the list of reading items per category
+     * called in listing page (lib-view.vue)
+     */
     readings: (state) => (key) => {
       if (!state.items) return
       return state.items[key]

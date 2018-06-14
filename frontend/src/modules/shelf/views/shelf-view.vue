@@ -40,11 +40,11 @@
           <vi-table-col>
             <div>
               <template v-if="item.levels.length === 0">
-                <a @click="chooseLevel" class="ui-link">Assign levels</a>
+                <a @click="chooseLevel(item)" class="ui-link">Assign levels</a>
               </template>
               <template v-else>
                 {{item.levels | join}}
-                <a @click="chooseLevel(item.levels)" class="ui-link">Edit</a>
+                <a @click="chooseLevel(item)" class="ui-link">Edit</a>
               </template>
             </div>
           </vi-table-col>
@@ -116,11 +116,14 @@
         this.loading = false
         this.$message('Reading removed')
       },
-      chooseLevel (levels) {
+      chooseLevel (item) {
         // TODO API call
-        levels = levels || []
-        levelDialog(levels).then(v => {
-          console.log('CALL API with the selected levels', v)
+        const currentLevels = item.levels
+        levelDialog(currentLevels).then(newLevels => {
+          this.$store.dispatch('shelf/assignLevels', {
+            id: item.id,
+            levels: newLevels
+          })
         })
       }
     },
