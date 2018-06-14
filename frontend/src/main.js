@@ -7,9 +7,11 @@ import store from './store'
 import './filters'
 import Dali from './lib/lib.js'
 import * as ModalDialogs from 'vue-modal-dialogs'
+import Loading from 'vue-loading-overlay';
 
 Vue.use(Dali)
 Vue.use(ModalDialogs)
+ Vue.use(Loading)
 
 Vue.config.productionTip = false
 

@@ -77,6 +77,7 @@ export default {
 
   @import url('https://fonts.googleapis.com/css?family=Lato:300,400,700');
   @import './lib/stylus/main.styl'
+  @import 'vue-loading-overlay/dist/vue-loading.min.css'
 
   html, body
     font-size 18px

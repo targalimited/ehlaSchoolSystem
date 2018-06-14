@@ -39,10 +39,9 @@ class LoginController extends Controller
       } else {
         // user do not have school id, reject login.
         $result = [
-          'status' => false,
-          'code' => '406',
-          'message' => '',
+          'success' => false,
           'data' => false,
+          'message' => 'Not school user',
         ];
         return Response()->json($result,406);
       }
@@ -105,23 +104,28 @@ class LoginController extends Controller
         $userInfo = json_decode($user['user']);
         $userInfo->roles = $user['roles'];
 
-        $result = array(
+        $data = array(
           "user_id" => $user['id'],
           "user" => $userInfo,
           "ex_token" => $user['ex_token'],
           "school_id" => $user['school_id'],
           "roles" => $user['roles'],
         );
+
+        $result = [
+          'success' => true,
+          'data' => $data,
+          'message' => '',
+        ];
         
-        return $result;
+        return Response()->json($result,200);
 
       }else{
 
         $result = [
-          'status' => false,
-          'code' => '401',
-          'message' => 'Login is Denied',
-          'data' => $data['debug']
+          'success' => false,
+          'data' => [],
+          'message' => 'Login is not allowed',
         ];
         return Response()->json($result,401);
 

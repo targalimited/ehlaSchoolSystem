@@ -18,7 +18,7 @@ export default {
     },
     login_success (state, res) {
       state.authStatus = 'success'
-      state.extoken = res['ex_token']
+      state.extoken = res['data']['ex_token']
     },
     logout (state) {
       state.authStatus = 'fail'
@@ -27,17 +27,18 @@ export default {
   },
 
   actions: {
+
     async login ({commit, dispatch}, {password, username}) {
       commit('login');
       const res = await http.post('/userApi/login', {
         password: password,
         username: username
       })
-      localStorage.setItem("extoken", res['ex_token']);
-      localStorage.setItem("school_id", res['school_id']);
-      // setCookie('ex_token', res['ex_token'])
-      // setCookie('school_id', res['school_id'])
-      commit('login_success', res);
+      if(res){
+        localStorage.setItem("extoken", res['data']['ex_token']);
+        localStorage.setItem("school_id", res['data']['school_id']);
+        commit('login_success', res);
+      }
       return res
     },
 

@@ -46,7 +46,7 @@ export default {
 
   methods: {
     async submit () {
-      this.loading = true
+      let loader = this.$loading.show()
       const res = await this.$store.dispatch('login', {
         username: this.username,
         password: this.password
@@ -58,7 +58,7 @@ export default {
       } else {
         this.error = true
       }
-      this.loading = false
+      loader.hide()
     }
   }
 }
@@ -75,6 +75,10 @@ export default {
     bottom 0
     left 0
     right 0
+
+  .vi-toolbar-logo
+    display block
+    text-align center
 
   .logo
     width 120px
@@ -94,6 +98,7 @@ export default {
 
   .header
     margin 24px 0 32px
+    text-align center
 
   .title
     font-size 30px
