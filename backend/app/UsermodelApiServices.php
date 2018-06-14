@@ -132,7 +132,7 @@ class UsermodelApiServices extends Model {
 	}
 
 	public function schoolApiGetSelectedItem() {
-		$result = $this->client->post(config('variables.schoolApiGetSelectedItemUrl').$this->suffix, $inputs);
+		$result = $this->client->post(config('variables.schoolApiGetSelectedItemsUrl').$this->suffix, []);
 		return $result;
 	}
 	
