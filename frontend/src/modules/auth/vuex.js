@@ -37,17 +37,17 @@ export default {
       if(res){
         localStorage.setItem("extoken", res['data']['ex_token']);
         localStorage.setItem("school_id", res['data']['school_id']);
+        localStorage.setItem("user", JSON.stringify(res['data']['user']));
         commit('login_success', res);
       }
       return res
     },
 
-    async logout ({commit, dispatch}) {
-      const res = await new AuthHttp().post('/userApi/logout')
+    logout ({commit, dispatch}) {
+      const res = new AuthHttp().post('/userApi/logout')
       localStorage.removeItem("extoken");
       localStorage.removeItem("school_id");
-      // removeCookie('ex_token')
-      // removeCookie('school_id')
+      localStorage.removeItem("user");
       commit('logout');
       return res
     },
