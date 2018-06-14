@@ -1,13 +1,21 @@
 <template>
   <vi-dialog :value="true" width="600" content-class="preview-dialog">
-    <vi-card-content>
-      <div v-if="content.success">
-        <p>Update Passwrod success</p>
-      </div>
-      <div v-if="!content.success">
-        <p>Update Passwrod fail, please try again</p>
-      </div>
-    </vi-card-content>
+      <vi-card>
+        <vi-toolbar :brand="true">
+          <div class="vi-toolbar__title">
+            
+          </div>
+        </vi-toolbar>
+        <vi-card-content>
+          <div v-if="content.success">
+            <p>Update Passwrod success</p>
+          </div>
+          <div v-if="!content.success">
+            <p>Update Passwrod fail, please try again</p>
+          </div>
+        </vi-card-content>
+        
+      </vi-card>
   </vi-dialog>
 </template>
 

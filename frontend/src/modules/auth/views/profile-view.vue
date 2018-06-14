@@ -31,6 +31,7 @@ export default {
 
   methods: {
     async changePW () {
+      let loader = this.$loading.show()
       const res = await this.$store.dispatch('changepw', {
         oldpw: this.oldPw,
         newpw: this.newPw
@@ -42,6 +43,7 @@ export default {
         this.newPw = ''
         this.error = true
       }
+      loader.hide()
     }
   }
 }
