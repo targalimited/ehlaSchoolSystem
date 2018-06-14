@@ -15,9 +15,7 @@
 
 <script>
 
-import ConfirmDialog from '@/modules/dialogs/confirmDialog.vue'
-import { create } from 'vue-modal-dialogs'
-const confirmBox = create(ConfirmDialog, 'content')
+import {messageBox} from '../dialogs'
 
 export default {
 
@@ -37,12 +35,11 @@ export default {
         oldpw: this.oldPw,
         newpw: this.newPw
       })
-      if (res && res.success) {
-        confirmBox(res)
-        // this.$router.push({
-        //   name: 'home'
-        // })
-      } else {
+
+      if (res) {
+        messageBox(res)
+        this.oldPw = ''
+        this.newPw = ''
         this.error = true
       }
     }

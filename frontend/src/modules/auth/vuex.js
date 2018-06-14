@@ -52,7 +52,11 @@ export default {
     },
 
     async changepw({commit}, {oldpw, newpw}) {
-      const res = await new AuthHttp().post('/userApi/changepw')
+      const res = await new AuthHttp().post('/userApi/changepw', {
+          "oldPw": oldpw,
+          "newPw": newpw,
+          "reType": newpw
+      })
       return res
     }
   }
