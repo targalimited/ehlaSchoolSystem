@@ -199,11 +199,11 @@ export default {
       flex-direction column
 
   .app__scroll
-    margin-left 220px
+    padding-left 220px
     width 100%
 
     +screen(900px)
-      margin-left 74px
+      padding-left 74px
 
   .vdp-datepicker__calendar
     border none

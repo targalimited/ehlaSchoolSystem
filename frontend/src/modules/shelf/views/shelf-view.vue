@@ -155,7 +155,7 @@
         }).finally(function(){
           loader.hide()
         })
-        
+
       }
     },
 
@@ -171,19 +171,29 @@
 
     &:nth-child(1)
       flex 1
+      // width 50%
+      // max-width 340px
+      /*width 40%*/
       justify-content flex-start
 
     &:nth-child(2)
-      width 20%
-      min-width 120px
+      width 18%
+      // max-width 150px
+      // min-width 120px
       justify-content flex-start
+      @media(max-width: 750px)
+        width 90px
 
     &:nth-child(3)
-      width 10%
-      min-width 100px
+      width 18%
+      justify-content flex-start
+      @media(max-width: 750px)
+        width 90px
+      // min-width 100px
 
     &:nth-child(4)
-      width 40px
+      flex-shrink 0
+      width 5%
 </style>
 
 <style scoped lang="stylus">

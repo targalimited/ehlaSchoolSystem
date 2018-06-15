@@ -1,10 +1,12 @@
 <template>
   <div class="reading-item" :class="{'reading-item--sm': small}">
-    <img class="reading-item__image" :src="item.thumbnail_path" alt="">
+    <div class="reading-item__image">
+      <img :src="item.thumbnail_path" alt="">
+    </div>
     <div class="reading-item__content">
-      <div class="reading-item__title">{{item.name_en}}</div>
-      <div class="reading-item__info">{{item.info_nd_en}}</div>
-      <div class="reading-item__info">{{item.info_en}}</div>
+      <div class="reading-item__title text-ellipsis">{{item.name_en}}</div>
+      <div class="reading-item__info text-ellipsis">{{item.info_nd_en}}</div>
+      <div class="reading-item__info text-ellipsis">{{item.info_en}}</div>
     </div>
   </div>
 </template>
@@ -36,6 +38,7 @@
     display inline-flex
     align-items center
     text-align left
+    width 100%
 
     &__image
       flex-shrink 0
@@ -43,10 +46,12 @@
       margin-right 20px
 
       .reading-item--sm &
-        max-width 160px
+        max-width 120px
+        margin-right 16px
 
     &__content
       flex 1
+      max-width 100%
 
     &__title
       font-size 20px
