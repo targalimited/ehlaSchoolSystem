@@ -12,9 +12,10 @@
         <div class="input-group">
           <vi-checkbox
             v-for="level in levels"
-            :key="level"
-            :option-value="level"
-            :label="level"
+            :key="level.level"
+            :option-value="level.level"
+            :label="level.level"
+            :disabled="level.full"
             v-model="newSelected"/>
         </div>
 
@@ -41,7 +42,7 @@
 
     computed: {
       levels () {
-        return this.$store.getters['shelf/levelOptions']
+        return this.$store.getters['shelf/levelsQuota']
       }
     },
 
@@ -52,9 +53,9 @@
     },
 
     created () {
-//      if (Array.isArray(this.newSelected)) {
-//        this.newSelected = this.selected
-//      }
+      if (Array.isArray(this.newSelected)) {
+        this.newSelected = this.selected
+      }
     }
   }
 </script>

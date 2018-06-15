@@ -97,11 +97,11 @@ export default {
       margin-right 16px
 
     &__title
-      font-size 26px
+      font-size 22px
       font-weight bold
 
     &__info
-       font-size 18px
+       font-size 16px
        font-weight bold
 
   .vi-link

@@ -89,16 +89,17 @@ export default {
       return true
     },
 
-    // TODO api definition and payload
     async assignLevels ({commit, dispatch}, {id, levels}) {
-      return await new AuthHttp().post('/schoolApi/choose_item_for_level', {
+      await new AuthHttp().post('/choose_item_for_level', {
         item_id: id,
         item_lv: levels
       })
+      dispatch('getSelectedItems')
+      return true
     },
 
     async getDashboard ({dispatch}) {
-      await dispatch('getSummary')
+      dispatch('getSummary')
       dispatch('getSelectedItems')
     },
 
@@ -176,7 +177,29 @@ export default {
     },
 
     levelOptions (state) {
-      return state.summary.valid_levels
+      if (!state.summary) return
+      return state.summary.valid_levels || []
+    },
+
+    /**
+     * get the list of available levels and the i.e. 12/20 (selected/max quota) selection
+     */
+    levelsQuota (state, getters) {
+      if (!getters.levelOptions || !state.selectedItems) return
+      return getters.levelOptions.map(lv => {
+        let selected = 0
+        state.selectedItems.forEach(item => {
+          if (item.levels.includes(lv)) {
+            selected++
+          }
+        })
+        return {
+          level: lv,
+          maxQuota: state.summary.level_item_qtt,
+          selected: selected,
+          full: selected >= state.summary.level_item_qtt
+        }
+      })
     },
 
     selectedCount (state, getters) {

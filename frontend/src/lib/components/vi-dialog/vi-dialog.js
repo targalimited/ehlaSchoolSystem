@@ -81,7 +81,6 @@ export default {
 
   watch: {
     isActive (val) {
-      console.log('is active change', val)
       if (val) {
         this.show()
       } else {
@@ -94,7 +93,6 @@ export default {
   mounted () {
     // TODO lazy content
     // this.isBooted = this.isActive
-    console.log('dialog mounted', this.isActive)
     this.isActive && this.show()
   },
 
@@ -138,7 +136,6 @@ export default {
         {
           name: 'click-outside',
           value: () => {
-            console.log('click outside')
             // TODO is this needed? turn this on will instancely close the dialog
             // this.isActive = false
           },
@@ -166,7 +163,6 @@ export default {
         on: {
           click: e => {
             e.stopPropagation()
-            console.log('on activator click')
             if (!this.disabled) this.isActive = !this.isActive
           }
         }

@@ -1,5 +1,5 @@
 <template>
-    <div class="vi-checkbox" @click="toggleCheck" :class="classes">
+    <div class="vi-checkbox" @click="toggleCheck" :class="{'vi-checkbox--disabled': disabled}">
         <div class="vi-checkbox__iconContainer">
             <vi-icon class="vi-checkbox__icon" :class="classes" :name="iconName"/>
         </div>
@@ -24,7 +24,8 @@
       inputValue: Array | String,
       maxSelected: Number,
       brandLabel: Boolean,
-      orderList: Array
+      orderList: Array,
+      disabled: Boolean
     },
     computed: {
       classes() {
@@ -110,7 +111,7 @@
 
 .vi-checkbox--disabled
     pointer-events none
-    color #e5e5e5 !important
+    opacity 0.3
 
 .vi-checkbox-swap--disabled
     color $light-grey

@@ -2,18 +2,22 @@
   <div class="home-view">
 
     <div class="vi-banner">
-      <vi-icon class="vi-banner__icon" name="shelf" size="60"/>
       <div>
         <div class="vi-banner__title">Selected Readings</div>
         <div class="vi-banner__info">{{selectedCount}}/ {{summary.total_item_qtt}} readings</div>
-        <!--<div class="vi-banner__info">9 Selected reading are not assigned to any levels</div>-->
+        <vi-row wrap class="level-section" v-if="levelsQuota">
+          <vi-col v-for="(lv, i) in levelsQuota" :key="i">
+            <span class="level-label level-label--dark">{{lv.level}}</span>
+            {{lv.selected}}/{{lv.maxQuota}} <span v-if="lv.full" class="full">Full</span>
+          </vi-col>
+        </vi-row>
       </div>
 
       <!--<vi-input class="search-input" line prefix-icon="search" placeholder="Search by name" v-model="search"/>-->
     </div>
 
     <div class="reminder">
-      <vi-icon name="alert" size="26"/>
+      <vi-icon name="alert" size="18"/>
       You have readings that has not been assigned to any levels</div>
 
     <div v-if="selectedItems">
@@ -40,19 +44,38 @@
           <vi-table-col>
             <div>
               <template v-if="item.levels.length === 0">
-                <a @click="chooseLevel(item)" class="ui-link">Assign levels</a>
+                <a @click="chooseLevel(item)" class="vi-link">Assign levels</a>
               </template>
               <template v-else>
-                {{item.levels | join}}
-                <a @click="chooseLevel(item)" class="ui-link">Edit</a>
+                <div class="level-label" v-for="lv in item.levels">{{lv}}</div>
               </template>
             </div>
           </vi-table-col>
 
           <vi-table-col>
-            <vi-button :disabled="loading" @click="removeReading(item)" text icon v-if="item.levels.length === 0">
-              <vi-icon left name="trash" size="28"/>
-            </vi-button>
+            <vi-menu left min-width="200">
+              <vi-button
+                slot="activator"
+                :disabled="loading"
+                text icon>
+                <vi-icon left name="more" size="20"/>
+              </vi-button>
+
+              <vi-item @click="chooseLevel(item)" :link="true">
+                <vi-item-avatar>
+                  <vi-icon name="edit"/>
+                </vi-item-avatar>
+                <vi-item-content>{{item.levels.length === 0 ? 'Assign' : 'Edit'}} Levels</vi-item-content>
+              </vi-item>
+
+              <vi-item v-if="item.levels.length === 0" @click="removeReading(item)" :link="true">
+                <vi-item-avatar>
+                  <vi-icon name="trash"/>
+                </vi-item-avatar>
+                <vi-item-content>Remove</vi-item-content>
+              </vi-item>
+            </vi-menu>
+
           </vi-table-col>
         </div>
       </vi-data-table>
@@ -103,6 +126,9 @@
       },
       selectedCount () {
         return this.$store.getters['shelf/selectedCount']
+      },
+      levelsQuota () {
+        return this.$store.getters['shelf/levelsQuota']
       }
     },
 
@@ -116,14 +142,13 @@
         this.loading = false
         this.$message('Reading removed')
       },
-      chooseLevel (item) {
-        // TODO API call
+      async chooseLevel (item) {
         const currentLevels = item.levels
-        levelDialog(currentLevels).then(newLevels => {
-          this.$store.dispatch('shelf/assignLevels', {
-            id: item.id,
-            levels: newLevels
-          })
+        const newLevels = await levelDialog(currentLevels)
+        if (!newLevels) return
+        this.$store.dispatch('shelf/assignLevels', {
+          id: item.id,
+          levels: newLevels
         })
       }
     },
@@ -262,9 +287,34 @@
     background #d4b742
     color white
     padding 8px 24px
-    font-size 18px
+    font-size 15px
     font-weight bold
 
     .vi-icon
       margin-right 12px
+
+  .level-section
+    font-size 16px
+    margin-top 2px
+
+  .level-label
+    font-size 14px
+    border-radius 50%
+    font-weight bold
+    display inline-flex
+    align-items center
+    justify-content center
+    width 30px
+    height @width
+    margin-right 2px
+    background #8db2c5
+    color white
+
+    &--dark
+      background rgba(255,255,255,0.3)
+      color #fff
+
+  .full
+    color red
+    font-size 14px
 </style>

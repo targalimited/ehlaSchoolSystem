@@ -43,7 +43,7 @@
       margin-right 20px
 
       .reading-item--sm &
-        max-width 180px
+        max-width 160px
 
     &__content
       flex 1
@@ -54,7 +54,7 @@
       text-align left
 
       .reading-item--sm &
-        font-size 20px
+        font-size 18px
 
     &__info
       text-align left
@@ -62,5 +62,5 @@
       color $mild-grey
 
       .reading-item--sm &
-        font-size 16px
+        font-size 14px
 </style>
