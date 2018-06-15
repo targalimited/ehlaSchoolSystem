@@ -137,7 +137,6 @@ export default {
         this.search = ''
         this.$refs.input.focus()
       }
-      if (!this.cacheMultiple) this.$emit('input', this.cacheValue)
     },
     add (opt) {
       const v = this.getOptionValue(opt)
@@ -146,6 +145,7 @@ export default {
       } else {
         this.cacheValue = v
       }
+      if (!this.cacheMultiple) this.$emit('input', this.cacheValue)
     },
     remove (opt) {
       const v = this.getOptionValue(opt)
@@ -156,6 +156,7 @@ export default {
           this.cacheValue = this.isPrimitive ? '' : {}
         }
       }
+      if (!this.cacheMultiple) this.$emit('input', this.cacheValue)
     },
     /*
       a very customized function for multiple select
@@ -189,7 +190,6 @@ export default {
         const content = this.search
         this.search = ''
         if (this.cacheValue.includes(content)) return
-        console.log('add cotent', content)
         this.add(content)
       }
       if (e.keyCode === 8 && !this.isCollapsingChip) {
@@ -197,7 +197,6 @@ export default {
           this.remove(this.cacheValue[this.cacheValue.length - 1])
         }
       }
-      if (!this.cacheMultiple) this.$emit('input', this.cacheValue)
     }
   },
   created () {

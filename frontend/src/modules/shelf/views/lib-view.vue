@@ -3,7 +3,6 @@
 
     <div class="ui-banner">
       <vi-row align-center>
-        <!--<vi-icon class="ui-banner__icon" name="daily-reading" size="36"/>-->
         <span class="ui-banner__title">{{catName}}</span>
       </vi-row>
       <div class="ui-banner__info" v-if="catMax">
