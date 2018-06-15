@@ -22,6 +22,9 @@ export default {
       state.extoken = res['data']['ex_token']
     },
     logout (state) {
+      localStorage.removeItem("extoken");
+      localStorage.removeItem("school_id");
+      localStorage.removeItem("user");
       state.authStatus = 'fail'
       state.extoken = ''
     },
@@ -54,9 +57,6 @@ export default {
 
     logout ({commit, dispatch}) {
       const res = new AuthHttp().post('/userApi/logout')
-      localStorage.removeItem("extoken");
-      localStorage.removeItem("school_id");
-      localStorage.removeItem("user");
       commit('logout');
       return res
     },
