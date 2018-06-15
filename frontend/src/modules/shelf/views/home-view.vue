@@ -69,6 +69,10 @@
 export default {
   name: 'home',
 
+  created: function() {
+
+  },
+
   computed: {
     summary () {
       return this.$store.state.shelf.summary
