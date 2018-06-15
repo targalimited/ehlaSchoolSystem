@@ -4,7 +4,8 @@ import { isCookieEnabled, getCookie, setCookie, removeCookie } from 'tiny-cookie
 export default {
   state: {
     extoken: localStorage.getItem('extoken') || '',
-    authStatus: ''
+    authStatus: '',
+    schoolName: ''
   },
 
   getters: {
@@ -23,6 +24,12 @@ export default {
     logout (state) {
       state.authStatus = 'fail'
       state.extoken = ''
+    },
+    gotUserInfo (state, user) {
+      if (!user) return
+      user = JSON.parse(user)
+      const schoolName = user && user.school && user.school.s_name
+      if (schoolName) state.schoolName = schoolName
     }
   },
 
@@ -35,10 +42,12 @@ export default {
         username: username
       })
       if(res){
-        localStorage.setItem("extoken", res['data']['ex_token']);
-        localStorage.setItem("school_id", res['data']['school_id']);
-        localStorage.setItem("user", JSON.stringify(res['data']['user']));
-        commit('login_success', res);
+        localStorage.setItem("extoken", res['data']['ex_token'])
+        localStorage.setItem("school_id", res['data']['school_id'])
+        const userInfo = JSON.stringify(res['data']['user'])
+        localStorage.setItem("user", userInfo)
+        commit('login_success', res)
+        commit('gotUserInfo', userInfo)
       }
       return res
     },

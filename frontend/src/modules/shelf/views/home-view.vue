@@ -14,7 +14,7 @@
       </div>
 
       <div class="dashboard__r">
-        <div class="dashboard__title">Munsang Collage</div>
+        <div class="dashboard__title">{{$store.state.auth.schoolName}}</div>
 
         <div class="stat-section">
 
