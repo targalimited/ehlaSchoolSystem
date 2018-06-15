@@ -146,10 +146,16 @@
         const currentLevels = item.levels
         const newLevels = await levelDialog(currentLevels)
         if (!newLevels) return
+        let loader = this.$loading.show()
         this.$store.dispatch('shelf/assignLevels', {
           id: item.id,
           levels: newLevels
+        }).then(function(res){
+          loader.hide()
+        }).finally(function(){
+          loader.hide()
         })
+        
       }
     },
 
