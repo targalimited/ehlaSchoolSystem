@@ -104,8 +104,9 @@ export default {
         item_id: id,
         item_lv: levels
       })
-      dispatch('getSelectedItems')
+      await dispatch('getSelectedItems')
       return true
+      
     },
 
     async getDashboard ({dispatch}) {
