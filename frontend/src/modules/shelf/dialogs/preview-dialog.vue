@@ -5,7 +5,7 @@
         <div v-if="html" v-html="html"></div>
       </vi-tab>
       <vi-tab name="Article">
-        <div class="article">{{article}}</div>
+        <div class="article" v-html="article"></div>
       </vi-tab>
     </vi-tabs>
   </vi-dialog>
@@ -35,7 +35,8 @@
         id: this.id
       }).then(res => {
         this.html = res.preview_en
-        this.article = res.article
+        this.article = res.article || res.article_web
+        // TODO remove the style that will break the site layout from body tag div {margin-left: 10px}
       })
     }
   }
@@ -59,6 +60,12 @@
 <style lang="stylus">
   .preview-dialog
     min-height 500px
+
+    table span
+      font-size 14px
+
+    /*div*/
+      /*padding-left 0*/
 
   .preview-dialog .vi-tabs__list
     padding 0 24px !important

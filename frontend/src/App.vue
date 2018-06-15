@@ -8,7 +8,7 @@
       <router-link :to="{name: 'home'}">
 
         <vi-item :link="true" height="60">
-          <vi-item-avatar><vi-icon name="home" size="40"/></vi-item-avatar>
+          <vi-item-avatar><vi-icon class="ml-4" name="home" size="30"/></vi-item-avatar>
           <vi-item-content>Home</vi-item-content>
         </vi-item>
       </router-link>
@@ -16,7 +16,7 @@
       <router-link :to="{name: 'shelf'}">
 
         <vi-item :link="true" height="60">
-          <vi-item-avatar><vi-icon name="shelf" size="46"/></vi-item-avatar>
+          <vi-item-avatar><vi-icon class="ml-4" name="shelf" size="36"/></vi-item-avatar>
           <vi-item-content>Selected Readings</vi-item-content>
         </vi-item>
       </router-link>
@@ -24,7 +24,7 @@
       <router-link :to="{name: 'lib-cat'}">
 
         <vi-item :link="true" height="60">
-          <vi-item-avatar><vi-icon name="daily-reading" size="46"/></vi-item-avatar>
+          <vi-item-avatar><vi-icon class="ml-4" name="daily-reading" size="36"/></vi-item-avatar>
           <vi-item-content>Browse Readings</vi-item-content>
         </vi-item>
       </router-link>
@@ -33,13 +33,13 @@
 
       <router-link :to="{name: 'profile'}">
         <vi-item :link="true" height="60">
-          <vi-item-avatar><vi-icon name="avatar" size="28"/></vi-item-avatar>
+          <vi-item-avatar><vi-icon class="ml-10" name="avatar" size="24"/></vi-item-avatar>
           <vi-item-content>Profile</vi-item-content>
         </vi-item>
       </router-link>
 
       <vi-item @click="logout" :link="true" height="60">
-        <vi-item-avatar><vi-icon name="logout" size="28"/></vi-item-avatar>
+        <vi-item-avatar><vi-icon class="ml-6" name="logout" size="24"/></vi-item-avatar>
         <vi-item-content>Logout</vi-item-content>
       </vi-item>
     </div>
@@ -135,9 +135,9 @@ export default {
     top 0
     bottom 0
     background #686868
-    width 260px
+    width 220px
     flex-shrink 0
-    font-size 18px
+    font-size 14px
     box-shadow $shadow-2
     overflow hidden
     transition width 0.3s
@@ -166,11 +166,11 @@ export default {
         label 6px #009aec left
 
     .vi-item__content
-      font-size 17px
+      font-size 15px
       font-weight bold
 
     .vi-item__avatar
-      width 56px
+      width 50px
 
     .vi-toolbar-logo
       height auto
@@ -199,7 +199,7 @@ export default {
       flex-direction column
 
   .app__scroll
-    margin-left 260px
+    margin-left 220px
     width 100%
 
     +screen(900px)

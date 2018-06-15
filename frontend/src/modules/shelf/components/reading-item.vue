@@ -39,7 +39,7 @@
 
     &__image
       flex-shrink 0
-      max-width 240px
+      max-width 180px
       margin-right 20px
 
       .reading-item--sm &
@@ -49,7 +49,7 @@
       flex 1
 
     &__title
-      font-size 26px
+      font-size 20px
       margin-bottom 4px
       text-align left
 
@@ -58,7 +58,7 @@
 
     &__info
       text-align left
-      font-size 18px
+      font-size 16px
       color $mild-grey
 
       .reading-item--sm &
