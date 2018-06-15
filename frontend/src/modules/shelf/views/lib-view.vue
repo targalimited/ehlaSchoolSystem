@@ -156,9 +156,7 @@
         texttypeOptions: [],
         themeOptions: [],
         subthemeOptions: [],
-        weaknessOptions: [],
-        catMax: null,
-        catChosen: null,
+        weaknessOptions: []
       }
     },
 
@@ -175,6 +173,12 @@
       // selection reach the max - cannot add new anymore
       isMax () {
         return this.catChosen >= this.catMax
+      },
+      catChosen () {
+        return this.$store.state.shelf.cats[this.$key].selected
+      },
+      catMax () {
+        return this.$store.state.shelf.cats[this.$key].max
       }
     },
 
@@ -236,7 +240,7 @@
 
     created () {
       this.$store.dispatch('shelf/getItemsByCategory', {
-        key: this.$key
+        cat: this.$key
       }).then(metadata => {
         const searchTags = metadata.searchTag
 
@@ -253,8 +257,6 @@
         this.themeOptions = theme && theme.values
         this.subthemeOptions = subtheme && subtheme.values
         this.weaknessOptions = weakness && weakness.values
-        this.catChosen = metadata.catChosen
-        this.catMax = metadata.catMax
       })
     }
   }

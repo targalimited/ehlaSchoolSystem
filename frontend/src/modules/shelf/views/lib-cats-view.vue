@@ -12,7 +12,7 @@
         class="reading-cat" v-for="cat in readingCategories" :key="cat.key"
         :to="{name: 'lib', params: {key: cat.key}}">
 
-        <vi-icon :name="cat.icon" size="100"/>
+        <vi-icon :name="cat.icon" size="60"/>
 
         <vi-item height="auto">
           <vi-item-content>{{cat.name_en}}</vi-item-content>

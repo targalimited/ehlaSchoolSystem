@@ -33,6 +33,12 @@ export default {
 
   state: {
     items: {},
+    cats: {
+      WR: {},
+      DR: {},
+      RCD: {},
+      BR: {},
+    },
     selectedItems: null,
     summary: {}
   },
@@ -42,8 +48,10 @@ export default {
       state.summary = summary
     },
 
-    gotItemsByCategory (state, {items, category}) {
+    gotItemsByCategory (state, {items, category, selected, max}) {
       Vue.set(state.items, category, items)
+      Vue.set(state.cats[category], 'selected', selected)
+      Vue.set(state.cats[category], 'max', max)
     },
 
     gotSelectedItems (state, selectedItems) {
@@ -57,9 +65,11 @@ export default {
       if (state.selectedItems) {
         state.selectedItems = state.selectedItems.filter(i => i.id !== id)
       }
+      state.cats[cat].selected --
     },
 
     added (state, {id, cat}) {
+      state.cats[cat].selected ++
       state.items[cat].find(i => i.id === id).chose = true
     }
   },
@@ -133,27 +143,21 @@ export default {
       commit('gotSelectedItems', result)
     },
 
-    async getItemsByCategory ({commit}, {key}) {
+    async getItemsByCategory ({commit}, {cat}) {
       const res = await new AuthHttp().post('/get_by_category', {
-        cat_grouper: key,
+        cat_grouper: cat,
         page: 1,
         limit: 500
       })
       const result = res.data
       commit('gotItemsByCategory', {
         items: result,
-        category: key
+        category: cat,
+        selected: res.metadata.catChosen,
+        max: res.metadata.catMax,
       })
 
       return res.metadata
-    },
-
-    async getReadingDetails ({commit}, {id}) {
-      const res = await new AuthHttp().post('/itemApi/get_by_ids', {
-        id: [id],
-        details: 1
-      })
-      return res.data && res.data[0]
     },
 
     async getPreview ({commit}, {id}) {
