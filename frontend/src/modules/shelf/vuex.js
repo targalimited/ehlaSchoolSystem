@@ -75,7 +75,8 @@ export default {
   },
 
   actions: {
-    async add ({commit}, {id, cat}) {
+    async add ({commit, getters}, {id, cat}) {
+      if (getters.isFull) return
       await new AuthHttp().post('/choose_item', {
         add_item_ids: [id],
         cat_grouper: cat,
@@ -206,12 +207,32 @@ export default {
       })
     },
 
+    /**
+     * get the total nuber of selected reading
+     */
     selectedCount (state, getters) {
       let count = 0
       for (let key in getters.categories) {
         count += getters.categories[key].item_ids.length
       }
       return count
+    },
+
+    /**
+     * get the max of readings that the school can select
+     */
+    maxSelection (state) {
+      if (!state.summary) return
+      return state.summary.total_item_qtt
+    },
+
+    /**
+     * is the selection reach the maxium - could not add anymore reading
+     * used in library page when calling add
+     */
+    isFull (state, getters) {
+      if (!getters.selectedCount || !getters.maxSelection) return
+      return getters.selectedCount >= getters.maxSelection
     },
 
     /**

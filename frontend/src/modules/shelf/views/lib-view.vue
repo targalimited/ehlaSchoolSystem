@@ -170,16 +170,20 @@
       readings () {
         return this.$store.getters['shelf/readings'](this.$key)
       },
-      // selection reach the max - cannot add new anymore
-      isMax () {
-        return this.catChosen >= this.catMax
-      },
       catChosen () {
         return this.$store.state.shelf.cats[this.$key].selected
       },
       catMax () {
         return this.$store.state.shelf.cats[this.$key].max
-      }
+      },// selection reach the max - cannot add new anymore
+      isCatFull () {
+        return this.catChosen >= this.catMax
+      },
+      isFull () {
+        if (this.catChosen >= this.catMax) return 'cat'
+        else if (this.$store.getters['shelf/isFull']) return 'total'
+        else return false
+      },
     },
 
     methods: {
@@ -188,10 +192,13 @@
         else this.addReading(i.id)
       },
       async addReading (id) {
-        if (this.isMax) {
+        if (this.isFull) {
+          const message = this.isFull === 'cat' ?
+            'Your selection for this category has reach the maximum. You can still choose reading from other category' :
+            'Your total selection has reach the maximum'
           this.$messageBox({
             title: 'Cannot add more reading!',
-            message: 'You have reach the maximun selection quota',
+            message: message,
             cancel: null
           })
           return
