@@ -75,7 +75,7 @@ export default {
   },
 
   actions: {
-    async add ({commit, getters}, {id, cat}) {
+    async add ({commit, getters, dispatch}, {id, cat}) {
       if (getters.isFull) return
       await new AuthHttp().post('/choose_item', {
         add_item_ids: [id],
@@ -84,11 +84,12 @@ export default {
         page: 1,
         remove_item_ids: []
       })
+      dispatch('getSummary')
       commit('added', {id, cat})
       return true
     },
 
-    async remove ({commit}, {id, cat}) {
+    async remove ({commit, dispatch}, {id, cat}) {
       await new AuthHttp().post('/choose_item', {
         add_item_ids: [],
         cat_grouper: cat,
@@ -96,6 +97,7 @@ export default {
         page: 1,
         remove_item_ids: [id]
       })
+      dispatch('getSummary')
       commit('removed', {id, cat})
       return true
     },
@@ -107,7 +109,7 @@ export default {
       })
       await dispatch('getSelectedItems')
       return true
-      
+
     },
 
     async getDashboard ({dispatch}) {

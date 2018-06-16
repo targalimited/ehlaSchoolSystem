@@ -2,12 +2,14 @@
   <div class="lib-view">
 
     <div class="ui-banner">
-      <vi-row align-center>
+      <vi-button icon text flat dark @click="$router.back()"><vi-icon name="left"/></vi-button>
+      <div>
         <span class="ui-banner__title">{{catName}}</span>
-      </vi-row>
-      <div class="ui-banner__info" v-if="catMax">
-        {{catChosen}} Reading Selected <small>(out of {{catMax}} quota)</small>
+        <div class="ui-banner__info" v-if="catMax">
+          {{catChosen}} Reading packs <small>(out of {{catMax}} quota)</small>
+        </div>
       </div>
+
     </div>
 
     <vi-row mt-2 px-10>
@@ -236,7 +238,8 @@
         let result = items.filter(item => {
           if (!item[`ei_${type}`]) return
           return item[`ei_${type}`].some(t => {
-            const value = typeof t === 'string' ? t : t.value
+            let value = typeof t === 'string' ? t : t.value
+            value = value.toLowerCase()
             return this[`${type}List`].some(filter => filter === value)
           })
         })
@@ -281,19 +284,20 @@
       width 100px
 
   .ui-banner
-    /*display flex*/
-    /*align-items center*/
+    display flex
+    align-items center
     background $brand
     color white
-    padding 16px 24px
-    height 90px
+    padding 10px 8px
+    height 80px
 
     small
       font-size 0.75em
       margin-left 0.2em
 
-    &__icon
-      margin-right 16px
+    .vi-button
+      margin-right 8px
+      color white
 
     &__title
       font-size 22px

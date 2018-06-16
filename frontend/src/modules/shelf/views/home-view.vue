@@ -8,8 +8,8 @@
     <div class="dashboard">
 
       <div class="dashboard__l">
-        <vi-avatar size="160">
-          <vi-icon name="school" color="light-grey" size="160"/>
+        <vi-avatar size="120">
+          <vi-icon name="school" color="light-grey" size="120"/>
         </vi-avatar>
       </div>
 
@@ -36,31 +36,7 @@
             </vi-item>
           </router-link>
         </div>
-
       </div>
-    </div>
-
-
-    <div class="reading-section">
-      <vi-row wrap v-if="summary">
-        <vi-col v-for="(cat, i) in readingCategories" xs6 :key="i">
-          <div class="reading-item">
-
-            <vi-icon class="" :name="cat.icon" size="60"/>
-
-            <vi-item height="auto">
-              <vi-item-avatar>{{cat.item_ids.length}}</vi-item-avatar>
-              <vi-item-content>{{cat.name_en}}</vi-item-content>
-            </vi-item>
-
-            <router-link :to="{name: 'lib', params: {key: cat.key}}">
-              <vi-button class="add-button" color="green" large>
-                Add <vi-icon size="18" right name="right"/>
-              </vi-button>
-            </router-link>
-          </div>
-        </vi-col>
-      </vi-row>
     </div>
   </div>
 </template>
@@ -117,7 +93,7 @@ export default {
     font-size 34px
     background $brand
     color white
-    min-height 100px
+    min-height 80px
     *
       color white
 
@@ -127,7 +103,8 @@ export default {
     display flex
 
     &__l
-      width 184px
+      padding-top 12px
+      width 144px
       flex-shrink 0
 
     &__r
@@ -207,52 +184,4 @@ export default {
       margin-left 8px
       color $mild-grey
       font-size 16px
-
-  .stat-section
-    margin-bottom 16px
-
-  .reading-section
-    background $bg-color
-    padding 24px
-
-    .add-button
-      margin-left: 8px;
-      position: relative;
-      top: 3px;
-      min-width 0
-
-    .vi-col
-      margin-bottom 24px
-
-  .reading-item
-    text-align center
-
-    > .vi-icon
-      display block
-      margin 0 auto
-      color $light-grey
-      margin-bottom 8px
-      width 68px
-      height @width
-
-    .vi-item
-      display inline-flex
-      max-width 326px
-      line-height 1.33
-      font-size 20px
-      justify-center center
-      margin-bottom 16px
-
-      .vi-item__avatar
-        font-size: 42px;
-        flex-shrink: 0;
-        // font-weight: bold;
-        min-width 42px
-
-    .vi-button
-      display block
-      margin 0 auto
-      min-width 100px
-      font-size 18px
-
 </style>

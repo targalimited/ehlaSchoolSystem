@@ -3,8 +3,8 @@
 
     <div class="vi-banner">
       <div>
-        <div class="vi-banner__title">Selected Readings</div>
-        <div class="vi-banner__info">{{selectedCount}}/ {{summary.total_item_qtt}} readings</div>
+        <div class="vi-banner__title">Selected items</div>
+        <div class="vi-banner__info">{{selectedCount}}/ {{summary.total_item_qtt}} reading packs</div>
         <vi-row wrap class="level-section" v-if="levelsQuota">
           <vi-col v-for="(lv, i) in levelsQuota" :key="i">
             <span class="level-label level-label--dark">{{lv.level}}</span>
@@ -16,9 +16,9 @@
       <!--<vi-input class="search-input" line prefix-icon="search" placeholder="Search by name" v-model="search"/>-->
     </div>
 
-    <div class="reminder">
-      <vi-icon name="alert" size="18"/>
-      You have readings that has not been assigned to any levels</div>
+    <!--<div class="reminder">-->
+      <!--<vi-icon name="alert" size="18"/>-->
+      <!--You have readings that has not been assigned to any levels</div>-->
 
     <div v-if="selectedItems">
 
@@ -44,7 +44,7 @@
           <vi-table-col>
             <div>
               <template v-if="item.levels.length === 0">
-                <a @click="chooseLevel(item)" class="vi-link">Assign levels</a>
+                <vi-button @click="chooseLevel(item)">Assign level(s)</vi-button>
               </template>
               <template v-else>
                 <div class="level-label" v-for="lv in item.levels">{{lv}}</div>
@@ -65,14 +65,14 @@
                 <vi-item-avatar>
                   <vi-icon name="edit"/>
                 </vi-item-avatar>
-                <vi-item-content>{{item.levels.length === 0 ? 'Assign' : 'Edit'}} Levels</vi-item-content>
+                <vi-item-content>{{item.levels.length === 0 ? 'Assign' : 'Edit'}} level(s)</vi-item-content>
               </vi-item>
 
               <vi-item v-if="item.levels.length === 0" @click="removeReading(item)" :link="true">
                 <vi-item-avatar>
                   <vi-icon name="trash"/>
                 </vi-item-avatar>
-                <vi-item-content>Remove</vi-item-content>
+                <vi-item-content>Remove item</vi-item-content>
               </vi-item>
             </vi-menu>
 
@@ -135,6 +135,14 @@
     methods: {
       async removeReading (item) {
         this.loading = true
+        const confirm = await this.$messageBox({
+          title: 'Remove item',
+          message: 'Do you want to remove this item?'
+        })
+        if (!confirm) {
+          this.loading = false
+          return
+        }
         await this.$store.dispatch('shelf/remove', {
           id: item.id,
           cat: item.cat_grouper

@@ -2,22 +2,33 @@
   <div class="lib-cat-view">
 
     <div class="vi-banner">
-      <vi-icon class="vi-banner__icon" name="daily-reading" size="60"/>
-      <div class="vi-banner__title">Browser readings</div>
+      <vi-icon class="vi-banner__icon" name="pilot" size="40"/>
+      <div class="vi-banner__title">School Pilot 100</div>
     </div>
 
     <vi-container>
 
-      <router-link
-        class="reading-cat" v-for="cat in readingCategories" :key="cat.key"
-        :to="{name: 'lib', params: {key: cat.key}}">
+      <div class="reading-section">
+        <vi-row wrap>
+          <vi-col v-for="(cat, i) in readingCategories" xs6 :key="i">
+            <div class="reading-item">
 
-        <vi-icon :name="cat.icon" size="60"/>
+              <img src="../assets/cat-image.jpg" alt="">
 
-        <vi-item height="auto">
-          <vi-item-content>{{cat.name_en}}</vi-item-content>
-        </vi-item>
-      </router-link>
+              <vi-item height="auto">
+                <vi-item-avatar>{{cat.item_ids.length}}</vi-item-avatar>
+                <vi-item-content>{{cat.name_en}}</vi-item-content>
+              </vi-item>
+
+              <router-link :to="{name: 'lib', params: {key: cat.key}}">
+                <vi-button class="add-button" color="green" large>
+                  Add <vi-icon size="18" right name="right"/>
+                </vi-button>
+              </router-link>
+            </div>
+          </vi-col>
+        </vi-row>
+      </div>
     </vi-container>
 
   </div>
@@ -38,24 +49,46 @@
 <style scoped lang="stylus">
   @import '../../../lib/stylus/main.styl'
 
-  .reading-cat
-    display flex
-    align-items center
-    font-size 18px
-    padding 32px
-    border 1px solid $border-color
-    margin-bottom 16px
-    border-radius 6px
+  .reading-section
+    background $bg-color
+    padding 24px
 
-    &:hover
-      box-shadow $shadow
+    .add-button
+      margin-left: 8px;
+      position: relative;
+      top: 3px;
+      min-width 0
 
-    .vi-icon
-      margin-right 32px
+    .vi-col
+      margin-bottom 24px
+
+  .reading-item
+    text-align center
+
+    > .vi-icon
+      display block
+      margin 0 auto
       color $light-grey
+      margin-bottom 8px
+      width 68px
+      height @width
 
     .vi-item
-      font-size 28px
-      color $brand
+      display inline-flex
+      max-width 326px
+      line-height 1.33
+      font-size 20px
+      justify-center center
+      margin-bottom 16px
 
+      .vi-item__avatar
+        font-size: 42px;
+        flex-shrink: 0;
+        min-width 42px
+
+    .vi-button
+      display block
+      margin 0 auto
+      min-width 100px
+      font-size 18px
 </style>

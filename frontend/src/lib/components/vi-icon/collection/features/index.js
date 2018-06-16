@@ -1,3 +1,5 @@
+import './assignment'
+import './pilot'
 import './contributors'
 import './coupons'
 import './school'

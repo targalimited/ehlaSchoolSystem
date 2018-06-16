@@ -3,12 +3,19 @@
     <vi-card>
       <vi-card-content>
 
-        <vi-toolbar-logo/>
-        <!--<img class="logo" src="../assets/ehla-app-logo.jpeg" alt="">-->
+        <vi-item class="header-item" height="auto">
+          <vi-item-avatar>
+            <img class="logo" src="../assets/app-logo.jpg" alt="">
+          </vi-item-avatar>
+          <vi-item-content>
+            <div class="title">School Portal</div>
+            <div class="note">(for teachers only)</div>
+          </vi-item-content>
+        </vi-item>
+
 
         <div class="header">
-          <div class="title">School System</div>
-          <div class="subtitle">Login to your account:</div>
+          <div class="subtitle">Login to your account</div>
         </div>
 
         <div class="input-group">
@@ -65,7 +72,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  // @import '~dali/src/stylus/main'
+  @import '../../../lib/stylus/main.styl'
 
   .login
     background-image url(../assets/home_banner.png)
@@ -81,7 +88,8 @@ export default {
     text-align center
 
   .logo
-    width 120px
+    width 80px
+    height @width
 
   .input-group
     margin-bottom 16px
@@ -96,8 +104,19 @@ export default {
     margin-top 24px
     height 40px
 
+  .header-item
+    align-items flex-end
+
+    .vi-item__avatar
+      padding-right 16px
+
+    .note
+      font-size 18px
+      color $mild-grey
+      margin-top -2px
+
   .header
-    margin 24px 0 32px
+    margin 24px 0 24px
     text-align center
 
   .title
