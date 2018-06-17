@@ -85,7 +85,6 @@ export default {
         if (max) state.cats[CAT].max = max
 
         let maxLv = summary[`${cat}_lv_max`]
-        console.log('macLV', maxLv)
         if (maxLv) state.cats[CAT].maxLv = maxLv
 
         let items = summary.items[CAT]
@@ -236,7 +235,6 @@ export default {
      * get the list of available levels and the i.e. 12/20 (selected/max quota) selection
      */
     levelsQuota: (state, getters) => (cat) => {
-      console.log(cat)
       if (!getters.levelOptions || !state.selectedItems) return
       return getters.levelOptions.map(lv => {
         let selected = 0

@@ -42,9 +42,8 @@
 
     <vi-container class="pdf-section">
       <vi-section-header>Resources:</vi-section-header>
-      <!--<div class="section-header"></div>-->
       <vi-row wrap>
-        <vi-col v-for="i in 5" xs4>
+        <vi-col v-for="i in 5" xs4 :key="i">
           <div class="pdf">
             <div class="pdf__img">
               PDF {{i}}

@@ -13,9 +13,9 @@
 
     <vi-spacer></vi-spacer>
 
-    <vi-menu left min-width="180" :nudge-bottom="14">
+    <vi-menu left min-width="180" :nudge-bottom="14" content-class="profile-menu">
       <vi-button slot="activator" icon text>
-        <vi-icon name="avatar"/>
+        <vi-icon name="avatar" size="26"/>
       </vi-button>
 
       <router-link :to="{name: 'config'}">
@@ -27,7 +27,7 @@
         </vi-item>
       </router-link>
 
-      <router-link :to="{name: 'config'}">
+      <router-link :to="{name: 'profile'}">
         <vi-item :link="true">
           <vi-item-avatar>
             <vi-icon name="avatar"/>
@@ -114,4 +114,10 @@
 
       small
         font-size 14px
+
+  .profile-menu
+    color #555
+
+    .vi-icon
+      color #adadad
 </style>

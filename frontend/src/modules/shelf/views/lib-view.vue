@@ -5,7 +5,7 @@
     <vi-app-bar
       :title="catName">
       <div>
-        {{catChosen}} Reading packs <small>(out of {{catMax}} quota)</small>
+        {{catChosen}} Reading packs selected<small v-if="catMax !== 999">(out of {{catMax}} quota)</small>
       </div>
     </vi-app-bar>
 
@@ -109,10 +109,10 @@
 
   const map = {
     WR: {
-      name_en: 'Daily Fun Reading'
+      name_en: 'Weekly Fun Reading'
     },
     DR: {
-      name_en: 'Weekly Fun Reading'
+      name_en: 'Daily Fun Reading'
     },
     RCD: {
       name_en: 'Reading Comprehensive Diagnosis'
