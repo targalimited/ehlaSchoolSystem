@@ -1,9 +1,7 @@
 <template>
   <div class="home-view">
 
-    <div class="banner">
-      <!--Welcome to EHLA School System!-->
-    </div>
+    <div class="banner"></div>
 
     <div class="dashboard">
 
@@ -26,9 +24,9 @@
               <vi-item-content>
                 <vi-row align-center>
                   <div class="stat__int">{{selectedCount}}</div>
-                  <div class="stat__name">Selected Reading</div>
+                  <div class="stat__name">Accessible Items</div>
                 </vi-row>
-                <div class="stat__info">Quota: {{summary.total_item_qtt}} readings</div>
+                <!--<div class="stat__info">Quota: {{summary.total_item_qtt}} readings</div>-->
               </vi-item-content>
               <vi-item-action>
                 <vi-icon name="arrow-right" size="48" color="light-grey"/>
@@ -38,16 +36,28 @@
         </div>
       </div>
     </div>
+
+    <div class="start">
+      <vi-icon name="pilot" size="100"/>
+      The journey of Pilot School starts here
+    </div>
+
+    <vi-row>
+      <vi-col v-for="i in 4">
+        <div class="pdf">
+          PDF {{i}}
+        </div>
+
+        <div class="vi-link">PDF_XYZ.pdf (download)</div>
+      </vi-col>
+    </vi-row>
+
   </div>
 </template>
 
 <script>
 export default {
   name: 'home',
-
-  created: function() {
-
-  },
 
   computed: {
     summary () {
@@ -61,7 +71,7 @@ export default {
     }
   },
 
-  mounted () {
+  created() {
     this.$store.dispatch('shelf/getSummary')
   }
 }
@@ -88,12 +98,15 @@ export default {
 
 <style scoped lang="stylus">
   @import '../../../lib/stylus/main.styl'
+  .home-view
+    margin-top -70px
+
   .banner
     padding 24px
     font-size 34px
     background $brand
     color white
-    min-height 80px
+    min-height 70px
     *
       color white
 
@@ -184,4 +197,21 @@ export default {
       margin-left 8px
       color $mild-grey
       font-size 16px
+
+  .pdf
+    width 100px
+    height 150px
+    background #d7d7d7
+    margin 10px
+
+
+  .start
+    background #42d495
+    color white
+    font-weight bold
+    padding 20px
+    text-align center
+    font-size 20px
+    margin 24px
+    border-radius 20px
 </style>

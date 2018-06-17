@@ -1,4 +1,5 @@
 import ViApp from './components/vi-app'
+import ViAppBar from './components/vi-app-bar'
 import {ViAvatar, ViAvatarChip} from './components/vi-avatar'
 import ViChip from './components/vi-chip'
 import {ViCheckbox, ViCheckboxBoolean} from './components/vi-checkbox'
@@ -36,6 +37,7 @@ import './components/vi-icon/collection'
 const Dali = {
   install (Vue) {
     Vue.component('vi-app', ViApp)
+    Vue.component('vi-app-bar', ViAppBar)
     Vue.component('vi-expand-transition', ViExpandTransition)
     Vue.component('vi-avatar', ViAvatar)
     Vue.component('vi-avatar-chip', ViAvatarChip)

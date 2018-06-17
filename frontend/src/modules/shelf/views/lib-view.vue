@@ -1,16 +1,13 @@
 <template>
   <div class="lib-view">
 
-    <div class="ui-banner">
-      <vi-button icon text flat dark @click="$router.back()"><vi-icon name="left"/></vi-button>
-      <div>
-        <span class="ui-banner__title">{{catName}}</span>
-        <div class="ui-banner__info" v-if="catMax">
-          {{catChosen}} Reading packs <small>(out of {{catMax}} quota)</small>
-        </div>
-      </div>
 
-    </div>
+    <vi-app-bar
+      :title="catName">
+      <div>
+        {{catChosen}} Reading packs <small>(out of {{catMax}} quota)</small>
+      </div>
+    </vi-app-bar>
 
     <vi-row mt-2 px-10>
       <vi-col v-if="levelOptions">
@@ -172,11 +169,11 @@
         return this.$store.getters['shelf/readings'](this.$key)
       },
       catChosen () {
-        return this.$store.state.shelf.cats[this.$key].selected
+        return this.$store.state.shelf.cats[this.$key].selectedCount
       },
       catMax () {
         return this.$store.state.shelf.cats[this.$key].max
-      },// selection reach the max - cannot add new anymore
+      },
       isCatFull () {
         return this.catChosen >= this.catMax
       },
@@ -282,33 +279,6 @@
 
     &:nth-child(3)
       width 100px
-
-  .ui-banner
-    display flex
-    align-items center
-    background $brand
-    color white
-    padding 10px 8px
-    height 80px
-
-    small
-      font-size 0.75em
-      margin-left 0.2em
-
-    .vi-button
-      margin-right 8px
-      color white
-
-    &__title
-      font-size 22px
-      font-weight bold
-
-    &__info
-      font-size 16px
-      font-weight bold
-
-      small
-        font-size 14px
 
   .vi-col
     width 33%

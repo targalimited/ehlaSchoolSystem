@@ -1,30 +1,68 @@
 import {AuthHttp} from '../../http'
 import Vue from 'vue'
 
-const categories = {
-  WR: {
-    key: 'WR',
-    name_en: 'Daily Fun Reading',
-    icon: 'daily-reading',
-    item_ids: []
-  },
+const catList = ['WR', 'DR', 'RCD', 'BR']
+
+const defaultCategories = {
   DR: {
     key: 'DR',
+    name_en: 'Daily Fun Reading',
+    icon: 'daily-reading',
+    item_ids: [],
+    selectedCount: 0,
+    max: 0,
+    lvMax: 0,
+    items: [],
+    selectedItems: [],
+    image: {
+      primary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/primary-daily-1529141847101.jpg',
+      secondary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-a-1529141847982.jpg'
+    }
+  },
+  WR: {
+    key: 'WR',
     name_en: 'Weekly Fun Reading',
     icon: 'weekly-reading',
-    item_ids: []
+    item_ids: [],
+    selectedCount: 0,
+    max: 0,
+    lvMax: 0,
+    items: [],
+    selectedItems: [],
+    image: {
+      primary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/primary-b-1529141844280.jpg',
+      secondary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-b-1529141848718.jpg'
+    }
   },
   RCD: {
     key: 'RCD',
     name_en: 'Reading Comprehensive Diagnosis',
     icon: 'diagnosis-reading',
-    item_ids: []
+    item_ids: [],
+    selectedCount: 0,
+    max: 0,
+    lvMax: 0,
+    items: [],
+    selectedItems: [],
+    image: {
+      primary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/primary-comprehension-1529141845873.jpg',
+      secondary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-c-1529141849068.jpg'
+    }
   },
   BR: {
     key: 'BR',
     name_en: 'Daily Fun Reading (Bridging)',
     icon: 'daily-reading',
-    item_ids: []
+    item_ids: [],
+    selectedCount: 0,
+    max: 0,
+    maxLv: 0,
+    items: [],
+    selectedItems: [],
+    image: {
+      primary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/primary-bridging-1529141837775.jpg',
+      secondary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-d-1529141849542.jpg'
+    }
   }
 }
 
@@ -33,12 +71,7 @@ export default {
 
   state: {
     items: {},
-    cats: {
-      WR: {},
-      DR: {},
-      RCD: {},
-      BR: {},
-    },
+    cats: defaultCategories,
     selectedItems: null,
     summary: {}
   },
@@ -46,12 +79,26 @@ export default {
   mutations: {
     gotSummary (state, summary) {
       state.summary = summary
+      catList.forEach(CAT => {
+        const cat = CAT.toLowerCase()
+        let max = summary[`${cat}_max`]
+        if (max) state.cats[CAT].max = max
+
+        let maxLv = summary[`${cat}_lv_max`]
+        console.log('macLV', maxLv)
+        if (maxLv) state.cats[CAT].maxLv = maxLv
+
+        let items = summary.items[CAT]
+        if (items) {
+          state.cats[CAT].selectedCount = items.item_ids.length
+        }
+      })
     },
 
     gotItemsByCategory (state, {items, category, selected, max}) {
       Vue.set(state.items, category, items)
-      Vue.set(state.cats[category], 'selected', selected)
-      Vue.set(state.cats[category], 'max', max)
+      state.cats[category].max = max
+      state.cats[category].selectedCount = selected
     },
 
     gotSelectedItems (state, selectedItems) {
@@ -65,11 +112,11 @@ export default {
       if (state.selectedItems) {
         state.selectedItems = state.selectedItems.filter(i => i.id !== id)
       }
-      state.cats[cat].selected --
+      state.cats[cat].selectedCount --
     },
 
     added (state, {id, cat}) {
-      state.cats[cat].selected ++
+      state.cats[cat].selectedCount ++
       state.items[cat].find(i => i.id === id).chose = true
     }
   },
@@ -177,11 +224,7 @@ export default {
      * get the 4 category basic info and the num of selected item inside the category
      */
     categories (state) {
-      const cats = state.summary && state.summary.items || {}
-      for (let key in cats) {
-        categories[key].item_ids = cats[key].item_ids
-      }
-      return categories
+      return state.cats
     },
 
     levelOptions (state) {
@@ -192,7 +235,8 @@ export default {
     /**
      * get the list of available levels and the i.e. 12/20 (selected/max quota) selection
      */
-    levelsQuota (state, getters) {
+    levelsQuota: (state, getters) => (cat) => {
+      console.log(cat)
       if (!getters.levelOptions || !state.selectedItems) return
       return getters.levelOptions.map(lv => {
         let selected = 0
@@ -201,12 +245,18 @@ export default {
             selected++
           }
         })
-        return {
+        const obj = {
           level: lv,
           maxQuota: state.summary.level_item_qtt,
+          maxCatQuota: state.summary.level_item_qtt,
           selected: selected,
           full: selected >= state.summary.level_item_qtt
         }
+        if (cat) {
+          obj.maxCatQuota = state.cats[cat].maxLv
+          obj.catFull = selected >= state.cats[cat].maxLv
+        }
+        return obj
       })
     },
 
@@ -216,7 +266,7 @@ export default {
     selectedCount (state, getters) {
       let count = 0
       for (let key in getters.categories) {
-        count += getters.categories[key].item_ids.length
+        count += getters.categories[key].selectedCount
       }
       return count
     },
@@ -245,6 +295,13 @@ export default {
     readings: (state) => (key) => {
       if (!state.items) return
       return state.items[key]
+    },
+
+    /**
+     * determine to show which photos
+     */
+    primarySecondary (state) {
+      return state.summary.edu_lv === 's' ? 'secondary' : 'primary'
     }
   }
 }
