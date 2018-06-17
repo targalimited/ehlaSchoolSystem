@@ -8,7 +8,7 @@
             <img class="logo" src="../assets/app-logo.jpg" alt="">
           </vi-item-avatar>
           <vi-item-content>
-            <div class="title">School Portal</div>
+            <div class="title">School Portal test</div>
             <div class="note">(for teachers only)</div>
           </vi-item-content>
         </vi-item>
