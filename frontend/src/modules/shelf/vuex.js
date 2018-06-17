@@ -73,7 +73,10 @@ export default {
     items: {},
     cats: defaultCategories,
     selectedItems: null,
-    summary: {}
+    summary: {},
+    levels_translate: {
+      p1: 'foo'
+    }
   },
 
   mutations: {
@@ -313,6 +316,10 @@ export default {
      */
     primarySecondary (state) {
       return state.summary.edu_lv === 's' ? 'secondary' : 'primary'
+    },
+
+    levelsTranslate (state) {
+      return state.summary.levels_translate
     }
   }
 }

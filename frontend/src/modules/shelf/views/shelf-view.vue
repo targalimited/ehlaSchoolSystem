@@ -5,7 +5,7 @@
       <div class="vi-banner__info">{{selectedCount}}/ {{summary.total_item_qtt}} reading packs</div>
       <vi-row wrap class="level-section" v-if="levelsQuota">
         <vi-col v-for="(lv, i) in levelsQuota" :key="i">
-          <span class="level-label level-label--dark">{{lv.level}}</span>
+          <span class="level-label level-label--dark">{{lv.level | levelName}}</span>
           {{lv.selected}}/{{lv.maxQuota}} <span v-if="lv.full" class="full">Full</span>
         </vi-col>
       </vi-row>
@@ -38,7 +38,7 @@
                 <vi-button @click="chooseLevel(item)">Assign level(s)</vi-button>
               </template>
               <template v-else>
-                <div class="level-label" v-for="lv in item.levels">{{lv}}</div>
+                <div class="level-label" v-for="lv in item.levels">{{lv | levelName}}</div>
               </template>
             </div>
           </vi-table-col>
