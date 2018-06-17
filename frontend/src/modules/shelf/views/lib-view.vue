@@ -237,7 +237,10 @@
           return item[`ei_${type}`].some(t => {
             let value = typeof t === 'string' ? t : t.value
             value = value.toLowerCase()
-            return this[`${type}List`].some(filter => filter === value)
+            return this[`${type}List`].some(filter => {
+              filter = filter.toLowerCase()
+              return filter === value
+            })
           })
         })
         return result
