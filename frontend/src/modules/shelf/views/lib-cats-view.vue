@@ -6,6 +6,19 @@
       <div class="vi-banner__title">School Pilot 100</div>
     </div>
 
+    <div class="welcome">
+      <p>
+        Thank you for your enrolment in EHLA’s ‘School Pilot 100’ Programme.
+
+      </p>
+      <p>Your journey starts here.</p>
+      <p>
+        You may select teaching resources from the menu below
+      </p>
+
+      <vi-icon class="mt-8" name="down"/>
+    </div>
+
     <vi-container>
 
       <div class="reading-section">
@@ -13,12 +26,13 @@
           <vi-col v-for="(cat, i) in readingCategories" xs6 :key="i">
             <div class="reading-item">
 
-              <img src="../assets/cat-image.jpg" alt="">
+              <img :src="cat.image.secondary" alt="">
 
-              <vi-item height="auto">
-                <vi-item-avatar>{{cat.item_ids.length}}</vi-item-avatar>
-                <vi-item-content>{{cat.name_en}}</vi-item-content>
-              </vi-item>
+              {{cat.name_en}}
+
+              <div>
+                ({{cat.selectedCount}} item selected)
+              </div>
 
               <router-link :to="{name: 'lib', params: {key: cat.key}}">
                 <vi-button class="add-button" color="green" large>
@@ -42,6 +56,10 @@
       readingCategories () {
         return this.$store.getters['shelf/categories']
       }
+    },
+
+    created() {
+      this.$store.dispatch('shelf/getSummary')
     }
   }
 </script>
@@ -91,4 +109,19 @@
       margin 0 auto
       min-width 100px
       font-size 18px
+
+  .img
+    width 100%
+    height 200px
+    background-size cover
+
+  .welcome
+    background #42d495
+    color white
+    font-weight bold
+    padding 20px
+    text-align center
+    // color $brand
+    font-size 20px
+    margin-bottom 24px
 </style>

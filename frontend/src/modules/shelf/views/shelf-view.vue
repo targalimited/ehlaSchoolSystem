@@ -128,7 +128,7 @@
         return this.$store.getters['shelf/selectedCount']
       },
       levelsQuota () {
-        return this.$store.getters['shelf/levelsQuota']
+        return this.$store.getters['shelf/levelsQuota']()
       }
     },
 
@@ -152,7 +152,7 @@
       },
       async chooseLevel (item) {
         const currentLevels = item.levels
-        const newLevels = await levelDialog(currentLevels)
+        const newLevels = await levelDialog(currentLevels, item.cat_grouper)
         if (!newLevels) return
         let loader = this.$loading.show()
         this.$store.dispatch('shelf/assignLevels', {

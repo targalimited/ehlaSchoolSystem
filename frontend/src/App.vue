@@ -20,6 +20,13 @@
           </vi-item>
         </router-link>
 
+        <router-link :to="{name: 'lib-main'}">
+          <vi-item class="nav-item" :link="true" height="60">
+            <vi-item-avatar><vi-icon class="ml-4" name="apps" size="30"/></vi-item-avatar>
+            <vi-item-content>EHLA Categories</vi-item-content>
+          </vi-item>
+        </router-link>
+
         <router-link :to="{name: 'lib-cat'}">
           <vi-item class="nav-item" :link="true" height="60">
             <vi-item-avatar><vi-icon class="ml-4" name="pilot" size="36"/></vi-item-avatar>
@@ -27,10 +34,15 @@
           </vi-item>
         </router-link>
 
+        <vi-item class="nav-item" :link="true" height="60">
+          <vi-item-avatar><vi-icon class="ml-4" name="free-access" size="30"/></vi-item-avatar>
+          <vi-item-content>Free Access Scheme</vi-item-content>
+        </vi-item>
+
         <router-link :to="{name: 'shelf'}">
           <vi-item class="nav-item" :link="true" height="60">
             <vi-item-avatar><vi-icon class="ml-4" name="shelf" size="36"/></vi-item-avatar>
-            <vi-item-content>Your Accessible Items</vi-item-content>
+            <vi-item-content>Accessible Items Overview</vi-item-content>
           </vi-item>
         </router-link>
 
@@ -39,7 +51,18 @@
           <vi-item-content>Assign Homework</vi-item-content>
         </vi-item>
 
+        <vi-item class="nav-item" :link="true" height="60">
+          <vi-item-avatar><vi-icon class="ml-4" name="report" size="36"/></vi-item-avatar>
+          <vi-item-content>Report</vi-item-content>
+        </vi-item>
+
         <div class="spacer"></div>
+
+
+        <vi-item class="nav-item" :link="true" height="60">
+          <vi-item-avatar><vi-icon class="ml-10" name="config" size="24"/></vi-item-avatar>
+          <vi-item-content>Settings</vi-item-content>
+        </vi-item>
 
         <router-link :to="{name: 'profile'}">
           <vi-item class="nav-item" :link="true" height="60">
