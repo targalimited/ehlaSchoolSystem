@@ -97,8 +97,8 @@ export default {
 
     gotItemsByCategory (state, {items, category, selected, max}) {
       Vue.set(state.items, category, items)
-      Vue.set(state.cats[category], 'selected', selected)
-      Vue.set(state.cats[category], 'max', max)
+      state.cats[category].max = max
+      state.cats[category].selectedCount = selected
     },
 
     gotSelectedItems (state, selectedItems) {
@@ -112,11 +112,11 @@ export default {
       if (state.selectedItems) {
         state.selectedItems = state.selectedItems.filter(i => i.id !== id)
       }
-      state.cats[cat].selected --
+      state.cats[cat].selectedCount --
     },
 
     added (state, {id, cat}) {
-      state.cats[cat].selected ++
+      state.cats[cat].selectedCount ++
       state.items[cat].find(i => i.id === id).chose = true
     }
   },

@@ -172,11 +172,11 @@
         return this.$store.getters['shelf/readings'](this.$key)
       },
       catChosen () {
-        return this.$store.state.shelf.cats[this.$key].selected
+        return this.$store.state.shelf.cats[this.$key].selectedCount
       },
       catMax () {
         return this.$store.state.shelf.cats[this.$key].max
-      },// selection reach the max - cannot add new anymore
+      },
       isCatFull () {
         return this.catChosen >= this.catMax
       },
