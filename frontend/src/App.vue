@@ -7,7 +7,7 @@
         <vi-item-avatar><img class="logo-item__logo" src="./modules/auth/assets/app-logo.jpg"/></vi-item-avatar>
         <vi-item-content>
           <div>i-Education</div>
-          <div class="logo-item__subtitle">School Portal</div>
+          <div class="logo-item__subtitle">School Portal test</div>
         </vi-item-content>
       </vi-item>
 
