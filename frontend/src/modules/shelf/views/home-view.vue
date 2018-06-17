@@ -91,7 +91,7 @@ export default {
       margin-top -80px
       background white
       position relative
-      z-index 1000
+      z-index 3
 
     &__title
       text-align center

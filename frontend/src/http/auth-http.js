@@ -54,7 +54,7 @@ class AuthHttp {
     if (e.response && e.response.status === 401) {
       store.commit('logout')
       router.replace('/login')
-      return
+      return Promise.reject(e)
     }
     return Promise.reject(e)
   }

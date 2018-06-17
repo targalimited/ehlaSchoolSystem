@@ -90,7 +90,7 @@
       top 0
       left 220px
       right 0
-      z-index 999
+      z-index 2
 
       +screen(900px)
         left 74px
