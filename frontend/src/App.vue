@@ -85,29 +85,8 @@ export default {
 
   html, body
     font-size 18px
-
-  .vi-banner
-    display flex
-    align-items center
-    background $brand
-    color white
-    min-height 80px
-    padding 10px 24px
-
-    small
-      font-size 0.75em
-      margin-left 0.2em
-
-    &__icon
-      margin-right 16px
-
-    &__title
-      font-size 22px
-      font-weight bold
-
-    &__info
-       font-size 14px
-       font-weight bold
+    min-width 755px
+    overflow-x auto
 
   .vi-link
     cursor pointer
@@ -116,17 +95,6 @@ export default {
 
     &:hover
       border-bottom 1px solid currentColor
-
-    .search-input
-      background none
-      border-bottom 1px solid white !important
-      width 74px
-
-      &.vi-input--focused
-        width 220px
-
-      input::placeholder
-        color white
 
   .app
     display flex

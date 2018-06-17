@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div class="vi-banner">
-      <vi-icon class="vi-banner__icon" name="avatar" size="60"/>
-      <div class="vi-banner__title">Profile</div>
-    </div>
+    <vi-app-bar title="Profile" />
     <vi-container>
       <vi-section-header>Change password</vi-section-header>
       <vi-input v-model="oldPw" placeholder="Enter your current password"/>

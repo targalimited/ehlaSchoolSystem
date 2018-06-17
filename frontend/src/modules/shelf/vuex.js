@@ -73,7 +73,10 @@ export default {
     items: {},
     cats: defaultCategories,
     selectedItems: null,
-    summary: {}
+    summary: {},
+    levels_translate: {
+      p1: 'foo'
+    }
   },
 
   mutations: {
@@ -85,7 +88,6 @@ export default {
         if (max) state.cats[CAT].max = max
 
         let maxLv = summary[`${cat}_lv_max`]
-        console.log('macLV', maxLv)
         if (maxLv) state.cats[CAT].maxLv = maxLv
 
         let items = summary.items[CAT]
@@ -124,39 +126,45 @@ export default {
   actions: {
     async add ({commit, getters, dispatch}, {id, cat}) {
       if (getters.isFull) return
-      await new AuthHttp().post('/choose_item', {
-        add_item_ids: [id],
-        cat_grouper: cat,
-        limit: 500,
-        page: 1,
-        remove_item_ids: []
-      })
-      dispatch('getSummary')
-      commit('added', {id, cat})
-      return true
+
+      try {
+        await new AuthHttp().post('/choose_item', {
+          add_item_ids: [id],
+          cat_grouper: cat,
+          limit: 500,
+          page: 1,
+          remove_item_ids: []
+        })
+        dispatch('getSummary')
+        commit('added', {id, cat})
+        return true
+      } catch (e) {}
     },
 
     async remove ({commit, dispatch}, {id, cat}) {
-      await new AuthHttp().post('/choose_item', {
-        add_item_ids: [],
-        cat_grouper: cat,
-        limit: 500,
-        page: 1,
-        remove_item_ids: [id]
-      })
-      dispatch('getSummary')
-      commit('removed', {id, cat})
-      return true
+      try {
+        await new AuthHttp().post('/choose_item', {
+          add_item_ids: [],
+          cat_grouper: cat,
+          limit: 500,
+          page: 1,
+          remove_item_ids: [id]
+        })
+        dispatch('getSummary')
+        commit('removed', {id, cat})
+        return true
+      } catch (e) {}
     },
 
     async assignLevels ({commit, dispatch}, {id, levels}) {
-      await new AuthHttp().post('/choose_item_for_level', {
-        item_id: id,
-        item_lv: levels
-      })
-      await dispatch('getSelectedItems')
-      return true
-
+      try {
+        await new AuthHttp().post('/choose_item_for_level', {
+          item_id: id,
+          item_lv: levels
+        })
+        await dispatch('getSelectedItems')
+        return true
+      } catch (e) {}
     },
 
     async getDashboard ({dispatch}) {
@@ -165,57 +173,64 @@ export default {
     },
 
     async getSummary ({commit}) {
-      const res = await new AuthHttp().get('/get_school_item_summary')
-      commit('gotSummary', res)
-      return res
+      try {
+        const res = await new AuthHttp().get('/get_school_item_summary')
+        commit('gotSummary', res)
+        return res
+      } catch (e) {}
     },
 
     // get the list of selected items
     async getSelectedItems ({commit, getters, dispatch}) {
-      const res = await new AuthHttp().post('/get_selected_item', {
-        limit: 500,
-        page: 1
-      })
-      let result = res.data
+      try {
+        const res = await new AuthHttp().post('/get_selected_item', {
+          limit: 500,
+          page: 1
+        })
+        let result = res.data
 
-      // post-process the API data
-      result.forEach(item => {
-        // add `item.levels`
-        const lv = []
-        for (let i = 1; i <= 6; i++) {
-          if (item['p' + i].tick) lv.push('p' + i)
-        }
-        for (let i = 1; i <= 6; i++) {
-          if (item['s' + i].tick) lv.push('s' + i)
-        }
-        item.levels = lv
-      })
+        // post-process the API data
+        result.forEach(item => {
+          // add `item.levels`
+          const lv = []
+          for (let i = 1; i <= 6; i++) {
+            if (item['p' + i].tick) lv.push('p' + i)
+          }
+          for (let i = 1; i <= 6; i++) {
+            if (item['s' + i].tick) lv.push('s' + i)
+          }
+          item.levels = lv
+        })
 
-      commit('gotSelectedItems', result)
+        commit('gotSelectedItems', result)
+      } catch (e) {}
     },
 
     async getItemsByCategory ({commit}, {cat}) {
-      const res = await new AuthHttp().post('/get_by_category', {
-        cat_grouper: cat,
-        page: 1,
-        limit: 500
-      })
-      const result = res.data
-      commit('gotItemsByCategory', {
-        items: result,
-        category: cat,
-        selected: res.metadata.catChosen,
-        max: res.metadata.catMax,
-      })
-
-      return res.metadata
+      try {
+        const res = await new AuthHttp().post('/get_by_category', {
+          cat_grouper: cat,
+          page: 1,
+          limit: 500
+        })
+        const result = res.data
+        commit('gotItemsByCategory', {
+          items: result,
+          category: cat,
+          selected: res.metadata.catChosen,
+          max: res.metadata.catMax,
+        })
+        return res.metadata
+      } catch (e) {}
     },
 
     async getPreview ({commit}, {id}) {
-      const res = await new AuthHttp().post('/get_preview_by_id', {
-        id: id
-      })
-      return res.data
+      try {
+        const res = await new AuthHttp().post('/get_preview_by_id', {
+          id: id
+        })
+        return res.data
+      } catch (e) {}
     }
   },
 
@@ -236,7 +251,6 @@ export default {
      * get the list of available levels and the i.e. 12/20 (selected/max quota) selection
      */
     levelsQuota: (state, getters) => (cat) => {
-      console.log(cat)
       if (!getters.levelOptions || !state.selectedItems) return
       return getters.levelOptions.map(lv => {
         let selected = 0
@@ -302,6 +316,10 @@ export default {
      */
     primarySecondary (state) {
       return state.summary.edu_lv === 's' ? 'secondary' : 'primary'
+    },
+
+    levelsTranslate (state) {
+      return state.summary.levels_translate
     }
   }
 }

@@ -14,10 +14,12 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
     "cross-env": "^5.1.6",
     "moment": "^2.22.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
+    "svg-innerhtml": "^1.1.0",
     "tiny-cookie": "^2.1.2",
     "vue": "^2.5.2",
     "vue-loading-overlay": "^2.0.4",

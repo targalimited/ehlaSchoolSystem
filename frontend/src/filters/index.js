@@ -1,10 +1,13 @@
 import Vue from 'vue'
 import moment from 'moment'
+import store from '@/store'
 
 Vue.filter('formatDate', date => {
   return moment(date, 'YYYY-MM-DDTHH:mm:ss').format('DD MMM YYYY')
 })
 
-Vue.filter('join', array => {
-  return array.join(', ')
+Vue.filter('levelName', lv => {
+  const mapper = store.getters['shelf/levelsTranslate']
+  if (!mapper) return lv
+  return mapper[lv]
 })
