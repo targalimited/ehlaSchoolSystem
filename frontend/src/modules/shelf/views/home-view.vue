@@ -98,12 +98,15 @@ export default {
 
 <style scoped lang="stylus">
   @import '../../../lib/stylus/main.styl'
+  .home-view
+    margin-top -70px
+
   .banner
     padding 24px
     font-size 34px
     background $brand
     color white
-    min-height 80px
+    min-height 70px
     *
       color white
 

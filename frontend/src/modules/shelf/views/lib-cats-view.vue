@@ -1,10 +1,7 @@
 <template>
   <div class="lib-cat-view">
 
-    <div class="vi-banner">
-      <vi-icon class="vi-banner__icon" name="pilot" size="40"/>
-      <div class="vi-banner__title">School Pilot 100</div>
-    </div>
+    <vi-app-bar title="School Pilot 100"/>
 
     <div class="welcome">
       <p>

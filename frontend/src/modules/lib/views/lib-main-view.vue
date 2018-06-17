@@ -1,9 +1,7 @@
 <template>
   <div class="library-main-view">
-    <div class="vi-banner">
-      <vi-icon class="vi-banner__icon" name="apps" size="30"/>
-      <div class="vi-banner__title">EHLA Categories</div>
-    </div>
+
+    <vi-app-bar title="EHLA Categories"/>
 
     <vi-container>
 

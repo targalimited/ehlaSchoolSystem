@@ -3,7 +3,7 @@
 
     <div class="app__sidebar" v-if="$route.name !== 'login'">
 
-      <vi-item class="logo-item" height="auto">
+      <vi-item class="logo-item" height="70">
         <vi-item-avatar><img class="logo-item__logo" src="./modules/auth/assets/app-logo.jpg"/></vi-item-avatar>
         <vi-item-content>
           <div>i-Education</div>
@@ -13,7 +13,6 @@
 
       <div class="app__sidebar__main">
         <router-link :to="{name: 'home'}">
-
           <vi-item class="nav-item" :link="true" height="60">
             <vi-item-avatar><vi-icon class="ml-4" name="home" size="30"/></vi-item-avatar>
             <vi-item-content>Home</vi-item-content>
@@ -34,10 +33,12 @@
           </vi-item>
         </router-link>
 
-        <vi-item class="nav-item" :link="true" height="60">
-          <vi-item-avatar><vi-icon class="ml-4" name="free-access" size="30"/></vi-item-avatar>
-          <vi-item-content>Free Access Scheme</vi-item-content>
-        </vi-item>
+        <router-link :to="{name: 'free-access'}">
+          <vi-item class="nav-item" :link="true" height="60">
+            <vi-item-avatar><vi-icon class="ml-4" name="free-access" size="30"/></vi-item-avatar>
+            <vi-item-content>Free Access Scheme</vi-item-content>
+          </vi-item>
+        </router-link>
 
         <router-link :to="{name: 'shelf'}">
           <vi-item class="nav-item" :link="true" height="60">
@@ -46,35 +47,19 @@
           </vi-item>
         </router-link>
 
-        <vi-item class="nav-item" :link="true" height="60">
-          <vi-item-avatar><vi-icon class="ml-4" name="assignment" size="36"/></vi-item-avatar>
-          <vi-item-content>Assign Homework</vi-item-content>
-        </vi-item>
-
-        <vi-item class="nav-item" :link="true" height="60">
-          <vi-item-avatar><vi-icon class="ml-4" name="report" size="36"/></vi-item-avatar>
-          <vi-item-content>Report</vi-item-content>
-        </vi-item>
-
-        <div class="spacer"></div>
-
-
-        <vi-item class="nav-item" :link="true" height="60">
-          <vi-item-avatar><vi-icon class="ml-10" name="config" size="24"/></vi-item-avatar>
-          <vi-item-content>Settings</vi-item-content>
-        </vi-item>
-
-        <router-link :to="{name: 'profile'}">
+        <router-link :to="{name: 'assignment'}">
           <vi-item class="nav-item" :link="true" height="60">
-            <vi-item-avatar><vi-icon class="ml-10" name="avatar" size="24"/></vi-item-avatar>
-            <vi-item-content>Profile</vi-item-content>
+            <vi-item-avatar><vi-icon class="ml-4" name="assignment" size="36"/></vi-item-avatar>
+            <vi-item-content>Assign Homework</vi-item-content>
           </vi-item>
         </router-link>
 
-        <vi-item class="nav-item" @click="logout" :link="true" height="60">
-          <vi-item-avatar><vi-icon class="ml-6" name="logout" size="24"/></vi-item-avatar>
-          <vi-item-content>Logout</vi-item-content>
-        </vi-item>
+        <router-link :to="{name: 'report'}">
+          <vi-item class="nav-item" :link="true" height="60">
+            <vi-item-avatar><vi-icon class="ml-4" name="report" size="36"/></vi-item-avatar>
+            <vi-item-content>Report</vi-item-content>
+          </vi-item>
+        </router-link>
       </div>
     </div>
 
@@ -88,22 +73,7 @@
 
 <script>
 export default {
-  name: 'App',
-
-  methods: {
-    logout () {
-      this.$store.dispatch('logout')
-      this.$router.replace({
-        name: 'login'
-      })
-    }
-  },
-
-  mounted () {
-    this.$bus.$on('sellers', v => {
-      console.log('receive event!', v)
-    })
-  }
+  name: 'App'
 }
 </script>
 
@@ -194,18 +164,22 @@ export default {
 
     .vi-item.nav-item
       margin-top 8px
+      width 220px
 
       &:hover
         background #a1a1a1
 
       ^[0] .router-link-active ^[-1..-1]
         background rgba(255,255,255,0.3) !important
-
         label 6px #009aec left
 
       .vi-item__content
         font-size 15px
         font-weight bold
+        line-height 1.2
+
+        +screen(900px)
+          opacity 0
 
       .vi-item__avatar
         width 50px
@@ -213,12 +187,14 @@ export default {
 
     .logo-item
       background white
-      padding 10px 10px
+      padding 7px 10px
       font-size 20px
       align-items flex-end
+      width 220px
+      height 70px
 
       &__logo
-        width 60px
+        width 56px
         height @width
 
       &__subtitle
@@ -248,6 +224,7 @@ export default {
       flex-direction column
 
   .app__scroll
+    padding-top 70px
     padding-left 220px
     width 100%
 

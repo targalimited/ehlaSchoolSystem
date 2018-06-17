@@ -1,26 +1,17 @@
 <template>
   <div class="home-view">
 
-    <div class="vi-banner">
-      <div>
-        <div class="vi-banner__title">Selected items</div>
-        <div class="vi-banner__info">{{selectedCount}}/ {{summary.total_item_qtt}} reading packs</div>
-        <vi-row wrap class="level-section" v-if="levelsQuota">
-          <vi-col v-for="(lv, i) in levelsQuota" :key="i">
-            <span class="level-label level-label--dark">{{lv.level}}</span>
-            {{lv.selected}}/{{lv.maxQuota}} <span v-if="lv.full" class="full">Full</span>
-          </vi-col>
-        </vi-row>
-      </div>
+    <vi-app-bar style="height: 110px" title="Accessible Items Overview">
+      <div class="vi-banner__info">{{selectedCount}}/ {{summary.total_item_qtt}} reading packs</div>
+      <vi-row wrap class="level-section" v-if="levelsQuota">
+        <vi-col v-for="(lv, i) in levelsQuota" :key="i">
+          <span class="level-label level-label--dark">{{lv.level}}</span>
+          {{lv.selected}}/{{lv.maxQuota}} <span v-if="lv.full" class="full">Full</span>
+        </vi-col>
+      </vi-row>
+    </vi-app-bar>
 
-      <!--<vi-input class="search-input" line prefix-icon="search" placeholder="Search by name" v-model="search"/>-->
-    </div>
-
-    <!--<div class="reminder">-->
-      <!--<vi-icon name="alert" size="18"/>-->
-      <!--You have readings that has not been assigned to any levels</div>-->
-
-    <div v-if="selectedItems">
+    <div class="pt-40" v-if="selectedItems">
 
       <vi-data-table
         class="selected-item-table"
