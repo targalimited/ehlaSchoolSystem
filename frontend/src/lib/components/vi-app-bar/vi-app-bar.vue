@@ -1,9 +1,9 @@
 <template>
-  <div class="ui-banner">
+  <div class="ui-banner" :class="{'ui-banner--fixed': fixed}">
     <!-- TODO this component is mixed with application logic, move outside -->
-    <vi-button icon text flat dark @click="$router.back()"><vi-icon name="left"/></vi-button>
+    <vi-button v-if="back" icon text flat dark @click="$router.back()"><vi-icon name="left"/></vi-button>
     <div>
-      <span class="ui-banner__title">{{title}}</span>
+      <span v-if="title" class="ui-banner__title">{{title}}</span>
 
       <div v-if="$slots.default|| subtitle" class="ui-banner__info">
         <slot v-if="$slots.default"></slot>
@@ -51,7 +51,18 @@
     name: 'vi-app-bar',
     props: {
       title: '',
-      subtitle: ''
+      subtitle: '',
+      fixed: {
+        default: true,
+        type: Boolean
+      },
+      back: {
+        default: true,
+        type: Boolean
+      },
+      title: {
+        type: String
+      }
     },
     methods: {
       logout () {
@@ -73,14 +84,16 @@
     color white
     padding 8px 8px
     height 70px
-    position fixed
-    top 0
-    left 220px
-    right 0
-    z-index 999
 
-    +screen(900px)
-      left 74px
+    &--fixed
+      position fixed
+      top 0
+      left 220px
+      right 0
+      z-index 999
+
+      +screen(900px)
+        left 74px
 
     small
       font-size 0.75em
