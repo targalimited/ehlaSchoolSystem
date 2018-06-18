@@ -141,7 +141,14 @@ export default {
       } catch (e) {}
     },
 
-    async remove ({commit, dispatch}, {id, cat}) {
+    async remove ({commit, dispatch}, {id, cat, withLevels}) {
+      if (withLevels) {
+        console.log('need to rm lebels first')
+        await dispatch('assignLevels', {
+          id: id,
+          levels: []
+        })
+      }
       try {
         await new AuthHttp().post('/choose_item', {
           add_item_ids: [],

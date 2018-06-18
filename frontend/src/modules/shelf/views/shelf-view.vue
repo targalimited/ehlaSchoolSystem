@@ -59,7 +59,7 @@
                 <vi-item-content>{{item.levels.length === 0 ? 'Assign' : 'Edit'}} level(s)</vi-item-content>
               </vi-item>
 
-              <vi-item v-if="item.levels.length === 0" @click="removeReading(item)" :link="true">
+              <vi-item @click="removeReading(item)" :link="true">
                 <vi-item-avatar>
                   <vi-icon name="trash"/>
                 </vi-item-avatar>
@@ -136,7 +136,8 @@
         }
         await this.$store.dispatch('shelf/remove', {
           id: item.id,
-          cat: item.cat_grouper
+          cat: item.cat_grouper,
+          withLevels: item.levels.length > 0
         })
         this.loading = false
         this.$message('Reading removed')
