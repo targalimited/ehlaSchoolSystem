@@ -118,6 +118,8 @@ export default {
       requestAnimationFrame(this.startTransition)
     },
     deactivate () {
+      // TODO otherwise the menu will be close while isActive is true (when clicking activator to close), why?
+      this.isActive = false
       this.isContentActive = false
     },
     activatorClickHandler (e) {
