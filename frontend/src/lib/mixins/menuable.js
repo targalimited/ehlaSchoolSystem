@@ -26,7 +26,7 @@ export default {
     absoluteX: 0,
     absoluteY: 0,
     dimensions: Object.assign({}, dimensions),
-    isContentActive: false,
+    isContentActive: false, // determine if the menu is visible or not
     pageYOffset: 0,
     stackClass: 'menuable__content__active',
     stackMinZIndex: 6
@@ -39,26 +39,28 @@ export default {
       default: 'auto'
     },
     minWidth: [Number, String],
+    // TODO: currently only allow number, for convenience should allow string
     nudgeBottom: {
-      type: [Number, String],
+      type: Number,
       default: 0
     },
     nudgeLeft: {
-      type: [Number, String],
+      type: Number,
       default: 0
     },
     nudgeRight: {
-      type: [Number, String],
+      type: Number,
       default: 0
     },
     nudgeTop: {
-      type: [Number, String],
+      type: Number,
       default: 0
     },
     nudgeWidth: {
       type: [Number, String],
       default: 0
     },
+    // Causes the component to flip to the opposite side when repositioned due to overflow
     offsetOverflow: {
       type: Boolean,
       default: true
@@ -109,6 +111,17 @@ export default {
     },
     isAttached () {
       return this.attach !== false
+    }
+  },
+
+  watch: {
+    disabled (val) {
+      val && this.deactivate()
+    },
+    isActive (val) {
+      if (this.disabled) return
+
+      val ? this.activate() : this.deactivate()
     }
   },
 
@@ -176,7 +189,7 @@ export default {
       // If overflowing bottom and offset
       // TODO: set 'bottom' position instead of 'top'
       if (isOverflowing && this.offsetOverflow) {
-        top = this.pageYOffset + (activator.top - contentHeight)
+        top = this.pageYOffset + (activator.top - contentHeight) - this.nudgeBottom
         // If overflowing bottom
       } else if (isOverflowing && !this.allowOverflow) {
         top = toTop - contentHeight - 12
@@ -215,8 +228,10 @@ export default {
     getOffsetTop () {
       if (!this.hasWindow) return 0
 
-      return window.pageYOffset ||
-        document.documentElement.scrollTop
+      // this would return this right value even when html, body is set to height: 100%
+      return document.body.scrollTop
+      // Drepracate this: would return 0 if html is set to height: 100%
+      // return window.pageYOffset || document.documentElement.scrollTop
     },
     getRoundedBoundedClientRect (el) {
       const rect = el.getBoundingClientRect()

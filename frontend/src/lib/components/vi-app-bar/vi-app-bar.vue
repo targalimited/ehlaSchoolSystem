@@ -13,7 +13,7 @@
 
     <vi-spacer></vi-spacer>
 
-    <vi-menu left min-width="180" :nudge-bottom="14" content-class="profile-menu" :attached="true">
+    <vi-menu left min-width="180" :nudge-bottom="14" content-class="profile-menu" :attach="true">
       <vi-button slot="activator" icon text>
         <vi-icon name="avatar" size="26"/>
       </vi-button>

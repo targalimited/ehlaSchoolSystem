@@ -8,10 +8,22 @@ import ClickOutside from '../../directives/click-outside'
 
 import Generators from './menu-generator'
 
+/**
+ * overview of how this menu work:
+ * isActive (from toggleable.js) - that is watched in turn to modify isContentActive
+ * isContentActive (menuable.js) - control visibility of the menu
+ * event from 'click activator', 'click outside' will toggle isActive which trigger the above
+ * activate() deactivate() is the methods to open and close the menu
+ * note that the use of requestAnimationFrame to make isContentActive become true, otherwise the menu will 'fly'
+ */
+
 export default {
   name: 'vi-menu',
+
   mixins: [Delayable, Toggleable, Detachable, Menuable, Generators],
+
   directives: {ClickOutside},
+
   props: {
     closeOnClick: {
       type: Boolean,
@@ -33,6 +45,7 @@ export default {
       type: Boolean,
       default: true
     },
+    // TODO there is a known bug not yet fixed (when the mouse nav from the menu back to activator, the menu will close which should not)
     openOnHover: {
       type: Boolean,
       default: false
@@ -46,6 +59,7 @@ export default {
       default: 'slide-y-transition'
     }
   },
+
   computed: {
     calculatedLeft () {
       return this.calcLeft()
@@ -97,23 +111,23 @@ export default {
       }
     }
   },
+
   methods: {
+    activate () {
+      this.updateDimensions()
+      requestAnimationFrame(this.startTransition)
+    },
+    deactivate () {
+      this.isContentActive = false
+    },
     activatorClickHandler (e) {
+      if (this.disabled) return
       if (this.openOnClick && !this.isActive) {
         e.stopPropagation()
-        this.updateDimensions()
-        // to get around the menu flying from the top right corner if opening for the first time
-        setTimeout(() => {
-          this.getActivator().focus()
-          requestAnimationFrame(() => {
-            this.isActive = true
-          })
-          this.absoluteX = e.clientX
-          this.absoluteY = e.clientY
-        }, 50)
+        this.isActive = true
       } else if (this.closeOnClick && this.isActive) {
         this.getActivator().blur()
-        this.isActive = false
+        this.deactivate()
       }
     },
     mouseEnterHandler () {
@@ -133,6 +147,7 @@ export default {
       return this.isActive && this.closeOnClick
     },
   },
+
   render (h) {
     const data = {
       staticClass: 'vi-menu',
