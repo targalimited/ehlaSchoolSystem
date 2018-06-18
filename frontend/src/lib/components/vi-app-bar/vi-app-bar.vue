@@ -1,7 +1,7 @@
 <template>
   <div class="vi-app-bar" :class="{'vi-app-bar--fixed': fixed}">
     <!-- TODO this component is mixed with application logic, move outside -->
-    <vi-button v-if="back" icon text flat dark @click="$router.back()"><vi-icon name="left"/></vi-button>
+    <vi-button v-if="back" icon flat dark @click="$router.back()"><vi-icon name="left"/></vi-button>
     <div>
       <span v-if="title" class="vi-app-bar__title">{{title}}</span>
 
@@ -16,8 +16,8 @@
     <slot name="action"></slot>
 
     <vi-menu left min-width="180" :nudge-bottom="14" content-class="profile-menu" :attach="true">
-      <vi-button slot="activator" icon text>
-        <vi-icon name="avatar" size="26"/>
+      <vi-button slot="activator" icon flat dark>
+        <vi-icon name="avatar" size="22"/>
       </vi-button>
 
       <router-link :to="{name: 'config'}">

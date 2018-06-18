@@ -7,67 +7,99 @@
         {{catChosen}} Reading packs selected<small v-if="catMax !== 999">(out of {{catMax}} quota)</small>
       </div>
       <div slot="action">
-        <vi-menu content-class="filter-menu" :close-on-content-click="false">
+        <vi-menu v-model="menu" content-class="filter-menu" :close-on-content-click="false">
           <vi-button slot="activator" icon flat>
             <vi-icon name="search"/>
           </vi-button>
           <div class="search-panel">
-            <vi-row px-10 wrap>
-              <vi-col v-if="levelOptions">
-                <vi-select
-                  v-model="levelList"
-                  :options="levelOptions"
-                  option-name="value_name_en"
-                  placeholder="Filter by levels"
-                  :chip="true">
-                </vi-select>
-              </vi-col>
-              <vi-col v-if="difficultyOptions">
-                <vi-select
-                  v-model="difficultyList"
-                  :options="difficultyOptions"
-                  placeholder="Filter by difficulties"
-                  option-name="value_name_en"
-                  :chip="true">
-                </vi-select>
-              </vi-col>
-              <vi-col v-if="texttypeOptions">
-                <vi-select
-                  v-model="texttypeList"
-                  :options="texttypeOptions"
-                  placeholder="Filter by texttypes"
-                  option-name="value_name_en"
-                  :chip="true">
-                </vi-select>
-              </vi-col>
-              <vi-col v-if="themeOptions">
-                <vi-select
-                  v-model="themeList"
-                  :options="themeOptions"
-                  placeholder="Filter by themes"
-                  option-name="value_name_en"
-                  :chip="true">
-                </vi-select>
-              </vi-col>
-              <vi-col v-if="subthemeOptions">
-                <vi-select
-                  v-model="subthemeList"
-                  :options="subthemeOptions"
-                  placeholder="Filter by subthemes"
-                  option-name="value_name_en"
-                  :chip="true">
-                </vi-select>
-              </vi-col>
-              <vi-col v-if="weaknessOptions">
-                <vi-select
-                  v-model="weaknessList"
-                  :options="weaknessOptions"
-                  placeholder="Filter by weaknesses"
-                  option-name="value_name_en"
-                  :chip="true">
-                </vi-select>
-              </vi-col>
+
+            <vi-row class="search-row" justify-center>
+              <vi-button @click="menu = false" size="200" primary>Search</vi-button>
             </vi-row>
+
+            <div v-if="levelOptions">
+              <vi-input-label>Filter by levels</vi-input-label>
+              <div class="options-container">
+                <vi-checkbox
+                  :inlineFlex="true"
+                  v-for="opt in levelOptions"
+                  :key="opt.value"
+                  v-model="levelList"
+                  :option-value="opt"
+                  :label="opt.value_name_en"
+                />
+              </div>
+            </div>
+
+            <div v-if="difficultyOptions">
+              <vi-input-label>Filter by difficulties</vi-input-label>
+              <div class="options-container">
+                <vi-checkbox
+                  :inlineFlex="true"
+                  v-for="opt in difficultyOptions"
+                  :key="opt.value"
+                  v-model="difficultyList"
+                  :option-value="opt"
+                  :label="opt.value_name_en"
+                />
+              </div>
+            </div>
+
+            <div v-if="texttypeOptions">
+              <vi-input-label>Filter by texttypes</vi-input-label>
+              <div class="options-container">
+                <vi-checkbox
+                  :inlineFlex="true"
+                  v-for="opt in texttypeOptions"
+                  :key="opt.value"
+                  v-model="texttypeList"
+                  :option-value="opt"
+                  :label="opt.value_name_en"
+                />
+              </div>
+            </div>
+
+            <div v-if="themeOptions">
+              <vi-input-label>Filter by themes</vi-input-label>
+              <div class="options-container">
+                <vi-checkbox
+                  :inlineFlex="true"
+                  v-for="opt in themeOptions"
+                  :key="opt.value"
+                  v-model="themeList"
+                  :option-value="opt"
+                  :label="opt.value_name_en"
+                />
+              </div>
+            </div>
+
+            <div v-if="subthemeOptions">
+              <vi-input-label>Filter by subthemes</vi-input-label>
+              <div class="options-container">
+                <vi-checkbox
+                  :inlineFlex="true"
+                  v-for="opt in subthemeOptions"
+                  :key="opt.value"
+                  v-model="subthemeList"
+                  :option-value="opt"
+                  :label="opt.value_name_en"
+                />
+              </div>
+            </div>
+
+            <div v-if="weaknessOptions">
+              <vi-input-label>Filter by weakness</vi-input-label>
+              <div class="options-container">
+                <vi-checkbox
+                  class="mb-20"
+                  v-for="opt in weaknessOptions"
+                  :key="opt.value"
+                  v-model="weaknessList"
+                  :option-value="opt"
+                  :label="opt.value_name_en"
+                />
+              </div>
+            </div>
           </div>
         </vi-menu>
       </div>
@@ -75,7 +107,7 @@
 
     <vi-row align-center class="search-terms" v-show="searchList.length > 0">
       <vi-icon name="search" size="16" class="mr-10"/>
-      Searching for <span class="text-bold ml-6">{{searchList | join}}</span>
+      <div class="text-ellipsis">Searching for <span class="text-bold ml-6">{{searchList | join}}</span></div>
       <vi-button text icon @click="clearAllFilter">
         <vi-icon name="clear" size="14"/>
       </vi-button>
@@ -142,6 +174,7 @@
 
     data () {
       return {
+        menu: false, // serach panel visibility
         search: '',
         loading: false,
         headers: [
@@ -196,12 +229,7 @@
         else return false
       },
       searchList () {
-        // TODO
-//        let themes
-//        if (this.themeList.length > 0) {
-//           themes = this.themeOptions.filter(option => this.themeList.some(val => val === option.value)).map(o => o.name_en)
-//        }
-        return [...this.levelList, ...this.difficultyList, ...this.themeList, ...this.subthemeList, ...this.weaknessList, ...this.texttypeList]
+        return [...this.levelList.map(obj => obj.value_name_en), ...this.difficultyList.map(obj => obj.value_name_en), ...this.themeList.map(obj => obj.value_name_en), ...this.subthemeList.map(obj => obj.value_name_en), ...this.weaknessList.map(obj => obj.value_name_en), ...this.texttypeList.map(obj => obj.value_name_en)]
       }
     },
 
@@ -258,7 +286,8 @@
           return item[`ei_${type}`].some(t => {
             let value = typeof t === 'string' ? t : t.value
             value = value.toLowerCase()
-            return this[`${type}List`].some(filter => {
+            let filterIds = typeof this[`${type}List`][0] === 'string' ? this[`${type}List`] : this[`${type}List`].map(obj => obj.value)
+            return filterIds.some(filter => {
               filter = filter.toLowerCase()
               return filter === value
             })
@@ -344,6 +373,19 @@
     .vi-button
       position absolute
       right 0
+
+  .options-container
+    margin 4px 0 32px
+    font-size 15px
+
+  .search-row
+    position fixed
+    bottom 0
+    left 0
+    right 0
+    padding 20px
+    background white
+
 </style>
 
 <style lang="stylus">
@@ -352,12 +394,21 @@
     top: 70px !important
     left: 220px !important
     right: 0 !important
+    bottom: 0 !important
     position: fixed !important
     max-width: 100% !important
     background #f4f4f4
     border-radius !important
+    max-height: 9999px !important
+    overflow hidden
 
     +screen(900px)
       left 74px !important
       right: 0 !important
+
+    .search-panel
+      overflow auto
+      padding 20px 32px
+      height 100%
+      padding-bottom 80px
 </style>
