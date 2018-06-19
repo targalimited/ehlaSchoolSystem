@@ -229,9 +229,9 @@ export default {
       if (!this.hasWindow) return 0
 
       // this would return this right value even when html, body is set to height: 100%
-      return document.body.scrollTop
+      // return document.body.scrollTop
       // Drepracate this: would return 0 if html is set to height: 100%
-      // return window.pageYOffset || document.documentElement.scrollTop
+      return window.pageYOffset || document.documentElement.scrollTop
     },
     getRoundedBoundedClientRect (el) {
       const rect = el.getBoundingClientRect()

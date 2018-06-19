@@ -261,9 +261,13 @@ export default {
       if (!getters.levelOptions || !state.selectedItems) return
       return getters.levelOptions.map(lv => {
         let selected = 0
+        let selectedItemInCat = 0
         state.selectedItems.forEach(item => {
           if (item.levels.includes(lv)) {
             selected++
+          }
+          if (cat && item.levels.includes(lv) && item.cat_grouper === cat) {
+            selectedItemInCat++
           }
         })
         const obj = {
@@ -275,7 +279,7 @@ export default {
         }
         if (cat) {
           obj.maxCatQuota = state.cats[cat].maxLv
-          obj.catFull = selected >= state.cats[cat].maxLv
+          obj.catFull = selectedItemInCat >= state.cats[cat].maxLv
         }
         return obj
       })
