@@ -11,3 +11,7 @@ Vue.filter('levelName', lv => {
   if (!mapper) return lv
   return mapper[lv]
 })
+
+Vue.filter('join', array => {
+  return array.join(', ')
+})

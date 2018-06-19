@@ -28,7 +28,8 @@
       minWidth: String,
       size: [String, Number],
       primary: Boolean,
-      active: Boolean
+      active: Boolean,
+      dark: Boolean
     },
     computed: {
       _color () {
@@ -43,6 +44,7 @@
           'vi-button--text': this.text,
           'vi-button--fill': (!this.text && !this.outline && this.color && !this.flat) || this.primary,
           'vi-button--flat': this.flat,
+          'vi-button--dark': this.dark,
           'vi-button--round': this.round,
           'vi-button--raise': this.raise,
           'vi-button--float': this._float,
@@ -215,13 +217,18 @@
               color lighten(color_value, 25%)
 
     // TODO: come back later (now just support default color)
-    &--flat.vi-button
-      background none
-      border-color transparent
+    &--flat
+      &.vi-button
+        background none
+        border-color transparent
 
-      &:hover, &.vi-button--active
-        color $dark-grey
-        background rgba(0, 0, 0, 0.05)
+        &:hover, &.vi-button--active
+          color $dark-grey
+          background rgba(0, 0, 0, 0.05)
+
+      &.vi-button--dark
+        &:hover, .vi-menu__activator--active &
+          background rgba(255,255,255,0.3)
 
     &--large
       height: 50px

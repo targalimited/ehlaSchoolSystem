@@ -13,7 +13,7 @@
           <vi-row v-for="level in levels" :key="level.level">
             <vi-checkbox
               :option-value="level.level"
-              :label="level.level"
+              :label="level.level | levelName"
               :disabled="level.full || level.catFull"
               v-model="newSelected"/>
             <!-- TODO: this message is hardcode-->

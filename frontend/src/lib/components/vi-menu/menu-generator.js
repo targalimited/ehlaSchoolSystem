@@ -1,3 +1,4 @@
+
 /**
  * Menu generators
  *
@@ -13,7 +14,8 @@ export default {
       const options = {
         staticClass: 'vi-menu__activator',
         'class': {
-          'vi-menu__activator--active': this.hasJustFocused || this.isActive
+          'vi-menu__activator--active': this.hasJustFocused || this.isActive,
+          'vi-menu__activator--disabled': this.disabled
         },
         ref: 'activator',
         on: {}
@@ -52,7 +54,7 @@ export default {
 
       directives.push({
         name: 'show',
-        value: this.isActive
+        value: this.isContentActive
       })
 
       return directives

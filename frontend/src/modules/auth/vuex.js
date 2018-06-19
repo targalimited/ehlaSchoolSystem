@@ -57,6 +57,7 @@ export default {
 
     logout ({commit, dispatch}) {
       const res = new AuthHttp().post('/userApi/logout')
+      commit('shelf/reset');
       commit('logout');
       return res
     },

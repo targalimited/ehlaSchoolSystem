@@ -1,11 +1,11 @@
 <template>
-  <div class="ui-banner" :class="{'ui-banner--fixed': fixed}">
+  <div class="vi-app-bar" :class="{'vi-app-bar--fixed': fixed}">
     <!-- TODO this component is mixed with application logic, move outside -->
-    <vi-button v-if="back" icon text flat dark @click="$router.back()"><vi-icon name="left"/></vi-button>
+    <vi-button v-if="back" icon flat dark @click="$router.back()"><vi-icon name="left"/></vi-button>
     <div>
-      <span v-if="title" class="ui-banner__title">{{title}}</span>
+      <span v-if="title" class="vi-app-bar__title">{{title}}</span>
 
-      <div v-if="$slots.default|| subtitle" class="ui-banner__info">
+      <div v-if="$slots.default|| subtitle" class="vi-app-bar__info">
         <slot v-if="$slots.default"></slot>
         <template v-else="subtitle">{{subtitle}}</template>
       </div>
@@ -13,9 +13,11 @@
 
     <vi-spacer></vi-spacer>
 
-    <vi-menu left min-width="180" :nudge-bottom="14" content-class="profile-menu">
-      <vi-button slot="activator" icon text>
-        <vi-icon name="avatar" size="26"/>
+    <slot name="action"></slot>
+
+    <vi-menu left min-width="180" :nudge-bottom="14" content-class="profile-menu" :attach="true">
+      <vi-button slot="activator" icon flat dark>
+        <vi-icon name="avatar" size="22"/>
       </vi-button>
 
       <router-link :to="{name: 'config'}">
@@ -77,7 +79,7 @@
 
 <style lang="stylus">
   @import '../../stylus/main.styl'
-  .ui-banner
+  .vi-app-bar
     display flex
     align-items center
     background $brand

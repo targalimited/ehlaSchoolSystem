@@ -74,12 +74,18 @@ export default {
     cats: defaultCategories,
     selectedItems: null,
     summary: {},
-    levels_translate: {
-      p1: 'foo'
-    }
+    levels_translate: {}
   },
 
   mutations: {
+    reset (state) {
+      state.summary = {}
+      state.items = {}
+      state.cats = defaultCategories
+      state.selectedItems = null
+      state.summary = {}
+    },
+
     gotSummary (state, summary) {
       state.summary = summary
       catList.forEach(CAT => {
@@ -141,7 +147,14 @@ export default {
       } catch (e) {}
     },
 
-    async remove ({commit, dispatch}, {id, cat}) {
+    async remove ({commit, dispatch}, {id, cat, withLevels}) {
+      if (withLevels) {
+        console.log('need to rm lebels first')
+        await dispatch('assignLevels', {
+          id: id,
+          levels: []
+        })
+      }
       try {
         await new AuthHttp().post('/choose_item', {
           add_item_ids: [],
