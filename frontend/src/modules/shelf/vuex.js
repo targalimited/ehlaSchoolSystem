@@ -8,12 +8,9 @@ const defaultCategories = {
     key: 'DR',
     name_en: 'Daily Fun Reading',
     icon: 'daily-reading',
-    item_ids: [],
     selectedCount: 0,
     max: 0,
     lvMax: 0,
-    items: [],
-    selectedItems: [],
     image: {
       primary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/primary-daily-1529141847101.jpg',
       secondary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-a-1529141847982.jpg'
@@ -23,12 +20,9 @@ const defaultCategories = {
     key: 'WR',
     name_en: 'Weekly Fun Reading',
     icon: 'weekly-reading',
-    item_ids: [],
     selectedCount: 0,
     max: 0,
     lvMax: 0,
-    items: [],
-    selectedItems: [],
     image: {
       primary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/primary-b-1529141844280.jpg',
       secondary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-b-1529141848718.jpg'
@@ -38,12 +32,9 @@ const defaultCategories = {
     key: 'RCD',
     name_en: 'Reading Comprehensive Diagnosis',
     icon: 'diagnosis-reading',
-    item_ids: [],
     selectedCount: 0,
     max: 0,
     lvMax: 0,
-    items: [],
-    selectedItems: [],
     image: {
       primary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/primary-comprehension-1529141845873.jpg',
       secondary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-c-1529141849068.jpg'
@@ -53,12 +44,9 @@ const defaultCategories = {
     key: 'BR',
     name_en: 'Daily Fun Reading (Bridging)',
     icon: 'daily-reading',
-    item_ids: [],
     selectedCount: 0,
     max: 0,
     maxLv: 0,
-    items: [],
-    selectedItems: [],
     image: {
       primary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/primary-bridging-1529141837775.jpg',
       secondary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-d-1529141849542.jpg'
@@ -81,7 +69,13 @@ export default {
     reset (state) {
       state.summary = {}
       state.items = {}
-      state.cats = defaultCategories
+      // otherwise when logout the data will not be cleared
+      catList.forEach(cat => {
+        state.cats[cat].selectedCount = 0
+        state.cats[cat].max = 0
+        state.cats[cat].maxLv = 0
+      })
+      Vue.set(state, 'cats', defaultCategories)
       state.selectedItems = null
       state.summary = {}
     },

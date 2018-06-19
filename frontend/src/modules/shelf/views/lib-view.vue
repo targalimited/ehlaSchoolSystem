@@ -140,7 +140,7 @@
         <vi-table-col>
           <vi-checkbox-boolean
             @input="toggleReading(item)"
-            :disabled="item.lock_status || loading"
+            :disabled="loading"
             :value="item.chose"/>
         </vi-table-col>
       </div>
@@ -235,7 +235,7 @@
 
     methods: {
       toggleReading (i) {
-        if (i.chose) this.removeReading(i.id)
+        if (i.chose) this.removeReading(i)
         else this.addReading(i.id)
       },
       async addReading (id) {
@@ -258,11 +258,12 @@
         this.loading = false
         this.$message('Reading added')
       },
-      async removeReading (id) {
+      async removeReading (item) {
         this.loading = true
         await this.$store.dispatch('shelf/remove', {
-          id,
-          cat: this.$key
+          id: item.id,
+          cat: this.$key,
+          withLevels: item.lock_status
         })
         this.loading = false
         this.$message('Reading removed')
