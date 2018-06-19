@@ -15,8 +15,8 @@ const defaultCategories = {
     items: [],
     selectedItems: [],
     image: {
-      primary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/primary-daily-1529141847101.jpg',
-      secondary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-a-1529141847982.jpg'
+      primary: 'https://ehla-media-bucket.s3.amazonaws.com/images_20180201/primary-daily-1529141847101.jpg',
+      secondary: 'https://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-a-1529141847982.jpg'
     }
   },
   WR: {
@@ -30,8 +30,8 @@ const defaultCategories = {
     items: [],
     selectedItems: [],
     image: {
-      primary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/primary-b-1529141844280.jpg',
-      secondary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-b-1529141848718.jpg'
+      primary: 'https://ehla-media-bucket.s3.amazonaws.com/images_20180201/primary-b-1529141844280.jpg',
+      secondary: 'https://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-b-1529141848718.jpg'
     }
   },
   RCD: {
@@ -45,8 +45,8 @@ const defaultCategories = {
     items: [],
     selectedItems: [],
     image: {
-      primary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/primary-comprehension-1529141845873.jpg',
-      secondary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-c-1529141849068.jpg'
+      primary: 'https://ehla-media-bucket.s3.amazonaws.com/images_20180201/primary-comprehension-1529141845873.jpg',
+      secondary: 'https://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-c-1529141849068.jpg'
     }
   },
   BR: {
@@ -60,8 +60,8 @@ const defaultCategories = {
     items: [],
     selectedItems: [],
     image: {
-      primary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/primary-bridging-1529141837775.jpg',
-      secondary: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-d-1529141849542.jpg'
+      primary: 'https://ehla-media-bucket.s3.amazonaws.com/images_20180201/primary-bridging-1529141837775.jpg',
+      secondary: 'https://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-d-1529141849542.jpg'
     }
   }
 }
