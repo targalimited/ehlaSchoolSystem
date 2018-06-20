@@ -46,7 +46,7 @@
             </div>
 
             <div v-if="texttypeOptions">
-              <vi-input-label>Filter by texttypes</vi-input-label>
+              <vi-input-label>Filter by text types</vi-input-label>
               <div class="options-container">
                 <vi-checkbox
                   :inlineFlex="true"
@@ -74,7 +74,7 @@
             </div>
 
             <div v-if="subthemeOptions">
-              <vi-input-label>Filter by subthemes</vi-input-label>
+              <vi-input-label>Filter by sub-themes</vi-input-label>
               <div class="options-container">
                 <vi-checkbox
                   :inlineFlex="true"
