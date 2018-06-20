@@ -28,7 +28,7 @@
           <vi-input v-model="password" type="password" placeholder="Enter your username"/>
         </div>
 
-        <vi-input-error class="mb-24" v-if="error">Username or password not correct</vi-input-error>
+        <vi-input-error class="mb-24" v-if="error">username / password is wrong</vi-input-error>
 
         <vi-button :disabled="loading" @click="submit" primary>{{loading ? 'Loggin in...' : 'Login'}}</vi-button>
 

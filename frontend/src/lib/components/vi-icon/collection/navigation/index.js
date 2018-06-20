@@ -1,4 +1,3 @@
-import './caret'
 import './home'
 import './left'
 import './more'
