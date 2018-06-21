@@ -51,8 +51,8 @@
           {
             name: 'Intelligent Tracking Exercise & Tutorial',
             images: {
-              primary: 'https://ehlacademy.org/images/about04.jpg',
-              secondary: 'https://ehlacademy.org/images/about04.jpg'
+              primary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/tutorial.jpg',
+              secondary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/tutorial.jpg'
             }
           },
           {
