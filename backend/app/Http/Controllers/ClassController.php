@@ -6,6 +6,8 @@ use App\SchoolClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\ParamBasicServices;
+use App\PermissionControlServices;
 
 
 class ClassController extends Controller
@@ -16,6 +18,20 @@ class ClassController extends Controller
         return json($result);
     }
 
+	public function get_all_classes (Request $request) {
+		//params basic
+		$PBS = New ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		//permission
+		$PCS = New PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+
+		$classes = $PCS->getTeacherClasses($user['user_id'], null);
+		$this->result['data'] = $classes;
+        
+        return Response()->json($this->result,200);
+	}
+	
     public function postClasses(Request $request){
         /**
         $input = $request->all();

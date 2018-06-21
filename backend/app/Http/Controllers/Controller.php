@@ -14,6 +14,8 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+	public $result = ['success' => true,'data' => null,'message' => ''];
+	
     public function __construct() {
 		// get access token if have
 		// $token = $this->request->header($this->authKey);
