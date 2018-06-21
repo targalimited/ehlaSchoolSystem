@@ -11,7 +11,7 @@ return [
      |
      */
     'supportsCredentials' => true,
-    'allowedOrigins' => ['https://school.ehlacademy.org','school-system-frontend.ap-southeast-1.elasticbeanstalk.com'],//'http://api.project-kay.buildonauts.com','http://school-system-frontend.ap-southeast-1.elasticbeanstalk.com','http://school-system-backend.ap-southeast-1.elasticbeanstalk.com','http://localhost:3000','http://schoolsystem.com','http://www.schoolsystem.com'],
+    'allowedOrigins' => ['https://school.ehlacademy.org','http://school-system-frontend.ap-southeast-1.elasticbeanstalk.com'],//'http://api.project-kay.buildonauts.com','http://school-system-frontend.ap-southeast-1.elasticbeanstalk.com','http://school-system-backend.ap-southeast-1.elasticbeanstalk.com','http://localhost:3000','http://schoolsystem.com','http://www.schoolsystem.com'],
     //'allowedOrigins' => ['*'],
     'allowedHeaders' => ['*'],
     'allowedMethods' => ['*'],
