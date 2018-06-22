@@ -60,9 +60,6 @@ class ItemController extends Controller {
 		//permission
 		$PCS = new PermissionControlServices($request);
 		$permission = $PCS->checkUserPermission($user);
-
-		//get class level mapper
-		
 		
 		//data
 		$catGrouper = $params['cat_grouper'];		
