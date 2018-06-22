@@ -61,5 +61,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'cors' => \App\Http\Middleware\CORS::class,
         'chooseDB' => \App\Http\Middleware\ChooseDB::class,
+        'recUsermodel' => \App\Http\Middleware\RecUsermodel::class,
     ];
 }
