@@ -17,6 +17,11 @@ use Illuminate\Validation\Rule;
 
 class ItemController extends Controller {
 	
+	public function test_message(Request $request) {
+		$this->result['data'] = "testing";
+		return $this->result;
+	}
+	
 	public function get_by_category (Request $request) {
 		//params
 		$params = $request->params;

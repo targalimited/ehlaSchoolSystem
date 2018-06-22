@@ -198,6 +198,9 @@ Route::group(['prefix' => 'v1'], function () {
     });
 	});
 
+  Route::group(['middleware' => ['recUsermodel']], function () {
+	Route::post('testUsermodel','ItemController@test_message');    
+  });
   // Route::post('userApi/login', 'LoginController@login')->middleware('guest');
   Route::post('userApi/login', 'LoginController@login');
 
