@@ -13,8 +13,8 @@
 
               <vi-icon size="100" name="lock"/>
 
-              <img :src="cat.image" alt="">
-
+              <img v-if="school_level === 'P'" :src="cat.images.primary" alt="">
+              <img v-if="school_level === 'S'" :src="cat.images.secondary" alt="">
               {{cat.name}}
 
 
@@ -32,34 +32,54 @@
 
     data () {
       return {
+        school_level: this.$store.getters.user.school.edu_lv,
         cats: [
           {
-            image: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-d-1529141849542.jpg',
-            name: 'English Reading'
+            name: 'English Reading',
+            images: {
+              primary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/P-reading.jpg',
+              secondary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/S-reading.jpg'
+            }
           },
           {
-            image: 'https://ehlacademy.org/images/about05.jpg',
-            name: 'Intelligent Diagnosis & Teaching'
+            name: 'Intelligent Diagnosis & Teaching',
+            images: {
+              primary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/diagnosis.jpg',
+              secondary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/diagnosis.jpg'
+            }
           },
           {
-            image: 'https://ehlacademy.org/images/about04.jpg',
-            name: 'Intelligent Tracking Exercise & Tutorial'
+            name: 'Intelligent Tracking Exercise & Tutorial',
+            images: {
+              primary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/tutorial.jpg',
+              secondary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/tracking+exerciese-s.jpg'
+            }
           },
           {
-            image: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-d-1529141849542.jpg',
-            name: 'Literature in English Programme'
+            name: 'Literature in English Programme',
+            images: {
+              primary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/primary-Eng+Lit.png',
+              secondary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/secordary-Eng+Lit.png'
+            }
           },
           {
-            image: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-d-1529141849542.jpg',
-            name: 'Structured/Featured Programme'
+            name: 'Structured/Featured Programme',
+            images: {
+              primary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/features.jpg',
+              secondary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/features.jpg'
+            }
           },
           {
-            image: 'http://ehla-media-bucket.s3.amazonaws.com/images_20180201/secondary-d-1529141849542.jpg',
-            name: 'Bookmark'
+            name: 'Bookmark',
+            images: {
+              primary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/bookmark.jpg',
+              secondary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/bookmark.jpg'
+            }
           }
         ]
       }
-    }
+    },
+
   }
 </script>
 

@@ -43,12 +43,13 @@
     <vi-container class="pdf-section">
       <vi-section-header>Resources:</vi-section-header>
       <vi-row wrap>
-        <vi-col v-for="i in 5" xs4 :key="i">
+        <vi-col v-for="(resource, i) in resources" xs4 :key="i">
           <div class="pdf">
             <div class="pdf__img">
-              PDF {{i}}
+              <img v-if="school_level === 'P'" :src="resource.cover.primary" alt="">
+              <img v-if="school_level === 'S'" :src="resource.cover.secondary" alt="">
             </div>
-            <div class="vi-link">PDF_XYZ.pdf (download)</div>
+            <a :href="resource.source" class="vi-link" download target="_blank">{{resource.name}} (download)</a>
           </div>
         </vi-col>
       </vi-row>
@@ -60,6 +61,54 @@
 <script>
 export default {
   name: 'home',
+
+  data () {
+    return {
+      school_level: this.$store.getters.user.school.edu_lv,
+      resources: [
+        {
+          name: "Comprehension(primary)",
+          cover: {
+            primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf3-comprehension-primary.png",
+            secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf3-comprehension-primary.png",
+          },
+          source: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Comprehension(primary).pdf"
+        },
+        {
+          name: "Comprehension(secondary)",
+          cover: {
+            primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf3-comprehension-secondary.png",
+            secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf3-comprehension-secondary.png",
+          },
+          source: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Comprehension(secondary).pdf"
+        },
+        {
+          name: "Eng Lit",
+          cover: {
+            primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf2-literature-primary.png",
+            secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf2-literature-secondary.png",
+          },
+          source: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Eng+Lit.pdf"
+        },
+        {
+          name: "Intelligent Diagnosis",
+          cover: {
+            primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf3-comprehension-Intelligent.png",
+            secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf3-comprehension-Intelligent.png",
+          },
+          source: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Intelligent+Diagnosis.pdf"
+        },
+        {
+          name: "Reading section",
+          cover: {
+            primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf1-solution+reading.png",
+            secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf1-solution+reading.png",
+          },
+          source: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Reading+section.pdf"
+        }
+      ]
+    }
+  },
 
   computed: {
     summary () {
@@ -151,9 +200,8 @@ export default {
     font-size 14px
 
     &__img
-      width 100px
-      height 150px
-      background #d7d7d7
+      width 80%
+      height auto
       margin 0 auto 8px auto
 
 

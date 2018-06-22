@@ -4,13 +4,15 @@ import { isCookieEnabled, getCookie, setCookie, removeCookie } from 'tiny-cookie
 export default {
   state: {
     extoken: localStorage.getItem('extoken') || '',
+    user: JSON.parse(localStorage.getItem('user')) || null,
     authStatus: '',
     schoolName: ''
   },
 
   getters: {
     isAuthenticated: state => !!state.extoken,
-    authStatus: state => state.authStatus
+    authStatus: state => state.authStatus,
+    user: state => state.user,
   },
 
   mutations: {
@@ -20,6 +22,7 @@ export default {
     login_success (state, res) {
       state.authStatus = 'success'
       state.extoken = res['data']['ex_token']
+      state.user = res['data']['user']
     },
     logout (state) {
       localStorage.removeItem("extoken");
@@ -27,6 +30,8 @@ export default {
       localStorage.removeItem("user");
       state.authStatus = 'fail'
       state.extoken = ''
+      state.user = null
+      schoolName: ''
     },
     gotUserInfo (state, user) {
       if (!user) return

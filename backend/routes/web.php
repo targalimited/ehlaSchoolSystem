@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+/*
 Route::get('/user', function (Request $request) {
 
  // dd(DB::getDatabaseName());
@@ -36,7 +36,7 @@ Route::get('/addStudent', function (Request $request) {
     $student->save();
   }
 })->middleware('detectDB');
-
+*/
 //header('Access-Control-Allow-Credentials: true');
 
 
@@ -77,6 +77,11 @@ Route::group(['prefix' => 'v1'], function () {
     //Category controller
     Route::get('get_school_category/subject_id/{subject_id?}','CategoryController@get_school_category');
 
+	//User Controller
+	Route::get('get_all_classes', 'ClassController@get_all_classes');
+	
+	
+	
     //reading controller
     Route::post('create_reading_exercise', 'ReadingController@postReadingExercise');
     Route::post('start_reading_assignment', 'ReadingController@startReadingAssignment');
