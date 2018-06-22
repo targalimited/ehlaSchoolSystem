@@ -200,9 +200,8 @@ export default {
     font-size 14px
 
     &__img
-      width 100px
-      height 150px
-      background #d7d7d7
+      width 80%
+      height auto
       margin 0 auto 8px auto
 
 

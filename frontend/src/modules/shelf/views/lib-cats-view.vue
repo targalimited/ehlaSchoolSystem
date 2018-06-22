@@ -23,7 +23,8 @@
           <vi-col v-for="(cat, i) in readingCategories" xs6 :key="i">
             <div class="reading-item">
 
-              <img :src="cat.image.secondary" alt="">
+              <img v-if="school_level === 'P'" :src="cat.image.primary" alt="">
+              <img v-if="school_level === 'S'" :src="cat.image.secondary" alt="">
 
               {{cat.name_en}}
 
@@ -48,6 +49,12 @@
 <script>
   export default {
     name: 'lib-cat-view',
+
+    data () {
+      return {
+        school_level: this.$store.getters.user.school.edu_lv
+      }
+    },
 
     computed: {
       readingCategories () {

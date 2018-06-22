@@ -52,14 +52,14 @@
             name: 'Intelligent Tracking Exercise & Tutorial',
             images: {
               primary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/tutorial.jpg',
-              secondary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/tutorial.jpg'
+              secondary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/tracking+exerciese-s.jpg'
             }
           },
           {
             name: 'Literature in English Programme',
             images: {
-              primary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/P-literature.jpg',
-              secondary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/S-literature.jpg'
+              primary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/primary-Eng+Lit.png',
+              secondary: 'https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/secordary-Eng+Lit.png'
             }
           },
           {
