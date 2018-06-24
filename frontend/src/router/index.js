@@ -14,12 +14,6 @@ export default new Router({
     ...AuthRoutes,
     ...LibRoutes,
     {
-      path: '/free-access-scheme',
-      name: 'free-access',
-      component: ComingSoonView,
-      props: { title: 'Free Access Scheme' }
-    },
-    {
       path: '/report',
       name: 'report',
       component: ComingSoonView,

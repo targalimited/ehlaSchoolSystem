@@ -26,20 +26,6 @@
           </vi-item>
         </router-link>
 
-        <router-link :to="{name: 'lib-cat'}">
-          <vi-item class="nav-item" :link="true" height="60">
-            <vi-item-avatar><vi-icon class="ml-4" name="pilot" size="36"/></vi-item-avatar>
-            <vi-item-content>School Pilot 100 (2018/19)</vi-item-content>
-          </vi-item>
-        </router-link>
-
-        <router-link :to="{name: 'free-access'}">
-          <vi-item class="nav-item" :link="true" height="60">
-            <vi-item-avatar><vi-icon class="ml-4" name="free-access" size="30"/></vi-item-avatar>
-            <vi-item-content>Free Access Scheme</vi-item-content>
-          </vi-item>
-        </router-link>
-
         <router-link :to="{name: 'shelf'}">
           <vi-item class="nav-item" :link="true" height="60">
             <vi-item-avatar><vi-icon class="ml-4" name="shelf" size="36"/></vi-item-avatar>
@@ -58,6 +44,22 @@
           <vi-item class="nav-item" :link="true" height="60">
             <vi-item-avatar><vi-icon class="ml-4" name="report" size="36"/></vi-item-avatar>
             <vi-item-content>Report</vi-item-content>
+          </vi-item>
+        </router-link>
+
+        <div class="app__sidebar__divider"></div>
+
+        <router-link :to="{name: 'lib-cat'}">
+          <vi-item class="nav-item" :link="true" height="60">
+            <vi-item-avatar><vi-icon class="ml-4" name="pilot" size="36"/></vi-item-avatar>
+            <vi-item-content>School Pilot 100 (2018/19)</vi-item-content>
+          </vi-item>
+        </router-link>
+
+        <router-link :to="{name: 'free-access'}">
+          <vi-item class="nav-item" :link="true" height="60">
+            <vi-item-avatar><vi-icon class="ml-4" name="free-access" size="30"/></vi-item-avatar>
+            <vi-item-content>Free Access Scheme</vi-item-content>
           </vi-item>
         </router-link>
       </div>
@@ -129,6 +131,12 @@ export default {
 
       #layout-1 > polygon:first-child
         display none
+
+    &__divider
+      height 1px
+      background white
+      margin 10px 20px
+      opacity 0.15
 
     .vi-item.nav-item
       margin-top 8px

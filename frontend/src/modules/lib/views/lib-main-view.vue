@@ -11,13 +11,12 @@
 
             <div class="reading-item">
 
-              <vi-icon size="100" name="lock"/>
-
+              <div class="circle">
+                <vi-icon size="20" name="lock"/>
+              </div>
               <img v-if="school_level === 'P'" :src="cat.images.primary" alt="">
               <img v-if="school_level === 'S'" :src="cat.images.secondary" alt="">
               {{cat.name}}
-
-
             </div>
           </vi-col>
         </vi-row>
@@ -94,14 +93,20 @@
     margin-bottom 20px
     // color $brand
 
-    .vi-icon
+    .circle
+      width 40px
+      height 40px
+      display inline-flex
+      align-items center
+      justify-content center
       position absolute
-      top 0
-      left 0
-      right 0
-      bottom 0
-      margin 50px auto
+      top 10px
+      right 10px
+      background rgba(0,0,0,0.4)
+      border-radius 50%
+
+    .vi-icon
       color white
-      opacity 0.7
+      opacity 0.9
 
 </style>

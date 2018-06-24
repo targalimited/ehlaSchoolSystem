@@ -21,12 +21,20 @@ export default [
     path: '/choose-reading',
     name: 'lib-cat',
     component: LibCatsView,
-    beforeEnter: ifAuthenticated
+    beforeEnter: ifAuthenticated,
+    props: { type: 'pilot' }
   },
   {
     path: '/choose-reading/:key',
     name: 'lib',
     component: LibView,
     beforeEnter: ifAuthenticated
+  },
+  {
+    path: '/free-access-scheme',
+    name: 'free-access',
+    component: LibCatsView,
+    beforeEnter: ifAuthenticated,
+    props: { type: 'free' }
   }
 ]

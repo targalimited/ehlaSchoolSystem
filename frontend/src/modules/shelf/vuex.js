@@ -331,6 +331,10 @@ export default {
 
     levelsTranslate (state) {
       return state.summary.levels_translate
+    },
+
+    isPilot (state) {
+      return state.summary.is_pilot
     }
   }
 }
