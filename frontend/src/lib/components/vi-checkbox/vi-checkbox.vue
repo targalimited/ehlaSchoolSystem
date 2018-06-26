@@ -19,6 +19,9 @@
       prop: 'inputValue'
     },
     props: {
+      disabled: {
+        type: Boolean
+      },
       label: String,
       optionValue: Object | String,
       inputValue: Array | String | Boolean,
@@ -57,7 +60,8 @@
       },
       classInlineFlex () {
         return {
-          "vi-checkbox__inlineflex": this.inlineFlex
+          "vi-checkbox__inlineflex": this.inlineFlex,
+          'vi-checkbox--disabled': this.disabled
         }
       },
       iconName() {
@@ -179,6 +183,12 @@
       display inline-flex
       margin-right 24px
 
+    &--disabled
+      pointer-events none
+      color #e5e5e5 !important
+      .vi-checkbox__icon
+        opacity .5
+
   .vi-checkbox__icon
     display block !important
     margin auto
@@ -198,10 +208,6 @@
     margin-left 10px
     cursor pointer
     line-height 1.2
-
-  .vi-checkbox--disabled
-    pointer-events none
-    color #e5e5e5 !important
 
   .vi-checkbox-swap--disabled
     color $light-grey

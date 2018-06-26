@@ -14,10 +14,10 @@
             <vi-checkbox
               :option-value="level.level"
               :label="level.level | levelName"
-              :disabled="level.full || level.catFull"
+              :disabled="isDisabled(level)"
               v-model="newSelected"/>
             <!-- TODO: this message is hardcode-->
-            <span class="note" v-if="level.catFull">You have already assigned 3 Reading Comprehension Diagnosis to this level</span>
+            <span class="note" v-if="isCatDisabled(level)">You have already assigned 3 Reading Comprehension Diagnosis to this level</span>
           </vi-row>
         </div>
 
@@ -49,6 +49,13 @@
     },
 
     methods: {
+      isCatDisabled (level) {
+        const isLevelAlreadySelected = this.selected.includes(level.level)
+        return (level.catFull && !isLevelAlreadySelected)
+      },
+      isDisabled (level) {
+        return level.full || this.isCatDisabled(level)
+      },
       onSubmit () {
         this.$close(this.newSelected)
       }
