@@ -17,6 +17,30 @@
 
     <vi-menu left min-width="180" :nudge-bottom="14" content-class="profile-menu" :attach="true">
       <vi-button slot="activator" icon flat dark>
+        <vi-icon name="config" size="22"/>
+      </vi-button>
+
+      <router-link :to="{name: 'config'}">
+        <vi-item :link="true">
+          <vi-item-content>Class</vi-item-content>
+        </vi-item>
+      </router-link>
+
+      <router-link :to="{name: 'config'}">
+        <vi-item :link="true">
+          <vi-item-content>Student</vi-item-content>
+        </vi-item>
+      </router-link>
+
+      <router-link :to="{name: 'config'}">
+        <vi-item :link="true">
+          <vi-item-content>Teacher</vi-item-content>
+        </vi-item>
+      </router-link>
+    </vi-menu>
+
+    <vi-menu left min-width="180" :nudge-bottom="14" content-class="profile-menu" :attach="true">
+      <vi-button slot="activator" icon flat dark>
         <vi-icon name="avatar" size="22"/>
       </vi-button>
 
