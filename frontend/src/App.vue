@@ -136,7 +136,7 @@ export default {
       height 1px
       background white
       margin 10px 20px
-      opacity 0.15
+      opacity 0.5
 
     .vi-item.nav-item
       margin-top 8px

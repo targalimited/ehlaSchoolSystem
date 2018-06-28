@@ -1,5 +1,6 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import browserUpdate from 'browser-update'
 import 'babel-polyfill'
 import 'svg-innerhtml'
 import Vue from 'vue'

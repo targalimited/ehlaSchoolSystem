@@ -15,6 +15,8 @@
 
     <slot name="action"></slot>
 
+    <div v-if="$slots.action" class="vi-app-bar__divider"></div>
+
     <vi-menu left min-width="180" :nudge-bottom="14" content-class="profile-menu" :attach="true">
       <vi-button slot="activator" icon flat dark>
         <vi-icon name="config" size="22"/>
@@ -140,6 +142,12 @@
 
       small
         font-size 14px
+
+    &__divider
+      height 30px
+      width 1px
+      background rgba(255,255,255,0.5)
+      margin 0 8px
 
   .profile-menu
     color #555
