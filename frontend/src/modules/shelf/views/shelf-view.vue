@@ -1,15 +1,24 @@
 <template>
   <div class="home-view">
 
-    <vi-app-bar style="height: 110px" title="Accessible Items Overview">
+    <vi-app-bar title="Accessible Items Overview">
       <div class="vi-banner__info">{{selectedCount}}/ {{summary.total_item_qtt}} reading packs</div>
-      <vi-row wrap class="level-section" v-if="levelsQuota">
+      <div slot="action">
+        <vi-button @click="onConfirm" class="confirm-button" dark>
+          <vi-icon left name="done-filled" size="24"/>
+          Confirm
+        </vi-button>
+      </div>
+    </vi-app-bar>
+
+    <div v-if="levelsQuota" class="level-section">
+      <vi-row>
         <vi-col v-for="(lv, i) in levelsQuota" :key="i">
           <span class="level-label level-label--dark">{{lv.level | levelName}}</span>
           {{lv.selected}}/{{lv.maxQuota}} <span v-if="lv.full" class="full">Full</span>
         </vi-col>
       </vi-row>
-    </vi-app-bar>
+    </div>
 
     <div class="pt-40" v-if="selectedItems">
 
@@ -155,7 +164,13 @@
         }).finally(function(){
           loader.hide()
         })
-
+      },
+      onConfirm () {
+        this.$messageBox({
+          title: 'Confirm',
+          message: 'Stay tune',
+          cancel: null
+        })
       }
     },
 
@@ -311,7 +326,19 @@
 
   .level-section
     font-size 16px
-    margin-top 2px
+    background $brand
+    position fixed
+    padding 8px 20px 8px 54px
+    top 70px
+    left 220px
+    right 0
+    z-index 2
+
+    +screen(900px)
+      left 74px
+
+    *
+      color white
 
   .level-label
     font-size 14px
@@ -333,4 +360,15 @@
   .full
     color red
     font-size 14px
+
+  .confirm-button
+    font-weight bold
+    border none
+    height 40px
+
+    &:hover
+      background rgba(255,255,255,0.3)
+
+    .vi-icon
+      color #28fba0
 </style>
