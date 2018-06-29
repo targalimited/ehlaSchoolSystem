@@ -160,7 +160,7 @@
       name_en: 'Daily Fun Reading'
     },
     RCD: {
-      name_en: 'Reading Comprehensive Diagnosis'
+      name_en: 'Reading Comprehension Diagnosis'
     },
     BR: {
       name_en: 'Daily Fun Reading (Bridging)'

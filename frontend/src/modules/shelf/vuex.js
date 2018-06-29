@@ -30,7 +30,7 @@ const defaultCategories = {
   },
   RCD: {
     key: 'RCD',
-    name_en: 'Reading Comprehensive Diagnosis',
+    name_en: 'Reading Comprehension Diagnosis',
     icon: 'diagnosis-reading',
     selectedCount: 0,
     max: 0,
