@@ -1,25 +1,57 @@
+import {VirtualScroller} from "vue-virtual-scroller";
+
 export default {
   methods: {
     genBody () {
       let children = []
-
       if (this.items.length === 0) {
         children.push(this.genNoData())
       } else if (this.filteredItems.length === 0) {
         children.push(this.genNoResult())
       } else {
-        children = this.filteredItems.map(item => {
-          return this.genBodyRow(item)
-        })
-      }
-
-      if (this.showPagination) {
-        children.push(this.genPagination())
+        children.push(this.genVirtualList())
       }
 
       return this.$createElement('div', {
         staticClass: 'vi-table__body'
       }, children)
+    },
+
+    genVirtualList () {
+      const virtualList = this.$createElement('VirtualScroller', {
+        style: {
+          height: this.tableHeight ? this.tableHeight + 'px' : 'auto'
+        },
+        props: {
+          items: this.filteredItems,
+          itemHeight: this.itemHeight,
+          keyField: 'uuid',
+          pageMode: this.pageMode
+        },
+        slot: 'default',
+        scopedSlots: {
+          default: item => this.genBodyRow(item)
+        }
+      })
+      return virtualList
+    },
+
+    genBodyRow (item)  {
+      const row = this.$scopedSlots.item({
+        key: item.itemIndex,
+        item: item.item,
+        checked: this.isSelected(item.item),
+        toggle: this.toggle
+      })
+      const children = [row]
+      const data = {}
+
+      // if no td is given
+      if (row.length > 1) {
+        data.staticClass = 'vi-table__row'
+      }
+
+      return this.$createElement('div', data, children)
     },
 
     genNoData () {
@@ -44,60 +76,6 @@ export default {
       return this.$createElement('div', {
         staticClass: 'vi-data-table__no-data'
       }, children)
-    },
-
-    genBodyRow (item) {
-      const row = this.$scopedSlots.item({
-        item: item,
-        checked: this.value && this.value.includes(item[this.itemKey]),
-        toggle: this.toggle
-      })
-      const children = [row]
-      const data = {}
-
-      // if no td is given
-      if (row.length > 1) {
-        data.staticClass = 'vi-table__row'
-      }
-
-      if (this.checkbox) {
-        children.unshift(this.genBodyCheckbox(item[this.itemKey]))
-      }
-      return this.$createElement('div', data, children)
-    },
-
-    genBodyCheckbox (key) {
-      const checked = this.value.includes(key)
-      const checkbox = this.$createElement('vi-checkbox-boolean', {
-        nativeOn: {
-          click: () =>  {
-            this.toggle(key)
-          }
-        },
-        props: {
-          value: checked,
-        }
-      })
-
-      return this.$createElement('div', {
-        staticClass: 'vi-table__col'
-      }, [checkbox])
-    },
-
-    genPagination () {
-      let children = []
-      children.push(this.genNextPageButton())
-      return this.$createElement('div', {
-        staticClass: 'pagination'
-      }, children)
-    },
-
-    genNextPageButton () {
-      return this.$createElement('vi-button', {
-        on: {
-          click: this.nextPage
-        }
-      }, 'next')
     }
   }
 }

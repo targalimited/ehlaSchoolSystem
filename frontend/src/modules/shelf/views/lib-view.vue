@@ -121,7 +121,8 @@
       v-else
       :pagination.sync="pagination"
       class="lib-table"
-      :sticky="60"
+      :no-header="true"
+      :item-height="135"
       :items="readings"
       :headers="headers"
       :custom-filter="searchFilter"

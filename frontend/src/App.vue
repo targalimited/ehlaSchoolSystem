@@ -113,12 +113,6 @@ export default {
     &:hover
       border-bottom 1px solid currentColor
 
-  .app
-    display flex
-    align-items stretch
-    height 100%
-    font-size 18px
-
   .sidebar
     position fixed
     left 0
@@ -216,21 +210,6 @@ export default {
       svg
         width 165px
         flex-shrink 0
-
-  .app__viewport
-    height 100%
-    overflow hidden
-    flex 1 0 0
-    color #00557f
-    display flex
-    flex-direction column
-    wdith 100%
-
-    > div
-      height 100%
-      overflow hidden
-      display flex
-      flex-direction column
 
   .app__scroll
     padding-top 70px

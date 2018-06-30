@@ -1,8 +1,7 @@
 export default {
   methods: {
     genHeader () {
-      if (this.items && this.items.length === 0) return null
-      if (!this.header) return
+      if ((this.noHeader) || (this.items && this.items.length === 0)) return null
 
       let row
       if (this.$slots.head) {
@@ -20,18 +19,17 @@ export default {
         })
       }
 
-      if (this.checkbox) row.unshift(this.genCheckbox())
-
       const head = this.$createElement('div', {
         staticClass: 'vi-table__head'
       }, row)
 
-      if (typeof this.sticky !== 'undefined') {
+      if (typeof this.stickyHeader !== 'undefined') {
         return this.$createElement('div', {
           directives: [{
             name: 'sticky',
             value: {
-              offset: this.sticky
+              offset: this.stickyHeader,
+              zIndex: 2
             }
           }],
           staticClass: 'sticky'
@@ -83,23 +81,6 @@ export default {
           width: header.width
         }
       }, [children])
-    },
-
-    genCheckbox () {
-      const checked = this.value.length === this.items.length
-
-      const checkbox = this.$createElement('vi-checkbox-boolean', {
-        nativeOn: {
-          click: this.toggleAll
-        },
-        props: {
-          value: checked
-        }
-      })
-
-      return this.$createElement('div', {
-        staticClass: 'vi-table__col'
-      }, [checkbox])
     }
   }
 }

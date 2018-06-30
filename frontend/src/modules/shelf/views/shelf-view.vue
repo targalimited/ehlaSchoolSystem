@@ -25,7 +25,9 @@
       <vi-data-table
         class="selected-item-table"
         :pagination.sync="pagination"
-        :sticky="140"
+        :no-header="true"
+        :item-height="103"
+        :table-height="600"
         :items="selectedItems"
         :headers="headers"
         :search="search">
