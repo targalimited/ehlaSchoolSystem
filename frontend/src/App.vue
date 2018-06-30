@@ -1,7 +1,7 @@
 <template>
   <vi-app class="app">
 
-    <div class="app__sidebar" v-if="$route.name !== 'login'">
+    <div class="sidebar" v-if="$route.name !== 'login'">
 
       <vi-item class="logo-item" height="70">
         <vi-item-avatar><img class="logo-item__logo" src="./modules/auth/assets/app-logo.jpg"/></vi-item-avatar>
@@ -11,7 +11,7 @@
         </vi-item-content>
       </vi-item>
 
-      <div class="app__sidebar__main">
+      <div class="sidebar__main">
         <router-link :to="{name: 'home'}">
           <vi-item class="nav-item" :link="true" height="60">
             <vi-item-avatar><vi-icon class="ml-4" name="home" size="30"/></vi-item-avatar>
@@ -33,12 +33,29 @@
           </vi-item>
         </router-link>
 
-        <router-link :to="{name: 'assignment'}">
-          <vi-item class="nav-item" :link="true" height="60">
-            <vi-item-avatar><vi-icon class="ml-4" name="assignment" size="36"/></vi-item-avatar>
-            <vi-item-content>Assign Homework</vi-item-content>
-          </vi-item>
-        </router-link>
+        <vi-menu offset-x :offset-y="false" :open-on-hover="true" :nudge-bottom="8" content-class="sidebar__submenu">
+
+            <router-link slot="activator" :to="{name: 'assignment'}">
+              <vi-item class="nav-item" :link="true" height="60">
+                <vi-item-avatar><vi-icon class="ml-4" name="assignment" size="36"/></vi-item-avatar>
+                <vi-item-content>Assign Homework</vi-item-content>
+              </vi-item>
+            </router-link>
+
+            <div>
+              <router-link :to="{name: 'shelf'}">
+                <vi-item class="nav-item" :link="true" height="60">
+                  <vi-item-content>Assign Homework</vi-item-content>
+                </vi-item>
+              </router-link>
+
+              <router-link :to="{name: 'shelf'}">
+                <vi-item class="nav-item" :link="true" height="60">
+                  <vi-item-content>See Assignment List</vi-item-content>
+                </vi-item>
+              </router-link>
+            </div>
+        </vi-menu>
 
         <router-link :to="{name: 'report'}">
           <vi-item class="nav-item" :link="true" height="60">
@@ -47,7 +64,7 @@
           </vi-item>
         </router-link>
 
-        <div class="app__sidebar__divider"></div>
+        <div class="sidebar__divider"></div>
 
         <router-link :to="{name: 'lib-cat'}">
           <vi-item class="nav-item" :link="true" height="60">
@@ -104,7 +121,7 @@ export default {
     height 100%
     font-size 18px
 
-  .app__sidebar
+  .sidebar
     position fixed
     left 0
     top 0
@@ -116,6 +133,18 @@ export default {
     box-shadow $shadow-2
     overflow hidden
     transition width 0.3s
+
+    &__submenu
+      border-radius 0
+      background #878787
+      padding-top 0
+
+      > div
+        label 3px #009aec left
+
+      .vi-item
+        color white
+        font-size 16px
 
     &__main
       display flex
