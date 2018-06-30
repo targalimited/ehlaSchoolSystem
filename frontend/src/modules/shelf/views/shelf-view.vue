@@ -332,7 +332,7 @@
     top 70px
     left 220px
     right 0
-    z-index 2
+    z-index 1
 
     +screen(900px)
       left 74px

@@ -203,6 +203,7 @@ export default {
     padding-top 70px
     padding-left 220px
     width 100%
+    min-height 100vh
 
     +screen(900px)
       padding-left 74px
