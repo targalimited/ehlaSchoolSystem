@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div class="login">
     <vi-card>
       <vi-card-content>
@@ -31,6 +31,14 @@
         <vi-input-error class="mb-24" v-if="error">username / password is wrong</vi-input-error>
 
         <vi-button :disabled="loading" @click="submit" primary>{{loading ? 'Loggin in...' : 'Login'}}</vi-button>
+
+        <vi-row class="notice">
+          <vi-icon name="info-circular" size="32" class="no-shrink mr-20"/>
+          <div>
+            <p class="mb-20">We would like to draw your attention that we will gradually synchronize the reading packs in school portal with those in the App. You please stay tuned for the new reading packs which will be constantly uploaded to the school portal and the App. Thank you!</p>
+            <p>請您留意：我們將會逐步把EHLA學校應用端的閱讀套件與在學生應用App裏的套件進行同步。我們會不斷地把新的閱讀套件上載到學校應用端和App，請您繼續留意，謝謝！</p>
+          </div>
+        </vi-row>
 
       </vi-card-content>
     </vi-card>
@@ -139,4 +147,17 @@ export default {
 
     svg
       width auto
+
+  .notice
+    position fixed
+    bottom 0
+    left 0
+    right 0
+    padding 20px 40px
+    background #a58d1c
+    color white
+    font-size 16px
+
+  .no-shrink
+    flex-shrink 0
 </style>
