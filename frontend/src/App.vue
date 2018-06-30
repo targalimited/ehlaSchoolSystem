@@ -41,13 +41,13 @@
             </vi-item>
 
             <div>
-              <router-link :to="{name: 'shelf'}">
+              <router-link :to="{name: 'pick-asmt'}">
                 <vi-item class="nav-item" :link="true" height="60">
                   <vi-item-content>Assign Homework</vi-item-content>
                 </vi-item>
               </router-link>
 
-              <router-link :to="{name: 'shelf'}">
+              <router-link :to="{name: 'asmt-list'}">
                 <vi-item class="nav-item" :link="true" height="60">
                   <vi-item-content>See Assignment List</vi-item-content>
                 </vi-item>
