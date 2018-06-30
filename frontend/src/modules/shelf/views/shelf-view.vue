@@ -168,7 +168,7 @@
       onConfirm () {
         this.$messageBox({
           title: 'Confirm',
-          message: 'Stay tune',
+          message: 'The function to confirm the selected reading packs will be released on 15 August. Once you confirm your selection, no alteration is allowed. Thank you!',
           cancel: null
         })
       }
