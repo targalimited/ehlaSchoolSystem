@@ -151,7 +151,6 @@
 
 <script>
   import {previewDialog} from '../dialogs'
-  import ReadingItem from '../components/reading-item'
 
   const map = {
     WR: {
@@ -170,8 +169,6 @@
 
   export default {
     name: 'lib-view',
-
-    components: { ReadingItem },
 
     data () {
       return {

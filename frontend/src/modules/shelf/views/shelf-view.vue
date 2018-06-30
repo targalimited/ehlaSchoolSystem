@@ -87,12 +87,9 @@
 
 <script>
   import {levelDialog} from '../dialogs'
-  import ReadingItem from '../components/reading-item'
 
   export default {
     name: 'shelf-view',
-
-    components: { ReadingItem },
 
     data () {
       return {
