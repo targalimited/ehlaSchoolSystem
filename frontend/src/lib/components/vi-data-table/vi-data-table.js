@@ -11,6 +11,12 @@ export default {
 
   components: { VirtualScroller },
 
+  provide () {
+    return {
+      headers: this.headers
+    }
+  },
+
   directives: {
     ViSticky
   },

@@ -1,16 +1,19 @@
 <template>
   <div class="pick-item-view">
 
-    {{selectedItem}}
+    <vi-app-bar title="Assignment">
+
+    </vi-app-bar>
+
     <vi-data-table
       v-if="items"
-      :pagination.sync="pagination"
-      class="lib-table"
-      :no-header="true"
-      :item-height="135"
+      :headers="headers"
+      :items="items"
       v-model="selectedItem"
       item-key="id"
-      :items="items">
+      :pagination.sync="pagination"
+      no-header
+      :item-height="135">
 
       <div slot="item" slot-scope="{item, toggle, checked}" class="vi-table__row">
 
@@ -20,10 +23,8 @@
 
         <vi-table-col>
           <vi-button color="brand" outline>Preview</vi-button>
-        </vi-table-col>
-
-        <vi-table-col>
           <vi-checkbox-boolean
+            class="ml-20"
             @click.native="toggle(item)"
             :value="checked"/>
         </vi-table-col>
@@ -43,7 +44,17 @@
     data() {
       return {
         pagination: {},
-        selectedItem: ''
+        selectedItem: '',
+        headers: [
+          {
+            text: 'name',
+            expand: true
+          },
+          {
+            text: 'name',
+            width: '140px'
+          }
+        ]
       }
     },
 
