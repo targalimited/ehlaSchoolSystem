@@ -33,14 +33,12 @@
           </vi-item>
         </router-link>
 
-        <vi-menu offset-x :offset-y="false" :open-on-hover="true" :nudge-bottom="8" content-class="sidebar__submenu">
+        <vi-menu offset-x :offset-y="false" :open-on-hover="true" :nudge-top="8" content-class="sidebar__submenu">
 
-            <router-link slot="activator" :to="{name: 'assignment'}">
-              <vi-item class="nav-item" :link="true" height="60">
-                <vi-item-avatar><vi-icon class="ml-4" name="assignment" size="36"/></vi-item-avatar>
-                <vi-item-content>Assign Homework</vi-item-content>
-              </vi-item>
-            </router-link>
+            <vi-item slot="activator" class="nav-item" :link="true" height="60">
+              <vi-item-avatar><vi-icon class="ml-4" name="assignment" size="36"/></vi-item-avatar>
+              <vi-item-content>Assign Homework</vi-item-content>
+            </vi-item>
 
             <div>
               <router-link :to="{name: 'shelf'}">
@@ -137,14 +135,20 @@ export default {
     &__submenu
       border-radius 0
       background #878787
-      padding-top 0
+      padding 0
+      box-shadow 0 4px 20px -4px rgba(0,0,0,0.65)
+      border none
 
       > div
         label 3px #009aec left
+        padding 8px 0
 
       .vi-item
         color white
         font-size 16px
+
+        &:hover
+          background rgba(255,255,255,0.3) !important
 
     &__main
       display flex
