@@ -72,8 +72,8 @@ export default {
         children.push(btn)
       }
 
-      return this.$createElement('div', {
-        staticClass: 'vi-table__col vi-table__col--head',
+      return this.$createElement('vi-table-col', {
+        staticClass: 'vi-table__col--head',
         class: {
           'vi-table__col--sortable': header.sortable
         },

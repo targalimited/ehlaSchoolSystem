@@ -21,64 +21,66 @@
 
       <vi-spacer></vi-spacer>
 
-      <slot name="action"></slot>
+      <slot name="secondary-action"></slot>
 
-      <div v-if="$slots.action" class="vi-app-bar__divider"></div>
+      <div v-if="$slots.secondaryAction" class="vi-app-bar__divider"></div>
 
-      <vi-menu left min-width="180" :nudge-bottom="14" content-class="profile-menu" :attach="true">
-        <vi-button slot="activator" icon flat dark>
-          <vi-icon name="config" size="22"/>
-        </vi-button>
+      <slot name="action">
+        <vi-menu left min-width="180" :nudge-bottom="14" content-class="profile-menu" :attach="true">
+          <vi-button slot="activator" icon flat dark>
+            <vi-icon name="config" size="22"/>
+          </vi-button>
 
-        <router-link :to="{name: 'config'}">
-          <vi-item :link="true">
-            <vi-item-content>Class</vi-item-content>
-          </vi-item>
-        </router-link>
+          <router-link :to="{name: 'config'}">
+            <vi-item :link="true">
+              <vi-item-content>Class</vi-item-content>
+            </vi-item>
+          </router-link>
 
-        <router-link :to="{name: 'config'}">
-          <vi-item :link="true">
-            <vi-item-content>Student</vi-item-content>
-          </vi-item>
-        </router-link>
+          <router-link :to="{name: 'config'}">
+            <vi-item :link="true">
+              <vi-item-content>Student</vi-item-content>
+            </vi-item>
+          </router-link>
 
-        <router-link :to="{name: 'config'}">
-          <vi-item :link="true">
-            <vi-item-content>Teacher</vi-item-content>
-          </vi-item>
-        </router-link>
-      </vi-menu>
+          <router-link :to="{name: 'config'}">
+            <vi-item :link="true">
+              <vi-item-content>Teacher</vi-item-content>
+            </vi-item>
+          </router-link>
+        </vi-menu>
 
-      <vi-menu left min-width="180" :nudge-bottom="14" content-class="profile-menu" :attach="true">
-        <vi-button slot="activator" icon flat dark>
-          <vi-icon name="avatar" size="22"/>
-        </vi-button>
+        <vi-menu left min-width="180" :nudge-bottom="14" content-class="profile-menu" :attach="true">
+          <vi-button slot="activator" icon flat dark>
+            <vi-icon name="avatar" size="22"/>
+          </vi-button>
 
-        <router-link :to="{name: 'config'}">
-          <vi-item :link="true">
+          <router-link :to="{name: 'config'}">
+            <vi-item :link="true">
+              <vi-item-avatar>
+                <vi-icon name="config"/>
+              </vi-item-avatar>
+              <vi-item-content>Settings</vi-item-content>
+            </vi-item>
+          </router-link>
+
+          <router-link :to="{name: 'profile'}">
+            <vi-item :link="true">
+              <vi-item-avatar>
+                <vi-icon name="avatar"/>
+              </vi-item-avatar>
+              <vi-item-content>Profile</vi-item-content>
+            </vi-item>
+          </router-link>
+
+          <vi-item @click="logout" :link="true">
             <vi-item-avatar>
-              <vi-icon name="config"/>
+              <vi-icon name="logout"/>
             </vi-item-avatar>
-            <vi-item-content>Settings</vi-item-content>
+            <vi-item-content>Logout</vi-item-content>
           </vi-item>
-        </router-link>
-
-        <router-link :to="{name: 'profile'}">
-          <vi-item :link="true">
-            <vi-item-avatar>
-              <vi-icon name="avatar"/>
-            </vi-item-avatar>
-            <vi-item-content>Profile</vi-item-content>
-          </vi-item>
-        </router-link>
-
-        <vi-item @click="logout" :link="true">
-          <vi-item-avatar>
-            <vi-icon name="logout"/>
-          </vi-item-avatar>
-          <vi-item-content>Logout</vi-item-content>
-        </vi-item>
-      </vi-menu>
+        </vi-menu>
+      </slot>
     </div>
     <div v-if="$slots.append" class="vi-app-bar__append">
       <slot name="append"></slot>

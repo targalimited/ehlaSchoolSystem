@@ -13,12 +13,12 @@ export default {
         break
       }
     }
-
     const header = this.headers[child_index]
-
     if (!header) return
+    const align = header.align
     if (header.expand) this.$el.style.flex = 1
     if (header.width) this.$el.style.width = header.width
+    if (align) this.$el.style.justifyContent = align === 'right' ? 'flex-end' : align === 'center' ? 'center' : 'flex-start'
   },
 
   render (h) {

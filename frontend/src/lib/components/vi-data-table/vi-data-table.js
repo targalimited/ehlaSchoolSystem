@@ -27,6 +27,9 @@ export default {
       default: () => {}
     },
     items: Array,
+
+    // an array of object with the signature of
+    // {text: string, width: string, expand: boolean, align: string, index: string, sortable: boolean, searchable: boolean}
     headers: Array,
     search: String,
 
@@ -148,17 +151,49 @@ export default {
       return !this.tableHeight
     },
 
+    // get the key of the item to search against from this.headers (searchable)
+    // If this none not given, by default the searching will includes all the keys of the item
+    // If you need to search some value inside a deep object, you need to use the advanced customFilter function.
+    searchKey () {
+      if (!this.headers) return null
+      const searchableHeaders = this.headers.filter(h => {
+        return h.searchable
+      })
+      if (searchableHeaders.length === 0) return null
+      return searchableHeaders.map(h => {
+        if (!h.index) {
+          console.log('Warning! You should provide an index for searchable or sortable')
+        }
+        return h.index
+      })
+    },
+
+    searchKeyFilteredItems () {
+      const search = this.search.toString().toLowerCase()
+      if (search.trim() === '') return this.items
+
+      return this.items.filter(i => {
+        let keys = Array.isArray(this.searchKey) ? this.searchKey : [this.searchKey]
+        return keys.some(j => this.filter(i[j], this.search))
+      })
+    },
+
     /*
       this is the core of when and how the list is updated
      */
     filteredItems () {
-      let items = this.items.slice()
+      let items
 
       const hasSearch = typeof this.search !== 'undefined' &&
         this.search !== null
 
       if (hasSearch) {
-        items = this.customFilter(items, this.search, this.filter)
+        if (this.searchKey) {
+          items = this.searchKeyFilteredItems.slice()
+        } else {
+          items = this.items.slice()
+          items = this.customFilter(items, this.search, this.filter)
+        }
         this.searchLength = items.length
       }
 
