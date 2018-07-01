@@ -39,6 +39,12 @@ export default {
       default: 'id'
     },
 
+    // return the whole object instead of the itemKey to v-model
+    returnObject: {
+      type: Boolean,
+      default: false
+    },
+
     // style the table row to be divided
     divided: Boolean,
 
@@ -178,6 +184,19 @@ export default {
 
     isMultiple () {
       return Array.isArray(this.value)
+    },
+
+    computedValue () {
+      if (!this.returnObject) return this.value
+      else {
+        if (this.isMultiple) {
+          if (this.value.length === 0) return []
+          return this.value.map(v => v[this.itemKey])
+        } else {
+          if (!this.value) return
+          else return this.value[this.itemKey]
+        }
+      }
     }
   },
 
@@ -185,30 +204,48 @@ export default {
     isSelected (item) {
       const key = item[this.itemKey]
       if (this.isMultiple) {
-        return this.value.includes(key)
+        return this.computedValue.includes(key)
       } else {
-        return this.value === key
+        return this.computedValue === key
+      }
+    },
+    getSelectedObject (key) {
+      if (!this.returnObject) return
+      if (this.isMultiple) {
+        if (this.value.length === 0) return []
+        else return this.items.filter(item => this.value.includes(key))
+      } else {
+        //if (!this.value) return
+        return this.items.find(item => key === item[this.itemKey])
       }
     },
     add (item) {
       let selected
       if (this.isMultiple) {
-        selected = this.value.slice()
+        selected = this.computedValue.slice()
         selected.push(item[this.itemKey])
       } else {
         selected = item[this.itemKey]
       }
-      this.$emit('input', selected)
+      this.emitValue(selected)
     },
     remove (item) {
       let selected
       if (this.isMultiple) {
-        selected = this.value.slice()
+        selected = this.computedValue.slice()
         selected.splice(selected.indexOf(item[this.itemKey]), 1)
       } else {
         selected = ''
       }
-      this.$emit('input', selected)
+      this.emitValue(selected)
+    },
+    emitValue (selected) {
+      console.log(selected)
+      if (this.returnObject) {
+        this.$emit('input', this.getSelectedObject(selected))
+      } else {
+        this.$emit('input', selected)
+      }
     },
     toggle (item) {
       if (this.isSelected(item)) {
