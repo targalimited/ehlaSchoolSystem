@@ -75,6 +75,7 @@
     text-decoration: none
     transition: $transition
     user-select: none
+    max-width 100% // for text ellipsis
 
     a
       text-decoration inherit

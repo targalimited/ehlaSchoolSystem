@@ -16,7 +16,11 @@ export default {
     const header = this.headers[child_index]
     if (!header) return
     const align = header.align
-    if (header.expand) this.$el.style.flex = 1
+    if (header.expand) {
+      this.$el.style.flex = 1
+      // otherwise will push the other column away in small screen
+      this.$el.style.overflow = 'hidden'
+    }
     if (header.width) this.$el.style.width = header.width
     if (align) this.$el.style.justifyContent = align === 'right' ? 'flex-end' : align === 'center' ? 'center' : 'flex-start'
   },

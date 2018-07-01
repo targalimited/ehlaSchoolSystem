@@ -48,7 +48,7 @@
         </vi-table-col>
 
         <vi-table-col>
-          {{item.remark}}
+          {{item.remark ? item.remark : '-'}}
         </vi-table-col>
       </div>
     </vi-data-table>
@@ -91,7 +91,7 @@
           {
             text: 'Assigned Date',
             index: 'start_date',
-            width: '140px',
+            width: '100px',
             index: 'start_date',
             sortable: true,
             align: 'left'
