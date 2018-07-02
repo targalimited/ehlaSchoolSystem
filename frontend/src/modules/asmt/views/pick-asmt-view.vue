@@ -8,7 +8,7 @@
         <div class="ml-10 vi-app-bar__title">Selected: {{selectedItem.name_en}}</div>
 
         <vi-spacer></vi-spacer>
-        <vi-button class="next-button">
+        <vi-button @click="goToNextStep" class="next-button">
           Next <vi-icon size="22" class="ml-12" name="arrow-right"/>
         </vi-button>
       </template>
@@ -128,7 +128,11 @@
     },
 
     methods: {
-
+      goToNextStep () {
+        this.$router.push({
+          name: 'asmt-options'
+        })
+      }
     },
 
     created () {

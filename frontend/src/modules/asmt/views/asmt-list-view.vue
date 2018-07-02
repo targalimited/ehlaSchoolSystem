@@ -13,7 +13,7 @@
       :pagination.sync="pagination"
       :item-height="135">
 
-      <div slot="item" slot-scope="{item}" class="vi-table__row">
+      <router-link :to="{name: 'asmt-options'}" slot="item" slot-scope="{item}" class="vi-table__row vi-table__row--link">
 
         <vi-table-col>
           <vi-item height="60">
@@ -50,7 +50,7 @@
         <vi-table-col>
           {{item.remark ? item.remark : '-'}}
         </vi-table-col>
-      </div>
+      </router-link>
     </vi-data-table>
   </div>
 </template>

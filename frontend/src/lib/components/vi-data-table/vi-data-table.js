@@ -26,7 +26,10 @@ export default {
       type: Object,
       default: () => {}
     },
-    items: Array,
+    items: {
+      default: [],
+      type: Array
+    },
 
     // an array of object with the signature of
     // {text: string, width: string, expand: boolean, align: string, index: string, sortable: boolean, searchable: boolean}
@@ -100,7 +103,6 @@ export default {
       type: Function,
       default: (items, index, isDescending) => {
         if (index === null) return items
-
         return items.sort((a, b) => {
           let sortA = getObjectValueByPath(a, index)
           let sortB = getObjectValueByPath(b, index)
@@ -182,7 +184,7 @@ export default {
       this is the core of when and how the list is updated
      */
     filteredItems () {
-      let items
+      let items = this.items.slice()
 
       const hasSearch = typeof this.search !== 'undefined' &&
         this.search !== null
@@ -191,7 +193,6 @@ export default {
         if (this.searchKey) {
           items = this.searchKeyFilteredItems.slice()
         } else {
-          items = this.items.slice()
           items = this.customFilter(items, this.search, this.filter)
         }
         this.searchLength = items.length

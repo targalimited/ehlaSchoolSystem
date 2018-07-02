@@ -10,8 +10,8 @@ export default {
         row = this.headers.map(h => {
           if (h.slot) {
             // use the slot specified
-            return this.$createElement('div', {
-              staticClass: 'vi-table__col vi-table__col--head'
+            return this.$createElement('vi-table-col', {
+              staticClass: 'vi-table__col--head'
             }, this.$slots[h.slot])
           } else {
             return this.genHeaderCell(h)
