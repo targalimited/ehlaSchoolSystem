@@ -233,6 +233,19 @@ class UsermodelApiServices extends Model {
 		return $result;
 	}
 	
+	public function assignmentApiAdapterGetSchoolAssignment($params) {
+		$inputs = $params;
+		
+		$result = $this->client->post(config('variables.schoolApiAdapterGetSchoolAssignmentUrl').$this->suffix, $inputs);				
+		return $result;
+	}
+	
+	public function assignmentApiAdapterSetSchoolAssignment($params) {
+		$inputs = $params;
+		
+		$result = $this->client->post(config('variables.schoolApiAdapterSetSchoolAssignmentUrl').$this->suffix, $inputs);				
+		return $result;
+	}
 	
 	/*public function schoolApiGetReadingList($params) {
 		$pass_params['params'] = $params;

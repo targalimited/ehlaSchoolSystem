@@ -26,6 +26,10 @@ return [
 	'schoolApiGetSchoolResultSummaryReportUrl' => env('USERMODEL_URL').'v1/schoolApi/get_school_result_summary_report',
 	'schoolApiGetSchoolResultReportUrl' => env('USERMODEL_URL').'v1/schoolApi/get_school_result_report',
 	'schoolApiGetSchoolWeaknessReportUrl' => env('USERMODEL_URL').'v1/schoolApi/get_school_weakness_report',
+	
+	//assignmentApi
+	'schoolApiAdapterGetSchoolAssignmentUrl' => env('USERMODEL_URL').'v1/schoolApi/adapter_get_school_assignment',
+	'schoolApiAdapterSetSchoolAssignmentUrl' => env('USERMODEL_URL').'v1/schoolApi/adapter_set_school_assignment',
 ]
 
 ?>

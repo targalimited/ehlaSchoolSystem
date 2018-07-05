@@ -69,10 +69,15 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('choose_item','ItemController@choose_item');
     Route::post('choose_items_for_level','ItemController@choose_items_for_level');
     Route::post('get_pre_chosen_items_by_category','ItemController@get_pre_chosen_items_by_category');
-    Route::post('get_assignment_by_item_id','ItemController@get_assignment_by_item_id');
+	
+	//Assignment controller
+	Route::post('get_school_assignment','AssignmentController@adapter_get_school_assignment');
+    Route::post('set_school_assignment','AssignmentController@adapter_set_school_assignment');
+	
+    /*Route::post('get_assignment_by_item_id','ItemController@get_assignment_by_item_id');
     Route::post('set_assignments','ItemController@set_assignments');
     Route::post('publish_assignments','ItemController@publish_assignments');
-    Route::post('batch_set_publish_assignments','ItemController@batch_set_publish_assignments');
+    Route::post('batch_set_publish_assignments','ItemController@batch_set_publish_assignments');*/
     
     //Category controller
     Route::get('get_school_category/subject_id/{subject_id?}','CategoryController@get_school_category');

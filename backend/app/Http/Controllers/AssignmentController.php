@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Assignment;
 use App\AssignmentItem;
 use App\AssignmentItemQuestion;
+use App\UsermodelApiServices;
+use App\PermissionControlServices;
+use App\ParamBasicServices;
 use App\CalendarEvent;
 use App\CurriculumSetting;
 use App\Level;
@@ -26,6 +29,42 @@ class AssignmentController extends Controller
 
     protected $wk_set;
 
+	public function adapter_get_school_assignment(Request $request) {
+		//params
+		$params = $request->params;
+		//params basic
+		$PBS = New ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		//permission
+		$PCS = New PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+
+		//usermodel
+		$UAS = new UsermodelApiServices($request);
+		$feedback = $UAS->assignmentApiAdapterGetSchoolAssignment($params);
+		
+        $this->result['data'] = $feedback['data'];
+        return Response()->json($this->result,200);
+	}
+	
+	public function adapter_set_school_assignment(Request $request) {
+		//params
+		$params = $request->params;
+		//params basic
+		$PBS = New ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		//permission
+		$PCS = New PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+
+		//usermodel
+		$UAS = new UsermodelApiServices($request);
+		$feedback = $UAS->assignmentApiAdapterSetSchoolAssignment($params);
+		
+        $this->result['data'] = $feedback['data'];
+        return Response()->json($this->result,200);
+	}
+	
     private function teacherClassSubjectId(Request $request)
     {
         return TeacherClassSubjectTrait::teacherClassSubjectID($request);
