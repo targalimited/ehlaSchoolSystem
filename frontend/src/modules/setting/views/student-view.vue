@@ -15,7 +15,10 @@
       </div>
 
       <div slot="append">
-        <vi-input class="search-box" v-model="search" slot="action" prefix-icon="search" placeholder="Search student by name or class"/>
+        <vi-row>
+          <vi-input style="flex: 1" v-model="search" slot="action" prefix-icon="search" placeholder="Search student by name or class"/>
+          <vi-select :options="classOptions" v-model="classFilters" placeholder="Filter by class" max-width="300" style="width: 160px" class="ml-8"/>
+        </vi-row>
       </div>
     </vi-app-bar>
 
@@ -71,12 +74,9 @@
   export default {
     name: 'student-view',
 
-    props: {
-
-    },
-
     data() {
       return {
+        classFilters: '',
         items: [],
         search: '',
         pagination: {
@@ -106,7 +106,9 @@
     },
 
     computed: {
-
+      classOptions() {
+        return ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
+      },
     },
 
     methods: {
@@ -134,10 +136,7 @@
 
     created () {
       this.items = genData()
+      console.log(this.$route.query.classes)
     }
   }
 </script>
-
-<style lang="stylus">
-  @import '../../../lib/stylus/main.styl'
-</style>
