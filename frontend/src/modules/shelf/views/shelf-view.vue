@@ -3,7 +3,7 @@
 
     <vi-app-bar title="Accessible Items Overview">
       <div class="vi-banner__info">{{selectedCount}}/ {{summary.total_item_qtt}} reading packs</div>
-      <div slot="secondary-action">
+      <div slot="secondaryAction">
         <vi-button @click="onConfirm" class="confirm-button" dark>
           <vi-icon left name="done-filled" size="24"/>
           Confirm

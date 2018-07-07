@@ -21,7 +21,7 @@
 
       <vi-spacer></vi-spacer>
 
-      <slot name="secondary-action"></slot>
+      <slot name="secondaryAction"></slot>
 
       <div v-if="$slots.secondaryAction" class="vi-app-bar__divider"></div>
 
@@ -31,19 +31,19 @@
             <vi-icon name="config" size="22"/>
           </vi-button>
 
-          <router-link :to="{name: 'config'}">
+          <router-link :to="{name: 'setting-class'}">
             <vi-item :link="true">
               <vi-item-content>Class</vi-item-content>
             </vi-item>
           </router-link>
 
-          <router-link :to="{name: 'config'}">
+          <router-link :to="{name: 'setting-student'}">
             <vi-item :link="true">
               <vi-item-content>Student</vi-item-content>
             </vi-item>
           </router-link>
 
-          <router-link :to="{name: 'config'}">
+          <router-link :to="{name: 'setting-teacher'}">
             <vi-item :link="true">
               <vi-item-content>Teacher</vi-item-content>
             </vi-item>
