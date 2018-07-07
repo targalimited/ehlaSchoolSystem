@@ -328,6 +328,7 @@ export default {
 
   created () {
     this.initPagination()
+    console.log(this.customFilter)
   },
 
   render (h) {

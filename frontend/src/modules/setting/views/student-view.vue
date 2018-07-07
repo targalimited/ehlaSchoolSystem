@@ -29,6 +29,7 @@
       :search="search"
       :sticky-header="130"
       :pagination.sync="pagination"
+      :custom-filter="filterFunction"
       :item-height="69">
 
       <div slot="item" slot-scope="{item}" class="vi-table__row">
@@ -87,14 +88,12 @@
             text: 'Name',
             index: 'name',
             sortable: true,
-            searchable: true,
             expand: true
           },
           {
             text: 'Class',
             index: 'class',
             sortable: true,
-            searchable: true,
             width: '30%'
           },
           {
@@ -131,12 +130,28 @@
           // TODO cal API
           console.log('delete student api', student.username)
         } catch (e) {}
-      }
+      },
+      filterByClass (items) {
+        if (this.classFilters.length === 0) return items
+        return items.filter(i => {
+          return this.classFilters.includes(i.class)
+        })
+      },
+      filterFunction (items, search, filter) {
+        items = this.filterByClass(items)
+        search = search.toString().toLowerCase()
+        if (search.trim() === '') return items
+
+        return items.filter(i => (
+          filter(i.name, search)
+        ))
+      },
     },
 
     created () {
       this.items = genData()
-      console.log(this.$route.query.classes)
+      const classQuery = this.$route.query.classes
+      if (classQuery) this.classFilters = classQuery
     }
   }
 </script>
