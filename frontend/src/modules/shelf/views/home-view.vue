@@ -49,7 +49,8 @@
               <img v-if="school_level === 'P'" :src="resource.cover.primary" alt="">
               <img v-if="school_level === 'S'" :src="resource.cover.secondary" alt="">
             </div>
-            <a :href="resource.source" class="vi-link" download target="_blank">{{resource.name_l1}}<br/><br/>{{resource.name_l2}}<br/><br/>{{resource.name_l3}}<br/><br/>{{resource.name_l4}}</a>
+            <a v-if="school_level === 'P'" :href="resource.source.primary" class="vi-link" download target="_blank">{{resource.name_l1}}<br/><br/>{{resource.name_l2}}<br/><br/>{{resource.name_l3}}<br/><br/>{{resource.name_l4}}</a>
+            <a v-if="school_level === 'S'" :href="resource.source.secondary" class="vi-link" download target="_blank">{{resource.name_l1}}<br/><br/>{{resource.name_l2}}<br/><br/>{{resource.name_l3}}<br/><br/>{{resource.name_l4}}</a>
           </div>
         </vi-col>
       </vi-row>
@@ -67,6 +68,17 @@ export default {
       school_level: this.$store.getters.user.school.edu_lv,
       resources: [
         {
+          name_l1: "Pilot 100 programme",
+          cover: {
+            primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/p100_primay.jpeg",
+            secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/p100_secondary.jpeg",
+          },
+          source: {
+             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Pilot+Scheme_primary.pdf",
+             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Pilot+programme_secondary.pdf",
+          }
+        },
+        {
           name_l1: "Reading Comprehension Diagnosis & Teaching Section",
           name_l2: "for Primary Schools",
           name_l3: "Skill Based and EDB Curriculum Driven",
@@ -74,20 +86,26 @@ export default {
             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf3-comprehension-primary.png",
             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf3-comprehension-primary.png",
           },
-          source: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Comprehension(primary).pdf"
+          source: {
+             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Comprehension(primary).pdf",
+             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Comprehension(primary).pdf",
+          }
         },
         {          
-		  name_l1: "Reading Comprehension Diagnosis & Teaching Section",
+          name_l1: "Reading Comprehension Diagnosis & Teaching Section",
           name_l2: "for Secondary Schools (Junior Section)",
           name_l3: "Skill Based and HKDSE Driven Question Design",
           cover: {
             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf3-comprehension-secondary.png",
             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf3-comprehension-secondary.png",
           },
-          source: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Comprehension(secondary).pdf"
+          source: {
+             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Comprehension(secondary).pdf",
+             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Comprehension(secondary).pdf",
+          }
         },
         {
-		  name_l1: "Literature in English Learning Programme",
+          name_l1: "Literature in English Learning Programme",
           name_l2: "'Is Literature in English Difficult to learn?'",
           name_l3: "'No, it should not be.'",
           name_l4: "At EHLA, we aspire to make learning literature easy with our i-Education Ecosystem and innovative solutions",
@@ -96,24 +114,33 @@ export default {
             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf2-literature-primary.png",
             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf2-literature-secondary.png",
           },
-          source: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Eng+Lit.pdf"
+          source: {
+             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Eng+Lit.pdf",
+             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Eng+Lit.pdf",
+          }
         },
         {
-		  name_l1: "Intelligent Diagnosis & Teaching System",
+          name_l1: "Intelligent Diagnosis & Teaching System",
           name_l2: "Groundbreaking‧Powerful",
           cover: {
             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf3-comprehension-Intelligent.png",
             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf3-comprehension-Intelligent.png",
           },
-          source: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Intelligent+Diagnosis.pdf"
+          source: {
+             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Intelligent+Diagnosis.pdf",
+             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Intelligent+Diagnosis.pdf",
+          }
         },
         {
-		  name_l1: "Unparalleled Solutions to Student Reading",
+          name_l1: "Unparalleled Solutions to Student Reading",
           cover: {
             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf1-solution+reading.png",
             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf1-solution+reading.png",
           },
-          source: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Reading+section.pdf"
+          source: {
+             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Reading+section.pdf",
+             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Reading+section.pdf",
+          }
         }
       ]
     }
