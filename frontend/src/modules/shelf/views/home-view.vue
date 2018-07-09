@@ -49,7 +49,8 @@
               <img v-if="school_level === 'P'" :src="resource.cover.primary" alt="">
               <img v-if="school_level === 'S'" :src="resource.cover.secondary" alt="">
             </div>
-            <a :href="resource.source" class="vi-link" download target="_blank">{{resource.name}} (download)</a>
+            <a v-if="school_level === 'P'" :href="resource.source.primary" class="vi-link" download target="_blank">{{resource.name}} (download)</a>
+            <a v-if="school_level === 'S'" :href="resource.source.secondary" class="vi-link" download target="_blank">{{resource.name}} (download)</a>
           </div>
         </vi-col>
       </vi-row>
@@ -67,12 +68,26 @@ export default {
       school_level: this.$store.getters.user.school.edu_lv,
       resources: [
         {
+          name: "Pilot programme",
+          cover: {
+            primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/p100_primay.jpeg",
+            secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/p100_secondary.jpeg",
+          },
+          source: {
+             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Pilot+Scheme_primary.pdf",
+             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Pilot+programme_secondary.pdf",
+          }
+        },
+        {
           name: "Comprehension(primary)",
           cover: {
             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf3-comprehension-primary.png",
             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf3-comprehension-primary.png",
           },
-          source: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Comprehension(primary).pdf"
+          source: {
+             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Comprehension(primary).pdf",
+             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Comprehension(primary).pdf",
+          }
         },
         {
           name: "Comprehension(secondary)",
@@ -80,7 +95,10 @@ export default {
             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf3-comprehension-secondary.png",
             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf3-comprehension-secondary.png",
           },
-          source: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Comprehension(secondary).pdf"
+          source: {
+             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Comprehension(secondary).pdf",
+             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Comprehension(secondary).pdf",
+          }
         },
         {
           name: "Eng Lit",
@@ -88,7 +106,10 @@ export default {
             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf2-literature-primary.png",
             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf2-literature-secondary.png",
           },
-          source: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Eng+Lit.pdf"
+          source: {
+             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Eng+Lit.pdf",
+             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Eng+Lit.pdf",
+          }
         },
         {
           name: "Intelligent Diagnosis",
@@ -96,7 +117,10 @@ export default {
             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf3-comprehension-Intelligent.png",
             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf3-comprehension-Intelligent.png",
           },
-          source: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Intelligent+Diagnosis.pdf"
+          source: {
+             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Intelligent+Diagnosis.pdf",
+             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Intelligent+Diagnosis.pdf",
+          }
         },
         {
           name: "Reading section",
@@ -104,7 +128,10 @@ export default {
             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf1-solution+reading.png",
             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf_cover/pdf1-solution+reading.png",
           },
-          source: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Reading+section.pdf"
+          source: {
+             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Reading+section.pdf",
+             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Reading+section.pdf",
+          }
         }
       ]
     }
