@@ -32,6 +32,58 @@ class UsermodelApiServices extends Model {
 		$this->suffix = '?encode=1&access-token='.$userSession->access_token;
     }
 	
+	public function schoolApiGetCatBySubjectLevel($subjectId, $levels) {
+		$inputs = [
+			'subject_id' => $subjectId,
+			'levels' => $levels
+		];
+		
+		$result = $this->client->post(config('variables.schoolApiGetCatBySubjectLevelUrl').$this->suffix, $inputs);
+		return $result['data'];
+	}
+	
+	public function schoolApiGetItemList($level, $catGrouper) {
+		$inputs = [
+			'level' => $level,
+			'cat_grouper' => $catGrouper
+		];
+		
+		$result = $this->client->post(config('variables.schoolApiGetItemListUrl').$this->suffix, $inputs);
+		return $result['data'];
+	}
+	
+	public function schoolApiGetItemById($level, $itemId) {
+		$inputs = [
+			'level' => $level,
+			'item_id' => $itemId
+		];
+		
+		$result = $this->client->post(config('variables.schoolApiGetItemByIdUrl').$this->suffix, $inputs);
+		return $result['data'];
+	}
+	
+	
+	public function schoolApiGetSchoolAssignment($params) {
+		$inputs = $params;
+		
+		$result = $this->client->post(config('variables.schoolApiGetSchoolAssignmentUrl').$this->suffix, $inputs);				
+		return $result;
+	}
+	
+	public function schoolApiSetSchoolAssignment($params) {
+		$inputs = $params;
+		
+		$result = $this->client->post(config('variables.schoolApiSetSchoolAssignmentUrl').$this->suffix, $inputs);				
+		return $result;
+	}
+	
+	public function schoolApiLockSchoolAssignment($params) {
+		$inputs = $params;
+		
+		$result = $this->client->post(config('variables.schoolApiLockSchoolAssignmentUrl').$this->suffix, $inputs);				
+		return $result;
+	}
+	
 	public function schoolApiGetSchoolCategory($subjectId) {		
 		$result = $this->client->get(config('variables.schoolApiGetSchoolCategoryUrl').$subjectId.$this->suffix);
 		return $result['data'];
@@ -230,20 +282,6 @@ class UsermodelApiServices extends Model {
 		];
 		
 		$result = $this->client->post(config('variables.schoolApiGetSchoolWeaknessReportUrl').$this->suffix, $inputs);				
-		return $result;
-	}
-	
-	public function assignmentApiAdapterGetSchoolAssignment($params) {
-		$inputs = $params;
-		
-		$result = $this->client->post(config('variables.schoolApiAdapterGetSchoolAssignmentUrl').$this->suffix, $inputs);				
-		return $result;
-	}
-	
-	public function assignmentApiAdapterSetSchoolAssignment($params) {
-		$inputs = $params;
-		
-		$result = $this->client->post(config('variables.schoolApiAdapterSetSchoolAssignmentUrl').$this->suffix, $inputs);				
 		return $result;
 	}
 	

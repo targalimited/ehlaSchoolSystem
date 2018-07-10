@@ -28,8 +28,12 @@ return [
 	'schoolApiGetSchoolWeaknessReportUrl' => env('USERMODEL_URL').'v1/schoolApi/get_school_weakness_report',
 	
 	//assignmentApi
-	'schoolApiAdapterGetSchoolAssignmentUrl' => env('USERMODEL_URL').'v1/schoolApi/adapter_get_school_assignment',
-	'schoolApiAdapterSetSchoolAssignmentUrl' => env('USERMODEL_URL').'v1/schoolApi/adapter_set_school_assignment',
+	'schoolApiGetCatBySubjectLevelUrl' => env('USERMODEL_URL').'v1/schoolApi/get_cat_by_subject_level',
+	'schoolApiGetItemListUrl' => env('USERMODEL_URL').'v1/schoolApi/get_item_list',
+	'schoolApiGetItemByIdUrl' => env('USERMODEL_URL').'v1/schoolApi/get_item_by_id',
+	'schoolApiGetSchoolAssignmentUrl' => env('USERMODEL_URL').'v1/schoolApi/get_school_assignment',
+	'schoolApiSetSchoolAssignmentUrl' => env('USERMODEL_URL').'v1/schoolApi/set_school_assignment',
+	'schoolApiLockSchoolAssignmentUrl' => env('USERMODEL_URL').'v1/schoolApi/lock_school_assignment',
 ]
 
 ?>

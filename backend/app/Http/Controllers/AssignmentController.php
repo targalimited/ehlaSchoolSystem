@@ -29,7 +29,115 @@ class AssignmentController extends Controller
 
     protected $wk_set;
 
-	public function adapter_get_school_assignment(Request $request) {
+	public function get_cls_cat(Request $request) {
+		//params
+		$params = $request->params;		
+		$subjectId = $params['subject_id'];
+		
+		//params basic
+		$PBS = New ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		//permission
+		$PCS = New PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+
+		//get class/subject/level
+		$classLevel = $PCS->getTeacherClasses($user['user_id'], $subjectId);
+		
+		$levels = [];
+		if (isset($classLevel)) {
+			foreach ($classLevel as $value) {
+				if (!in_array($value['level'], $levels)) {
+					array_push($levels, $value['level']);
+				}
+			}
+		
+			if (!empty($levels)) {
+				//usermodel
+				$UAS = new UsermodelApiServices($request);
+				$levelMapCat = $UAS->schoolApiGetCatBySubjectLevel($subjectId, $levels);
+		
+				foreach ($classLevel as &$class) {
+					if (isset($levelMapCat[$class['level']])) {
+						$class['categories'] = $levelMapCat[$class['level']];
+					} else {
+						$class['categories'] = [];
+					}
+				}
+				
+				$this->result['data'] = $classLevel;
+			} else {
+				$this->result['data'] = [];
+			}
+		} else {
+			$this->result['data'] = [];
+		}
+		
+		
+		
+        return Response()->json($this->result,200);
+	}
+	
+	public function get_item_list_by_cls_sub_cat(Request $request) {
+		//params
+		$params = $request->params;
+		$classId    = $params['class_id'];
+		$subjectId  = $params['subject_id'];
+		$catGrouper = $params['cat_grouper'];
+		
+		//params basic
+		$PBS = New ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		
+		//permission
+		$PCS = New PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+
+		//get class level
+		$levelArray = $PCS->getTeacherClassLevel($user['user_id'], $classId, $subjectId);
+		
+		if (isset($levelArray[0])) {
+			//usermodel
+			$UAS = new UsermodelApiServices($request);
+			$feedback = $UAS->schoolApiGetItemList($levelArray[0], $catGrouper);
+	
+			$this->result['data'] = $feedback['data'];
+			return Response()->json($this->result,200);
+		}
+        $this->result['data'] = [];
+        return Response()->json($this->result,200);
+	}
+	
+	public function get_item_by_id(Request $request) {
+		//params
+		$params = $request->params;
+		$classId   = $params['class_id'];
+		$subjectId = $params['subject_id'];
+		$itemId    = $params['item_id'];
+		
+		//params basic
+		$PBS = New ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		//permission
+		$PCS = New PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+		
+		//get class level
+		$levelArray = $PCS->getTeacherClassLevel($user['user_id'], $classId, $subjectId);
+
+		if (isset($levelArray)) {			
+			//usermodel
+			$UAS = new UsermodelApiServices($request);
+			$feedback = $UAS->schoolApiGetItemById($level, $itemId);
+			
+			$this->result['data'] = $feedback['data'];
+			return Response()->json($this->result,200);
+		}
+        $this->result['data'] = [];
+        return Response()->json($this->result,200);
+	}
+	
+	public function get_school_assignment(Request $request) {
 		//params
 		$params = $request->params;
 		//params basic
@@ -41,13 +149,13 @@ class AssignmentController extends Controller
 
 		//usermodel
 		$UAS = new UsermodelApiServices($request);
-		$feedback = $UAS->assignmentApiAdapterGetSchoolAssignment($params);
+		$feedback = $UAS->schoolApiGetSchoolAssignment($params);
 		
         $this->result['data'] = $feedback['data'];
         return Response()->json($this->result,200);
 	}
 	
-	public function adapter_set_school_assignment(Request $request) {
+	public function set_school_assignment(Request $request) {
 		//params
 		$params = $request->params;
 		//params basic
@@ -59,11 +167,35 @@ class AssignmentController extends Controller
 
 		//usermodel
 		$UAS = new UsermodelApiServices($request);
-		$feedback = $UAS->assignmentApiAdapterSetSchoolAssignment($params);
+		$feedback = $UAS->schoolApiSetSchoolAssignment($params);
 		
         $this->result['data'] = $feedback['data'];
         return Response()->json($this->result,200);
 	}
+	
+	public function lock_school_assignment(Request $request) {
+		//params
+		$params = $request->params;
+		//params basic
+		$PBS = New ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		//permission
+		$PCS = New PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+
+		//usermodel
+		$UAS = new UsermodelApiServices($request);
+		$feedback = $UAS->schoolApiLockSchoolAssignment($params);
+		
+        $this->result['data'] = $feedback['data'];
+        return Response()->json($this->result,200);
+	}
+	
+	
+	
+	
+	
+	
 	
     private function teacherClassSubjectId(Request $request)
     {

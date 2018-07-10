@@ -71,8 +71,13 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('get_pre_chosen_items_by_category','ItemController@get_pre_chosen_items_by_category');
 	
 	//Assignment controller
-	Route::post('get_school_assignment','AssignmentController@adapter_get_school_assignment');
-    Route::post('set_school_assignment','AssignmentController@adapter_set_school_assignment');
+	Route::post('get_cls_cat','AssignmentController@get_cls_cat');
+    Route::post('get_item_list_by_cls_sub_cat','AssignmentController@get_item_list_by_cls_sub_cat');
+    Route::post('get_item_by_id','AssignmentController@get_item_by_id');
+	
+	Route::post('get_school_assignment','AssignmentController@get_school_assignment');
+    Route::post('set_school_assignment','AssignmentController@set_school_assignment');
+    Route::post('lock_school_assignment','AssignmentController@lock_school_assignment');
 	
     /*Route::post('get_assignment_by_item_id','ItemController@get_assignment_by_item_id');
     Route::post('set_assignments','ItemController@set_assignments');
