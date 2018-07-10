@@ -53,14 +53,15 @@ class UsermodelApiServices extends Model {
 		return $result;
 	}
 	
-	public function schoolApiGetItemById($level, $itemId) {
+	public function schoolApiGetItemById($level, $itemId, $subjectId) {
 		$inputs = [
 			'level' => $level,
-			'item_id' => $itemId
+			'item_id' => $itemId,
+			'subject_id' => $subjectId
 		];
 		
 		$result = $this->client->post(config('variables.schoolApiGetItemByIdUrl').$this->suffix, $inputs);
-		return $result['data'];
+		return $result;
 	}
 	
 	

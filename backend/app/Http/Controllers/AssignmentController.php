@@ -94,12 +94,12 @@ class AssignmentController extends Controller
 		$permission = $PCS->checkUserPermission($user);
 
 		//get class level
-		$level = $PCS->getTeacherClassLevel($user['user_id'], $classId, $subjectId);
+		$levelArray = $PCS->getTeacherClassLevel($user['user_id'], $classId, $subjectId);
 		
-		if (isset($level)) {
+		if (isset($levelArray)) {
 			//usermodel
 			$UAS = new UsermodelApiServices($request);
-			$feedback = $UAS->schoolApiGetItemsByCatGrouper($level, $catGrouper, $subjectId);
+			$feedback = $UAS->schoolApiGetItemsByCatGrouper($levelArray, $catGrouper, $subjectId);
 			
 			$this->result['data'] = $feedback['data'];
 			$this->result['metadata'] = $feedback['metadata'];
@@ -124,12 +124,12 @@ class AssignmentController extends Controller
 		$permission = $PCS->checkUserPermission($user);
 		
 		//get class level
-		$levelArray = $PCS->getTeacherClassLevel($user['user_id'], $classId, $subjectId);
+		$level = $PCS->getTeacherClassLevel($user['user_id'], $classId, $subjectId);
 
-		if (isset($levelArray)) {			
+		if (isset($level)) {			
 			//usermodel
 			$UAS = new UsermodelApiServices($request);
-			$feedback = $UAS->schoolApiGetItemById($level, $itemId);
+			$feedback = $UAS->schoolApiGetItemById($level, $itemId, $subjectId);
 			
 			$this->result['data'] = $feedback['data'];
 			return Response()->json($this->result,200);
