@@ -50,7 +50,7 @@ class PermissionControlServices extends Model {
 	}
 	
 	public function getTeacherClassLevel($teacherId, $classId, $subjectId) {
-		$sql  = " SELECT DISTINCT cs.level ";
+		$sql  = " SELECT    DISTINCT class_id id, cs.c_name, cs.level, s.s_name_en, s.s_name_zh ";
 		$sql .= " FROM      ".\DB::getTablePrefix()."teacher_class_subject tcs";
 		$sql .= " LEFT JOIN ".\DB::getTablePrefix()."classes cs";
 		$sql .= " ON        tcs.class_id = cs.id ";
@@ -62,9 +62,16 @@ class PermissionControlServices extends Model {
 		if (isset($subjectId)) {
 			$sql .= " AND       tcs.subject_id = ".$subjectId;
 		}
+		if (isset($subjectId)) {
+			$sql .= " AND       tcs.class_id = ".$classId;
+		}
 		$classes = DB::select($sql);
 		
-		return $classes;
+		if(isset($classes[0])) {
+			return $classes[0]->level;
+		}
+		
+		return null;
 	}
 	
 }

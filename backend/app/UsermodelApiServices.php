@@ -42,14 +42,15 @@ class UsermodelApiServices extends Model {
 		return $result['data'];
 	}
 	
-	public function schoolApiGetItemList($level, $catGrouper) {
+	public function schoolApiGetItemsByCatGrouper($level, $catGrouper, $subjectId) {
 		$inputs = [
 			'level' => $level,
-			'cat_grouper' => $catGrouper
+			'cat_grouper' => $catGrouper,
+			'subject_id' => $subjectId
 		];
 		
-		$result = $this->client->post(config('variables.schoolApiGetItemListUrl').$this->suffix, $inputs);
-		return $result['data'];
+		$result = $this->client->post(config('variables.schoolApiGetItemsByCatGrouperUrl').$this->suffix, $inputs);		
+		return $result;
 	}
 	
 	public function schoolApiGetItemById($level, $itemId) {

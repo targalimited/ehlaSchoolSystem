@@ -94,14 +94,15 @@ class AssignmentController extends Controller
 		$permission = $PCS->checkUserPermission($user);
 
 		//get class level
-		$levelArray = $PCS->getTeacherClassLevel($user['user_id'], $classId, $subjectId);
+		$level = $PCS->getTeacherClassLevel($user['user_id'], $classId, $subjectId);
 		
-		if (isset($levelArray[0])) {
+		if (isset($level)) {
 			//usermodel
 			$UAS = new UsermodelApiServices($request);
-			$feedback = $UAS->schoolApiGetItemList($levelArray[0], $catGrouper);
-	
+			$feedback = $UAS->schoolApiGetItemsByCatGrouper($level, $catGrouper, $subjectId);
+			
 			$this->result['data'] = $feedback['data'];
+			$this->result['metadata'] = $feedback['metadata'];
 			return Response()->json($this->result,200);
 		}
         $this->result['data'] = [];

@@ -29,7 +29,7 @@ return [
 	
 	//assignmentApi
 	'schoolApiGetCatBySubjectLevelUrl' => env('USERMODEL_URL').'v1/schoolApi/get_cat_by_subject_level',
-	'schoolApiGetItemListUrl' => env('USERMODEL_URL').'v1/schoolApi/get_item_list',
+	'schoolApiGetItemsByCatGrouperUrl' => env('USERMODEL_URL').'v1/schoolApi/get_items_by_cat_grouper',
 	'schoolApiGetItemByIdUrl' => env('USERMODEL_URL').'v1/schoolApi/get_item_by_id',
 	'schoolApiGetSchoolAssignmentUrl' => env('USERMODEL_URL').'v1/schoolApi/get_school_assignment',
 	'schoolApiSetSchoolAssignmentUrl' => env('USERMODEL_URL').'v1/schoolApi/set_school_assignment',
