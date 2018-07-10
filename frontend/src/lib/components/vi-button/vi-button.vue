@@ -81,7 +81,7 @@
     align-items: center
     border-radius: $border-radius
     display: inline-flex
-    height: 30px
+    height: 40px
     flex: 0 1 auto
     font-size: 16px
     font-weight: 400
@@ -155,6 +155,14 @@
           &--active,
           &:hover
             background-image $brand-gradient-reverse
+
+    &--dark
+      background rgba(255,255,255,0.3)
+      border transparent
+      font-weight bold
+
+      &:hover
+        background rgba(255,255,255,0.4)
 
     &--outline
       background none

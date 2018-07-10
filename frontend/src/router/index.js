@@ -1,6 +1,8 @@
 import {default as ShelfRoutes} from '@/modules/shelf/routes'
 import {default as AuthRoutes} from '@/modules/auth/routes'
 import {default as LibRoutes} from '@/modules/lib/routes'
+import {default as AssignRoutes} from '@/modules/asmt/routes'
+import {default as SettingRoutes} from '@/modules/setting/routes'
 import WildRoute from './wild-route'
 import ComingSoonView from './wild-route-2'
 import Vue from 'vue'
@@ -13,6 +15,8 @@ export default new Router({
     ...ShelfRoutes,
     ...AuthRoutes,
     ...LibRoutes,
+    ...AssignRoutes,
+    ...SettingRoutes,
     {
       path: '/report',
       name: 'report',

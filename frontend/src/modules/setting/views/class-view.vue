@@ -1,0 +1,128 @@
+<template>
+  <div class="class-view">
+    <vi-app-bar title="Class">
+      <div slot="action">
+        <vi-button @click="onAddClass" dark>
+          <vi-icon left name="add-thick" size="12"/>
+          Create class
+        </vi-button>
+      </div>
+    </vi-app-bar>
+
+    <vi-container>
+      <vi-row wrap>
+        <vi-col xs3 v-for="(c,i) in classList" :key="i">
+          <vi-card>
+            <vi-menu left>
+              <vi-button slot="activator" icon text>
+                <vi-icon name="more"/>
+              </vi-button>
+              <vi-item :link="true">
+                <vi-item-avatar>
+                  <vi-icon name="edit"/>
+                </vi-item-avatar>
+                <vi-item-content>
+                  Edit class
+                </vi-item-content>
+              </vi-item>
+              <vi-item :link="true">
+                <vi-item-avatar>
+                  <vi-icon name="trash"/>
+                </vi-item-avatar>
+                <vi-item-content>
+                  Delete class
+                </vi-item-content>
+              </vi-item>
+            </vi-menu>
+
+            <div class="bottom">
+              <router-link :to="{name: 'setting-student', query: {classes: c}}">
+                <vi-button text small style="font-size: 14px">
+                  <vi-icon name="star" left size="12"/>
+                  29 Students
+                  <vi-icon name="right" right size="10"/>
+                </vi-button>
+              </router-link>
+
+              <router-link :to="{name: 'setting-teacher', query: {classes: c}}">
+                <vi-button text small style="font-size: 14px">
+                  <vi-icon name="star" left size="12"/>
+                  29 Teachers
+                  <vi-icon name="right" right size="10"/>
+                </vi-button>
+              </router-link>
+            </div>
+
+            <div class="center">
+              {{c}}
+            </div>
+          </vi-card>
+        </vi-col>
+      </vi-row>
+    </vi-container>
+  </div>
+</template>
+
+<script>
+  function genData () {
+    return [...Array(100).keys()].map(i => {
+      const classes = ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
+      return {
+        className: classes[Math.floor(Math.random() * classes.length)]
+      }
+    })
+  }
+
+  export default {
+    name: 'class-view',
+
+    data() {
+      return {
+        classList: ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
+      }
+    },
+
+    computed: {
+
+    },
+
+    methods: {
+      onAddClass () {
+
+      }
+    },
+
+    created () {
+      // this.classList = genData()
+    }
+  }
+</script>
+
+<style lang="stylus">
+  @import '../../../lib/stylus/main.styl'
+
+  .vi-card
+    background #dfeef6
+    height 200px
+    display flex
+    align-items center
+    justify-content center
+    font-size 20px
+    box-shadow $shadow
+    cursor pointer
+    transition all $transition
+
+    &:hover
+      box-shadow $shadow-2
+
+    .bottom
+      position absolute
+      bottom 4px
+      left 8px
+
+    .vi-menu
+      position absolute
+      top 8px
+      right 8px
+
+</style>

@@ -121,7 +121,8 @@
       v-else
       :pagination.sync="pagination"
       class="lib-table"
-      :sticky="60"
+      :no-header="true"
+      :item-height="135"
       :items="readings"
       :headers="headers"
       :custom-filter="searchFilter"
@@ -150,7 +151,6 @@
 
 <script>
   import {previewDialog} from '../dialogs'
-  import ReadingItem from '../components/reading-item'
 
   const map = {
     WR: {
@@ -169,8 +169,6 @@
 
   export default {
     name: 'lib-view',
-
-    components: { ReadingItem },
 
     data () {
       return {

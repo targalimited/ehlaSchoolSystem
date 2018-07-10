@@ -18,6 +18,12 @@ $gap = 24px
       margin-left 4px
       cursor pointer
 
+    .vi-table__col
+      // TODO verify
+      // it MUST not be overflow hidden for header col
+      // as there might be dropdown
+      overflow initial !important
+
   &__body
     margin 0
 
@@ -38,6 +44,8 @@ $gap = 24px
     display flex
     align-items center
     justify-content center
+    line-height 1.2
+    flex-shrink 0 // so that won't be collapsed in small screen from the expansion of flex 1 column
 
     +not-last()
       margin-right $gap

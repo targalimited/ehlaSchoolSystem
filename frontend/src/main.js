@@ -8,6 +8,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 import './filters'
+import './components'
 import Dali from './lib/lib.js'
 import * as ModalDialogs from 'vue-modal-dialogs'
 import Loading from 'vue-loading-overlay';

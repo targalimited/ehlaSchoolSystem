@@ -3,7 +3,7 @@
 
     <vi-app-bar title="Accessible Items Overview">
       <div class="vi-banner__info">{{selectedCount}}/ {{summary.total_item_qtt}} reading packs</div>
-      <div slot="action">
+      <div slot="secondaryAction">
         <vi-button @click="onConfirm" class="confirm-button" dark>
           <vi-icon left name="done-filled" size="24"/>
           Confirm
@@ -25,7 +25,9 @@
       <vi-data-table
         class="selected-item-table"
         :pagination.sync="pagination"
-        :sticky="140"
+        :no-header="true"
+        :item-height="103"
+        :table-height="600"
         :items="selectedItems"
         :headers="headers"
         :search="search">
@@ -85,12 +87,9 @@
 
 <script>
   import {levelDialog} from '../dialogs'
-  import ReadingItem from '../components/reading-item'
 
   export default {
     name: 'shelf-view',
-
-    components: { ReadingItem },
 
     data () {
       return {

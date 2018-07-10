@@ -2,41 +2,82 @@ import Body from './body'
 import Header from './header'
 import {getObjectValueByPath} from '../../util/helper'
 import ViSticky from '../../directives/sticky'
+import { VirtualScroller } from 'vue-virtual-scroller'
 
 export default {
   name: 'vi-data-table',
 
   mixins: [Body, Header],
 
+  components: { VirtualScroller },
+
+  provide () {
+    return {
+      headers: this.headers
+    }
+  },
+
   directives: {
     ViSticky
   },
 
   props: {
-    showPagination: {
-      type: Boolean,
-      default: false
-    },
     pagination: {
       type: Object,
       default: () => {}
     },
-    infiniteScroll: {
-      type: [Boolean, Number],
-      default: true
+    items: {
+      default: [],
+      type: Array
     },
-    items: Array,
+
+    // an array of object with the signature of
+    // {text: string, width: string, expand: boolean, align: string, index: string, sortable: boolean, searchable: boolean}
     headers: Array,
     search: String,
-    sticky: Number,
-    checkbox: Boolean,
-    // the selected row (when using checkbox)
-    value: Array,
-    // the key as the value for the row in checkbox mode
+
+    // the selected row
+    value: Array | String,
+
+    // the key as the value for the row
     itemKey: {
       type: String,
       default: 'id'
     },
+
+    // return the whole object instead of the itemKey to v-model
+    returnObject: {
+      type: Boolean,
+      default: false
+    },
+
+    // style the table row to be divided
+    divided: Boolean,
+
+    // specify the item height for virtual scroll list to work
+    // could support item dynamic height in the future
+    itemHeight: {
+      type: Number | String,
+      required: true
+    },
+
+    // set a fixed height for the scrolling container
+    // when scroll height is 0 (by default), the table will be full page (pageMode is on for virtual scroll list)
+    tableHeight: {
+      type: Number | String,
+      required: false,
+      default: 0
+    },
+
+    // when it is page mode you probably want to set header as sticky
+    stickyHeader: Number,
+
+    // Dont render the header
+    noHeader: {
+      type: Boolean,
+      default: false
+    },
+
     filter: {
       type: Function,
       default: (val, search) => {
@@ -45,6 +86,7 @@ export default {
           val.toString().toLowerCase().indexOf(search) !== -1
       }
     },
+
     customFilter: {
       type: Function,
       default: (items, search, filter) => {
@@ -56,11 +98,11 @@ export default {
         ))
       }
     },
+
     customSort: {
       type: Function,
       default: (items, index, isDescending) => {
         if (index === null) return items
-
         return items.sort((a, b) => {
           let sortA = getObjectValueByPath(a, index)
           let sortB = getObjectValueByPath(b, index)
@@ -107,6 +149,37 @@ export default {
   },
 
   computed: {
+    pageMode () {
+      return !this.tableHeight
+    },
+
+    // get the key of the item to search against from this.headers (searchable)
+    // If this none not given, by default the searching will includes all the keys of the item
+    // If you need to search some value inside a deep object, you need to use the advanced customFilter function.
+    searchKey () {
+      if (!this.headers) return null
+      const searchableHeaders = this.headers.filter(h => {
+        return h.searchable
+      })
+      if (searchableHeaders.length === 0) return null
+      return searchableHeaders.map(h => {
+        if (!h.index) {
+          console.log('Warning! You should provide an index for searchable or sortable')
+        }
+        return h.index
+      })
+    },
+
+    searchKeyFilteredItems () {
+      const search = this.search.toString().toLowerCase()
+      if (search.trim() === '') return this.items
+
+      return this.items.filter(i => {
+        let keys = Array.isArray(this.searchKey) ? this.searchKey : [this.searchKey]
+        return keys.some(j => this.filter(i[j], this.search))
+      })
+    },
+
     /*
       this is the core of when and how the list is updated
      */
@@ -117,7 +190,11 @@ export default {
         this.search !== null
 
       if (hasSearch) {
-        items = this.customFilter(items, this.search, this.filter)
+        if (this.searchKey) {
+          items = this.searchKeyFilteredItems.slice()
+        } else {
+          items = this.customFilter(items, this.search, this.filter)
+        }
         this.searchLength = items.length
       }
 
@@ -127,17 +204,6 @@ export default {
         this.pagination.descending
       )
 
-      let from, to
-      if (this.infiniteScroll) {
-        from = 0
-        to = this.pagination.page * this.pagination.rowsPerPage
-      } else {
-        const rowsPerPage = this.pagination.rowsPerPage
-        const pageStart = this.pagination.page - 1
-        from = rowsPerPage * pageStart
-        to = from + rowsPerPage
-      }
-      items = items.slice(from, to)
       return items
     },
 
@@ -150,15 +216,79 @@ export default {
       const pagination = this.pagination || {}
 
       return Object.keys(pagination).length > 0
+    },
+
+    isMultiple () {
+      return Array.isArray(this.value)
+    },
+
+    computedValue () {
+      if (!this.returnObject) return this.value
+      else {
+        if (this.isMultiple) {
+          if (this.value.length === 0) return []
+          return this.value.map(v => v[this.itemKey])
+        } else {
+          if (!this.value) return
+          else return this.value[this.itemKey]
+        }
+      }
     }
   },
 
   methods: {
-    toggle (key) {
-      let selected = this.value.slice()
-      if (selected.includes(key)) selected.splice(selected.indexOf(key), 1)
-      else selected.push(key)
-      this.$emit('input', selected)
+    isSelected (item) {
+      const key = item[this.itemKey]
+      if (this.isMultiple) {
+        return this.computedValue.includes(key)
+      } else {
+        return this.computedValue === key
+      }
+    },
+    getSelectedObject (key) {
+      if (!this.returnObject) return
+      if (this.isMultiple) {
+        if (this.value.length === 0) return []
+        else return this.items.filter(item => this.value.includes(key))
+      } else {
+        //if (!this.value) return
+        return this.items.find(item => key === item[this.itemKey])
+      }
+    },
+    add (item) {
+      let selected
+      if (this.isMultiple) {
+        selected = this.computedValue.slice()
+        selected.push(item[this.itemKey])
+      } else {
+        selected = item[this.itemKey]
+      }
+      this.emitValue(selected)
+    },
+    remove (item) {
+      let selected
+      if (this.isMultiple) {
+        selected = this.computedValue.slice()
+        selected.splice(selected.indexOf(item[this.itemKey]), 1)
+      } else {
+        selected = ''
+      }
+      this.emitValue(selected)
+    },
+    emitValue (selected) {
+      console.log(selected)
+      if (this.returnObject) {
+        this.$emit('input', this.getSelectedObject(selected))
+      } else {
+        this.$emit('input', selected)
+      }
+    },
+    toggle (item) {
+      if (this.isSelected(item)) {
+        this.remove(item)
+      } else {
+        this.add(item)
+      }
     },
     toggleAll () {
       let newValue
@@ -193,35 +323,20 @@ export default {
       this.updatePagination(
         Object.assign({}, this.defaultPagination, this.pagination)
       )
-    },
-
-    nextPage () {
-      const {page, rowsPerPage} = this.pagination
-      if (page * rowsPerPage > this.itemsLength) return
-      this.updatePagination({
-        page: page + 1
-      })
     }
   },
 
   created () {
     this.initPagination()
-  },
-
-  mounted () {
-    if (this.infiniteScroll) {
-      const offset = Number.isInteger(this.infiniteScroll) ? this.infiniteScroll : 200
-      document.addEventListener('scroll', e => {
-        if ((window.innerHeight + window.scrollY) + offset >= document.body.scrollHeight) {
-          this.nextPage()
-        }
-      })
-    }
+    console.log(this.customFilter)
   },
 
   render (h) {
     return h('div', {
-      staticClass: 'vi-table'
+      staticClass: 'vi-table',
+      class: {
+        'vi-table--divided': this.divided
+      }
     }, [
       this.genHeader(),
       this.genBody()

@@ -5,7 +5,7 @@ import ViChip from './components/vi-chip'
 import {ViCheckbox, ViCheckboxBoolean} from './components/vi-checkbox'
 import ViIcon from './components/vi-icon'
 import {ViInput, ViInputError, ViInputLabel} from './components/vi-input'
-import {ViButton, ViButtonRow, ViCloseButton} from './components/vi-button'
+import {ViButton, ViButtonRow, ViCloseButton, ViButtonToggle} from './components/vi-button'
 import {ViItem, ViItemAction, ViItemAvatar, ViItemContent, ViItemTitle, ViItemSubTitle} from './components/vi-item'
 import {ViSectionHeader, ViPageTitle} from './components/vi-section-header'
 import ViMenu from './components/vi-menu'
@@ -55,6 +55,7 @@ const Dali = {
     Vue.component('vi-input-label', ViInputLabel)
     Vue.component('vi-button', ViButton)
     Vue.component('vi-button-row', ViButtonRow)
+    Vue.component('vi-button-toggle', ViButtonToggle)
     Vue.component('vi-close-button', ViCloseButton)
     Vue.component('vi-section-header', ViSectionHeader)
     Vue.component('vi-menu', ViMenu)
