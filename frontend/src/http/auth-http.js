@@ -32,6 +32,15 @@ class AuthHttp {
     }
   }
 
+  async http_post (url, data) {
+    try {
+      const res = await this.http.post(url, data)
+      return res.data
+    } catch (e) {
+      return this.handleException(e)
+    }
+  }
+
   async put (url, data) {
     try {
       return await this.http.put(url, data)

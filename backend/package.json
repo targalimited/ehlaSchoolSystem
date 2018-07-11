@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "dev": "php artisan serve --port=8081",
+    "dev": "php artisan serve --port=8000",
     "init": "cp .env.example .env && composer install && php artisan key:generate && php artisan cache:clear && php artisan view:clear && php artisan route:clear && composer dumpautoload -o",
     "dev1": "node node_modules/cross-env/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
     "watch": "node node_modules/cross-env/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",

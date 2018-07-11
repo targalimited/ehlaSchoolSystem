@@ -1,0 +1,6 @@
+export const SET_CLASS = 'setClass'
+export const SET_LEVEL = 'setLevel'
+export const SET_SINGLE_CLASS = 'setSingleClass'
+export const SET_ERROR = 'setError'
+export const SET_AUTH = 'setAuth'
+export const PURGE_AUTH = 'purgeAuth'

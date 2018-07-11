@@ -1,0 +1,122 @@
+import {http, AuthHttp} from '../http'
+import {FETCH_CLASS, FETCH_SINGLE_CLASS, CLASS_CREATE, CLASS_UPDATE, CLASS_DESTROY, CLASS_EDIT, FETCH_LEVEL } from './actions.type'
+import {SET_CLASS, SET_SINGLE_CLASS, SET_LEVEL} from "./mutations.type";
+import { getField, updateField } from 'vuex-map-fields';
+
+ApiService.init()
+
+const state = {
+  classes: [],
+  levelOptions: [],
+  summary: [],
+  single_class: {}
+}
+
+const getters = {
+  getField,
+
+  classes (state){
+    return state.classes.data
+  },
+
+  single_class: state => id => state.classes.data.find(c => c.id === id),
+
+  levelOptions(state){
+    if(state.summary){
+      let all_level = state.summary.levels_translate
+      let available_level = state.summary.valid_levels
+      let cus_level = []
+      for (var k in available_level) {
+        if (all_level[available_level[k]]) {
+          for (var prop in all_level) {
+            if(all_level[prop]===all_level[available_level[k]]) {
+              // state.level[prop] = all_level[available_level[k]]
+              cus_level.push({key:prop,value:all_level[available_level[k]]})
+            }
+          }
+        }
+      }
+      return cus_level
+    }
+  }
+
+}
+
+const actions = {
+
+  async [FETCH_CLASS] ({commit}) {
+    try {
+      let res = await new AuthHttp().get('classes')
+      commit(SET_CLASS, res.data )
+    } catch (e) {}
+  },
+
+  async [FETCH_SINGLE_CLASS] (context,payload) {
+    try {
+      let res = await ApiService.post('single_class',{id:payload})
+      context.commit(SET_SINGLE_CLASS, res.data )
+    } catch (e) {}
+  },
+
+  async [FETCH_LEVEL] ({commit}) {
+    try {
+      let res = await ApiService.get('get_school_item_summary')
+      commit(SET_LEVEL,res.data)
+    } catch (e) {}
+  },
+
+  async [CLASS_CREATE] ({dispatch}, {data}){
+    try{
+      // console.log(data)
+      await ApiService.post('classes',data)
+      dispatch(FETCH_CLASS)
+      dispatch(FETCH_LEVEL)
+    }catch (e){
+
+    }
+  },
+
+  async [CLASS_UPDATE] ({dispatch}){
+    try{
+      // console.log(data)
+      console.log(state.single_class);
+      await ApiService.post('classes',state.single_class)
+      dispatch(FETCH_CLASS)
+      dispatch(FETCH_LEVEL)
+    }catch (e){
+
+    }
+  },
+
+  async [CLASS_DESTROY] (context,payload){
+    await ApiService.delete('class/'+payload)
+    context.dispatch(FETCH_CLASS)
+    context.dispatch(FETCH_LEVEL)
+  }
+
+
+}
+
+const mutations = {
+
+  updateField,
+
+  [SET_CLASS] (state,classes) {
+    state.classes = classes
+  },
+
+  [SET_SINGLE_CLASS] (state,single_class) {
+    state.single_class = single_class
+  },
+
+  [SET_LEVEL] (state, summary) {
+    state.summary = summary
+  }
+}
+
+export default {
+  state,
+  actions,
+  mutations,
+  getters
+}
