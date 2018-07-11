@@ -13,9 +13,14 @@ use App\PermissionControlServices;
 class ClassController extends Controller
 {
     public function getClasses(){
-        $classes = SchoolClass::get();
+        $classes = SchoolClass::with('students')->with('teachers')->get();
         $result['data'] = $classes;
         return json($result);
+    }
+
+    public function getSingleClass(Request $request){
+        $class = SchoolClass::where('id',$request->id)->first();
+        return json($class);
     }
 
 	public function get_all_classes (Request $request) {
