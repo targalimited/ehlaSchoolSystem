@@ -3,7 +3,6 @@ import {FETCH_CLASS, FETCH_SINGLE_CLASS, CLASS_CREATE, CLASS_UPDATE, CLASS_DESTR
 import {SET_CLASS, SET_SINGLE_CLASS, SET_LEVEL} from "./mutations.type";
 import { getField, updateField } from 'vuex-map-fields';
 
-ApiService.init()
 
 const state = {
   classes: [],
@@ -16,7 +15,8 @@ const getters = {
   getField,
 
   classes (state){
-    return state.classes.data
+    console.log(state.classes)
+    return state.classes
   },
 
   single_class: state => id => state.classes.data.find(c => c.id === id),
@@ -47,6 +47,7 @@ const actions = {
   async [FETCH_CLASS] ({commit}) {
     try {
       let res = await new AuthHttp().get('classes')
+
       commit(SET_CLASS, res.data )
     } catch (e) {}
   },

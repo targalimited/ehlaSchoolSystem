@@ -11,7 +11,7 @@
 
     <vi-container>
       <vi-row wrap>
-        <vi-col xs3 v-for="(c,i) in classList" :key="i">
+        <vi-col xs3 v-for="(c,i) in classes" :key="i">
           <vi-card>
             <vi-menu left>
               <vi-button slot="activator" icon text>
@@ -39,7 +39,7 @@
               <router-link :to="{name: 'setting-student', query: {classes: c}}">
                 <vi-button text small style="font-size: 14px">
                   <vi-icon name="star" left size="12"/>
-                  29 Students
+                  {{c.students.length}} Students
                   <vi-icon name="right" right size="10"/>
                 </vi-button>
               </router-link>
@@ -47,14 +47,14 @@
               <router-link :to="{name: 'setting-teacher', query: {classes: c}}">
                 <vi-button text small style="font-size: 14px">
                   <vi-icon name="star" left size="12"/>
-                  29 Teachers
+                  {{c.teachers.length}} Teachers
                   <vi-icon name="right" right size="10"/>
                 </vi-button>
               </router-link>
             </div>
 
             <div class="center">
-              {{c}}
+              {{c.c_name}}
             </div>
           </vi-card>
         </vi-col>
@@ -64,32 +64,50 @@
 </template>
 
 <script>
-  function genData () {
-    return [...Array(100).keys()].map(i => {
-      const classes = ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
-      return {
-        className: classes[Math.floor(Math.random() * classes.length)]
-      }
-    })
-  }
+
+  import { mapGetters } from 'vuex'
+  import {FETCH_CLASS,FETCH_LEVEL, FETCH_SINGLE_CLASS, CLASS_CREATE, CLASS_UPDATE, CLASS_DESTROY, CHECK_AUTH} from "@/store/actions.type";
+  import { mapFields } from 'vuex-map-fields';
+//
+//  function genData () {
+//    return [...Array(100).keys()].map(i => {
+//      const classes = ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
+//      return {
+//        className: classes[Math.floor(Math.random() * classes.length)]
+//      }
+//    })
+//  }
 
   export default {
     name: 'class-view',
 
     data() {
       return {
-        classList: ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
+//        classList: ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
       }
     },
 
     computed: {
-
+      ...mapGetters([
+        'levelOptions',
+        'classes',
+        'single_class',
+      ]),
+      ...mapFields([
+        'single_class.c_name',
+        'single_class.level',
+        'single_class.id'
+      ]),
     },
 
     methods: {
       onAddClass () {
 
       }
+    },
+    mounted(){
+      this.$store.dispatch(FETCH_LEVEL)
+      this.$store.dispatch(FETCH_CLASS)
     },
 
     created () {
