@@ -160,8 +160,9 @@ Route::group(['prefix' => 'v1'], function () {
     //classes
     Route::put('classes/{id}', 'ClassController@putClasses');
     Route::delete('classes/{id}', 'ClassController@delClasses');
-    Route::get('classes', 'ClassController@getClasses');
-    Route::post('classes', 'ClassController@postClasses');
+      Route::get('classes', 'ClassController@getClasses');
+      Route::post('classes', 'ClassController@postClasses');
+      Route::post('single_class', 'ClassController@getSingleClass');
 
     Route::group(['prefix' => 'teachers/{teacher_id?}/subjects/{subject_id?}/classes/{class_id?}'], function () {
       //update students, bind to class and subject

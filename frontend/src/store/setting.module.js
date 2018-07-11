@@ -6,6 +6,7 @@ import { getField, updateField } from 'vuex-map-fields';
 
 const state = {
   classes: [],
+  students: [],
   levelOptions: [],
   summary: [],
   single_class: {}
@@ -15,9 +16,11 @@ const getters = {
   getField,
 
   classes (state){
-    console.log(state.classes)
+    // console.log(state.classes)
     return state.classes
   },
+
+  students: state => state.students,
 
   single_class: state => id => state.classes.data.find(c => c.id === id),
 
@@ -43,6 +46,15 @@ const getters = {
 }
 
 const actions = {
+
+  async FETCH_STUDENT ({commit}){
+    try{
+      let res = await new AuthHttp().get('students')
+      commit(SET_STUDENT, res.data)
+    }catch (e) {
+
+    }
+  },
 
   async [FETCH_CLASS] ({commit}) {
     try {
@@ -101,6 +113,10 @@ const actions = {
 const mutations = {
 
   updateField,
+
+  SET_STUDENT (state,students){
+    state.students = students
+  },
 
   [SET_CLASS] (state,classes) {
     state.classes = classes

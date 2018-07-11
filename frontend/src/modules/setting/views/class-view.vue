@@ -36,7 +36,7 @@
             </vi-menu>
 
             <div class="bottom">
-              <router-link :to="{name: 'setting-student', query: {classes: c}}">
+              <router-link :to="{name: 'setting-student', query: {classes: c.c_name}}">
                 <vi-button text small style="font-size: 14px">
                   <vi-icon name="star" left size="12"/>
                   {{c.students.length}} Students
@@ -44,7 +44,7 @@
                 </vi-button>
               </router-link>
 
-              <router-link :to="{name: 'setting-teacher', query: {classes: c}}">
+              <router-link :to="{name: 'setting-teacher', query: {classes: c.c_name}}">
                 <vi-button text small style="font-size: 14px">
                   <vi-icon name="star" left size="12"/>
                   {{c.teachers.length}} Teachers

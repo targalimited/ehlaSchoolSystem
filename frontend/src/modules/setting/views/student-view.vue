@@ -58,6 +58,9 @@
 </template>
 
 <script>
+
+  import { mapGetters } from 'vuex'
+
   function genData () {
     return [...Array(100).keys()].map(i => {
       const names = ['Anson Mak', 'Jeff Wong', 'Tam Ma', 'Benny Jay', 'Calvin Lee', 'Timothy', 'Chan Siu Hei', 'Mei To Poon', 'Chan Kim Man', 'Man Sui Fong']
@@ -108,6 +111,9 @@
       classOptions() {
         return ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
       },
+      ...mapGetters([
+        'students',
+      ]),
     },
 
     methods: {
@@ -152,6 +158,11 @@
       this.items = genData()
       const classQuery = this.$route.query.classes
       if (classQuery) this.classFilters = classQuery
+    },
+
+    mounted (){
+      console.log(this.students)
+      this.$store.dispatch('FETCH_STUDENT')
     }
   }
 </script>
