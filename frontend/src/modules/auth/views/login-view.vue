@@ -18,7 +18,7 @@
           <div class="subtitle">Login to your account</div>
         </div>
 
-        <form>
+        <v-form>
           <div class="input-group">
             <vi-input-label>Username</vi-input-label>
             <vi-input v-model="username" placeholder="Enter your username" v-on:keyup.enter="submit"/>
@@ -32,7 +32,7 @@
           <vi-input-error class="mb-24" v-if="error">username / password is wrong</vi-input-error>
 
           <vi-button :disabled="loading" @click="submit" primary>{{loading ? 'Loggin in...' : 'Login'}}</vi-button>
-        </form>
+        </v-form>
 
         <vi-row class="notice">
           <vi-icon name="info-circular" size="32" class="no-shrink mr-20"/>
