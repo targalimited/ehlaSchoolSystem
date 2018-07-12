@@ -17,7 +17,7 @@
               <vi-button slot="activator" icon text>
                 <vi-icon name="more"/>
               </vi-button>
-              <vi-item :link="true">
+              <vi-item :link="true" @click="onEdit(c)">
                 <vi-item-avatar>
                   <vi-icon name="edit"/>
                 </vi-item-avatar>
@@ -78,6 +78,8 @@
 //    })
 //  }
 
+  import {classDialog} from '../dialogs'
+
   export default {
     name: 'class-view',
 
@@ -103,7 +105,13 @@
 
     methods: {
       onAddClass () {
-
+        classDialog()
+      },
+      onEdit (classv) {
+        classDialog({
+          oldClassName: classv.c_name,
+          oldClassLevel: classv.level
+        })
       }
     },
     mounted(){
@@ -117,13 +125,14 @@
   }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
   @import '../../../lib/stylus/main.styl'
 
   .vi-card
     background #dfeef6
     height 200px
     display flex
+    flex-flow row wrap
     align-items center
     justify-content center
     font-size 20px

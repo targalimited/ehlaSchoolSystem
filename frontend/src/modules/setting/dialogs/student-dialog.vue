@@ -3,7 +3,7 @@
     <vi-card>
       <vi-toolbar :brand="true">
         <div class="vi-toolbar__title">
-          {{isEdit ? 'Edit' : 'Create'}} students
+          {{isEdit ? 'Edit' : 'Create'}} student
         </div>
       </vi-toolbar>
 
