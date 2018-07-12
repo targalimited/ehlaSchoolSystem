@@ -100,9 +100,10 @@ class LoginController extends Controller
 
         $user = $user->toArray();
 
+        // print_r($user);exit();
         // attach roles into user object
-        $userInfo = json_decode($user['user']);
-        $userInfo->roles = $user['roles'];
+        $userInfo = $user['user'];
+        $userInfo['roles'] = $user['roles'];
 
         $data = array(
           "user_id" => $user['id'],
