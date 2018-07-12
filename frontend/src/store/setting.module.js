@@ -3,8 +3,6 @@ import {FETCH_CLASS, FETCH_SINGLE_CLASS, CLASS_CREATE, CLASS_UPDATE, CLASS_DESTR
 import {SET_CLASS, SET_SINGLE_CLASS, SET_LEVEL} from "./mutations.type";
 import { getField, updateField } from 'vuex-map-fields';
 
-ApiService.init()
-
 const state = {
   classes: [],
   levelOptions: [],
