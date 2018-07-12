@@ -13,4 +13,8 @@ class StudentClassSubject extends Model
     public function details(){
       return $this->hasOne(User::class,'id','student_id');
     }
+
+    public function single_class(){
+      return $this->hasOne(SchoolClass::class,'id','class_id');
+    }
 }
