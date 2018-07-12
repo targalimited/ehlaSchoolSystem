@@ -883,6 +883,18 @@ class UserController extends Controller
 
   }
 
+  public function getStudents(Request $request){
+    if(Auth::user()->can('view_students')){
+      $students = StudentClassSubject::with('details')->get()->toArray();
+     // $users = User::where('id',2)->get()->toArray();
+//      print_r($students);
+      $result['data'] = $students;
+      return Response()->json($result,200);
+    }
+
+
+  }
+
 
   public function getUserDetails(Request $request)
   {

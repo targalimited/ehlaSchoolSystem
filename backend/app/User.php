@@ -20,6 +20,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     const CREATED_AT = 'create_ts';
     const UPDATED_AT = 'update_ts';
 
+  protected $casts = [
+    'user' => 'array',
+  ];
+
     public function classes()
     {
         return $this->belongsToMany('App\SchoolClass','teacher_class_subject','teacher_id','class_id')->withPivot('id');

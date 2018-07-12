@@ -50,7 +50,7 @@ const actions = {
   async FETCH_STUDENT ({commit}){
     try{
       let res = await new AuthHttp().get('students')
-      commit(SET_STUDENT, res.data)
+      commit('SET_STUDENT', res.data)
     }catch (e) {
 
     }
@@ -92,7 +92,6 @@ const actions = {
   async [CLASS_UPDATE] ({dispatch}){
     try{
       // console.log(data)
-      console.log(state.single_class);
       await ApiService.post('classes',state.single_class)
       dispatch(FETCH_CLASS)
       dispatch(FETCH_LEVEL)

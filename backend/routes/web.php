@@ -109,6 +109,8 @@ Route::group(['prefix' => 'v1'], function () {
     Route::put('student_single', 'UserController@putSingleStudent');
     Route::get('user_list', 'UserController@getUser');
     Route::get('user/{id}', 'UserController@getUserDetails');
+    Route::get('students', 'UserController@getStudents');
+
 
     //Permission Control
     Route::post('attach_permission', 'RoleController@attachPermission');
