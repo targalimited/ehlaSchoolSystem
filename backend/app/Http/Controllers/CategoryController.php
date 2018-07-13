@@ -36,37 +36,10 @@ class CategoryController extends Controller {
 			$UAS = New UsermodelApiServices($request);
 			$category = $UAS->schoolApiGetSchoolCategory($subjectId);
 						
-			foreach($category as $value) {
-				if ($value['type'] == 'assignItem') {	
-					if ($permission['chooseItems']) {
-						$value['deadline_en'] = 'No right';
-						$value['deadline_zh'] = '沒有權限';
-					} else {
-						$value['deadline_en'] = '-';
-						$value['deadline_zh'] = '-';
-					}
-					$value['questions_en'] = '-';
-					$value['questions_zh'] = '-';
-					$value['remark_en'] = '-';
-					$value['remark_zh'] = '-';	
-					array_push($output, $value);
-				
-					continue;
-				}
-				
+			foreach($category as $value) {				
 				if ($value['status'] == 'disabled') {
 					continue;
-				} else if ($value['status'] == 'view-only') {
-					$value['deadline_en'] = 'disabled';
-					$value['deadline_zh'] = '未開放';
-				} else {
-					$value['deadline_en'] = '-';
-					$value['deadline_zh'] = '-';
-				}
-				$value['questions_en'] = '-';
-				$value['questions_zh'] = '-';
-				$value['remark_en'] = '-';
-				$value['remark_zh'] = '-';
+				} 
 				array_push($output, $value);
 			}
 		}

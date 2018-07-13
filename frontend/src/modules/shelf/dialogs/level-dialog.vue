@@ -54,7 +54,7 @@
         return (level.catFull && !isLevelAlreadySelected)
       },
       isDisabled (level) {
-        return level.full || this.isCatDisabled(level)
+        return (level.full && !this.selected.includes(level.level)) || this.isCatDisabled(level)
       },
       onSubmit () {
         this.$close(this.newSelected)
