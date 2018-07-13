@@ -56,6 +56,15 @@ const actions = {
     }
   },
 
+  async STUDENT_CREATE (context,payload){
+    try{
+      let res = await new AuthHttp().http_post('student_single',payload)
+      // commit('ADD_STUDENT', res.data)
+    }catch (e) {
+
+    }
+  },
+
   async [FETCH_CLASS] ({commit}) {
     try {
       let res = await new AuthHttp().get('classes')
@@ -115,6 +124,10 @@ const mutations = {
 
   SET_STUDENT (state,students){
     state.students = students
+  },
+
+  ADD_STUDENT (state,result){
+
   },
 
   [SET_CLASS] (state,classes) {

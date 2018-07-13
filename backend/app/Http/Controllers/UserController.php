@@ -717,6 +717,10 @@ class UserController extends Controller
   public function postSingleStudent(Request $request)
   {
 
+    print_r($request->fullname);
+    print_r($request->className);
+    die();
+
     $rules = array('email' => 'unique:users,email');
 
     $validator = Validator::make($request->all(), $rules);
@@ -730,75 +734,78 @@ class UserController extends Controller
       return error_json($result);
     }
 
-    DB::transaction(function () use ($request) {
+    try {
+      DB::transaction(function () use ($request) {
 
-      $user = New User();
-      $user->username = $request->username;
-      $user->email = $request->email;
-      $user->password = $request->password;
-      //$user->student_id = $request->student_id;
-      $user->save();
+        $user = New User();
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        //$user->student_id = $request->student_id;
+        $user->save();
 
-      //user role 3 = student
-      $user->roles()->attach(3);
+        //user role 3 = student
+        $user->roles()->attach(3);
 
-      $scs = New StudentClassSubject();
-      $scs->class_id = $request->class_id;
-      $scs->student_id = $user->id;
-      $scs->save();
+        $scs = New StudentClassSubject();
+        $scs->class_id = $request->class_id;
+        $scs->student_id = $user->id;
+        $scs->save();
 
-      $this->init();
+        $this->init();
 
-      foreach (User::all() as $v) {
-        $this->student[$v->id] = $v->email;
-      }
-
-
-      $class_id = (array_key_exists($request->class_id, $this->class))?$request->class_id:false;
-      $user_id = array_search(strtolower($request->email), $this->student);
-
-
-      if($class_id){
-        $tcs = TeacherClassSubject::where('class_id',$class_id)->get();
-
-
-        foreach ($tcs as $v){
-          $student_subject = New StudentSubject();
-          $student_subject->teacher_class_subject_id = $v->id;
-          $student_subject->student_id =$user_id;
-          $student_subject->save();
+        foreach (User::all() as $v) {
+          $this->student[$v->id] = $v->email;
         }
-      }else{
-        $result = [
-          'status' => false,
-          'code' => '',
-          'message' => ['No such class']
-        ];
-        return error_json($result);
-      }
 
 
+        $class_id = (array_key_exists($request->class_id, $this->class)) ? $request->class_id : false;
+        $user_id = array_search(strtolower($request->email), $this->student);
 
-//      foreach ($request->class_subject as $k => $v) {
-//        $class_id = array_search(strtolower($v['class']['id']), $this->class);
-//        $subject_id = array_search(strtolower($v['subject']['id']), $this->subject);
-//
-//
-//        if ($class_id && $subject_id) {
-//
-//          //TODO Create student subject class bind to teacher
-//
-//        } else {
-//          $result = [
-//            'status' => false,
-//            'code' => '',
-//            'message' => ['No such class or subject']
-//          ];
-//          return error_json($result);
-//        }
-//      }
 
-    }, 2);
+        if ($class_id) {
+          $tcs = TeacherClassSubject::where('class_id', $class_id)->get();
+
+
+          foreach ($tcs as $v) {
+            $student_subject = New StudentSubject();
+            $student_subject->teacher_class_subject_id = $v->id;
+            $student_subject->student_id = $user_id;
+            $student_subject->save();
+          }
+        } else {
+          $result = [
+            'status' => false,
+            'code' => '',
+            'message' => ['No such class']
+          ];
+          return error_json($result);
+        }
+
+
+        //      foreach ($request->class_subject as $k => $v) {
+        //        $class_id = array_search(strtolower($v['class']['id']), $this->class);
+        //        $subject_id = array_search(strtolower($v['subject']['id']), $this->subject);
+        //
+        //
+        //        if ($class_id && $subject_id) {
+        //
+        //          //TODO Create student subject class bind to teacher
+        //
+        //        } else {
+        //          $result = [
+        //            'status' => false,
+        //            'code' => '',
+        //            'message' => ['No such class or subject']
+        //          ];
+        //          return error_json($result);
+        //        }
+        //      }
+
+      }, 2);
+    } catch (\Exception $e) {
+    } catch (\Throwable $e) {
+    }
 
     return return_success();
   }
@@ -885,7 +892,20 @@ class UserController extends Controller
 
   public function getStudents(Request $request){
     if(Auth::user()->can('view_students')){
-      $students = StudentClassSubject::with('single_class')->with('details')->get()->toArray();
+
+
+      $students = StudentClassSubject::with('single_class')->get()->toArray();
+
+      for ($i = 0; $i < count($students); $i++){
+        $data[$i]['real_name'] = 'Chan Tai Ming';
+      }
+
+      foreach ($students as $k => $v){
+
+      }
+      print_r($students);
+      die();
+
      // $users = User::where('id',2)->get()->toArray();
 //      print_r($students);
       $result['data'] = $students;

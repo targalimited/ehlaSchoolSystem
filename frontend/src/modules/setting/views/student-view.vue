@@ -25,7 +25,7 @@
     <vi-data-table
       v-if="items"
       :headers="headers"
-      :items="items"
+      :items="students"
       :search="search"
       :sticky-header="130"
       :pagination.sync="pagination"
@@ -35,12 +35,12 @@
       <div slot="item" slot-scope="{item}" class="vi-table__row">
 
         <vi-table-col>
-          {{item.name}}
+          {{item.details.user.nickname}}
         </vi-table-col>
 
         <vi-table-col>
           <vi-chip>
-            {{item.class}}
+            {{item.single_class.c_name}}
           </vi-chip>
         </vi-table-col>
 
@@ -61,17 +61,17 @@
 
   import { mapGetters } from 'vuex'
 
-  function genData () {
-    return [...Array(100).keys()].map(i => {
-      const names = ['Anson Mak', 'Jeff Wong', 'Tam Ma', 'Benny Jay', 'Calvin Lee', 'Timothy', 'Chan Siu Hei', 'Mei To Poon', 'Chan Kim Man', 'Man Sui Fong']
-      const classes = ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
-      return {
-        name: names[Math.floor(Math.random() * names.length)],
-        username: names[Math.floor(Math.random() * names.length)].toLowerCase(),
-        class: classes[Math.floor(Math.random() * classes.length)],
-      }
-    })
-  }
+  // function genData () {
+  //   return [...Array(100).keys()].map(i => {
+  //     const names = ['Anson Mak', 'Jeff Wong', 'Tam Ma', 'Benny Jay', 'Calvin Lee', 'Timothy', 'Chan Siu Hei', 'Mei To Poon', 'Chan Kim Man', 'Man Sui Fong']
+  //     const classes = ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
+  //     return {
+  //       name: names[Math.floor(Math.random() * names.length)],
+  //       username: names[Math.floor(Math.random() * names.length)].toLowerCase(),
+  //       class: classes[Math.floor(Math.random() * classes.length)],
+  //     }
+  //   })
+  // }
 
   import {studentDialog} from '../dialogs'
 
@@ -118,7 +118,10 @@
 
     methods: {
       onAddStudent () {
-        studentDialog()
+        studentDialog().then(res => {
+            // console.log("response", res.fullname);
+            this.$store.dispatch('STUDENT_CREATE',{fullname:res.fullname,className:res.className})
+          })
       },
       onEdit (student) {
         studentDialog({
@@ -155,7 +158,7 @@
     },
 
     created () {
-      this.items = genData()
+      // this.items = genData()
       const classQuery = this.$route.query.classes
       if (classQuery) this.classFilters = classQuery
     },
