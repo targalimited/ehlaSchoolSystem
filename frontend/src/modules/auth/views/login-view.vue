@@ -66,7 +66,7 @@ export default {
         username: this.username,
         password: this.password
       })
-      if (res && this.$store.getters.isAuthenticated) {
+      if (res) {
         this.$router.push({
           name: 'home'
         })
