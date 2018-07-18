@@ -35,7 +35,7 @@
       <div slot="item" slot-scope="{item}" class="vi-table__row">
 
         <vi-table-col>
-          {{item.details.user.nickname}}
+          {{item.realname}}
         </vi-table-col>
 
         <vi-table-col>
@@ -119,15 +119,18 @@
     methods: {
       onAddStudent () {
         studentDialog().then(res => {
-            // console.log("response", res.fullname);
+             // console.log("response", res.fullname);
             this.$store.dispatch('STUDENT_CREATE',{fullname:res.fullname,className:res.className})
           })
       },
       onEdit (student) {
         studentDialog({
-          oldFullname: student.name,
-          oldUsername: student.username,
-          oldClass: student.class
+          oldFullname: student.realname,
+          // oldUsername: student.username,
+          oldClass: student.single_class.c_name
+        }).then(res=>{
+          // console.log(student)
+           this.$store.dispatch('STUDENT_UPDATE',{id:student.student_id,fullname:res.fullname,className:res.className})
         })
       },
       async onDelete (student) {
@@ -148,6 +151,7 @@
       },
       filterFunction (items, search, filter) {
         items = this.filterByClass(items)
+        console.log(items)
         search = search.toString().toLowerCase()
         if (search.trim() === '') return items
 

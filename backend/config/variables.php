@@ -4,6 +4,13 @@ return [
 	'loginUrl' => env('USERMODEL_URL').'v1/userApi/login?encode=1',
 	'logoutUrl' => env('USERMODEL_URL').'v1/userApi/logout?access-token=',
 	'changePWUrl' => env('USERMODEL_URL').'v1/userApi/changepw?encode=1&access-token=',
+
+  //user management
+  'createAccount' => env('USERMODEL_URL').'v1/userApi/account_creator?encode=1',
+  'getUsersByIDs' => env('USERMODEL_URL').'v1/userApi/get_users_by_ids?encode=1',
+  'updateUserInfo' => env('USERMODEL_URL').'v1/userApi/update_user_info?encode=1',
+
+
 	// school items
 	'schoolApiGetSchoolItemSummaryUrl' => env('USERMODEL_URL').'v1/schoolApi/get_school_item_summary',
 	
