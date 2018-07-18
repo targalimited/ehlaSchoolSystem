@@ -730,13 +730,12 @@ class UserController extends Controller
 
     if ($class_id = $this->getClassID($request->className)) {
 
-      $input['username'] = $request->fullname;
       $input['userGroup'] = 'student';
       $input['accType'] = "";
       $input['users']['realname'] = $request->fullname;
 
       $access_token = json_decode(Auth::user()->session)->access_token;
-
+        print_r($access_token);
       $client = new EhlaGuzzleClient();
       $res = $client->post(config('variables.createAccount') . $access_token, $input);
 
@@ -858,6 +857,8 @@ class UserController extends Controller
       $input['realname'] = $request->fullname;
 
       $access_token = json_decode(Auth::user()->session)->access_token;
+
+      print_r($access_token);
 
       $client = new EhlaGuzzleClient();
       $res = $client->post(config('variables.updateUserInfo') . $access_token, $input);
