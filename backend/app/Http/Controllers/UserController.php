@@ -967,20 +967,24 @@ class UserController extends Controller
   {
     if (Auth::user()->can('view_students')) {
 
-//
-//      $students = StudentClassSubject::with('single_class')->get()->pluck('student_id');
-//
-//      $access_token = json_decode(Auth::user()->session)->access_token;
-//
-//      $client = new EhlaGuzzleClient();
-//      $res = $client->post(config('variables.getUsersByIDs').$access_token, $students);
 
+      $students = StudentClassSubject::with('single_class')->get()->pluck('student_id');
+
+      $access_token = json_decode(Auth::user()->session)->access_token;
+
+      $inputs['ids']= $students->toArray();
+
+      $client = new EhlaGuzzleClient();
+      $res = $client->post(config('variables.getUsersByIDs').$access_token, $inputs);
+
+
+//      print_r($res);
 
       $students = StudentClassSubject::with('single_class')->get()->toArray();
 
       foreach ($students as $k => &$v) {
-//          $v['realname'] = $res['data'][$v['student_id']]['realname'];
-        $v['realname'] = 'CTM';
+          $v['realname'] = $res['data'][$v['student_id']]['realname'];
+//        $v['realname'] = 'CTM';
       }
 //      print_r($students);
 //      die();
