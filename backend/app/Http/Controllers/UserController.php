@@ -994,6 +994,43 @@ class UserController extends Controller
     }
   }
 
+  public function getTeachers(Request $request)
+  {
+    if (Auth::user()->can('view_teachers')) {
+
+
+      $teachers = TeacherClassSubject::get()->pluck('teacher_id');
+
+
+      $access_token = json_decode(Auth::user()->session)->access_token;
+
+      $inputs['ids']= $teachers->toArray();
+
+      print_r($inputs);
+
+      $client = new EhlaGuzzleClient();
+      $res = $client->post(config('variables.getUsersByIDs').$access_token, $inputs);
+
+
+      print_r($res);
+
+      $teachers = TeacherClassSubject::with('classes')->with('subjects')->get()->toArray();
+
+      print_r($teachers);
+//      die();
+
+      foreach ($teachers as $k => &$v) {
+        $v['realname'] = $res['data'][$v['teacher_id']]['realname'];
+//        $v['realname'] = 'CTM';
+      }
+
+
+
+      $result['data'] = $teachers;
+      return Response()->json($result, 200);
+    }
+  }
+
 
   public function getUserDetails(Request $request)
   {

@@ -76,6 +76,7 @@
   }
 
   import {teacherDialog} from '../dialogs'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'teacher-view',
@@ -119,6 +120,9 @@
       classOptions() {
         return ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
       },
+      ...mapGetters([
+        'teachers',
+      ]),
     },
 
     methods: {
@@ -167,6 +171,10 @@
       this.items = genData()
       const classQuery = this.$route.query.classes
       if (classQuery) this.classFilters = classQuery
+    },
+    mounted (){
+      console.log(this.students)
+      this.$store.dispatch('FETCH_TEACHER')
     }
   }
 </script>

@@ -110,6 +110,8 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('user_list', 'UserController@getUser');
     Route::get('user/{id}', 'UserController@getUserDetails');
     Route::get('students', 'UserController@getStudents');
+    Route::get('students', 'UserController@getStudents');
+    Route::get('teachers', 'UserController@getTeachers');
 
 
     //Permission Control
