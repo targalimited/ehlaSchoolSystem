@@ -25,7 +25,7 @@
     <vi-data-table
       v-if="items"
       :headers="headers"
-      :items="items"
+      :items="teachers"
       :search="search"
       :sticky-header="130"
       :pagination.sync="pagination"
@@ -35,17 +35,17 @@
       <div slot="item" slot-scope="{item}" class="vi-table__row">
 
         <vi-table-col>
-          {{item.name}}
+          {{item.realname}}
         </vi-table-col>
 
         <vi-table-col>
           <vi-chip>
-            {{item.class}}
+            {{item.classes.c_name}}
           </vi-chip>
         </vi-table-col>
 
         <vi-table-col>
-          {{item.subject}}
+          {{item.subjects.s_name_en}}
         </vi-table-col>
 
         <vi-table-col>
@@ -62,18 +62,18 @@
 </template>
 
 <script>
-  function genData () {
-    return [...Array(60).keys()].map(i => {
-      const names = ['Anson Mak', 'Jeff Wong', 'Tam Ma', 'Benny Jay', 'Calvin Lee', 'Timothy', 'Chan Siu Hei', 'Mei To Poon', 'Chan Kim Man', 'Man Sui Fong']
-      const classes = ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
-      return {
-        name: names[Math.floor(Math.random() * names.length)],
-        username: names[Math.floor(Math.random() * names.length)].toLowerCase(),
-        subject: 'Eng',
-        class: classes[Math.floor(Math.random() * classes.length)],
-      }
-    })
-  }
+  // function genData () {
+  //   return [...Array(60).keys()].map(i => {
+  //     const names = ['Anson Mak', 'Jeff Wong', 'Tam Ma', 'Benny Jay', 'Calvin Lee', 'Timothy', 'Chan Siu Hei', 'Mei To Poon', 'Chan Kim Man', 'Man Sui Fong']
+  //     const classes = ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
+  //     return {
+  //       name: names[Math.floor(Math.random() * names.length)],
+  //       username: names[Math.floor(Math.random() * names.length)].toLowerCase(),
+  //       subject: 'Eng',
+  //       class: classes[Math.floor(Math.random() * classes.length)],
+  //     }
+  //   })
+  // }
 
   import {teacherDialog} from '../dialogs'
   import { mapGetters } from 'vuex'
@@ -168,12 +168,12 @@
     },
 
     created () {
-      this.items = genData()
+      // this.items = genData()
       const classQuery = this.$route.query.classes
       if (classQuery) this.classFilters = classQuery
     },
     mounted (){
-      console.log(this.students)
+      // console.log(this.teachers)
       this.$store.dispatch('FETCH_TEACHER')
     }
   }
