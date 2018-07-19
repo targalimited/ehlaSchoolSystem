@@ -23,7 +23,7 @@
     </vi-app-bar>
 
     <vi-data-table
-      v-if="items"
+      v-if="students"
       :headers="headers"
       :items="students"
       :search="search"
@@ -144,19 +144,18 @@
         } catch (e) {}
       },
       filterByClass (items) {
-        if (this.classFilters.length === 0) return items
+        if (!this.classFilters) return items
         return items.filter(i => {
-          return this.classFilters.includes(i.class)
+          return this.classFilters === i.single_class.c_name
         })
       },
       filterFunction (items, search, filter) {
         items = this.filterByClass(items)
-        console.log(items)
         search = search.toString().toLowerCase()
         if (search.trim() === '') return items
 
         return items.filter(i => (
-          filter(i.name, search)
+          filter(i.realname, search)
         ))
       },
     },
