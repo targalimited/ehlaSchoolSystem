@@ -13,10 +13,10 @@
           <vi-input placeholder="Full name" v-model="fullname"/>
         </div>
 
-        <div class="input-group">
-          <vi-input-label>Username</vi-input-label>
-          <vi-input placeholder="Username" v-model="username"/>
-        </div>
+        <!--<div class="input-group">-->
+          <!--<vi-input-label>Username</vi-input-label>-->
+          <!--<vi-input placeholder="Username" v-model="username"/>-->
+        <!--</div>-->
 
         <div class="input-group">
           <vi-input-label>Class</vi-input-label>
@@ -36,12 +36,12 @@
   export default {
     name: 'level-dialog',
 
-    props: ['oldFullname', 'oldUsername', 'oldClass'],
+    props: ['oldFullname', 'oldClass'],
 
     data () {
       return {
         fullname: this.oldFullname ? this.oldFullname : '',
-        username: this.oldUsername ? this.oldUsername : '',
+        // username: this.oldUsername ? this.oldUsername : '',
         className: this.oldClass ? this.oldClass : ''
       }
     },
@@ -51,6 +51,7 @@
         return ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
       },
       isEdit () {
+        // console.log(this.oldClass)
         return !!this.oldClass
       }
     },
@@ -59,7 +60,7 @@
       submit () {
         this.$close({
           fullname: this.fullname,
-          username: this.username,
+          // username: this.username,
           className: this.className,
         })
       }
