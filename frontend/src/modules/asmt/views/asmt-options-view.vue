@@ -25,12 +25,12 @@
       </vi-row>
 
       <vi-section-header class="mb-8">Exercises</vi-section-header>
-      <vi-item v-for="(ex, i) in exercises" :key="i" :height="60">
+      <vi-item v-for="(ex, i) in exerciseOptions" :key="i" :height="60">
         <vi-item-avatar>
-          <vi-checkbox-boolean :value="!!ex.recipients" @input="ex.recipients = !!ex.recipients ? false : 'class'"/>
+          <vi-checkbox v-model="selectedExercises" :option-value="ex.exercise_id"/>
         </vi-item-avatar>
         <vi-item-content>
-          <vi-item-title>0{{i + 1}}. {{ex.name}}</vi-item-title>
+          <vi-item-title>0{{i + 1}}. {{ex.title_en}}</vi-item-title>
         </vi-item-content>
         <vi-item-action>
           <vi-button-toggle v-model="ex.recipients" mandatory>
@@ -50,11 +50,11 @@
 
       <vi-item v-for="opt in videoOptions" :key="opt.value" :height="60">
         <vi-item-avatar>
-          <vi-checkbox v-model="selectedVideo" :option-value="opt.value"/>
+          <vi-checkbox v-model="selectedVideos" :option-value="opt.exercise_id"/>
         </vi-item-avatar>
         <vi-item-content>
-          <vi-item-title>{{opt.title}}</vi-item-title>
-          <vi-item-subtitle>{{opt.subtitle}}</vi-item-subtitle>
+          <vi-item-title>{{opt.name_en}}</vi-item-title>
+          <vi-item-subtitle>{{opt.teaching_lang_en}}</vi-item-subtitle>
         </vi-item-content>
       </vi-item>
 
@@ -95,52 +95,31 @@
 
     data() {
       return {
+        asmtData: {},
         startDate: '',
         endDate: '',
         remark: '',
-        selectedVideo: 'all',
-        exercises: [
-          {
-            id: 1,
-            name: 'Spell the words',
-            recipients: false,
-            students: []
-          },
-          {
-            id: 2,
-            name: 'Mix and Match',
-            recipients: 'class',
-            students: []
-          },
-          {
-            id: 3,
-            name: 'Multiple choices',
-            recipients: 'student',
-            students: ['1']
-          }
-        ],
-        videoOptions: [
-          {
-            value: 'all',
-            title: 'All videos',
-            subtitle: 'All videos in English and Chinese will be assigned to students'
-          },
-          {
-            value: 'chi',
-            title: 'Chinese videos only',
-            subtitle: 'Assign all videos in Chinese to students'
-          },
-          {
-            value: 'en',
-            title: 'English videos only',
-            subtitle: 'Assign all videos in English to students'
-          }
-        ]
+        selectedVideos: [],
+        selectedExercises: []
       }
     },
 
     computed: {
-
+      $classId () {
+        return this.$route.query.classId
+      },
+      $itemId () {
+        return this.$route.query.itemId
+      },
+      $itemType () {
+        return this.$route.query.itemType
+      },
+      videoOptions () {
+        return this.asmtData.videos
+      },
+      exerciseOptions () {
+        return this.asmtData.exercises
+      }
     },
 
     methods: {
@@ -152,15 +131,30 @@
         }
         ex.students = res
       },
-      onSubmit () {
+      async onSubmit () {
+        await this.$store.dispatch('asmt/setAssignment', {
+          classId: this.$classId,
+          itemId: this.$itemId,
+          itemType: this.$itemType,
+          startDate: this.startDate,
+          endDate: this.endDate,
+          remark: this.remark,
+          exercises: this.selectedExercises,
+          videos: this.selectedVideos
+        })
         this.$router.push({
           name: 'asmt-list'
         })
       }
     },
 
-    created () {
-
+    async created () {
+      const classId = this.$classId
+      const itemId = this.$itemId
+      const res = await this.$store.dispatch('asmt/getItemById', {
+        classId, itemId
+      })
+      this.asmtData = res.data
     }
   }
 </script>
