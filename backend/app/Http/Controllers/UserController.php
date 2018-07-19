@@ -1050,6 +1050,10 @@ class UserController extends Controller
     }
   }
 
+  public function option_class(Request $request){
+    $sc = SchoolClass::get()->pluck('c_name');
+    return Response()->json($sc, 200);
+  }
   public function getTeachers(Request $request)
   {
     if (Auth::user()->can('view_teachers')) {
@@ -1075,11 +1079,10 @@ class UserController extends Controller
       foreach ($teachers as $k => $v){
           $t[$v['teacher_id']]['teacher_id']= $v['teacher_id'];
           $t[$v['teacher_id']]['realname']= $res['data'][$v['teacher_id']]['realname'];
-          $t[$v['teacher_id']]['classes'][]= $v['classes']['c_name'];
+          $t[$v['teacher_id']]['classes'][]['name']= $v['classes']['c_name'];
       }
+//print_r();
 
-      print_r($t);
-      die();
 
 //      foreach ($teachers as $k => &$v) {
 //        $v['realname'] = $res['data'][$v['teacher_id']]['realname'];
@@ -1088,7 +1091,7 @@ class UserController extends Controller
 
 
 
-      $result['data'] = $teachers;
+      $result['data'] = array_values($t);
       return Response()->json($result, 200);
     }
   }

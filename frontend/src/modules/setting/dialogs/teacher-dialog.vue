@@ -41,7 +41,7 @@
   export default {
     name: 'level-dialog',
 
-    props: ['oldFullname', 'oldUsername', 'oldClass', 'oldRole'],
+    props: ['oldFullname', 'oldUsername', 'oldClass', 'oldRole' , 'option_class'],
 
     data () {
       return {
@@ -53,9 +53,7 @@
     },
 
     computed: {
-      classOptions() {
-        return ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
-      },
+
       roleOptions() {
         return [{
           value: 'teacher',

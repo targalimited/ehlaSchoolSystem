@@ -9,6 +9,7 @@ const state = {
   students: [],
   teachers: [],
   levelOptions: [],
+  option_class: [],
   summary: [],
   single_class: {}
 }
@@ -23,6 +24,7 @@ const getters = {
 
   students: state => state.students,
   teachers: state => state.teachers,
+  option_class: state => state.option_class,
 
   single_class: state => id => state.classes.data.find(c => c.id === id),
 
@@ -57,6 +59,15 @@ const actions = {
 
     }
   },
+  async FETCH_OPTIONCLASS ({commit}){
+    try{
+      let res = await new AuthHttp().get('option_class')
+      commit('SET_OPTIONCLASS', res)
+    }catch (e) {
+
+    }
+  },
+
 
   async FETCH_TEACHER ({commit}){
     try{
@@ -151,6 +162,10 @@ const mutations = {
     state.teachers = teachers
   },
 
+  SET_OPTIONCLASS (state,option_class){
+    state.option_class = option_class
+  },
+
   ADD_STUDENT (state,result){
 
   },
@@ -158,6 +173,8 @@ const mutations = {
   [SET_CLASS] (state,classes) {
     state.classes = classes
   },
+
+
 
   [SET_SINGLE_CLASS] (state,single_class) {
     state.single_class = single_class

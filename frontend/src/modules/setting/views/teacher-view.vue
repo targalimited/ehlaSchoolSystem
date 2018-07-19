@@ -17,7 +17,7 @@
       <div slot="append">
         <vi-row>
           <vi-input style="flex: 1" v-model="search" slot="action" prefix-icon="search" placeholder="Search teacher by name or class"/>
-          <vi-select :options="classOptions" v-model="classFilters" placeholder="Filter by class" max-width="300" style="width: 160px" class="ml-8"/>
+          <vi-select :options="option_class" v-model="classFilters" placeholder="Filter by class" max-width="300" style="width: 160px" class="ml-8"/>
         </vi-row>
       </div>
     </vi-app-bar>
@@ -39,13 +39,9 @@
         </vi-table-col>
 
         <vi-table-col>
-          <vi-chip>
-            {{item.classes.c_name}}
+          <vi-chip  v-for="(single_class, index) in item.classes" :key="index">
+            {{single_class.name}}
           </vi-chip>
-        </vi-table-col>
-
-        <vi-table-col>
-          {{item.subjects.s_name_en}}
         </vi-table-col>
 
         <vi-table-col>
@@ -103,25 +99,20 @@
             width: '30%'
           },
           {
-            text: 'Subject',
-            index: 'subject',
-            sortable: true,
-            width: '30%'
-          },
-          {
             text: '',
-            width: '72px'
+            width: '100px'
           }
         ]
       }
     },
 
     computed: {
-      classOptions() {
-        return ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
-      },
+      // classOptions() {
+      //   return ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
+      // },
       ...mapGetters([
         'teachers',
+        'option_class'
       ]),
     },
 
@@ -133,9 +124,10 @@
       },
       async onEdit (teacher) {
         const res = await teacherDialog({
-          oldFullname: teacher.name,
+          oldFullname: teacher.realname,
           oldUsername: teacher.username,
-          oldClass: teacher.class
+          oldClass: teacher.classes,
+          OptionClass: this.option_class
         })
         if (!res) return
         console.log('Edit teacher API', res)
@@ -174,6 +166,7 @@
     },
     mounted (){
       // console.log(this.teachers)
+      this.$store.dispatch('FETCH_OPTIONCLASS')
       this.$store.dispatch('FETCH_TEACHER')
     }
   }
