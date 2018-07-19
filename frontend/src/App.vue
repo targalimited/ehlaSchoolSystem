@@ -55,7 +55,7 @@
             </div>
         </vi-menu>
 
-        <router-link :to="{name: 'report'}">
+        <router-link :to="{name:'report-select-class'}">
           <vi-item class="nav-item" :link="true" height="60">
             <vi-item-avatar><vi-icon class="ml-4" name="report" size="36"/></vi-item-avatar>
             <vi-item-content>Report</vi-item-content>

@@ -25,7 +25,7 @@
 
         <div class="input-group">
           <vi-input-label>Class</vi-input-label>
-          <vi-select placeholder="Select Student Class" v-model="className" :options="classOptions"/>
+          <vi-select placeholder="Select Student Class" v-model="className" :options="classOptions" :chip="true"/>
         </div>
 
         <vi-button-row>
@@ -47,7 +47,7 @@
       return {
         fullname: this.oldFullname ? this.oldFullname : '',
         username: this.oldUsername ? this.oldUsername : '',
-        className: this.oldClass ? this.oldClass : '',
+        className: this.oldClass ? [this.oldClass] : [],
         role: this.oldRole ? this.oldRole : ''
       }
     },

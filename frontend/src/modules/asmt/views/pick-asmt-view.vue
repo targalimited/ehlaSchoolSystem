@@ -18,17 +18,20 @@
           <vi-row>
             <vi-col xs6>
               <vi-select
-                v-model="selectedLevel"
-                :options="levelOptions"
-                placeholder="Select a level"
-                option-name="value_name_en"/>
+                v-model="selectedClass"
+                :options="classOptions"
+                placeholder="Select a class"
+                option-value="id"
+                option-name="c_name"/>
             </vi-col>
             <vi-col xs6>
               <vi-select
-                v-model="selectedType"
-                :options="typeOptions"
-                placeholder="Select a type"
-                option-name="value_name_en"/>
+                @input="callGetList"
+                v-model="selectedCat"
+                :options="catOptions"
+                placeholder="Select a category"
+                option-value="cat_grouper"
+                option-name="name_en"/>
             </vi-col>
           </vi-row>
           <div class="requirement-box__instr" v-if="!requirementValid">
@@ -77,10 +80,12 @@
 
     data() {
       return {
+        classOptions: null,
         pagination: {},
         selectedItem: '',
-        selectedLevel: '',
-        selectedType: '',
+        selectedClass: '',
+        selectedCat: '',
+        items: [],
         headers: [
           {
             text: 'name',
@@ -95,56 +100,38 @@
     },
 
     computed: {
-      items () {
-        return this.$store.getters['shelf/readings']('WR')
-      },
-      levelOptions () {
-        return [{
-          value: 'p1',
-          value_name_en: 'Primary 1'
-        }, {
-          value: 'p2',
-          value_name_en: 'Primary 2'
-        }, {
-          value: 'p3',
-          value_name_en: 'Primary 3'
-        }]
-      },
-      typeOptions () {
-        return [{
-          value: 'DR',
-          value_name_en: 'Daily Fun Reading'
-        }, {
-          value: 'WR',
-          value_name_en: 'Weekly Fun Reading'
-        }, {
-          value: 'RCD',
-          value_name_en: 'Reading Comprehension Diagnosis'
-        }]
+      catOptions () {
+        if (!this.selectedClass) return null
+        return this.classOptions.find(opt => opt.id === this.selectedClass).categories
       },
       requirementValid () {
-        return this.selectedLevel && this.selectedType
+        return this.selectedClass && this.selectedCat
       }
     },
 
     methods: {
+      async callGetList () {
+        const res = await this.$store.dispatch('asmt/getItemListByClassCat', {
+          classId: this.selectedClass,
+          catId: this.selectedCat
+        })
+        this.items = res.data
+      },
       goToNextStep () {
         this.$router.push({
-          name: 'asmt-options'
+          name: 'asmt-options',
+          query: {
+            classId: this.selectedClass,
+            itemId: this.selectedItem.id,
+            itemType: this.selectedItem.item_type
+          }
         })
       }
     },
 
-    created () {
-      this.$store.dispatch('shelf/getItemsByCategory', {
-        cat: 'WR'
-      })
-    },
-
-    watch: {
-      selectedLevel () {
-        this.selectedType = null
-      }
+    async created () {
+      const res = await this.$store.dispatch('asmt/getClassCat')
+      this.classOptions = res.data
     }
   }
 </script>

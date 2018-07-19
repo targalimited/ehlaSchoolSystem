@@ -27,7 +27,8 @@
                 {{item.name_en}}
               </vi-item-title>
               <vi-item-subtitle>
-                {{item.exercises.length}} Exercises, {{item.videos.length}} Videos
+                 <!-- TODO -->
+                <!--{{item.exercises.length}} Exercises, {{item.videos.length}} Videos-->
               </vi-item-subtitle>
             </vi-item-content>
           </vi-item>
