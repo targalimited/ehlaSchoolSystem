@@ -28,12 +28,12 @@
           <vi-input placeholder="Teacher Number" v-model="teacher_num"/>
         </div>
 
-        <div class="input-group" v-if="!isEdit">
+        <div class="input-group" >
           <vi-input-label>Password</vi-input-label>
           <vi-input placeholder="Password" v-model="password"/>
         </div>
 
-        <div class="input-group" v-if="!isEdit">
+        <div class="input-group" >
           <vi-input-label>Confirm password</vi-input-label>
           <vi-input placeholder="Confirm Password" v-model="password_confirmation"/>
         </div>
@@ -61,7 +61,7 @@
   export default {
     name: 'level-dialog',
 
-    props: ['oldRealname_en', 'oldUsername', 'oldClass', 'oldRole' , 'OptionClass', 'oldRealname_zh'],
+    props: ['oldRealname_en', 'oldUsername', 'oldClass', 'oldRole' , 'OptionClass', 'oldRealname_zh','oldPassword', 'oldTeacher_num'],
 
     data () {
       return {
@@ -72,7 +72,7 @@
         role: this.oldRole ? this.oldRole : '',
         password: '',
         password_confirmation: '',
-        teacher_num: ''
+        teacher_num: this.oldTeacher_num ? this.oldTeacher_num : '',
       }
     },
     mounted(){
@@ -104,7 +104,16 @@
 
         if(this.password !== this.password_confirmation){
           console.log('not match');
+          return false
         }else{
+          if(this.isEdit){
+            if(this.password.length === 0 && this.password===this.password_confirmation)
+                this.password = ''
+
+          }else{
+
+          }
+
           this.$close({
             realname_en: this.realname_en,
             username: this.username,
@@ -114,6 +123,7 @@
             className: this.className,
             role: this.role,
           })
+
         }
       }
     }

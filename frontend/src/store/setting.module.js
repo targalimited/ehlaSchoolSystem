@@ -96,7 +96,14 @@ const actions = {
     }
   },
 
+  async TEACHER_UPDATE (context,payload){
+    try{
+      let res = await new AuthHttp().put('teacher_single',payload)
+      context.dispatch('FETCH_TEACHER')
+    }catch (e) {
 
+    }
+  },
 
   async STUDENT_UPDATE (context,payload){
     try{

@@ -127,13 +127,20 @@
         console.log('create teacher API', res)
       },
       async onEdit (teacher) {
+        console.log('onEdit',teacher)
         const res = await teacherDialog({
           oldRealname_zh: teacher.realname_zh,
           oldRealname_en: teacher.realname_en,
           oldUsername: teacher.username,
           oldClass: teacher.classes,
-          OptionClass: this.option_class
+          OptionClass: this.option_class,
+          oldTeacher_num: teacher.teacher_num,
+        }).then(res=>{
+          console.log('submit edit teacher',res)
+          res.teacher_id=teacher.teacher_id
+          this.$store.dispatch('TEACHER_UPDATE',res)
         })
+
         if (!res) return
         console.log('Edit teacher API', res)
       },

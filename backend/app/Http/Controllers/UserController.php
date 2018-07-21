@@ -700,35 +700,67 @@ class UserController extends Controller
   public function putSingleTeacher(Request $request)
   {
 
-    if ($class_id = $this->getClassID($request->className)) {
+print_r($request->all());
+die();
 
 
-      $input['id'] = $request->id;
-      $input['realname'] = $request->fullname;
+    $input['userGroup'] = 'teacher';
+    $input['accType'] = "";
+    $input['users'][0]['realname_en'] = $request->realname_en;
+    $input['users'][0]['realname_zh'] = $request->realname_zh;
+    $input['users'][0]['username'] = $request->username;
+    $input['users'][0]['password'] = $request->password;
+    $input['users'][0]['teacher_num'] = $request->teacher_num;
 
-      $access_token = json_decode(Auth::user()->session)->access_token;
+    $access_token = json_decode(Auth::user()->session)->access_token;
+    $client = new EhlaGuzzleClient();
+    $res = $client->post(config('variables.createAccount') . $access_token, $input);
 
+    $debug = new Debug();
+    $debug->context = json_encode($res);
+    $debug->save();
 
-      $client = new EhlaGuzzleClient();
-      $res = $client->post(config('variables.updateUserInfo') . $access_token, $input);
-
-
-      if ($res) {
-        $scs = StudentClassSubject::where('student_id', $request->id)->first();
-        $scs->class_id = $class_id;
-        $scs->save();
-      }
-
-      return return_success();
-
-    } else {
-      $result = [
-        'status' => false,
-        'code' => '',
-        'message' => 'No such class'
-      ];
-      return error_json($result);
+    foreach ($request->className as $k => $v){
+      $class_id = $this->getClassID($v);
+      $scs = New TeacherClassSubject();
+      $scs->class_id = $class_id;
+      $scs->teacher_id = $res['data'][0]['user_id'];
+      $scs->subject_id = '1';
+      $scs->save();
     }
+
+    return return_success();
+
+
+//    if ($class_id = $this->getClassID($request->className)) {
+//
+//
+//      $input['id'] = $request->id;
+//      $input['realname'] = $request->fullname;
+//
+//      $access_token = json_decode(Auth::user()->session)->access_token;
+//
+//
+//      $client = new EhlaGuzzleClient();
+//      $res = $client->post(config('variables.updateUserInfo') . $access_token, $input);
+//
+//
+//      if ($res) {
+//        $scs = StudentClassSubject::where('student_id', $request->id)->first();
+//        $scs->class_id = $class_id;
+//        $scs->save();
+//      }
+//
+//      return return_success();
+//
+//    } else {
+//      $result = [
+//        'status' => false,
+//        'code' => '',
+//        'message' => 'No such class'
+//      ];
+//      return error_json($result);
+//    }
 
 
     $rules = array('email' => 'unique:users,email,' . $request->id);
@@ -924,6 +956,7 @@ class UserController extends Controller
   {
 
 
+
     if ($class_id = $this->getClassID($request->className)) {
 
 
@@ -1069,6 +1102,8 @@ class UserController extends Controller
     $sc = SchoolClass::get()->pluck('c_name');
     return Response()->json($sc, 200);
   }
+
+  //TODO dynamic teacher_num
   public function getTeachers(Request $request)
   {
     if (Auth::user()->can('view_teachers')) {
@@ -1087,7 +1122,9 @@ class UserController extends Controller
       $res = $client->post(config('variables.getUsersByIDs').$access_token, $inputs);
 
 
-      print_r($res);
+      $debug = new Debug();
+      $debug->context = 'Get_teachers'.json_encode($res);
+      $debug->save();
 
       $teachers = TeacherClassSubject::with('classes')->with('subjects')->get()->toArray();
 
@@ -1096,7 +1133,8 @@ class UserController extends Controller
           $t[$v['teacher_id']]['realname_en']= $res['data'][$v['teacher_id']]['realname_en'];
           $t[$v['teacher_id']]['realname_zh']= $res['data'][$v['teacher_id']]['realname_zh'];
           $t[$v['teacher_id']]['username']= $res['data'][$v['teacher_id']]['username'];
-          $t[$v['teacher_id']]['teacher_num']= $res['data'][$v['teacher_id']]['teacher_num'];
+//          $t[$v['teacher_id']]['teacher_num']= $res['data'][$v['teacher_id']]['teacher_num'];
+          $t[$v['teacher_id']]['teacher_num']= 'T123';
           $t[$v['teacher_id']]['classes'][]['name']= $v['classes']['c_name'];
       }
 //print_r();
