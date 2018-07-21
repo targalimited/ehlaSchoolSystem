@@ -61,12 +61,12 @@
   export default {
     name: 'level-dialog',
 
-    props: ['oldFullname', 'oldUsername', 'oldClass', 'oldRole' , 'OptionClass', 'oldRealnameZh'],
+    props: ['oldRealname_en', 'oldUsername', 'oldClass', 'oldRole' , 'OptionClass', 'oldRealname_zh'],
 
     data () {
       return {
-        realname_en: this.oldFullname ? this.oldFullname : '',
-        realname_zh: this.oldRealnameZh ? this.oldRealnameZh : '',
+        realname_en: this.oldRealname_en ? this.oldRealname_en : '',
+        realname_zh: this.oldRealname_zh ? this.oldRealname_zh : '',
         username: this.oldUsername ? this.oldUsername : '',
         className: this.oldClass ? [this.oldClass] : [],
         role: this.oldRole ? this.oldRole : '',
@@ -75,9 +75,9 @@
         teacher_num: ''
       }
     },
-mounted(){
-  console.log(this.option_class)
-},
+    mounted(){
+      console.log(this.option_class)
+    },
     computed: {
       classOptions() {
         return ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']

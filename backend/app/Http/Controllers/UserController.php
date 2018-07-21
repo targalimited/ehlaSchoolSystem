@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Debug;
 use App\Role;
 use App\SchoolClass;
 use App\StudentClassSubject;
@@ -595,13 +596,18 @@ class UserController extends Controller
       $client = new EhlaGuzzleClient();
       $res = $client->post(config('variables.createAccount') . $access_token, $input);
 
+      $debug = new Debug();
+      $debug->context = json_encode($res);
+      $debug->save();
 
-
-//      $scs = New TeacherClassSubject();
-//      $scs->class_id = $class_id;
-//      $scs->teacher_id = $res['data'][0]['user_id'];
-//      $scs->subject_id = '1';
-//      $scs->save();
+      foreach ($request->className as $k => $v){
+        $class_id = $this->getClassID($v);
+        $scs = New TeacherClassSubject();
+        $scs->class_id = $class_id;
+        $scs->teacher_id = $res['data'][0]['user_id'];
+        $scs->subject_id = '1';
+        $scs->save();
+      }
 
       return return_success();
 
@@ -1081,13 +1087,16 @@ class UserController extends Controller
       $res = $client->post(config('variables.getUsersByIDs').$access_token, $inputs);
 
 
-//      print_r($res);
+      print_r($res);
 
       $teachers = TeacherClassSubject::with('classes')->with('subjects')->get()->toArray();
 
       foreach ($teachers as $k => $v){
           $t[$v['teacher_id']]['teacher_id']= $v['teacher_id'];
-          $t[$v['teacher_id']]['realname']= $res['data'][$v['teacher_id']]['realname'];
+          $t[$v['teacher_id']]['realname_en']= $res['data'][$v['teacher_id']]['realname_en'];
+          $t[$v['teacher_id']]['realname_zh']= $res['data'][$v['teacher_id']]['realname_zh'];
+          $t[$v['teacher_id']]['username']= $res['data'][$v['teacher_id']]['username'];
+          $t[$v['teacher_id']]['teacher_num']= $res['data'][$v['teacher_id']]['teacher_num'];
           $t[$v['teacher_id']]['classes'][]['name']= $v['classes']['c_name'];
       }
 //print_r();

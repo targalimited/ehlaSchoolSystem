@@ -81,7 +81,7 @@ const actions = {
   async STUDENT_CREATE (context,payload){
     try{
       let res = await new AuthHttp().http_post('student_single',payload)
-      // commit('ADD_STUDENT', res.data)
+      context.dispatch('FETCH_STUDENT')
     }catch (e) {
 
     }
@@ -90,7 +90,7 @@ const actions = {
   async TEACHER_CREATE (context,payload){
     try{
       let res = await new AuthHttp().http_post('teacher_single',payload)
-      // commit('ADD_STUDENT', res.data)
+      context.dispatch('FETCH_TEACHER')
     }catch (e) {
 
     }

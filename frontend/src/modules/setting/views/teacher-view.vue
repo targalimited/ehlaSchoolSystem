@@ -35,7 +35,7 @@
       <div slot="item" slot-scope="{item}" class="vi-table__row">
 
         <vi-table-col>
-          {{item.realname}}
+          {{item.realname_en}}
         </vi-table-col>
 
         <vi-table-col>
@@ -128,7 +128,8 @@
       },
       async onEdit (teacher) {
         const res = await teacherDialog({
-          oldFullname: teacher.realname,
+          oldRealname_zh: teacher.realname_zh,
+          oldRealname_en: teacher.realname_en,
           oldUsername: teacher.username,
           oldClass: teacher.classes,
           OptionClass: this.option_class
