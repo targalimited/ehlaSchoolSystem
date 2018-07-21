@@ -4,7 +4,13 @@ function json($result){
     if (isset($_SERVER['HTTP_POSTMAN_TOKEN'])){
         dump($result);
     }
-    return Response()->json($result);
+
+  $error_code = 200;
+
+  if(isset($result['debug']['err_code']) && $result['debug']['err_code']==401)
+     $error_code = $result['debug']['err_code'];
+
+    return Response()->json($result,$error_code);
 }
 
 function error_json($result){

@@ -9,13 +9,33 @@
 
       <vi-card-content>
         <div class="input-group">
-          <vi-input-label>Full name</vi-input-label>
-          <vi-input placeholder="Full name" v-model="fullname"/>
+          <vi-input-label>English name</vi-input-label>
+          <vi-input placeholder="English Name" v-model="realname_en"/>
+        </div>
+
+        <div class="input-group">
+          <vi-input-label>Chinese name</vi-input-label>
+          <vi-input placeholder="Chinese Name" v-model="realname_zh"/>
         </div>
 
         <div class="input-group">
           <vi-input-label>Username</vi-input-label>
-          <vi-input placeholder="Username" v-model="username"/>
+          <vi-input placeholder="Username" v-model="username" :disabled="isEdit" />
+        </div>
+
+        <div class="input-group">
+          <vi-input-label>Teacher No.</vi-input-label>
+          <vi-input placeholder="Teacher Number" v-model="teacher_num"/>
+        </div>
+
+        <div class="input-group" v-if="!isEdit">
+          <vi-input-label>Password</vi-input-label>
+          <vi-input placeholder="Password" v-model="password"/>
+        </div>
+
+        <div class="input-group" v-if="!isEdit">
+          <vi-input-label>Confirm password</vi-input-label>
+          <vi-input placeholder="Confirm Password" v-model="password_confirmation"/>
         </div>
 
         <div class="input-group">
@@ -25,7 +45,7 @@
 
         <div class="input-group">
           <vi-input-label>Class</vi-input-label>
-          <vi-select placeholder="Select Student Class" v-model="className" :options="classOptions" :chip="true"/>
+          <vi-select placeholder="Select Student Class" v-model="className" :options="OptionClass" :chip="true"/>
         </div>
 
         <vi-button-row>
@@ -41,19 +61,27 @@
   export default {
     name: 'level-dialog',
 
-    props: ['oldFullname', 'oldUsername', 'oldClass', 'oldRole' , 'option_class'],
+    props: ['oldFullname', 'oldUsername', 'oldClass', 'oldRole' , 'OptionClass', 'oldRealnameZh'],
 
     data () {
       return {
-        fullname: this.oldFullname ? this.oldFullname : '',
+        realname_en: this.oldFullname ? this.oldFullname : '',
+        realname_zh: this.oldRealnameZh ? this.oldRealnameZh : '',
         username: this.oldUsername ? this.oldUsername : '',
         className: this.oldClass ? [this.oldClass] : [],
-        role: this.oldRole ? this.oldRole : ''
+        role: this.oldRole ? this.oldRole : '',
+        password: '',
+        password_confirmation: '',
+        teacher_num: ''
       }
     },
-
+mounted(){
+  console.log(this.option_class)
+},
     computed: {
-
+      classOptions() {
+        return ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
+      },
       roleOptions() {
         return [{
           value: 'teacher',
@@ -73,12 +101,20 @@
 
     methods: {
       submit () {
-        this.$close({
-          fullname: this.fullname,
-          username: this.username,
-          className: this.className,
-          role: this.role,
-        })
+
+        if(this.password !== this.password_confirmation){
+          console.log('not match');
+        }else{
+          this.$close({
+            realname_en: this.realname_en,
+            username: this.username,
+            password: this.password,
+            teacher_num: this.teacher_num,
+            realname_zh: this.realname_zh,
+            className: this.className,
+            role: this.role,
+          })
+        }
       }
     }
   }

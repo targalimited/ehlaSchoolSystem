@@ -118,7 +118,11 @@
 
     methods: {
       async onAddTeacher () {
-        const res = await teacherDialog()
+        const res = await teacherDialog({
+          OptionClass: this.option_class
+        }).then(res => {
+          this.$store.dispatch('TEACHER_CREATE',res)
+        })
         if (!res) return
         console.log('create teacher API', res)
       },

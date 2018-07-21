@@ -577,38 +577,42 @@ class UserController extends Controller
 
   }
 
+  //Done
   public function postSingleTeacher(Request $request)
   {
 
-
-    if ($class_id = $this->getClassID($request->className)) {
+//    if ($class_id = $this->getClassID($request->className)) {
 
       $input['userGroup'] = 'teacher';
       $input['accType'] = "";
-      $input['users']['realname'] = $request->fullname;
-      $input['users']['username'] = $request->username;
-      $input['users']['password'] = $request->password;
+      $input['users'][0]['realname_en'] = $request->realname_en;
+      $input['users'][0]['realname_zh'] = $request->realname_zh;
+      $input['users'][0]['username'] = $request->username;
+      $input['users'][0]['password'] = $request->password;
+      $input['users'][0]['teacher_num'] = $request->teacher_num;
 
       $access_token = json_decode(Auth::user()->session)->access_token;
       $client = new EhlaGuzzleClient();
       $res = $client->post(config('variables.createAccount') . $access_token, $input);
 
-      $scs = New TeacherClassSubject();
-      $scs->class_id = $class_id;
-      $scs->teacher_id = $res['data'][0]['user_id'];
-      $scs->subject_id = '1';
-      $scs->save();
+
+
+//      $scs = New TeacherClassSubject();
+//      $scs->class_id = $class_id;
+//      $scs->teacher_id = $res['data'][0]['user_id'];
+//      $scs->subject_id = '1';
+//      $scs->save();
 
       return return_success();
 
-    } else {
-      $result = [
-        'status' => false,
-        'code' => '',
-        'message' => 'No such class'
-      ];
-      return error_json($result);
-    }
+//    } else {
+//      $result = [
+//        'status' => false,
+//        'code' => '',
+//        'message' => 'No such class'
+//      ];
+//      return error_json($result);
+//    }
 
 
 //    dd($request->all());
@@ -685,6 +689,7 @@ class UserController extends Controller
 
     return return_success();
   }
+
 
   public function putSingleTeacher(Request $request)
   {
@@ -786,6 +791,7 @@ class UserController extends Controller
 //    return return_success();
   }
 
+  //Done
   public function postSingleStudent(Request $request)
   {
 
@@ -793,7 +799,8 @@ class UserController extends Controller
 
       $input['userGroup'] = 'student';
       $input['accType'] = "";
-      $input['users']['realname'] = $request->fullname;
+      $input['users'][0]['realname'] = $request->fullname;
+      $input['users'][0]['student_num'] = $request->student_num;
 
       $access_token = json_decode(Auth::user()->session)->access_token;
       $client = new EhlaGuzzleClient();
@@ -906,6 +913,7 @@ class UserController extends Controller
 
   }
 
+  //Done
   public function putSingleStudent(Request $request)
   {
 
@@ -915,6 +923,7 @@ class UserController extends Controller
 
       $input['id'] = $request->id;
       $input['realname'] = $request->fullname;
+      $input['student_num'] = $request->student_num;
 
       $access_token = json_decode(Auth::user()->session)->access_token;
 

@@ -87,6 +87,17 @@ const actions = {
     }
   },
 
+  async TEACHER_CREATE (context,payload){
+    try{
+      let res = await new AuthHttp().http_post('teacher_single',payload)
+      // commit('ADD_STUDENT', res.data)
+    }catch (e) {
+
+    }
+  },
+
+
+
   async STUDENT_UPDATE (context,payload){
     try{
       let res = await new AuthHttp().put('student_single',payload)
