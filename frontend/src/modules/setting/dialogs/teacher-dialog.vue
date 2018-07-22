@@ -118,7 +118,7 @@
             realname_en: this.realname_en,
             username: this.username,
             password: this.password,
-            teacher_num: this.teacher_num,
+            school_num: this.teacher_num,
             realname_zh: this.realname_zh,
             className: this.className,
             role: this.role,

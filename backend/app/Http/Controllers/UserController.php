@@ -578,7 +578,7 @@ class UserController extends Controller
 
   }
 
-  //Done
+  //Done Create teacher
   public function postSingleTeacher(Request $request)
   {
 
@@ -590,7 +590,7 @@ class UserController extends Controller
       $input['users'][0]['realname_zh'] = $request->realname_zh;
       $input['users'][0]['username'] = $request->username;
       $input['users'][0]['password'] = $request->password;
-      $input['users'][0]['teacher_num'] = $request->teacher_num;
+      $input['users'][0]['school_num'] = $request->school_num;
 
       $access_token = json_decode(Auth::user()->session)->access_token;
       $client = new EhlaGuzzleClient();
@@ -696,35 +696,32 @@ class UserController extends Controller
     return return_success();
   }
 
-
+  //Done Edit teacher
   public function putSingleTeacher(Request $request)
   {
 
-print_r($request->all());
-die();
-
-
-    $input['userGroup'] = 'teacher';
-    $input['accType'] = "";
-    $input['users'][0]['realname_en'] = $request->realname_en;
-    $input['users'][0]['realname_zh'] = $request->realname_zh;
-    $input['users'][0]['username'] = $request->username;
-    $input['users'][0]['password'] = $request->password;
-    $input['users'][0]['teacher_num'] = $request->teacher_num;
+    $input['id'] = $request->teacher_id;
+    $input['realname_en'] = $request->realname_en;
+    $input['realname_zh'] = $request->realname_zh;
+    if(!empty($request->password))
+    $input['password'] = $request->password;
+    $input['school_num'] = $request->school_num;
 
     $access_token = json_decode(Auth::user()->session)->access_token;
+
     $client = new EhlaGuzzleClient();
-    $res = $client->post(config('variables.createAccount') . $access_token, $input);
+    $res = $client->post(config('variables.updateUserInfo') . $access_token, $input);
 
     $debug = new Debug();
     $debug->context = json_encode($res);
     $debug->save();
 
+    TeacherClassSubject::where('teacher_id',$request->teacher_id)->delete();
     foreach ($request->className as $k => $v){
       $class_id = $this->getClassID($v);
       $scs = New TeacherClassSubject();
       $scs->class_id = $class_id;
-      $scs->teacher_id = $res['data'][0]['user_id'];
+      $scs->teacher_id = $request->teacher_id;
       $scs->subject_id = '1';
       $scs->save();
     }
@@ -829,7 +826,7 @@ die();
 //    return return_success();
   }
 
-  //Done
+  //Done Create student
   public function postSingleStudent(Request $request)
   {
 
@@ -951,7 +948,7 @@ die();
 
   }
 
-  //Done
+  //Done Edit student
   public function putSingleStudent(Request $request)
   {
 
@@ -1087,7 +1084,7 @@ die();
       $students = StudentClassSubject::with('single_class')->get()->toArray();
 
       foreach ($students as $k => &$v) {
-          $v['realname'] = $res['data'][$v['student_id']]['realname'];
+          $v['realname'] = $res['data'][$v['student_id']]['realname_en'];
 //        $v['realname'] = 'CTM';
       }
 //      print_r($students);
