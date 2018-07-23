@@ -1073,6 +1073,7 @@ class UserController extends Controller
 
   }
 
+  //Done Fetch students
   public function getStudents(Request $request)
   {
     if (Auth::user()->can('view_students')) {
@@ -1104,12 +1105,13 @@ class UserController extends Controller
     }
   }
 
+  //Done Get class options from DB
   public function option_class(Request $request){
     $sc = SchoolClass::get()->pluck('c_name');
     return Response()->json($sc, 200);
   }
 
-  //TODO dynamic teacher_num
+  //Done Fetch teachers
   public function getTeachers(Request $request)
   {
     if (Auth::user()->can('view_teachers')) {
@@ -1139,8 +1141,7 @@ class UserController extends Controller
           $t[$v['teacher_id']]['realname_en']= $res['data'][$v['teacher_id']]['realname_en'];
           $t[$v['teacher_id']]['realname_zh']= $res['data'][$v['teacher_id']]['realname_zh'];
           $t[$v['teacher_id']]['username']= $res['data'][$v['teacher_id']]['username'];
-//          $t[$v['teacher_id']]['teacher_num']= $res['data'][$v['teacher_id']]['teacher_num'];
-          $t[$v['teacher_id']]['teacher_num']= 'T123';
+          $t[$v['teacher_id']]['school_num']= $res['data'][$v['teacher_id']]['school_num'];
           $t[$v['teacher_id']]['classes'][]['name']= $v['classes']['c_name'];
       }
 //print_r();
