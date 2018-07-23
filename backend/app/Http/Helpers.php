@@ -35,3 +35,18 @@ function return_success(){
 
     return Response()->json($result,200);
 }
+
+function success(){
+
+  $result = [
+    'status' => true,
+    'code' => '',
+    'message' => 'success'
+  ];
+
+  if (isset($_SERVER['HTTP_POSTMAN_TOKEN'])){
+    var_dump('success');
+  }
+
+  return Response()->json($result,200);
+}

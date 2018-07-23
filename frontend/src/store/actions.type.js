@@ -1,8 +1,6 @@
 export const CLASS_CREATE = 'createClass'
 export const CLASS_EDIT = 'editClass'
-export const CLASS_DESTROY = 'destroyClass'
 export const CLASS_UPDATE = 'updateClass'
-export const FETCH_CLASS = 'fetchClass'
 export const FETCH_SINGLE_CLASS = 'fetchSingleClass'
 export const FETCH_LEVEL = 'fetchLevel'
 export const LOGOUT = 'logout'
