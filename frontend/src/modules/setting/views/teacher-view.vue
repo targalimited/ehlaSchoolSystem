@@ -151,7 +151,8 @@
             message: `Are you sure you want to delete teacher ${teacher.name}`
           })
           // TODO cal API
-          console.log('delete teacher api', teacher.username)
+          this.$store.dispatch('USER_DELETE',{user_id:teacher.teacher_id})
+
         } catch (e) {}
       },
       filterByClass (items) {

@@ -60,7 +60,6 @@
       submit () {
         this.$close({
           fullname: this.fullname,
-          // username: this.username,
           className: this.className,
         })
       }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Debug;
 use App\Role;
+use App\RoleUser;
 use App\SchoolClass;
 use App\StudentClassSubject;
 use App\StudentSubject;
@@ -29,10 +30,18 @@ class UserController extends Controller
   public $teacher;
   public $teacher_subject_class;
   public $access_token;
+  public $_client;
 
   public function __construct()
   {
-//    $this->access_token = json_decode(Auth::user()->session)['access_token'];
+
+    $this->middleware(function ($request, $next) {
+      $this->access_token = json_decode(Auth::user()->session)->access_token;
+      return $next($request);
+    });
+
+    $this->_client = new EhlaGuzzleClient();
+
   }
 
   private function getClassID($class_name)
@@ -1164,9 +1173,14 @@ class UserController extends Controller
     return json($result);
   }
 
-  //TODO delete user
+  //Done
   public function deleteUser(Request $request)
   {
-
+    $input['user_id'] = $request->user_id;
+    $this->_client->post(config('variables.deleteUsers') . $this->access_token, $input);
+    RoleUser::where('user_id',$request->user_id)->delete();
+    StudentClassSubject::where('student_id',$request->user_id)->delete();
+    TeacherClassSubject::where('teacher_id',$request->user_id)->delete();
+    return return_success();
   }
 }

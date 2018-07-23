@@ -140,7 +140,7 @@
             message: `Are you sure you want to delete student ${student.name}`
           })
           // TODO cal API
-          console.log('delete student api', student.username)
+          this.$store.dispatch('STUDENT_DESTROY',{user_id:student.student_id})
         } catch (e) {}
       },
       filterByClass (items) {

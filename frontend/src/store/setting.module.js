@@ -80,8 +80,27 @@ const actions = {
 
   async STUDENT_CREATE (context,payload){
     try{
-      let res = await new AuthHttp().http_post('student_single',payload)
+      let res = await new AuthHttp().http_post('users',payload)
       context.dispatch('FETCH_STUDENT')
+    }catch (e) {
+
+    }
+  },
+
+  async STUDENT_DESTROY (context,payload){
+    try{
+      console.log('STUDENT_DESTROY',payload)
+      let res = await new AuthHttp().delete(`users/${payload.user_id}`)
+      context.dispatch('FETCH_STUDENT')
+    }catch (e) {
+
+    }
+  },
+
+  async TEACHER_DESTROY (context,payload){
+    try{
+      let res = await new AuthHttp().delete(`users/${payload.user_id}`)
+      context.dispatch('FETCH_TEACHER')
     }catch (e) {
 
     }

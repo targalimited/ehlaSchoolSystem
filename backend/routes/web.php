@@ -112,6 +112,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('students', 'UserController@getStudents');
     Route::get('students', 'UserController@getStudents');
     Route::get('teachers', 'UserController@getTeachers');
+    Route::delete('users/{user_id}', 'UserController@deleteUser');
     Route::get('option_class', 'UserController@option_class');
 
 
