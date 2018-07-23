@@ -24,6 +24,7 @@ class EhlaGuzzleClient {
 		}
 		try{
 			$result = $client->request('POST', $path, $this->options);
+			
 		    $data = \GuzzleHttp\json_decode($result->getBody()->getContents(), true);
 
 		    if($result->getStatusCode() == 401)
