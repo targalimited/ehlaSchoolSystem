@@ -133,7 +133,6 @@
       }
     },
     mounted(){
-      console.log(this.levelOptions);
       this.$store.dispatch('FETCH_LEVEL')
       this.$store.dispatch('FETCH_CLASS')
     },
