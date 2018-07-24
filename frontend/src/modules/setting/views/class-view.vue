@@ -112,8 +112,13 @@
       },
       onEdit (classv) {
         classDialog({
+          levelOptions:this.levelOptions,
           oldClassName: classv.c_name,
           oldClassLevel: classv.level
+        }).then(res=>{
+          //  console.log(res)
+          // console.log(classv);
+           this.$store.dispatch('CLASS_UPDATE',{id:classv.id,name:res.className,level:res.classLevel})
         })
       },
       async onDelete(c){

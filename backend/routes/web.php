@@ -164,7 +164,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('subjects', 'SubjectController@postSubjects');
 
     //classes
-    Route::put('classes/{id}', 'ClassController@putClasses');
+    Route::put('classes', 'ClassController@putClasses');
     Route::delete('classes/{id}', 'ClassController@delClasses');
       Route::get('classes', 'ClassController@getClasses');
       Route::post('classes', 'ClassController@postClasses');

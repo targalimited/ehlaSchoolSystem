@@ -166,12 +166,13 @@ const actions = {
     }
   },
 
-  async [CLASS_UPDATE] ({dispatch}){
+  async CLASS_UPDATE (context,payload){
     try{
       // console.log(data)
-      await new AuthHttp().http_post('classes',state.single_class)
-      dispatch(FETCH_CLASS)
-      dispatch(FETCH_LEVEL)
+      let res = await new AuthHttp().put('classes',payload)
+      console.log(res)
+      context.dispatch('FETCH_CLASS')
+      context.dispatch('FETCH_LEVEL')
     }catch (e){
 
     }

@@ -42,13 +42,13 @@ export default {
   },
 
   computed: {
-
     isEdit () {
       return !!this.oldClassName
     }
   },
 
   mounted(){
+    console.log('OldClass',this.oldClassLevel)
     console.log('class-dialog',this.avalevelOptions)
   },
 

@@ -17,7 +17,7 @@
       <div slot="append">
         <vi-row>
           <vi-input style="flex: 1" v-model="search" slot="action" prefix-icon="search" placeholder="Search student by name or class"/>
-          <vi-select :options="classOptions" v-model="classFilters" placeholder="Filter by class" max-width="300" style="width: 160px" class="ml-8"/>
+          <vi-select :options="option_class" v-model="classFilters" placeholder="Filter by class" max-width="300" style="width: 160px" class="ml-8"/>
         </vi-row>
       </div>
     </vi-app-bar>
@@ -60,19 +60,6 @@
 <script>
 
   import { mapGetters } from 'vuex'
-
-  // function genData () {
-  //   return [...Array(100).keys()].map(i => {
-  //     const names = ['Anson Mak', 'Jeff Wong', 'Tam Ma', 'Benny Jay', 'Calvin Lee', 'Timothy', 'Chan Siu Hei', 'Mei To Poon', 'Chan Kim Man', 'Man Sui Fong']
-  //     const classes = ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
-  //     return {
-  //       name: names[Math.floor(Math.random() * names.length)],
-  //       username: names[Math.floor(Math.random() * names.length)].toLowerCase(),
-  //       class: classes[Math.floor(Math.random() * classes.length)],
-  //     }
-  //   })
-  // }
-
   import {studentDialog} from '../dialogs'
 
   export default {
@@ -110,7 +97,7 @@
     computed: {
       ...mapGetters([
         'students',
-        'option_class',
+        'option_class'
       ]),
     },
 

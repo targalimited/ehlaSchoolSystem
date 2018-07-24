@@ -105,13 +105,27 @@ class ClassController extends Controller
     }
 
     public function putClasses(Request $request){
-      DB::transaction(function () use ($request){
+
+      try {
+        DB::transaction(function () use ($request) {
           $school_class = SchoolClass::where('id', $request->id)->first();
-          $school_class->c_name = $request->c_name;
-          $school_class->name_zh = $request->name_zh;
-          $school_class->level_id = $request->level_id;
+          $school_class->c_name = $request->name;
+          $school_class->level = $request->level;
           $school_class->save();
-      });
+        });
+      } catch (\Exception $e) {
+        $result = [
+          'status' => false,
+          'code' => '',
+          'message' => $e->getMessage()
+        ];
+
+        return json($result,500);
+
+      } catch (\Throwable $e) {
+      }
+
+      return success();
     }
 
     public function delClasses(Request $request)
