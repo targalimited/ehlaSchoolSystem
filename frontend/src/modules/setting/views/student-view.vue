@@ -108,17 +108,17 @@
     },
 
     computed: {
-      classOptions() {
-        return ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
-      },
       ...mapGetters([
         'students',
+        'option_class',
       ]),
     },
 
     methods: {
       onAddStudent () {
-        studentDialog().then(res => {
+        studentDialog({
+          OptionClass: this.option_class
+        }).then(res => {
              // console.log("response", res.fullname);
             this.$store.dispatch('STUDENT_CREATE',{fullname:res.fullname,className:res.className})
           })
@@ -127,6 +127,7 @@
         studentDialog({
           oldFullname: student.realname,
           // oldUsername: student.username,
+          OptionClass: this.option_class,
           oldClass: student.single_class.c_name
         }).then(res=>{
           // console.log(student)
@@ -168,6 +169,7 @@
 
     mounted (){
       console.log(this.students)
+      this.$store.dispatch('FETCH_OPTIONCLASS')
       this.$store.dispatch('FETCH_STUDENT')
     }
   }
