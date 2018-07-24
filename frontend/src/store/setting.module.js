@@ -159,7 +159,7 @@ const actions = {
     try{
        console.log(payload)
       await new AuthHttp().http_post('classes',payload)
-      context.dispatch(FETCH_CLASS)
+      context.dispatch('FETCH_CLASS')
       context.dispatch('FETCH_LEVEL')
     }catch (e){
 
