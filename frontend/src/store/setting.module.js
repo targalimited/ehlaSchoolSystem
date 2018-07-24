@@ -80,7 +80,16 @@ const actions = {
 
   async STUDENT_CREATE (context,payload){
     try{
-      let res = await new AuthHttp().http_post('users',payload)
+      await new AuthHttp().http_post('student_single',payload)
+      context.dispatch('FETCH_STUDENT')
+    }catch (e) {
+
+    }
+  },
+
+  async STUDENT_UPDATE (context,payload){
+    try{
+      let res = await new AuthHttp().put('student_single',payload)
       context.dispatch('FETCH_STUDENT')
     }catch (e) {
 
@@ -123,16 +132,6 @@ const actions = {
 
     }
   },
-
-  async STUDENT_UPDATE (context,payload){
-    try{
-      let res = await new AuthHttp().put('student_single',payload)
-      // commit('ADD_STUDENT', res.data)
-    }catch (e) {
-
-    }
-  },
-
 
   async FETCH_CLASS ({commit}) {
     try {
