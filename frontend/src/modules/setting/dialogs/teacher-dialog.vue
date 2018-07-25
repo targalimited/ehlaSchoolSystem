@@ -36,6 +36,7 @@
         <div class="input-group" >
           <vi-input-label>Confirm password</vi-input-label>
           <vi-input placeholder="Confirm Password" v-model="password_confirmation" type="password"/>
+          <vi-input-error v-if="!passwordMatch">Password do not match</vi-input-error>
         </div>
 
         <div class="input-group">
