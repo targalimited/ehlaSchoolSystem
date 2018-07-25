@@ -9,8 +9,7 @@ class SchoolClass extends Model
 {
 
     protected $table = 'classes';
-    const CREATED_AT = 'create_ts';
-    const UPDATED_AT = 'update_ts';
+
 
     public function subjects()
     {

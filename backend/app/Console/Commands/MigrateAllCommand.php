@@ -44,6 +44,7 @@ class MigrateAllCommand extends Command
        if($name !== 'mysql'){
           $this->info('Running migration for "' . $name . '"');
           $this->call('migrate', ['--force'=>true, '--database' => $name]);
+         \DB::connection()->setPdo(null);
        }
         //$this->call('migrate', array('--database' => $name, '--path' => 'app/database/migrations/' . $name));
       }

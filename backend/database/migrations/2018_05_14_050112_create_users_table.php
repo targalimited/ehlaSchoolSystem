@@ -12,16 +12,16 @@ class CreateUsersTable extends Migration
      * @return void
      */
     public function up()
-    {
-        Schema::create('users', function (Blueprint $table) {
-            $table->integer('id')->unsigned()->primary();
-            $table->json('user');
-            $table->json('session');
-            $table->string('ex_token')->nullable();
-            $table->dateTime('expiry_date')->nullable();
-            $table->integer('school_id');
-            $table->timestamps();
-        });
+    {   if (!Schema::hasTable('users'))
+          Schema::create('users', function (Blueprint $table) {
+              $table->integer('id')->unsigned()->primary();
+              $table->json('user');
+              $table->json('session');
+              $table->string('ex_token')->nullable();
+              $table->dateTime('expiry_date')->nullable();
+              $table->integer('school_id');
+              $table->timestamps();
+          });
     }
 
     /**

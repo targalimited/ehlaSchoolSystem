@@ -15,7 +15,7 @@
 
         <div class="input-group">
           <vi-input-label>Level</vi-input-label>
-          <vi-input placeholder="Level" v-model="classLevel"/>
+          <vi-select placeholder="Select Class Level" v-model="classLevel" option-name="value" option-value="key" :options="avalevelOptions"/>
         </div>
 
         <vi-button-row>
@@ -31,12 +31,13 @@
 export default {
   name: 'level-dialog',
 
-  props: ['oldClassName', 'oldClassLevel'],
+  props: ['oldClassName', 'oldClassLevel','levelOptions'],
 
   data () {
     return {
       className: this.oldClassName ? this.oldClassName : '',
-      classLevel: this.oldClassLevel ? this.oldClassLevel : ''
+      classLevel: this.oldClassLevel ? this.oldClassLevel : '',
+      avalevelOptions: this.levelOptions ? this.levelOptions : ''
     }
   },
 
@@ -44,6 +45,11 @@ export default {
     isEdit () {
       return !!this.oldClassName
     }
+  },
+
+  mounted(){
+    console.log('OldClass',this.oldClassLevel)
+    console.log('class-dialog',this.avalevelOptions)
   },
 
   methods: {

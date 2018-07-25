@@ -25,7 +25,7 @@
                   Edit class
                 </vi-item-content>
               </vi-item>
-              <vi-item :link="true">
+              <vi-item :link="true" @click="onDelete(c)">
                 <vi-item-avatar>
                   <vi-icon name="trash"/>
                 </vi-item-avatar>
@@ -105,18 +105,36 @@
 
     methods: {
       onAddClass () {
-        classDialog()
+        classDialog({levelOptions:this.levelOptions}).then(res =>{
+          console.log('class_view',res)
+          this.$store.dispatch('CLASS_CREATE',res)
+        })
       },
       onEdit (classv) {
         classDialog({
+          levelOptions:this.levelOptions,
           oldClassName: classv.c_name,
           oldClassLevel: classv.level
+        }).then(res=>{
+          //  console.log(res)
+          // console.log(classv);
+           this.$store.dispatch('CLASS_UPDATE',{id:classv.id,name:res.className,level:res.classLevel})
         })
+      },
+      async onDelete(c){
+        try {
+          await this.$messageBox({
+            title: 'Delete class',
+            message: `Are you sure you want to delete Class ${c.c_name}`
+          })
+          // TODO cal API
+          this.$store.dispatch('CLASS_DESTROY',{class_id:c.id})
+        } catch (e) {}
       }
     },
     mounted(){
-      this.$store.dispatch(FETCH_LEVEL)
-      this.$store.dispatch(FETCH_CLASS)
+      this.$store.dispatch('FETCH_LEVEL')
+      this.$store.dispatch('FETCH_CLASS')
     },
 
     created () {

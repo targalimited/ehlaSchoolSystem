@@ -53,10 +53,16 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
     //result controller
-    Route::post('get_school_result_report','ResultController@get_school_result_report');
+    /*Route::post('get_school_result_report','ResultController@get_school_result_report');
     Route::post('get_school_weakness_report','ResultController@get_school_weakness_report');
     Route::post('get_school_result_summary_report','ResultController@get_school_result_summary_report');
-
+*/
+    //result controller
+	//['class_id' / 'student_id', 'subject_id', 'batch_id', 'item_id']
+    Route::post('get_school_batch_item_result_report','ResultController@get_school_batch_item_result_report');
+	//['class_id' / 'student_id', 'subject_id','weakness_code']
+	Route::post('get_school_weakness_report','ResultController@get_school_weakness_report');
+    
     //item controller
     Route::get('get_school_item_summary','ItemController@get_school_item_summary');
     Route::post('get_preview_by_id','ItemController@get_preview_by_id');	
@@ -112,6 +118,8 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('students', 'UserController@getStudents');
     Route::get('students', 'UserController@getStudents');
     Route::get('teachers', 'UserController@getTeachers');
+    Route::delete('users/{user_id}', 'UserController@deleteUser');
+    Route::get('option_class', 'UserController@option_class');
 
 
     //Permission Control
@@ -162,7 +170,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('subjects', 'SubjectController@postSubjects');
 
     //classes
-    Route::put('classes/{id}', 'ClassController@putClasses');
+    Route::put('classes', 'ClassController@putClasses');
     Route::delete('classes/{id}', 'ClassController@delClasses');
       Route::get('classes', 'ClassController@getClasses');
       Route::post('classes', 'ClassController@postClasses');

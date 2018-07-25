@@ -17,7 +17,7 @@
       <div slot="append">
         <vi-row>
           <vi-input style="flex: 1" v-model="search" slot="action" prefix-icon="search" placeholder="Search student by name or class"/>
-          <vi-select :options="classOptions" v-model="classFilters" placeholder="Filter by class" max-width="300" style="width: 160px" class="ml-8"/>
+          <vi-select :options="option_class" v-model="classFilters" placeholder="Filter by class" max-width="300" style="width: 160px" class="ml-8"/>
         </vi-row>
       </div>
     </vi-app-bar>
@@ -60,19 +60,6 @@
 <script>
 
   import { mapGetters } from 'vuex'
-
-  // function genData () {
-  //   return [...Array(100).keys()].map(i => {
-  //     const names = ['Anson Mak', 'Jeff Wong', 'Tam Ma', 'Benny Jay', 'Calvin Lee', 'Timothy', 'Chan Siu Hei', 'Mei To Poon', 'Chan Kim Man', 'Man Sui Fong']
-  //     const classes = ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
-  //     return {
-  //       name: names[Math.floor(Math.random() * names.length)],
-  //       username: names[Math.floor(Math.random() * names.length)].toLowerCase(),
-  //       class: classes[Math.floor(Math.random() * classes.length)],
-  //     }
-  //   })
-  // }
-
   import {studentDialog} from '../dialogs'
 
   export default {
@@ -108,17 +95,17 @@
     },
 
     computed: {
-      classOptions() {
-        return ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
-      },
       ...mapGetters([
         'students',
+        'option_class'
       ]),
     },
 
     methods: {
       onAddStudent () {
-        studentDialog().then(res => {
+        studentDialog({
+          OptionClass: this.option_class
+        }).then(res => {
              // console.log("response", res.fullname);
             this.$store.dispatch('STUDENT_CREATE',{fullname:res.fullname,className:res.className})
           })
@@ -127,6 +114,7 @@
         studentDialog({
           oldFullname: student.realname,
           // oldUsername: student.username,
+          OptionClass: this.option_class,
           oldClass: student.single_class.c_name
         }).then(res=>{
           // console.log(student)
@@ -140,7 +128,7 @@
             message: `Are you sure you want to delete student ${student.name}`
           })
           // TODO cal API
-          console.log('delete student api', student.username)
+          this.$store.dispatch('STUDENT_DESTROY',{user_id:student.student_id})
         } catch (e) {}
       },
       filterByClass (items) {
@@ -168,6 +156,7 @@
 
     mounted (){
       console.log(this.students)
+      this.$store.dispatch('FETCH_OPTIONCLASS')
       this.$store.dispatch('FETCH_STUDENT')
     }
   }

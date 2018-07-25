@@ -24,7 +24,15 @@ class EhlaGuzzleClient {
 		}
 		try{
 			$result = $client->request('POST', $path, $this->options);
+			
+		
 		    $data = \GuzzleHttp\json_decode($result->getBody()->getContents(), true);
+
+		    if($result->getStatusCode() == 401)
+        {
+          return Response()->json($data,401);
+        }
+
 			return $data;
 		} catch (\Exception $e) {
 			return \GuzzleHttp\json_decode($e->getResponse()->getBody()->getContents(), true);
@@ -37,6 +45,10 @@ class EhlaGuzzleClient {
 		try{
 			$result = $client->request('GET', $path, $this->options);
 		    $data = \GuzzleHttp\json_decode($result->getBody()->getContents(), true);
+      if($result->getStatusCode() == 401)
+      {
+        return Response()->json($data,401);
+      }
 			return $data;
 		} catch (\Exception $e) {
 			return \GuzzleHttp\json_decode($e->getResponse()->getBody()->getContents(), true);

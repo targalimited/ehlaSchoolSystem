@@ -17,7 +17,7 @@
       <div slot="append">
         <vi-row>
           <vi-input style="flex: 1" v-model="search" slot="action" prefix-icon="search" placeholder="Search teacher by name or class"/>
-          <vi-select :options="classOptions" v-model="classFilters" placeholder="Filter by class" max-width="300" style="width: 160px" class="ml-8"/>
+          <vi-select :options="option_class" v-model="classFilters" placeholder="Filter by class" max-width="300" style="width: 160px" class="ml-8"/>
         </vi-row>
       </div>
     </vi-app-bar>
@@ -25,7 +25,7 @@
     <vi-data-table
       v-if="items"
       :headers="headers"
-      :items="items"
+      :items="teachers"
       :search="search"
       :sticky-header="130"
       :pagination.sync="pagination"
@@ -35,17 +35,13 @@
       <div slot="item" slot-scope="{item}" class="vi-table__row">
 
         <vi-table-col>
-          {{item.name}}
+          {{item.realname_en}}
         </vi-table-col>
 
         <vi-table-col>
-          <vi-chip>
-            {{item.class}}
+          <vi-chip  v-for="(single_class, index) in item.classes" :key="index">
+            {{single_class.name}}
           </vi-chip>
-        </vi-table-col>
-
-        <vi-table-col>
-          {{item.subject}}
         </vi-table-col>
 
         <vi-table-col>
@@ -62,18 +58,18 @@
 </template>
 
 <script>
-  function genData () {
-    return [...Array(60).keys()].map(i => {
-      const names = ['Anson Mak', 'Jeff Wong', 'Tam Ma', 'Benny Jay', 'Calvin Lee', 'Timothy', 'Chan Siu Hei', 'Mei To Poon', 'Chan Kim Man', 'Man Sui Fong']
-      const classes = ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
-      return {
-        name: names[Math.floor(Math.random() * names.length)],
-        username: names[Math.floor(Math.random() * names.length)].toLowerCase(),
-        subject: 'Eng',
-        class: classes[Math.floor(Math.random() * classes.length)],
-      }
-    })
-  }
+  // function genData () {
+  //   return [...Array(60).keys()].map(i => {
+  //     const names = ['Anson Mak', 'Jeff Wong', 'Tam Ma', 'Benny Jay', 'Calvin Lee', 'Timothy', 'Chan Siu Hei', 'Mei To Poon', 'Chan Kim Man', 'Man Sui Fong']
+  //     const classes = ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
+  //     return {
+  //       name: names[Math.floor(Math.random() * names.length)],
+  //       username: names[Math.floor(Math.random() * names.length)].toLowerCase(),
+  //       subject: 'Eng',
+  //       class: classes[Math.floor(Math.random() * classes.length)],
+  //     }
+  //   })
+  // }
 
   import {teacherDialog} from '../dialogs'
   import { mapGetters } from 'vuex'
@@ -103,40 +99,48 @@
             width: '30%'
           },
           {
-            text: 'Subject',
-            index: 'subject',
-            sortable: true,
-            width: '30%'
-          },
-          {
             text: '',
-            width: '72px'
+            width: '100px'
           }
         ]
       }
     },
 
     computed: {
-      classOptions() {
-        return ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
-      },
+      // classOptions() {
+      //   return ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
+      // },
       ...mapGetters([
         'teachers',
+        'option_class'
       ]),
     },
 
     methods: {
       async onAddTeacher () {
-        const res = await teacherDialog()
+        const res = await teacherDialog({
+          OptionClass: this.option_class
+        }).then(res => {
+          this.$store.dispatch('TEACHER_CREATE',res)
+        })
         if (!res) return
         console.log('create teacher API', res)
       },
       async onEdit (teacher) {
+        console.log('onEdit',teacher)
         const res = await teacherDialog({
-          oldFullname: teacher.name,
+          oldRealname_zh: teacher.realname_zh,
+          oldRealname_en: teacher.realname_en,
           oldUsername: teacher.username,
-          oldClass: teacher.class
+          oldClass: teacher.classes,
+          OptionClass: this.option_class,
+          oldTeacher_num: teacher.teacher_num,
+        }).then(res=>{
+          console.log('submit edit teacher',res)
+          res.teacher_id=teacher.teacher_id
+          this.$store.dispatch('TEACHER_UPDATE',res)
         })
+
         if (!res) return
         console.log('Edit teacher API', res)
       },
@@ -147,7 +151,8 @@
             message: `Are you sure you want to delete teacher ${teacher.name}`
           })
           // TODO cal API
-          console.log('delete teacher api', teacher.username)
+          this.$store.dispatch('USER_DELETE',{user_id:teacher.teacher_id})
+
         } catch (e) {}
       },
       filterByClass (items) {
@@ -168,12 +173,13 @@
     },
 
     created () {
-      this.items = genData()
+      // this.items = genData()
       const classQuery = this.$route.query.classes
       if (classQuery) this.classFilters = classQuery
     },
     mounted (){
-      console.log(this.students)
+      // console.log(this.teachers)
+      this.$store.dispatch('FETCH_OPTIONCLASS')
       this.$store.dispatch('FETCH_TEACHER')
     }
   }

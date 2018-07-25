@@ -32,6 +32,32 @@ class UsermodelApiServices extends Model {
 		$this->suffix = '?encode=1&access-token='.$userSession->access_token;
     }
 	
+	public function resultApiGetSchoolBatchItemResultReport($academicId, $studentIds, $itemId, $subjectId, $batchId) {
+		$inputs = [
+			'academic_id' => $academicId,
+			'student_ids' => $studentIds,
+			'item_id' => $itemId,
+			'subject_id' => $subjectId,
+			'batch_id' => $batchId
+		];
+		
+			
+		$result = $this->client->post(config('variables.resultApiGetSchoolBatchItemResultReportUrl').$this->suffix, $inputs);
+		return $result;
+	}
+	
+	public function resultApiGetSchoolWeaknessReport($academicId, $studentIds, $subjectId, $weaknessCode) {
+		$inputs = [
+			'academic_id' => $academicId,
+			'student_ids' => $studentIds,
+			'subject_id' => $subjectId,
+			'weakness_code' => $weaknessCode
+		];
+	
+		$result = $this->client->post(config('variables.resultApiGetSchoolWeaknessReportUrl').$this->suffix, $inputs);
+		return $result;
+	}
+	
 	public function schoolApiGetCatBySubjectLevel($subjectId, $levels) {
 		$inputs = [
 			'subject_id' => $subjectId,
@@ -275,7 +301,7 @@ class UsermodelApiServices extends Model {
 	  }
 	}
 	*/
-	public function resultApiGetSchoolWeaknessReport($academicId, $studentIds, $itemId, $reportType) {			
+	/*public function resultApiGetSchoolWeaknessReport($academicId, $studentIds, $itemId, $reportType) {			
 		$inputs = [
 			'academic_id' => $academicId,
 			'student_ids' => $studentIds,
@@ -285,7 +311,7 @@ class UsermodelApiServices extends Model {
 		
 		$result = $this->client->post(config('variables.schoolApiGetSchoolWeaknessReportUrl').$this->suffix, $inputs);				
 		return $result;
-	}
+	}*/
 	
 	/*public function schoolApiGetReadingList($params) {
 		$pass_params['params'] = $params;

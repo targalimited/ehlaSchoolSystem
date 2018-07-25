@@ -34,9 +34,10 @@ class ClassController extends Controller
 		$classes = $PCS->getTeacherClasses($user['user_id'], null);
 		$this->result['data'] = $classes;
         
-        return Response()->json($this->result,200);
+        return json($this->result,200);
 	}
-	
+
+	//Done
     public function postClasses(Request $request){
         /**
         $input = $request->all();
@@ -63,8 +64,8 @@ class ClassController extends Controller
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'c_name' => 'required',
-            'level_id' => 'required',
+            'className' => 'required',
+            'classLevel' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -80,9 +81,8 @@ class ClassController extends Controller
         try {
             DB::transaction(function () use ($request) {
                 $school_class = New SchoolClass();
-                $school_class->c_name = $request->c_name;
-                $school_class->name_zh = $request->name_zh;
-                $school_class->level_id = $request->level_id;
+                $school_class->c_name = $request->className;
+                $school_class->level = $request->classLevel;
                 $school_class->save();
             }, 2);
         } catch (\Exception $e) {
@@ -101,25 +101,39 @@ class ClassController extends Controller
             'message' => 'success'
         ];
 
-        return Response()->json($result);
+        return json($result);
     }
 
     public function putClasses(Request $request){
-      DB::transaction(function () use ($request){
+
+      try {
+        DB::transaction(function () use ($request) {
           $school_class = SchoolClass::where('id', $request->id)->first();
-          $school_class->c_name = $request->c_name;
-          $school_class->name_zh = $request->name_zh;
-          $school_class->level_id = $request->level_id;
+          $school_class->c_name = $request->name;
+          $school_class->level = $request->level;
           $school_class->save();
-      });
+        });
+      } catch (\Exception $e) {
+        $result = [
+          'status' => false,
+          'code' => '',
+          'message' => $e->getMessage()
+        ];
+
+        return json($result,500);
+
+      } catch (\Throwable $e) {
+      }
+
+      return success();
     }
 
     public function delClasses(Request $request)
     {
-        DB::transaction(function () use ($request){
-            $school_class = SchoolClass::where('id', $request->id)->first();
-            $school_class->delete();
-        });
+
+            SchoolClass::where('id', $request->id)->delete();
+
+        return success();
     }
 
 }
