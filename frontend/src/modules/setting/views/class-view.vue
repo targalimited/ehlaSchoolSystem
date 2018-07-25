@@ -25,12 +25,20 @@
                   Edit class
                 </vi-item-content>
               </vi-item>
-              <vi-item :link="true" @click="onDelete(c)">
+              <vi-item :link="true" @click="onDelete(c)" v-if="!c.lock">
                 <vi-item-avatar>
                   <vi-icon name="trash"/>
                 </vi-item-avatar>
                 <vi-item-content>
                   Delete class
+                </vi-item-content>
+              </vi-item>
+              <vi-item :link="true" @click="onConfirm(c)">
+                <vi-item-avatar>
+                  <vi-icon name="checkbox-checked"/>
+                </vi-item-avatar>
+                <vi-item-content>
+                  Confirm class
                 </vi-item-content>
               </vi-item>
             </vi-menu>
@@ -51,6 +59,10 @@
                   <vi-icon name="right" right size="10"/>
                 </vi-button>
               </router-link>
+            </div>
+
+            <div class="lock" v-if="c.lock">
+              <vi-icon name="lock" left size="12"/>
             </div>
 
             <div class="center">
@@ -114,7 +126,8 @@
         classDialog({
           levelOptions:this.levelOptions,
           oldClassName: classv.c_name,
-          oldClassLevel: classv.level
+          oldClassLevel: classv.level,
+          classLock: classv.lock
         }).then(res=>{
           //  console.log(res)
           // console.log(classv);
@@ -129,6 +142,16 @@
           })
           // TODO cal API
           this.$store.dispatch('CLASS_DESTROY',{class_id:c.id})
+        } catch (e) {}
+      },
+      async onConfirm(c){
+        try {
+          await this.$messageBox({
+            title: 'Confirm class',
+            message: `Are you sure you confirm Class ${c.c_name}`
+          })
+          // TODO cal API
+          this.$store.dispatch('CLASS_UPDATE',{class_id:c.id,lock:1})
         } catch (e) {}
       }
     },
@@ -170,5 +193,11 @@
       position absolute
       top 8px
       right 8px
+
+    .lock
+      position absolute
+      top 4px
+      left 8px
+      color #777
 
 </style>
