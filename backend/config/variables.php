@@ -31,9 +31,11 @@ return [
 	'schoolApiPublishAssignmentsUrl' => env('USERMODEL_URL').'v1/schoolApi/publish_assignments',
 	'schoolApiGetAssignmentByItemIdUrl' => env('USERMODEL_URL').'v1/schoolApi/get_assignment_by_item_id',
 	
-	'schoolApiGetSchoolResultSummaryReportUrl' => env('USERMODEL_URL').'v1/schoolApi/get_school_result_summary_report',
-	'schoolApiGetSchoolResultReportUrl' => env('USERMODEL_URL').'v1/schoolApi/get_school_result_report',
-	'schoolApiGetSchoolWeaknessReportUrl' => env('USERMODEL_URL').'v1/schoolApi/get_school_weakness_report',
+	//'schoolApiGetSchoolResultSummaryReportUrl' => env('USERMODEL_URL').'v1/schoolApi/get_school_result_summary_report',
+	//'schoolApiGetSchoolResultReportUrl' => env('USERMODEL_URL').'v1/schoolApi/get_school_result_report',
+	//'schoolApiGetSchoolWeaknessReportUrl' => env('USERMODEL_URL').'v1/schoolApi/get_school_weakness_report',
+	'resultApiGetSchoolBatchItemResultReportUrl' => env('USERMODEL_URL').'v1/resultApi/get_school_batch_item_result_report',
+	'resultApiGetSchoolWeaknessReportUrl' => env('USERMODEL_URL').'v1/resultApi/get_school_weakness_report',
 	
 	//assignmentApi
 	'schoolApiGetCatBySubjectLevelUrl' => env('USERMODEL_URL').'v1/schoolApi/get_cat_by_subject_level',
