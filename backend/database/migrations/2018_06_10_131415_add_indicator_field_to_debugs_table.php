@@ -13,6 +13,7 @@ class AddIndicatorFieldToDebugsTable extends Migration
      */
     public function up()
     {
+      if (Schema::hasTable('debugs'))
         Schema::table('debugs', function (Blueprint $table) {
             $table->string('indicator')->nullable();
         });

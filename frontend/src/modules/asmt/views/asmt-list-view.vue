@@ -19,29 +19,31 @@
           <vi-item height="60">
             <vi-item-avatar>
               <vi-avatar>
-                <img :src="item.image"/>
+                <img :src="item.item.thumbnail_path"/>
               </vi-avatar>
             </vi-item-avatar>
             <vi-item-content>
               <vi-item-title>
-                {{item.name_en}}
+                {{item.item.name_en}}
               </vi-item-title>
               <vi-item-subtitle>
                  <!-- TODO -->
-                <!--{{item.exercises.length}} Exercises, {{item.videos.length}} Videos-->
+                {{item.item.exercise_assignments.length}} Exercises,
+                <!--{{item.videos.length}} Videos-->
               </vi-item-subtitle>
             </vi-item-content>
           </vi-item>
         </vi-table-col>
 
         <vi-table-col>
-          <vi-chip :prepend="item.class_name">
-            {{item.whole_class ? 'All' : 'Some'}}
+          <vi-chip :prepend="item.class_id">
+            <!--{{item.whole_class ? 'All' : 'Some'}}-->
           </vi-chip>
         </vi-table-col>
 
         <vi-table-col>
-          {{item.type}}
+          <!-- TODO: @bill should give cat_grouper -->
+          {{item.item_type}}
         </vi-table-col>
 
         <vi-table-col>
@@ -93,7 +95,6 @@
             text: 'Assigned Date',
             index: 'start_date',
             width: '100px',
-            index: 'start_date',
             sortable: true,
             align: 'left'
           },

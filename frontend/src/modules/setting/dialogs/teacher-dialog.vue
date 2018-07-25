@@ -30,12 +30,13 @@
 
         <div class="input-group" >
           <vi-input-label>Password</vi-input-label>
-          <vi-input placeholder="Password" v-model="password"/>
+          <vi-input placeholder="Password" v-model="password" type="password"/>
         </div>
 
         <div class="input-group" >
           <vi-input-label>Confirm password</vi-input-label>
-          <vi-input placeholder="Confirm Password" v-model="password_confirmation"/>
+          <vi-input placeholder="Confirm Password" v-model="password_confirmation" type="password"/>
+          <vi-input-error v-if="!passwordMatch">Password do not match</vi-input-error>
         </div>
 
         <div class="input-group">
@@ -50,7 +51,7 @@
 
         <vi-button-row>
           <vi-button @click="$close(false)">Cancel</vi-button>
-          <vi-button @click="submit" primary>Confirm</vi-button>
+          <vi-button @click="submit" primary :disabled="!valid">Confirm</vi-button>
         </vi-button-row>
       </vi-card-content>
     </vi-card>
@@ -68,18 +69,15 @@
         realname_en: this.oldRealname_en ? this.oldRealname_en : '',
         realname_zh: this.oldRealname_zh ? this.oldRealname_zh : '',
         username: this.oldUsername ? this.oldUsername : '',
-        className: this.oldClass ? [this.oldClass] : [],
+        className: [],
         role: this.oldRole ? this.oldRole : '',
         password: '',
         password_confirmation: '',
         teacher_num: this.oldTeacher_num ? this.oldTeacher_num : '',
       }
     },
-    mounted(){
-      console.log(this.option_class)
-    },
-    computed: {
 
+    computed: {
       roleOptions() {
         return [{
           value: 'teacher',
@@ -94,6 +92,24 @@
       },
       isEdit () {
         return !!this.oldClass
+      },
+      passwordMatch () {
+        return this.password_confirmation === this.password
+      },
+      valid () {
+        return this.passwordMatch &&
+          this.realname_en &&
+          this.realname_zh &&
+          this.username &&
+          this.className &&
+          this.role &&
+          this.teacher_num
+      }
+    },
+
+    created () {
+      if (this.oldClass) {
+        this.className = this.oldClass.map(c => c.name)
       }
     },
 
@@ -121,7 +137,6 @@
             className: this.className,
             role: this.role,
           })
-
         }
       }
     }

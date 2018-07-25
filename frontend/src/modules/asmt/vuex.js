@@ -1,4 +1,3 @@
-import {fakeAsmtList} from './mock-data'
 import {http, AuthHttp} from '../../http'
 
 export default {
@@ -16,11 +15,18 @@ export default {
 
   actions: {
     // TODO: dicuss with @Bill whether to have seperate API for draft/ history
-    async getAsmtList ({commit}) {
-      const res = await new AuthHttp().post('/get_school_assignment')
-      console.log(res.data)
-      commit('gotAsmtList', res.data)
-      return fakeAsmtList
+    async getAsmtList ({commit, rootState}) {
+      const res = await new AuthHttp().post('/get_school_assignment', {
+        teacher_id: rootState.auth.user.user_id
+      })
+      let batches = res.data
+      batches = batches.filter(batch => batch.items.length > 0)
+      batches.forEach(batch => {
+        batch.item = batch.items[0]
+        delete batch.items
+      })
+      commit('gotAsmtList', batches)
+      return res.data
     },
 
     /**

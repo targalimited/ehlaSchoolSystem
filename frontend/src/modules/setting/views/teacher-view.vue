@@ -4,7 +4,7 @@
     <vi-app-bar title="Teachers">
 
       <div slot="action">
-        <vi-button @click="onAddTeacher" dark>
+        <vi-button @click="onBatchImport" dark>
           <vi-icon left name="add-thick" size="12"/>
           Batch import
         </vi-button>
@@ -23,7 +23,7 @@
     </vi-app-bar>
 
     <vi-data-table
-      v-if="items"
+      v-if="teachers"
       :headers="headers"
       :items="teachers"
       :search="search"
@@ -58,20 +58,7 @@
 </template>
 
 <script>
-  // function genData () {
-  //   return [...Array(60).keys()].map(i => {
-  //     const names = ['Anson Mak', 'Jeff Wong', 'Tam Ma', 'Benny Jay', 'Calvin Lee', 'Timothy', 'Chan Siu Hei', 'Mei To Poon', 'Chan Kim Man', 'Man Sui Fong']
-  //     const classes = ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
-  //     return {
-  //       name: names[Math.floor(Math.random() * names.length)],
-  //       username: names[Math.floor(Math.random() * names.length)].toLowerCase(),
-  //       subject: 'Eng',
-  //       class: classes[Math.floor(Math.random() * classes.length)],
-  //     }
-  //   })
-  // }
-
-  import {teacherDialog} from '../dialogs'
+  import { teacherDialog, batchImportDialog } from '../dialogs'
   import { mapGetters } from 'vuex'
 
   export default {
@@ -107,16 +94,18 @@
     },
 
     computed: {
-      // classOptions() {
-      //   return ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
-      // },
       ...mapGetters([
         'teachers',
         'option_class'
-      ]),
+      ])
     },
 
     methods: {
+      async onBatchImport () {
+        const file = await batchImportDialog()
+        if (!file) return
+        // TODO: @Hilton call api with selected excel file
+      },
       async onAddTeacher () {
         const res = await teacherDialog({
           OptionClass: this.option_class

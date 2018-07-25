@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDebugsTable extends Migration
+class AddLockToClassTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateDebugsTable extends Migration
      */
     public function up()
     {
-      if (!Schema::hasTable('debugs'))
-        Schema::create('debugs', function (Blueprint $table) {
-          $table->increments('id');
-          $table->string('context')->nullable();
-          $table->timestamps();
+      if (Schema::hasTable('classes'))
+        Schema::table('classes', function (Blueprint $table) {
+          $table->tinyInteger('lock')->nullable();
         });
     }
 
@@ -28,6 +26,8 @@ class CreateDebugsTable extends Migration
      */
     public function down()
     {
-      Schema::dropIfExists('debugs');
+        Schema::table('classes', function (Blueprint $table) {
+          $table->dropColumn('lock');
+        });
     }
 }
