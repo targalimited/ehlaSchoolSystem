@@ -4,7 +4,7 @@
     <vi-app-bar title="Teachers">
 
       <div slot="action">
-        <vi-button @click="onAddTeacher" dark>
+        <vi-button @click="onBatchImport" dark>
           <vi-icon left name="add-thick" size="12"/>
           Batch import
         </vi-button>
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-  import { teacherDialog } from '../dialogs'
+  import { teacherDialog, batchImportDialog } from '../dialogs'
   import { mapGetters } from 'vuex'
 
   export default {
@@ -101,6 +101,11 @@
     },
 
     methods: {
+      async onBatchImport () {
+        const file = await batchImportDialog()
+        if (!file) return
+        // TODO: @Hilton call api with selected excel file
+      },
       async onAddTeacher () {
         const res = await teacherDialog({
           OptionClass: this.option_class

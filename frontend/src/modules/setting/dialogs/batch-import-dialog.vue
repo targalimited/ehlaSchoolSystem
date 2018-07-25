@@ -3,24 +3,17 @@
     <vi-card>
       <vi-toolbar :brand="true">
         <div class="vi-toolbar__title">
-          {{isEdit ? 'Edit' : 'Create'}} student
+          Batch import teacher
         </div>
       </vi-toolbar>
 
       <vi-card-content>
-        <div class="input-group">
-          <vi-input-label>Full name</vi-input-label>
-          <vi-input placeholder="Full name" v-model="fullname"/>
-        </div>
 
-        <div class="input-group">
-          <vi-input-label>Class</vi-input-label>
-          <vi-select placeholder="Select Student Class" v-model="className" :options="OptionClass"/>
-        </div>
+        <input ref="input" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" @change="onFileImport"/>
 
         <vi-button-row>
           <vi-button @click="$close(false)">Cancel</vi-button>
-          <vi-button @click="submit" primary>Confirm</vi-button>
+          <vi-button @click="submit" primary :disabled="!fileLoaded">Confirm</vi-button>
         </vi-button-row>
       </vi-card-content>
     </vi-card>
@@ -31,29 +24,18 @@
   export default {
     name: 'level-dialog',
 
-    props: ['oldFullname', 'oldClass','OptionClass'],
-
     data () {
       return {
-        fullname: this.oldFullname ? this.oldFullname : '',
-        // username: this.oldUsername ? this.oldUsername : '',
-        className: this.oldClass ? this.oldClass : ''
-      }
-    },
-
-    computed: {
-      isEdit () {
-        // console.log(this.oldClass)
-        return !!this.oldClass
+        fileLoaded: false
       }
     },
 
     methods: {
       submit () {
-        this.$close({
-          fullname: this.fullname,
-          className: this.className,
-        })
+        this.$close(this.$refs.input.files[0])
+      },
+      onFileImport () {
+        this.fileLoaded = true
       }
     }
   }
