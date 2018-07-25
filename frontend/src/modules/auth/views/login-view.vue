@@ -1,4 +1,4 @@
-  <template>
+<template>
   <div class="login">
     <vi-card>
       <vi-card-content>
@@ -18,6 +18,7 @@
           <div class="subtitle">Login to your account</div>
         </div>
 
+        <form v-on:submit.prevent>
           <div class="input-group">
             <vi-input-label>Username</vi-input-label>
             <vi-input v-model="username" placeholder="Enter your username" v-on:keyup.enter="submit"/>
@@ -32,13 +33,16 @@
 
           <vi-button :disabled="loading" @click="submit" primary>{{loading ? 'Loggin in...' : 'Login'}}</vi-button>
 
-        <vi-row class="notice">
-          <vi-icon name="info-circular" size="32" class="no-shrink mr-20"/>
-          <div>
-            <p class="mb-20">We would like to draw your attention that we will gradually synchronize the reading packs in school portal with those in the App. You please stay tuned for the new reading packs which will be constantly uploaded to the school portal and the App. Thank you!</p>
-            <p>請您留意：我們將會逐步把EHLA學校應用端的閱讀套件與在學生應用App裏的套件進行同步。我們會不斷地把新的閱讀套件上載到學校應用端和App，請您繼續留意，謝謝！</p>
-          </div>
-        </vi-row>
+          <vi-row class="notice">
+            <vi-icon name="info-circular" size="32" class="no-shrink mr-20"/>
+            <div>
+              <p class="mb-20">We would like to draw your attention that we will gradually synchronize the reading packs
+                in school portal with those in the App. You please stay tuned for the new reading packs which will be
+                constantly uploaded to the school portal and the App. Thank you!</p>
+              <p>請您留意：我們將會逐步把EHLA學校應用端的閱讀套件與在學生應用App裏的套件進行同步。我們會不斷地把新的閱讀套件上載到學校應用端和App，請您繼續留意，謝謝！</p>
+            </div>
+          </vi-row>
+        </form>
 
       </vi-card-content>
     </vi-card>
@@ -105,7 +109,7 @@ export default {
   .vi-card
     width 360px
     margin 80px auto
-    box-shadow 2px 2px 22px 0 rgba(0,0,0,0.1)
+    box-shadow 2px 2px 22px 0 rgba(0, 0, 0, 0.1)
 
   .vi-button
     width 100%
