@@ -6,12 +6,57 @@ use App\SchoolClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\UsermodelApiServices;
 use App\ParamBasicServices;
 use App\PermissionControlServices;
 
 
 class ClassController extends Controller
 {
+	public function get_classes_by_teacher_id(Request $request) {
+		//params
+		$params = $request->params;
+		
+		//params basic
+		$PBS = new ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		
+		//permission
+		$PCS = new PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+		
+		$teacherId = $params['teacher_id'];
+		$this->result['data'] = $PBS->getClasses($teacherId);
+		
+        return json($this->result,200);	
+	}
+	
+	
+	public function get_students_by_class_id(Request $request) {
+		//params
+		$params = $request->params;
+		
+		//params basic
+		$PBS = new ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		
+		//permission
+		$PCS = new PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+		
+		$studentIds = $PBS->getStudents();
+		
+		//usermodel
+		$UAS = New UsermodelApiServices($request);
+		$feedback = $UAS->schoolApiGetSchoolUserBasic($studentIds);
+		
+		
+		$this->result['data'] = $feedback['data'];
+        return json($this->result,200);	
+	}
+	
+	
+	
     public function getClasses(){
         $classes = SchoolClass::with('students')->with('teachers')->get();
         $result['data'] = $classes;

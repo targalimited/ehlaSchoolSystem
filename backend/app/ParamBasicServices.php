@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use GuzzleHttp\Client;
-//use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB;
 
 class ParamBasicServices extends Model {
 	private $userJson;
@@ -26,6 +26,21 @@ class ParamBasicServices extends Model {
 		$this->userBasic['academic_id'] = isset($params['academic_id']) ? $params['academic_id'] : null;
     }
 	
+	public function getClasses($teacherId) {
+		$subjectId = $this->userBasic['subject_id'];
+		
+		$sql  = " SELECT class_id, c_name, level ";
+		$sql .= " FROM   ".\DB::getTablePrefix()."teacher_class_subject tcs";
+		$sql .= " LEFT JOIN ".\DB::getTablePrefix()."classes c";;
+		$sql .= " ON tcs.class_id = c.id";
+		$sql .= " WHERE teacher_id = ".$teacherId;
+		$sql .= " AND   subject_id = ".$subjectId;
+		
+		$result = DB::select($sql);
+		$students = $result;		
+		return $students;
+	}
+	
 	public function getStudents() {
 		$classId = $this->userBasic['class_id'];
 		$subjectId = $this->userBasic['subject_id'];
@@ -39,7 +54,10 @@ class ParamBasicServices extends Model {
 			$sql .= " AND    subject_id = ".$subjectId;
 			$result = DB::select($sql);
 			
-			$students = $result->student_ids;			
+			$students = [];
+			if (isset($result[0]->student_ids)) {
+				$students = explode(',', $result[0]->student_ids);
+			}
 			return $students;
 		}
 	}
