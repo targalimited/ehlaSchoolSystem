@@ -106,9 +106,16 @@
         studentDialog({
           OptionClass: this.option_class
         }).then(res => {
-             // console.log("response", res.fullname);
-            this.$store.dispatch('STUDENT_CREATE',{fullname:res.fullname,className:res.className})
+          // console.log("response", res.fullname);
+          this.$store.dispatch('STUDENT_CREATE', {
+            realname_en: res.realname_en,
+            username: res.username,
+            password: res.password,
+            school_num: res.school_num,
+            realname_zh: res.realname_zh,
+            className: res.className
           })
+        })
       },
       onEdit (student) {
         studentDialog({
