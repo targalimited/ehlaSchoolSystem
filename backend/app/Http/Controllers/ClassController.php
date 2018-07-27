@@ -151,11 +151,16 @@ class ClassController extends Controller
 
     public function putClasses(Request $request){
 
+//	  print_r($request->all());
       try {
         DB::transaction(function () use ($request) {
           $school_class = SchoolClass::where('id', $request->id)->first();
+          if($request->name)
           $school_class->c_name = $request->name;
+          if($request->level)
           $school_class->level = $request->level;
+          if($request->lock)
+          $school_class->lock = $request->lock;
           $school_class->save();
         });
       } catch (\Exception $e) {

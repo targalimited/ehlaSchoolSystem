@@ -151,7 +151,7 @@
             message: `Are you sure you confirm Class ${c.c_name}`
           })
           // TODO cal API
-          this.$store.dispatch('CLASS_UPDATE',{class_id:c.id,lock:1})
+          this.$store.dispatch('CLASS_UPDATE',{id:c.id,lock:1})
         } catch (e) {}
       }
     },
