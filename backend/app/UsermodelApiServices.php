@@ -127,7 +127,6 @@ class UsermodelApiServices extends Model {
 	
 	public function schoolApiGetSchoolAssignment($params) {
 		$inputs = $params;
-		
 		$result = $this->client->post(config('variables.schoolApiGetSchoolAssignmentUrl').$this->suffix, $inputs);				
 		return $result;
 	}

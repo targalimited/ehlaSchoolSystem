@@ -51,6 +51,40 @@ class ResultController extends Controller
 		return json($output);
 	}
 	
+	//['class_id' / 'student_id', 'weakness_code', 'weakness_ids']
+	public function get_school_weakness_report(Request $request) {	
+		//params
+		$params = $request->params;
+	
+		//params basic
+		$PBS = New ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		
+		//permission
+		$PCS = New PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+
+		//gather data
+		$academicId = $user['academic_id'];
+		$studentIds = $PBS->getStudents();		
+		
+		if (empty($studentIds) && $params['student_id']) {
+			$studentIds[0] = $params['student_id'];
+		}
+		
+		$weaknessCode = $params['weakness_code'];
+		$weaknessIds = $params['weakness_ids'];
+		
+		//usermodel
+		$UAS = New UsermodelApiServices($request);
+		$result = $UAS->resultApiGetSchoolWeaknessReport($academicId, $studentIds, $weaknessCode, $weaknessIds);	
+				
+		$output["data"] = $result["data"];
+		$output["metadata"] = $result["metadata"];
+		
+		return json($output);
+	}
+	
 	
 	//['class_id' / 'student_id', 'subject_id', 'batch_id', 'item_id']
 	public function get_school_batch_item_result_report(Request $request) {	
