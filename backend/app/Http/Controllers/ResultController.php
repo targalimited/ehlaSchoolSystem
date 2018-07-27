@@ -16,6 +16,40 @@ use Illuminate\Support\Facades\DB;
 class ResultController extends Controller
 {
 	
+	//['class_id' / 'student_id', 'subject_id', 'batch_id', 'item_id']
+	public function get_school_status_report(Request $request) {	
+		//params
+		$params = $request->params;
+	
+		//params basic
+		$PBS = New ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		
+		//permission
+		$PCS = New PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+
+		//gather data
+		$academicId = $user['academic_id'];
+		$studentIds = $PBS->getStudents();		
+		
+		if (empty($studentIds) && $params['student_id']) {
+			$studentIds[0] = $params['student_id'];
+		}
+		
+		$itemId    = $params['item_id'];
+		$subjectId = $params['subject_id'];
+		$batchId   = $params['batch_id'];
+		
+		//usermodel
+		$UAS = New UsermodelApiServices($request);
+		$result = $UAS->resultApiGetSchoolStatusReport($academicId, $studentIds, $itemId, $subjectId, $batchId);	
+				
+		$output["data"] = $result["data"];
+		$output["metadata"] = $result["metadata"];
+		
+		return json($output);
+	}
 	
 	
 	//['class_id' / 'student_id', 'subject_id', 'batch_id', 'item_id']
@@ -80,6 +114,35 @@ class ResultController extends Controller
 		//usermodel
 		$UAS = New UsermodelApiServices($request);
 		$result = $UAS->resultApiGetSchoolWeaknessReport($academicId, $studentIds, $subjectId, $weaknessCode);	
+		$output["data"] = $result["data"];
+		$output["metadata"] = $result["metadata"];
+	
+		return json($output);
+	}
+	
+	//['class_id' / 'student_id', 'subject_id','weakness_code']
+	public function get_class_weakness(Request $request) {	
+		//params
+		$params = $request->params;
+	
+		//params basic
+		$PBS = New ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		
+		//permission
+		$PCS = New PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+
+		//gather data
+		$academicId = $user['academic_id'];
+		$studentIds = $PBS->getStudents();
+		
+		$subjectId    = $params['subject_id'];
+		$weaknessCode = $params['weakness_code'];
+		
+		//usermodel
+		$UAS = New UsermodelApiServices($request);
+		$result = $UAS->resultApiGetSchoolWeaknessList($academicId, $studentIds, $subjectId, $weaknessCode);	
 		$output["data"] = $result["data"];
 		$output["metadata"] = $result["metadata"];
 	

@@ -57,11 +57,17 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('get_school_weakness_report','ResultController@get_school_weakness_report');
     Route::post('get_school_result_summary_report','ResultController@get_school_result_summary_report');
 */
+	//basic controller
+	Route::post('get_classes_by_teacher_id','ClassController@get_classes_by_teacher_id');
+	Route::post('get_students_by_class_id','ClassController@get_students_by_class_id');
+	
     //result controller
 	//['class_id' / 'student_id', 'subject_id', 'batch_id', 'item_id']
     Route::post('get_school_batch_item_result_report','ResultController@get_school_batch_item_result_report');
+    Route::post('get_status_report','ResultController@get_school_status_report');
 	//['class_id' / 'student_id', 'subject_id','weakness_code']
 	Route::post('get_school_weakness_report','ResultController@get_school_weakness_report');
+	Route::post('get_class_weakness','ResultController@get_class_weakness');
     
     //item controller
     Route::get('get_school_item_summary','ItemController@get_school_item_summary');
