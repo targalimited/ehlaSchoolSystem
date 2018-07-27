@@ -33,7 +33,7 @@
                   Delete class
                 </vi-item-content>
               </vi-item>
-              <vi-item :link="true" @click="onConfirm(c)">
+              <vi-item :link="true" @click="onConfirm(c)" v-if="!c.lock">
                 <vi-item-avatar>
                   <vi-icon name="checkbox-checked"/>
                 </vi-item-avatar>
