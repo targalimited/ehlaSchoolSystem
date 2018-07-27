@@ -38,7 +38,7 @@ class PermissionControlServices extends Model {
 		$sql .= " ON        tcs.subject_id = s.id ";
 		$sql .= " WHERE     tcs.teacher_id = ".$teacherId;
 		$sql .= " AND       cs.is_deleted = 0 ";
-		$sql .= " AND       tcs.is_deleted = 0 ";
+		//$sql .= " AND       tcs.is_deleted = 0 ";
 		if (isset($subjectId)) {
 			$sql .= " AND       tcs.subject_id = ".$subjectId;
 		}
@@ -58,7 +58,7 @@ class PermissionControlServices extends Model {
 		$sql .= " ON        tcs.subject_id = s.id ";
 		$sql .= " WHERE     tcs.teacher_id = ".$teacherId;
 		$sql .= " AND       cs.is_deleted = 0 ";
-		$sql .= " AND       tcs.is_deleted = 0 ";
+		//$sql .= " AND       tcs.is_deleted = 0 ";
 		if (isset($subjectId)) {
 			$sql .= " AND       tcs.subject_id = ".$subjectId;
 		}
