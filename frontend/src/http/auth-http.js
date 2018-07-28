@@ -61,7 +61,7 @@ class AuthHttp {
       console.log('success',res.data);
       return res.data
     } catch (e) {
-      console.log(Object.keys(e), e);
+      console.log(e.message);
       return this.handleException(e)
     }
 

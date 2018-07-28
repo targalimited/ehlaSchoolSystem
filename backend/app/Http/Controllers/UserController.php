@@ -24,7 +24,7 @@ use Carbon\Carbon;
 class UserController extends Controller
 {
 
-  public $class,$role;
+  public $class, $role, $errors;
   public $subject;
   public $student;
   public $teacher;
@@ -160,6 +160,7 @@ class UserController extends Controller
   public function postTeacher(Request $request)
   {
     $this->init();
+    $errors = [];
 
     if ($request->hasFile('file')) {
       $path = $request->file('file')->getRealPath();
@@ -170,11 +171,10 @@ class UserController extends Controller
         $title = ['teacher_no', 'realname_en', 'realname_zh', 'class', 'subject'];
 
         $i = 0;
-        $errors = [];
 
         foreach ($title as $v) {
           if (!array_key_exists($v, $teacher_sheet[0])) {
-            $errors[$i] = 'No this column ' . $v;
+            $this->errors[$i] = 'No this column ' . $v;
             $i++;
           }
         }
@@ -182,76 +182,71 @@ class UserController extends Controller
         foreach ($teacher_sheet as $v) {
 
           if (!in_array(strtolower($v['class']), $this->class)) {
-            $errors[$i] = 'No this class ' . $v['class'];
+            $this->errors[$i] = 'No this class ' . $v['class'];
             $i++;
           }
           if (!in_array(strtolower($v['subject']), $this->subject)) {
-            $errors[$i] = 'No this subject ' . $v['subject'];
+            $this->errors[$i] = 'No this subject ' . $v['subject'];
             $i++;
           }
         }
 
-        if ($errors) {
-//          print_r($errors);
-          $result = [
-            'status' => false,
-            'code' => '',
-            'message' => $errors
-          ];
-          return Response()->json($result,500);
-          return error_json($result);
-        }
+        if (!$this->errors) {
+          foreach ($teacher_sheet as $k => $v) {
+            $teacher[$v['teacher_no']]['school_num'] = $v['teacher_no'];
+            $teacher[$v['teacher_no']]['realname_en'] = $v['realname_en'];
+            $teacher[$v['teacher_no']]['realname_zh'] = $v['realname_zh'];
 
+            $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
+            $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
 
-        foreach ($teacher_sheet as $k => $v) {
-          $teacher[$v['teacher_no']]['school_num'] = $v['teacher_no'];
-          $teacher[$v['teacher_no']]['realname_en'] = $v['realname_en'];
-          $teacher[$v['teacher_no']]['realname_zh'] = $v['realname_zh'];
-
-          $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
-          $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
-
-        }
-
-        $teachers = array_values($teacher);
-
-        $input['userGroup'] = 'teacher';
-        $input['accType'] = "";
-        $input['users'] = $teachers;
-
-        $access_token = json_decode(Auth::user()->session)->access_token;
-        $client = new EhlaGuzzleClient();
-        $res = $client->post(config('variables.createAccount') . $access_token, $input);
-
-        if ($res['success']) {
-          foreach($res['data'] as $key => $value){
-            $teacher_num_id[$value['school_num']]=$value['user_id'];
-            $teacher_role[$key]['role_id'] = array_search('teacher', $this->role);
-            $teacher_role[$key]['user_id'] = $value['user_id'];
           }
+
+          $teachers = array_values($teacher);
+
+          $input['userGroup'] = 'teacher';
+          $input['accType'] = "";
+          $input['users'] = $teachers;
+
+          $access_token = json_decode(Auth::user()->session)->access_token;
+          $client = new EhlaGuzzleClient();
+          $res = $client->post(config('variables.createAccount') . $access_token, $input);
+
+          if ($res['success']) {
+            foreach ($res['data'] as $key => $value) {
+              $teacher_num_id[$value['school_num']] = $value['user_id'];
+              $teacher_role[$key]['role_id'] = array_search('teacher', $this->role);
+              $teacher_role[$key]['user_id'] = $value['user_id'];
+            }
+          }
+
+
+          foreach ($teacher_sheet as $k => $v) {
+            $new_teacher_set[$k]['teacher_id'] = $teacher_num_id[$v['teacher_no']];
+            $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
+            $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
+          }
+
+          TeacherClassSubject::insert($new_teacher_set);
+          RoleUser::insert($teacher_role);
         }
-
-
-
-        foreach ($teacher_sheet as $k => $v) {
-          $new_teacher_set[$k]['teacher_id'] = $teacher_num_id[$v['teacher_no']];
-          $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
-          $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
-        }
-
-        TeacherClassSubject::insert($new_teacher_set);
-        RoleUser::insert($teacher_role);
-
-        return success();
-
       });
+      if ($this->errors) {
+        $result = [
+          'status' => false,
+          'code' => '',
+          'message' => $this->errors
+        ];
+        return json($result);
+      } else
+        return success();
     } else {
       $result = [
         'status' => false,
         'code' => '',
         'message' => 'No file.'
       ];
-      return error_json($result);
+      return json($result);
     }
   }
 
