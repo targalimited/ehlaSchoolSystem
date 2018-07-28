@@ -109,7 +109,9 @@
 
     created () {
       if (this.oldClass) {
+        console.log(this.oldClass)
         this.className = this.oldClass.map(c => c.name)
+        console.log(this.className)
       }
     },
 

@@ -52,6 +52,17 @@ class UserController extends Controller
 
   private function init()
   {
+    foreach (Subject::all() as $v) {
+      $this->subject[$v->id] = strtolower(str_replace(' ', '_', $v->s_name_en));
+    }
+
+    foreach (SchoolClass::all() as $v) {
+      $this->class[$v->id] = strtolower($v->c_name);
+    }
+  }
+
+  private function init_()
+  {
 
     foreach (Subject::all() as $v) {
       $this->subject[$v->id] = strtolower(str_replace(' ', '_', $v->s_name_en));
@@ -146,6 +157,96 @@ class UserController extends Controller
   {
     $this->init();
 
+    if ($request->hasFile('file')) {
+      $path = $request->file('file')->getRealPath();
+      Excel::load($path, function ($reader) use ($request) {
+        $results = $reader->get()->toArray();
+        $teacher_sheet = $results[0];
+
+        $title = ['teacher_no', 'realname_en', 'realname_zh', 'class', 'subject'];
+
+        $i = 0;
+        $errors = [];
+
+        foreach ($title as $v) {
+          if (!array_key_exists($v, $teacher_sheet[0])) {
+            $errors[$i] = 'No this column ' . $v;
+            $i++;
+          }
+        }
+
+        foreach ($teacher_sheet as $v) {
+
+          if (!in_array(strtolower($v['class']), $this->class)) {
+            $errors[$i] = 'No this class ' . $v['class'];
+            $i++;
+          }
+          if (!in_array(strtolower($v['subject']), $this->subject)) {
+            $errors[$i] = 'No this subject ' . $v['subject'];
+            $i++;
+          }
+        }
+
+        if ($errors) {
+          $result = [
+            'status' => false,
+            'code' => '',
+            'message' => $errors
+          ];
+          return error_json($result);
+        }
+
+
+        foreach ($teacher_sheet as $k => $v) {
+          $teacher[$v['teacher_no']]['school_num'] = $v['teacher_no'];
+          $teacher[$v['teacher_no']]['realname_en'] = $v['realname_en'];
+          $teacher[$v['teacher_no']]['realname_zh'] = $v['realname_zh'];
+
+          $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
+          $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
+
+        }
+
+        $teachers = array_values($teacher);
+
+        $input['userGroup'] = 'teacher';
+        $input['accType'] = "";
+        $input['users'] = $teachers;
+
+        $access_token = json_decode(Auth::user()->session)->access_token;
+        $client = new EhlaGuzzleClient();
+        $res = $client->post(config('variables.createAccount') . $access_token, $input);
+
+        if ($res['success']) {
+          foreach($res['data'] as $key => $value){
+            $teacher_num_id[$value['school_num']]=$value['user_id'];
+          }
+        }
+
+        foreach ($teacher_sheet as $k => $v) {
+          $new_teacher_set[$k]['teacher_id'] = $teacher_num_id[$v['teacher_no']];
+          $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
+          $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
+        }
+
+        TeacherClassSubject::insert($new_teacher_set);
+
+        return success();
+
+      });
+    } else {
+      $result = [
+        'status' => false,
+        'code' => '',
+        'message' => 'No file.'
+      ];
+      return error_json($result);
+    }
+  }
+
+  public function postTeacher_backup(Request $request)
+  {
+//    $this->init();
 
     if ($request->hasFile('file')) {
       $path = $request->file('file')->getRealPath();
@@ -593,32 +694,32 @@ class UserController extends Controller
 
 //    if ($class_id = $this->getClassID($request->className)) {
 
-      $input['userGroup'] = 'teacher';
-      $input['accType'] = "";
-      $input['users'][0]['realname_en'] = $request->realname_en;
-      $input['users'][0]['realname_zh'] = $request->realname_zh;
-      $input['users'][0]['username'] = $request->username;
-      $input['users'][0]['password'] = $request->password;
-      $input['users'][0]['school_num'] = $request->school_num;
+    $input['userGroup'] = 'teacher';
+    $input['accType'] = "";
+    $input['users'][0]['realname_en'] = $request->realname_en;
+    $input['users'][0]['realname_zh'] = $request->realname_zh;
+    $input['users'][0]['username'] = $request->username;
+    $input['users'][0]['password'] = $request->password;
+    $input['users'][0]['school_num'] = $request->school_num;
 
-      $access_token = json_decode(Auth::user()->session)->access_token;
-      $client = new EhlaGuzzleClient();
-      $res = $client->post(config('variables.createAccount') . $access_token, $input);
+    $access_token = json_decode(Auth::user()->session)->access_token;
+    $client = new EhlaGuzzleClient();
+    $res = $client->post(config('variables.createAccount') . $access_token, $input);
 
-      $debug = new Debug();
-      $debug->context = json_encode($res);
-      $debug->save();
+    $debug = new Debug();
+    $debug->context = json_encode($res);
+    $debug->save();
 
-      foreach ($request->className as $k => $v){
-        $class_id = $this->getClassID($v);
-        $scs = New TeacherClassSubject();
-        $scs->class_id = $class_id;
-        $scs->teacher_id = $res['data'][0]['user_id'];
-        $scs->subject_id = '1';
-        $scs->save();
-      }
+    foreach ($request->className as $k => $v) {
+      $class_id = $this->getClassID($v);
+      $scs = New TeacherClassSubject();
+      $scs->class_id = $class_id;
+      $scs->teacher_id = $res['data'][0]['user_id'];
+      $scs->subject_id = '1';
+      $scs->save();
+    }
 
-      return return_success();
+    return return_success();
 
 //    } else {
 //      $result = [
@@ -712,8 +813,8 @@ class UserController extends Controller
     $input['id'] = $request->teacher_id;
     $input['realname_en'] = $request->realname_en;
     $input['realname_zh'] = $request->realname_zh;
-    if(!empty($request->password))
-    $input['password'] = $request->password;
+    if (!empty($request->password))
+      $input['password'] = $request->password;
     $input['school_num'] = $request->school_num;
 
     $access_token = json_decode(Auth::user()->session)->access_token;
@@ -725,8 +826,8 @@ class UserController extends Controller
     $debug->context = json_encode($res);
     $debug->save();
 
-    TeacherClassSubject::where('teacher_id',$request->teacher_id)->delete();
-    foreach ($request->className as $k => $v){
+    TeacherClassSubject::where('teacher_id', $request->teacher_id)->delete();
+    foreach ($request->className as $k => $v) {
       $class_id = $this->getClassID($v);
       $scs = New TeacherClassSubject();
       $scs->class_id = $class_id;
@@ -965,7 +1066,6 @@ class UserController extends Controller
   {
 
 
-
     if ($class_id = $this->getClassID($request->className)) {
 
 
@@ -1086,10 +1186,10 @@ class UserController extends Controller
 
       $access_token = json_decode(Auth::user()->session)->access_token;
 
-      $inputs['ids']= $students->toArray();
+      $inputs['ids'] = $students->toArray();
 
       $client = new EhlaGuzzleClient();
-      $res = $client->post(config('variables.getUsersByIDs').$access_token, $inputs);
+      $res = $client->post(config('variables.getUsersByIDs') . $access_token, $inputs);
 
 
 //      print_r($res);
@@ -1097,7 +1197,7 @@ class UserController extends Controller
       $students = StudentClassSubject::with('single_class')->get()->toArray();
 
       foreach ($students as $k => &$v) {
-          $v['realname'] = $res['data'][$v['student_id']]['realname_en'];
+        $v['realname'] = $res['data'][$v['student_id']]['realname_en'];
 //        $v['realname'] = 'CTM';
       }
 //      print_r($students);
@@ -1109,7 +1209,8 @@ class UserController extends Controller
   }
 
   //Done Get class options from DB
-  public function option_class(Request $request){
+  public function option_class(Request $request)
+  {
     $sc = SchoolClass::get()->pluck('c_name');
     return Response()->json($sc, 200);
   }
@@ -1125,27 +1226,27 @@ class UserController extends Controller
 
       $access_token = json_decode(Auth::user()->session)->access_token;
 
-      $inputs['ids']= $teachers->toArray();
+      $inputs['ids'] = $teachers->toArray();
 
 //      print_r($inputs);
 
       $client = new EhlaGuzzleClient();
-      $res = $client->post(config('variables.getUsersByIDs').$access_token, $inputs);
+      $res = $client->post(config('variables.getUsersByIDs') . $access_token, $inputs);
 
 
       $debug = new Debug();
-      $debug->context = 'Get_teachers'.json_encode($res);
+      $debug->context = 'Get_teachers' . json_encode($res);
       $debug->save();
 
       $teachers = TeacherClassSubject::with('classes')->with('subjects')->get()->toArray();
 
-      foreach ($teachers as $k => $v){
-          $t[$v['teacher_id']]['teacher_id']= $v['teacher_id'];
-          $t[$v['teacher_id']]['realname_en']= $res['data'][$v['teacher_id']]['realname_en'];
-          $t[$v['teacher_id']]['realname_zh']= $res['data'][$v['teacher_id']]['realname_zh'];
-          $t[$v['teacher_id']]['username']= $res['data'][$v['teacher_id']]['username'];
-          $t[$v['teacher_id']]['school_num']= $res['data'][$v['teacher_id']]['school_num'];
-          $t[$v['teacher_id']]['classes'][]['name']= $v['classes']['c_name'];
+      foreach ($teachers as $k => $v) {
+        $t[$v['teacher_id']]['teacher_id'] = $v['teacher_id'];
+        $t[$v['teacher_id']]['realname_en'] = $res['data'][$v['teacher_id']]['realname_en'];
+        $t[$v['teacher_id']]['realname_zh'] = $res['data'][$v['teacher_id']]['realname_zh'];
+        $t[$v['teacher_id']]['username'] = $res['data'][$v['teacher_id']]['username'];
+        $t[$v['teacher_id']]['school_num'] = $res['data'][$v['teacher_id']]['school_num'];
+        $t[$v['teacher_id']]['classes'][]['name'] = $v['classes']['c_name'];
       }
 //print_r();
 
@@ -1154,7 +1255,6 @@ class UserController extends Controller
 //        $v['realname'] = $res['data'][$v['teacher_id']]['realname'];
 //        $v['realname'] = 'CTM';
 //      }
-
 
 
       $result['data'] = array_values($t);
@@ -1182,9 +1282,9 @@ class UserController extends Controller
   {
     $input['user_id'] = $request->user_id;
     $this->_client->post(config('variables.deleteUsers') . $this->access_token, $input);
-    RoleUser::where('user_id',$request->user_id)->delete();
-    StudentClassSubject::where('student_id',$request->user_id)->delete();
-    TeacherClassSubject::where('teacher_id',$request->user_id)->delete();
+    RoleUser::where('user_id', $request->user_id)->delete();
+    StudentClassSubject::where('student_id', $request->user_id)->delete();
+    TeacherClassSubject::where('teacher_id', $request->user_id)->delete();
     return return_success();
   }
 }

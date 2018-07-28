@@ -104,7 +104,8 @@
       async onBatchImport () {
         const file = await batchImportDialog()
         if (!file) return
-        // TODO: @Hilton call api with selected excel file
+        this.$store.dispatch('TEACHER_BATCH_CREATE',file)
+
       },
       async onAddTeacher () {
         const res = await teacherDialog({
@@ -139,7 +140,6 @@
             title: 'Delete teacher',
             message: `Are you sure you want to delete teacher ${teacher.name}`
           })
-          // TODO cal API
           this.$store.dispatch('USER_DELETE',{user_id:teacher.teacher_id})
 
         } catch (e) {}
