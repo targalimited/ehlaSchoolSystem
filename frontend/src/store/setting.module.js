@@ -11,7 +11,8 @@ const state = {
   levelOptions: [],
   option_class: [],
   summary: [],
-  single_class: {}
+  single_class: {},
+  roleOptions: []
 }
 
 const getters = {
@@ -45,8 +46,8 @@ const getters = {
       }
       return cus_level
     }
-  }
-
+  },
+  roleOptions: state => state.roleOptions
 }
 
 const actions = {
@@ -165,6 +166,14 @@ const actions = {
     } catch (e) {}
   },
 
+  async FETCH_ROLE ({commit}) {
+    try {
+      let res = await new AuthHttp().get('get_role_options')
+      console.log('FETCH ROLE action',res)
+      commit('SET_ROLE',res)
+    } catch (e) {}
+  },
+
   async CLASS_CREATE (context,payload){
     try{
        console.log(payload)
@@ -230,6 +239,11 @@ const mutations = {
   SET_LEVEL (state, summary) {
     console.log('setter',summary)
     state.summary = summary
+  },
+
+  SET_ROLE (state, roles) {
+    console.log('setter',roles)
+    state.roleOptions = roles
   }
 }
 

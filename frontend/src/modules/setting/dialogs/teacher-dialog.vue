@@ -59,6 +59,8 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+
   export default {
     name: 'level-dialog',
 
@@ -78,18 +80,9 @@
     },
 
     computed: {
-      roleOptions() {
-        return [{
-          value: 'teacher',
-          name: 'Teacher'
-        }, {
-          value: 'teacher2',
-          name: 'Teacher2'
-        }, {
-          value: 'teacher3',
-          name: 'Teacher3'
-        }]
-      },
+      ...mapGetters([
+        'roleOptions'
+      ]),
       isEdit () {
         return !!this.oldClass
       },

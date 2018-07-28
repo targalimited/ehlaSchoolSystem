@@ -25,7 +25,7 @@
 
         <div class="input-group">
           <vi-input-label>Student No.</vi-input-label>
-          <vi-input placeholder="Teacher Number" v-model="student_num"/>
+          <vi-input placeholder="Student Number" v-model="student_num"/>
         </div>
 
         <div class="input-group" >
