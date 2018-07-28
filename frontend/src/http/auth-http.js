@@ -36,6 +36,7 @@ class AuthHttp {
   async http_post(url, data) {
     try {
       const res = await this.http.post(url, data)
+
       return res.data
     } catch (e) {
       return this.handleException(e)
@@ -57,8 +58,10 @@ class AuthHttp {
           }
         }
       )
+      console.log('success',res.data);
       return res.data
     } catch (e) {
+      console.log(Object.keys(e), e);
       return this.handleException(e)
     }
 
@@ -89,6 +92,7 @@ class AuthHttp {
       router.replace('/login')
       return Promise.reject(e)
     }
+
     return Promise.reject(e)
   }
 }

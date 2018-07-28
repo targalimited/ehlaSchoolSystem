@@ -24,7 +24,7 @@ use Carbon\Carbon;
 class UserController extends Controller
 {
 
-  public $class;
+  public $class,$role;
   public $subject;
   public $student;
   public $teacher;
@@ -58,6 +58,10 @@ class UserController extends Controller
 
     foreach (SchoolClass::all() as $v) {
       $this->class[$v->id] = strtolower($v->c_name);
+    }
+
+    foreach (Role::all() as $v) {
+      $this->role[$v->id] = strtolower($v->name);
     }
   }
 
@@ -188,11 +192,13 @@ class UserController extends Controller
         }
 
         if ($errors) {
+//          print_r($errors);
           $result = [
             'status' => false,
             'code' => '',
             'message' => $errors
           ];
+          return Response()->json($result,500);
           return error_json($result);
         }
 
@@ -220,8 +226,12 @@ class UserController extends Controller
         if ($res['success']) {
           foreach($res['data'] as $key => $value){
             $teacher_num_id[$value['school_num']]=$value['user_id'];
+            $teacher_role[$key]['role_id'] = array_search('teacher', $this->role);
+            $teacher_role[$key]['user_id'] = $value['user_id'];
           }
         }
+
+
 
         foreach ($teacher_sheet as $k => $v) {
           $new_teacher_set[$k]['teacher_id'] = $teacher_num_id[$v['teacher_no']];
@@ -230,6 +240,7 @@ class UserController extends Controller
         }
 
         TeacherClassSubject::insert($new_teacher_set);
+        RoleUser::insert($teacher_role);
 
         return success();
 
@@ -693,6 +704,7 @@ class UserController extends Controller
   {
 
 //    if ($class_id = $this->getClassID($request->className)) {
+    $this->init();
 
     $input['userGroup'] = 'teacher';
     $input['accType'] = "";
@@ -718,6 +730,10 @@ class UserController extends Controller
       $scs->subject_id = '1';
       $scs->save();
     }
+
+    $role_user = new RoleUser();
+    $role_user->user_id = $res['data'][0]['user_id'];
+    $role_user->role_id = array_search('teacher', $this->role);
 
     return return_success();
 
@@ -1196,6 +1212,8 @@ class UserController extends Controller
 
       $students = StudentClassSubject::with('single_class')->get()->toArray();
 
+//      print_r($students);
+//      die();
       foreach ($students as $k => &$v) {
         $v['realname'] = $res['data'][$v['student_id']]['realname_en'];
 //        $v['realname'] = 'CTM';
