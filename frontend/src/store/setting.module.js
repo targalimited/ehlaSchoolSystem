@@ -88,6 +88,15 @@ const actions = {
     }
   },
 
+  async STUDENT_BATCH_CREATE (context,payload){
+    try{
+      let res = await new AuthHttp().post_file('student_batch',payload)
+      context.dispatch('FETCH_STUDENT')
+    }catch (e) {
+
+    }
+  },
+
   async STUDENT_UPDATE (context,payload){
     try{
       let res = await new AuthHttp().put('student_single',payload)

@@ -157,11 +157,10 @@ class UserController extends Controller
 
   }
 
+  //Done Import teacher
   public function postTeacher(Request $request)
   {
     $this->init();
-    $errors = [];
-
     if ($request->hasFile('file')) {
       $path = $request->file('file')->getRealPath();
       Excel::load($path, function ($reader) use ($request) {
@@ -249,6 +248,120 @@ class UserController extends Controller
       return json($result);
     }
   }
+
+  public function postStudent(Request $request)
+  {
+    $this->init();
+
+    if ($request->hasFile('file')) {
+      $path = $request->file('file')->getRealPath();
+      Excel::load($path, function ($reader) use ($request) {
+        $results = $reader->get()->toArray();
+        $student_sheet = $results[0];
+
+
+
+        $i = 0;
+
+        if ($results[0]) {
+          foreach (array_keys($results[0]) as $v) {
+            $subjects[] = $v;
+          }
+        }
+
+        $subjects_db = Subject::all();
+
+        foreach ($subjects_db as $v) {
+          $new_subject_db[] = strtolower(str_replace(' ', '_', $v->s_name_en));
+        }
+
+        for ($j = 4; $j < count($subjects); $j++) {
+          if (!in_array(strtolower($subjects[$j]), $new_subject_db)) {
+            $this->errors[$i] = 'No this subject ' . $subjects[$j];
+          }
+        }
+
+        $title = ['student_no', 'realname_en', 'realname_zh', 'class'];
+
+
+        foreach ($title as $v) {
+          if (!array_key_exists($v, $student_sheet[0])) {
+            $this->errors[$i] = 'No this column ' . $v;
+            $i++;
+          }
+        }
+
+
+        foreach ($student_sheet as $v) {
+
+          if (!in_array(strtolower($v['class']), $this->class)) {
+            $this->errors[$i] = 'No this class ' . $v['class'];
+            $i++;
+          }
+        }
+
+        if (!$this->errors) {
+          foreach ($student_sheet as $k => $v) {
+            $student[$v['student_no']]['school_num'] = $v['student_no'];
+            $student[$v['student_no']]['realname_en'] = $v['realname_en'];
+            $student[$v['student_no']]['realname_zh'] = $v['realname_zh'];
+
+//            $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
+//            $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
+
+          }
+
+          $students = array_values($student);
+
+          $input['userGroup'] = 'student';
+          $input['accType'] = "";
+          $input['users'] = $students;
+
+          $access_token = json_decode(Auth::user()->session)->access_token;
+          $client = new EhlaGuzzleClient();
+          $res = $client->post(config('variables.createAccount') . $access_token, $input);
+
+          if ($res['success']) {
+            foreach ($res['data'] as $key => $value) {
+              $student_num_id[$value['school_num']] = $value['user_id'];
+//              $teacher_role[$key]['role_id'] = array_search('student', $this->role);
+//              $teacher_role[$key]['user_id'] = $value['user_id'];
+            }
+          }
+
+          foreach ($student_sheet as $k => $v) {
+            if($v['english']==='Y'){
+              $new_student_set[$k]['student_id'] = $student_num_id[$v['student_no']];
+              $new_student_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
+              $new_student_set[$k]['subject_id'] = array_search('english', $this->subject);
+              $new_student_set[$k]['created_at'] = Carbon::now();
+              $new_student_set[$k]['updated_at'] = Carbon::now();
+            }
+          }
+
+          StudentClassSubject::insert($new_student_set);
+//          RoleUser::insert($teacher_role);
+        }
+      });
+      if ($this->errors) {
+        $result = [
+          'status' => false,
+          'code' => '',
+          'message' => $this->errors
+        ];
+        return json($result);
+      } else
+        return success();
+    } else {
+      $result = [
+        'status' => false,
+        'code' => '',
+        'message' => 'No file.'
+      ];
+      return json($result);
+    }
+  }
+
 
   public function postTeacher_backup(Request $request)
   {
@@ -490,7 +603,7 @@ class UserController extends Controller
 
   }
 
-  public function postStudent(Request $request)
+  public function postStudent_backup(Request $request)
   {
     $this->init();
 
@@ -515,7 +628,7 @@ class UserController extends Controller
           $new_subject_db[] = strtolower(str_replace(' ', '_', $v->s_name_en));
         }
         $errors = [];
-        for ($i = 3; $i < count($subjects); $i++) {
+        for ($i = 4; $i < count($subjects); $i++) {
           if (!in_array(strtolower($subjects[$i]), $new_subject_db)) {
             $errors[] = 'no this subject ' . $subjects[$i];
           }

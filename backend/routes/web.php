@@ -112,7 +112,7 @@ Route::group(['prefix' => 'v1'], function () {
 
     //User controller
     Route::post('teacher_batch', 'UserController@postTeacher');
-    Route::post('account_student', 'UserController@postStudent');
+    Route::post('student_batch', 'UserController@postStudent');
     Route::get('exportTeacherExcel', 'UserController@getTeacherExcel');
     Route::get('exportStudentExcel', 'UserController@getStudentExcel');
     Route::post('teacher_single', 'UserController@postSingleTeacher');

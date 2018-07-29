@@ -58,7 +58,7 @@ class AuthHttp {
           }
         }
       )
-      console.log('success',res.data);
+      // console.log('success',res.data);
       return res.data
     } catch (e) {
       console.log(e.message);

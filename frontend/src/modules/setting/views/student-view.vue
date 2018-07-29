@@ -4,7 +4,7 @@
     <vi-app-bar title="Students">
 
       <div slot="action">
-        <vi-button @click="onAddStudent" dark>
+        <vi-button @click="onBatchImport" dark>
           <vi-icon left name="add-thick" size="12"/>
           Batch import
         </vi-button>
@@ -60,7 +60,7 @@
 <script>
 
   import { mapGetters } from 'vuex'
-  import {studentDialog} from '../dialogs'
+  import {studentDialog, batchImportDialog} from '../dialogs'
 
   export default {
     name: 'student-view',
@@ -102,6 +102,12 @@
     },
 
     methods: {
+      async onBatchImport () {
+        const file = await batchImportDialog()
+        if (!file) return
+        this.$store.dispatch('STUDENT_BATCH_CREATE',file)
+
+      },
       onAddStudent () {
         studentDialog({
           OptionClass: this.option_class
