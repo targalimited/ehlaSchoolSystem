@@ -41,7 +41,7 @@
 
         <div class="input-group">
           <vi-input-label>Role</vi-input-label>
-          <vi-select placeholder="Select Role" v-model="role" :options="roleOptions" option-value="value" option-name="name"/>
+          <vi-select placeholder="Select Role" v-model="role" :options="roleOptions" option-value="id" option-name="name"/>
         </div>
 
         <div class="input-group">
@@ -98,6 +98,9 @@
           this.role &&
           this.teacher_num
       }
+    },
+    mounted (){
+      this.$store.dispatch('FETCH_ROLE')
     },
 
     created () {

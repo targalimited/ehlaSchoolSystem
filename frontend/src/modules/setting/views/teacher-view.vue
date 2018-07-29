@@ -126,7 +126,6 @@
           OptionClass: this.option_class,
           oldTeacher_num: teacher.teacher_num,
         }).then(res=>{
-          console.log('submit edit teacher',res)
           res.teacher_id=teacher.teacher_id
           this.$store.dispatch('TEACHER_UPDATE',res)
         })
@@ -169,6 +168,7 @@
     mounted (){
       // console.log(this.teachers)
       this.$store.dispatch('FETCH_OPTIONCLASS')
+      this.$store.dispatch('FETCH_ROLE')
       this.$store.dispatch('FETCH_TEACHER')
     }
   }

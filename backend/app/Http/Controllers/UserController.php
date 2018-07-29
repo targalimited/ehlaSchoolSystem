@@ -249,6 +249,7 @@ class UserController extends Controller
     }
   }
 
+  //Done Import Student
   public function postStudent(Request $request)
   {
     $this->init();
@@ -361,7 +362,6 @@ class UserController extends Controller
       return json($result);
     }
   }
-
 
   public function postTeacher_backup(Request $request)
   {
@@ -810,7 +810,6 @@ class UserController extends Controller
   //Done Create teacher
   public function postSingleTeacher(Request $request)
   {
-
 //    if ($class_id = $this->getClassID($request->className)) {
     $this->init();
 
@@ -841,7 +840,7 @@ class UserController extends Controller
 
     $role_user = new RoleUser();
     $role_user->user_id = $res['data'][0]['user_id'];
-    $role_user->role_id = array_search('teacher', $this->role);
+    $role_user->role_id = $request->role;
 
     return return_success();
 
