@@ -140,7 +140,7 @@
             title: 'Delete teacher',
             message: `Are you sure you want to delete teacher ${teacher.name}`
           })
-          this.$store.dispatch('USER_DELETE',{user_id:teacher.teacher_id})
+          this.$store.dispatch('TEACHER_DESTROY',{user_id:teacher.teacher_id})
 
         } catch (e) {}
       },
