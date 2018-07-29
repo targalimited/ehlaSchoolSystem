@@ -1077,13 +1077,14 @@ class UserController extends Controller
 
     if ($class_id = $this->getClassID($request->className)) {
 
-//      print_r($request->all());
-//      die();
 
       $input['userGroup'] = 'student';
       $input['accType'] = "";
-      $input['users'][0]['realname_en'] = $request->fullname;
-      //$input['users'][0]['school_num'] = $request->student_num;
+      $input['users'][0]['realname_en'] = $request->realname_en;
+      $input['users'][0]['realname_zh'] = $request->realname_zh;
+      $input['users'][0]['username'] = $request->username;
+      $input['users'][0]['password'] = $request->password;
+      $input['users'][0]['school_num'] = $request->school_num;
 
       $access_token = json_decode(Auth::user()->session)->access_token;
       $client = new EhlaGuzzleClient();
@@ -1334,7 +1335,10 @@ class UserController extends Controller
 //      print_r($students);
 //      die();
       foreach ($students as $k => &$v) {
-        $v['realname'] = $res['data'][$v['student_id']]['realname_en'];
+        $v['realname_en'] = $res['data'][$v['student_id']]['realname_en'];
+        $v['realname_zh'] = $res['data'][$v['student_id']]['realname_zh'];
+        $v['username'] = $res['data'][$v['student_id']]['username'];
+        $v['school_num'] = $res['data'][$v['student_id']]['school_num'];
 //        $v['realname'] = 'CTM';
       }
 //      print_r($students);

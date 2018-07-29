@@ -35,7 +35,7 @@
       <div slot="item" slot-scope="{item}" class="vi-table__row">
 
         <vi-table-col>
-          {{item.realname}}
+          {{item.realname_en}}
         </vi-table-col>
 
         <vi-table-col>
@@ -124,9 +124,13 @@
         })
       },
       onEdit (student) {
+        console.log(student);
+
         studentDialog({
-          oldFullname: student.realname,
-          // oldUsername: student.username,
+          oldRealname_en: student.realname_en,
+          oldRealname_zh: student.realname_zh,
+          oldUsername: student.username,
+          oldSchool_num: student.school_num,
           OptionClass: this.option_class,
           oldClass: student.single_class.c_name
         }).then(res=>{
