@@ -13,6 +13,7 @@ export default {
     isAuthenticated: state => !!state.extoken,
     authStatus: state => state.authStatus,
     user: state => state.user,
+    teacherId: state => state.user.user_id
   },
 
   mutations: {
