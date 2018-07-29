@@ -133,7 +133,7 @@
             school_num: this.teacher_num,
             realname_zh: this.realname_zh,
             className: this.className,
-            role: this.role,
+            role_id: this.role,
           })
         }
       }

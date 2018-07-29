@@ -840,7 +840,8 @@ class UserController extends Controller
 
     $role_user = new RoleUser();
     $role_user->user_id = $res['data'][0]['user_id'];
-    $role_user->role_id = $request->role;
+    $role_user->role_id = $request->role_id;
+    $role_user->save();
 
     return return_success();
 
@@ -933,6 +934,9 @@ class UserController extends Controller
   public function putSingleTeacher(Request $request)
   {
 
+//    print_r($request->all());
+//    die();
+
     $input['id'] = $request->teacher_id;
     $input['realname_en'] = $request->realname_en;
     $input['realname_zh'] = $request->realname_zh;
@@ -950,6 +954,7 @@ class UserController extends Controller
     $debug->save();
 
     TeacherClassSubject::where('teacher_id', $request->teacher_id)->delete();
+
     foreach ($request->className as $k => $v) {
       $class_id = $this->getClassID($v);
       $scs = New TeacherClassSubject();
@@ -958,6 +963,13 @@ class UserController extends Controller
       $scs->subject_id = '1';
       $scs->save();
     }
+
+    RoleUser::where('user_id',$request->teacher_id)->delete();
+    $role = New RoleUser();
+    $role->user_id=$request->teacher_id;
+    $role->role_id=$request->role_id;
+    $role->save();
+
 
     return return_success();
 
@@ -1363,7 +1375,7 @@ class UserController extends Controller
       $debug->context = 'Get_teachers' . json_encode($res);
       $debug->save();
 
-      $teachers = TeacherClassSubject::with('classes')->with('subjects')->get()->toArray();
+      $teachers = TeacherClassSubject::with('classes')->with('subjects')->with('role')->get()->toArray();
 
       foreach ($teachers as $k => $v) {
         $t[$v['teacher_id']]['teacher_id'] = $v['teacher_id'];
@@ -1371,6 +1383,7 @@ class UserController extends Controller
         $t[$v['teacher_id']]['realname_zh'] = $res['data'][$v['teacher_id']]['realname_zh'];
         $t[$v['teacher_id']]['username'] = $res['data'][$v['teacher_id']]['username'];
         $t[$v['teacher_id']]['school_num'] = $res['data'][$v['teacher_id']]['school_num'];
+        $t[$v['teacher_id']]['role_id'] = $v['role']['role_id'];
         $t[$v['teacher_id']]['classes'][]['name'] = $v['classes']['c_name'];
       }
 //print_r();

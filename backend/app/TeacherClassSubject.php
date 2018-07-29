@@ -30,4 +30,14 @@ class TeacherClassSubject extends Model
   {
     return $this->belongsTo(User::class, 'teacher_id');
   }
+
+  public function roles()
+  {
+    return $this->hasMany(RoleUser::class,'user_id','teacher_id');
+  }
+
+  public function role()
+  {
+    return $this->hasOne(RoleUser::class,'user_id','teacher_id');
+  }
 }

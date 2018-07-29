@@ -124,7 +124,8 @@
           oldUsername: teacher.username,
           oldClass: teacher.classes,
           OptionClass: this.option_class,
-          oldTeacher_num: teacher.teacher_num,
+          oldTeacher_num: teacher.school_num,
+          oldRole: teacher.role_id,
         }).then(res=>{
           res.teacher_id=teacher.teacher_id
           this.$store.dispatch('TEACHER_UPDATE',res)
