@@ -1215,7 +1215,10 @@ class UserController extends Controller
 
 
       $input['id'] = $request->id;
-      $input['realname_en'] = $request->fullname;
+      $input['realname_en'] = $request->realname_en;
+      $input['realname_zh'] = $request->realname_zh;
+      if (!empty($request->password))
+        $input['password'] = $request->password;
       $input['school_num'] = $request->student_num;
 
       $access_token = json_decode(Auth::user()->session)->access_token;
@@ -1224,7 +1227,7 @@ class UserController extends Controller
       $res = $client->post(config('variables.updateUserInfo') . $access_token, $input);
 
       $debug = new Debug();
-      $debug->context = 'Update Single Teacher '.json_encode($res);
+      $debug->context = 'Update Single Student '.json_encode($res);
       $debug->save();
 
       if ($res['success']) {
