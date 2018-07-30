@@ -1,22 +1,43 @@
-<template>
-  <div class="class-view">
-    <vi-app-bar title="Report: select class"></vi-app-bar>
-
-    <div v-if="classList" v-for="c in classList" :key="c.class_id">
-      {{c.class_name}}
-      <button @click="getWeaknessList(c.class_id)">see weakness</button>
-      <button @click="getItemList(c.class_id)">see items</button>
-      <button @click="getItemReport">get class item report</button>
-      <button @click="getWeaknessReport">get weakness report</button>
-    </div>
-  </div>
+<template lang="pug">
+  .panel-layout
+    .panel-layout__l
+      asmt-item
+      asmt-item
+    .panel-layout__r
+      vi-data-table(
+        :items="students"
+        :item-height="600"
+        :headers="headers"
+        :pagination="pagination"
+      )
+        div(slot="item" slot-scope="{item}")
+          vi-table-col {{item.name}}
 </template>
 
 <script>
   export default {
     data() {
       return {
-       classList: null
+        students: [
+          {
+            name: 'John'
+          },
+          {
+            name: 'John2'
+          },
+          {
+            name: 'John3'
+          },
+          {
+            name: 'John4'
+          }
+        ],
+        headers: [
+          {
+            text: 'yo'
+          }
+        ],
+        pagination: {}
       }
     },
     methods: {
@@ -42,9 +63,6 @@
       },
     },
     async created () {
-      const res = await this.$store.dispatch('report/getClasses')
-      console.log(res)
-      this.classList = res
     }
   }
 </script>
@@ -52,30 +70,15 @@
 
 <style lang="stylus" scoped>
   @import '../../../project-ui/stylus/settings.styl'
-
-  .vi-card
-    background #dfeef6
-    height 200px
+  .panel-layout
     display flex
-    flex-flow row wrap
-    align-items center
-    justify-content center
-    font-size 20px
-    box-shadow $shadow
-    cursor pointer
-    transition all $transition
+    background #fdfcf5
+    height 800px
 
-    &:hover
-      box-shadow $shadow-2
+    &__l
+      width 350px
 
-    .bottom
-      position absolute
-      bottom 4px
-      left 8px
-
-    .vi-menu
-      position absolute
-      top 8px
-      right 8px
-
+    &__r
+      flex 1
+      border-left 1px solid $border-color
 </style>

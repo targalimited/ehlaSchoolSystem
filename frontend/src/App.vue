@@ -1,96 +1,99 @@
 <template>
   <vi-app class="app">
 
-    <div class="sidebar" v-if="$route.name !== 'login'">
+    <default-layout/>
+    <!--<div class="sidebar" v-if="$route.name !== 'login'">-->
 
-      <vi-item class="logo-item" height="70">
-        <vi-item-avatar><img class="logo-item__logo" src="./modules/auth/assets/app-logo.jpg"/></vi-item-avatar>
-        <vi-item-content>
-          <div>i-Education</div>
-          <div class="logo-item__subtitle">School Portal</div>
-        </vi-item-content>
-      </vi-item>
+      <!--<vi-item class="logo-item" height="70">-->
+        <!--<vi-item-avatar><img class="logo-item__logo" src="./modules/auth/assets/app-logo.jpg"/></vi-item-avatar>-->
+        <!--<vi-item-content>-->
+          <!--<div>i-Education</div>-->
+          <!--<div class="logo-item__subtitle">School Portal</div>-->
+        <!--</vi-item-content>-->
+      <!--</vi-item>-->
 
-      <div class="sidebar__main">
-        <router-link :to="{name: 'home'}">
-          <vi-item class="nav-item" :link="true" height="60">
-            <vi-item-avatar><vi-icon class="ml-4" name="home" size="40"/></vi-item-avatar>
-            <vi-item-content>Home</vi-item-content>
-          </vi-item>
-        </router-link>
+      <!--<div class="sidebar__main">-->
+        <!--<router-link :to="{name: 'home'}">-->
+          <!--<vi-item class="nav-item" :link="true" height="60">-->
+            <!--<vi-item-avatar><vi-icon class="ml-4" name="home" size="40"/></vi-item-avatar>-->
+            <!--<vi-item-content>Home</vi-item-content>-->
+          <!--</vi-item>-->
+        <!--</router-link>-->
 
-        <router-link :to="{name: 'lib-main'}">
-          <vi-item class="nav-item" :link="true" height="60">
-            <vi-item-avatar><vi-icon class="ml-4" name="apps" size="30"/></vi-item-avatar>
-            <vi-item-content>EHLA Categories</vi-item-content>
-          </vi-item>
-        </router-link>
+        <!--<router-link :to="{name: 'lib-main'}">-->
+          <!--<vi-item class="nav-item" :link="true" height="60">-->
+            <!--<vi-item-avatar><vi-icon class="ml-4" name="apps" size="30"/></vi-item-avatar>-->
+            <!--<vi-item-content>EHLA Categories</vi-item-content>-->
+          <!--</vi-item>-->
+        <!--</router-link>-->
 
-        <router-link :to="{name: 'shelf'}">
-          <vi-item class="nav-item" :link="true" height="60">
-            <vi-item-avatar><vi-icon class="ml-4" name="shelf" size="36"/></vi-item-avatar>
-            <vi-item-content>Accessible Items Overview</vi-item-content>
-          </vi-item>
-        </router-link>
+        <!--<router-link :to="{name: 'shelf'}">-->
+          <!--<vi-item class="nav-item" :link="true" height="60">-->
+            <!--<vi-item-avatar><vi-icon class="ml-4" name="shelf" size="36"/></vi-item-avatar>-->
+            <!--<vi-item-content>Accessible Items Overview</vi-item-content>-->
+          <!--</vi-item>-->
+        <!--</router-link>-->
 
-        <vi-menu offset-x :offset-y="false" :open-on-hover="true" :nudge-top="8" content-class="sidebar__submenu">
+        <!--<vi-menu offset-x :offset-y="false" :open-on-hover="true" :nudge-top="8" content-class="sidebar__submenu">-->
 
-            <vi-item slot="activator" class="nav-item" :link="true" height="60">
-              <vi-item-avatar><vi-icon class="ml-4" name="assignment" size="36"/></vi-item-avatar>
-              <vi-item-content>Assign Homework</vi-item-content>
-            </vi-item>
+            <!--<vi-item slot="activator" class="nav-item" :link="true" height="60">-->
+              <!--<vi-item-avatar><vi-icon class="ml-4" name="assignment" size="36"/></vi-item-avatar>-->
+              <!--<vi-item-content>Assign Homework</vi-item-content>-->
+            <!--</vi-item>-->
 
-            <div>
-              <router-link :to="{name: 'pick-asmt'}">
-                <vi-item class="nav-item" :link="true" height="60">
-                  <vi-item-content>Assign Homework</vi-item-content>
-                </vi-item>
-              </router-link>
+            <!--<div>-->
+              <!--<router-link :to="{name: 'pick-asmt'}">-->
+                <!--<vi-item class="nav-item" :link="true" height="60">-->
+                  <!--<vi-item-content>Assign Homework</vi-item-content>-->
+                <!--</vi-item>-->
+              <!--</router-link>-->
 
-              <router-link :to="{name: 'asmt-list'}">
-                <vi-item class="nav-item" :link="true" height="60">
-                  <vi-item-content>See Assignment List</vi-item-content>
-                </vi-item>
-              </router-link>
-            </div>
-        </vi-menu>
+              <!--<router-link :to="{name: 'asmt-list'}">-->
+                <!--<vi-item class="nav-item" :link="true" height="60">-->
+                  <!--<vi-item-content>See Assignment List</vi-item-content>-->
+                <!--</vi-item>-->
+              <!--</router-link>-->
+            <!--</div>-->
+        <!--</vi-menu>-->
 
-        <router-link :to="{name:'report-select-class'}">
-          <vi-item class="nav-item" :link="true" height="60">
-            <vi-item-avatar><vi-icon class="ml-4" name="report" size="36"/></vi-item-avatar>
-            <vi-item-content>Report</vi-item-content>
-          </vi-item>
-        </router-link>
+        <!--<router-link :to="{name:'report-select-class'}">-->
+          <!--<vi-item class="nav-item" :link="true" height="60">-->
+            <!--<vi-item-avatar><vi-icon class="ml-4" name="report" size="36"/></vi-item-avatar>-->
+            <!--<vi-item-content>Report</vi-item-content>-->
+          <!--</vi-item>-->
+        <!--</router-link>-->
 
-        <div class="sidebar__divider"></div>
+        <!--<div class="sidebar__divider"></div>-->
 
-        <router-link :to="{name: 'lib-cat'}">
-          <vi-item class="nav-item" :link="true" height="60">
-            <vi-item-avatar><vi-icon class="ml-4" name="pilot" size="36"/></vi-item-avatar>
-            <vi-item-content>School Pilot 100 (2018/19)</vi-item-content>
-          </vi-item>
-        </router-link>
+        <!--<router-link :to="{name: 'lib-cat'}">-->
+          <!--<vi-item class="nav-item" :link="true" height="60">-->
+            <!--<vi-item-avatar><vi-icon class="ml-4" name="pilot" size="36"/></vi-item-avatar>-->
+            <!--<vi-item-content>School Pilot 100 (2018/19)</vi-item-content>-->
+          <!--</vi-item>-->
+        <!--</router-link>-->
 
-        <router-link :to="{name: 'free-access'}">
-          <vi-item class="nav-item" :link="true" height="60">
-            <vi-item-avatar><vi-icon class="ml-4" name="free-access" size="30"/></vi-item-avatar>
-            <vi-item-content>Free Access Scheme</vi-item-content>
-          </vi-item>
-        </router-link>
-      </div>
-    </div>
+        <!--<router-link :to="{name: 'free-access'}">-->
+          <!--<vi-item class="nav-item" :link="true" height="60">-->
+            <!--<vi-item-avatar><vi-icon class="ml-4" name="free-access" size="30"/></vi-item-avatar>-->
+            <!--<vi-item-content>Free Access Scheme</vi-item-content>-->
+          <!--</vi-item>-->
+        <!--</router-link>-->
+      <!--</div>-->
+    <!--</div>-->
 
-    <div class="app__scroll">
-      <router-view/>
-    </div>
+    <!--<div class="app__scroll">-->
+      <!--<router-view/>-->
+    <!--</div>-->
 
     <dialogs-wrapper wrapper-name="default" />
   </vi-app>
 </template>
 
 <script>
+import DefaultLayout from './layout/default'
 export default {
-  name: 'App'
+  name: 'App',
+  components: { DefaultLayout  }
 }
 </script>
 
@@ -101,7 +104,6 @@ export default {
   @import 'vue-loading-overlay/dist/vue-loading.min.css'
 
   html, body
-    font-size 18px
     min-width 755px
     overflow-x auto
 
@@ -114,6 +116,8 @@ export default {
       border-bottom 1px solid currentColor
 
   .sidebar
+    // TODO hardcode
+    display none
     position fixed
     left 0
     top 0
@@ -223,7 +227,7 @@ export default {
 
   .app__scroll
     padding-top 70px
-    padding-left 220px
+    // padding-left 220px
     width 100%
     min-height 100vh
 
