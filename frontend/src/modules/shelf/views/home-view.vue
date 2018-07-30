@@ -91,7 +91,7 @@ export default {
              secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Comprehension(primary).pdf",
           }
         },
-        {          
+        {
           name_l1: "Reading Comprehension Diagnosis & Teaching Section",
           name_l2: "for Secondary Schools (Junior Section)",
           name_l3: "Skill Based and HKDSE Driven Question Design",
@@ -165,7 +165,7 @@ export default {
 </script>
 
 <style scoped lang="stylus">
-  @import '../../../lib/stylus/main.styl'
+  @import '../../../lib/stylus/settings.styl'
   .home-view
     margin-top -70px
 

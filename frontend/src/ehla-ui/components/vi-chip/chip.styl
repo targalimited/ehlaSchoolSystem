@@ -1,0 +1,133 @@
+@import '../../stylus/settings.styl'
+
+$chip-bg-color := $bg-color
+$chip-height := $el-height * 0.8
+$chip-height-sm := $el-height-1 * 0.8
+$chip-height-lg := $el-height-3 * 0.8
+$chip-outline-border := $border-color-2
+
+.vi-chip
+  display inline-flex
+  background $chip-bg-color
+  color $font-color
+  line-height 1
+  font-size 14px
+  height $chip-height
+  align-items center
+  padding 0 8px
+  border-radius $border-radius
+  position relative
+  font-weight normal
+
+  &--select-multi
+    margin 4px 4px 4px 0
+
+  >.vi-chip__content > .vi-avatar
+    width $chip-height - 8px
+    height @width
+    margin-right 4px
+
+    img
+      border none !important
+
+  >.vi-chip__content > .vi-icon
+    margin-right 6px
+    width 12px
+    height 12px
+
+    &--right
+      margin-right 0
+      margin-left 4px
+
+  &__content
+    display flex
+    align-items center
+
+  &__prepend
+    height inherit
+    padding-right 20px
+    position relative
+    display inline-flex
+    align-items center
+
+    &:before
+      position absolute
+      content ''
+      top 0
+      bottom 0
+      right 10px
+      width 1px
+      background white
+
+  &--error
+    background none
+    border 1px solid $error-color
+
+  &--removable
+    padding-right 28px
+
+  &__clear
+    position absolute
+    right 6px
+    top 0
+    bottom 0
+    cursor pointer
+    display flex
+    align-items center
+    opacity 0.8
+
+    &:hover
+      opacity 1
+
+    .vi-icon
+      width 10px !important
+      height 10px !important
+
+  &--small
+    font-size 12px
+    height $chip-height-sm
+
+    >.vi-chip__content > .vi-icon
+      margin-right 4px
+
+    >.vi-chip__content > .vi-avatar
+      width $chip-height-sm - 8px
+      height @width
+
+  &--large
+    font-size 14px
+    height $chip-height-lg
+
+    .vi--select-multi
+      margin 5px 8px 5px 0
+
+    >.vi-chip__content > .vi-icon
+      margin-right 8px
+
+    >.vi-chip__content > .vi-avatar
+      width $chip-height-lg - 8px
+      height @width
+
+  &--text
+    padding-left 0
+    height auto
+    background none
+    border none
+
+    &:not(.vi-chip--text)
+      padding-right 0
+
+  &--brand
+    color $brand
+
+  &--outline
+    background white
+    border 1px solid $chip-outline-border
+    display inline-flex
+    align-items center
+
+  for color_name, color_value in $colors
+
+    &.vi-chip--{color_name}
+      background-color color_value
+      color white

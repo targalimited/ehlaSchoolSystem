@@ -1,0 +1,11 @@
+import './alert'
+import './alert-circular'
+import './config'
+import './info-circular'
+import './question-circular'
+import './bell'
+import './bell-empty'
+import './bell-outline'
+import './flag'
+import './lock'
+

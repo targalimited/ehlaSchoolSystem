@@ -86,7 +86,7 @@
 </script>
 
 <style scoped lang="stylus">
-  @import '../../../lib/stylus/main.styl'
+  @import '../../../lib/stylus/settings.styl'
 
   .reading-section
     background $bg-color

@@ -1,0 +1,50 @@
+@import '../../stylus/settings.styl'
+
+$icon-default-color := inherit
+
+.vi-icon
+  color $icon-default-color
+  display inline-block
+  fill currentColor
+  transition none
+
+  for color_name, color_value in $colors
+    &--{color_name}
+      color color_value
+
+  &--flip-horizontal
+    transform scale(-1, 1)
+
+  &--flip-vertical
+    transform scale(1, -1)
+
+  &--rotate-180
+    transform rotate(180deg)
+
+  &--rotate-90
+    transform rotate(90deg)
+
+  &--spin
+    animation vi-spin 1s 0s infinite linear
+
+  &--inverse
+    color #fff
+
+  &--pulse
+    animation vi-spin 1s infinite steps(8)
+
+  &--caret
+    width 10px !important
+    height 10px !important
+
+  &--clear
+    width 10px !important
+    height 10px !important
+    cursor: pointer
+
+  @keyframes vi-spin
+    0%
+      transform rotate(0deg)
+
+    100%
+      transform rotate(360deg)

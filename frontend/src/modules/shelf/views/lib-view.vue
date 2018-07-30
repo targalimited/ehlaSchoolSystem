@@ -329,7 +329,7 @@
 </script>
 
 <style lang="stylus" scoped>
-  @import '../../../lib/stylus/main.styl'
+  @import '../../../lib/stylus/settings.styl'
   .lib-table .vi-table__col
     &:nth-child(1)
       flex 1
@@ -388,7 +388,7 @@
 </style>
 
 <style lang="stylus">
-  @import '../../../lib/stylus/main.styl'
+  @import '../../../lib/stylus/settings.styl'
   .filter-menu
     top: 70px !important
     left: 220px !important

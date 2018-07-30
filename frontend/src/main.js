@@ -9,11 +9,11 @@ import router from './router'
 import store from './store'
 import './filters'
 import './components'
-import Dali from './lib/lib.js'
+import ProjectUI from './project-ui'
 import * as ModalDialogs from 'vue-modal-dialogs'
 import Loading from 'vue-loading-overlay';
 
-Vue.use(Dali)
+Vue.use(ProjectUI)
 Vue.use(ModalDialogs)
 Vue.use(Loading)
 

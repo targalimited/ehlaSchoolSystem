@@ -1,0 +1,90 @@
+@import '../../stylus/settings.styl'
+
+.vi-tabs
+
+  &__list
+    display flex
+
+    &--with-border
+      border-bottom 1px solid #e5e5e5
+
+  &__item
+    display inline-flex
+    align-items center
+    color $font-color-2
+    min-height 36px
+    font-size 16px
+    margin-right 32px
+    position relative
+
+    &__prefix-icon
+      margin-right 8px
+      color $font-color-1
+
+    &:before
+      content: ''
+      display block
+      position absolute
+      right 0
+      left 0
+      bottom -1px
+      color inherit
+      background currentColor
+      height 1px
+      opacity 0
+
+    &:hover
+      &:before
+        opacity 1
+        color $border-color-2
+
+    &--active
+      color $brand !important
+
+      .vi-tabs__item__prefix-icon
+        color $brand
+
+      &:before
+        opacity 1
+        background $brand !important
+
+    &--button
+      font-size 14px
+      text-transform uppercase
+      line-height 1.2
+
+      .vi-icon
+        flex-shrink 0
+  // margin 0
+
+  &--vertical
+    display flex
+    align-items stretch
+
+    .vi-tabs__list
+      display flex
+      flex-direction column
+      border-right 1px solid $border-color
+      flex-shrink 0
+
+      > .vi-tabs__item
+        margin 0
+        padding-right 16px
+        padding-left 16px
+        min-height auto
+        height 32px
+        margin-bottom 8px
+        font-size 14px
+
+        &--active
+          background $bg-color
+          color $font-color-3 !important
+
+        &:before
+          right: 0;
+          width: 2px;
+          height: 32px;
+          left: auto;
+
+    .vi-tabs__panels
+      width 100%

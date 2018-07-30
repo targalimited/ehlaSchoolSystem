@@ -1,0 +1,82 @@
+@import '../../stylus/settings'
+.vi-menu
+  display: inline-block
+  position: relative
+  vertical-align: middle
+
+  &--disabled
+    cursor: default
+
+    .menu__activator,
+    .menu__activator > *
+      cursor: default
+      pointer-events: none
+
+  &__activator
+    align-items: center
+    cursor: pointer
+    height: inherit
+    position: relative
+
+    input[readonly]
+      cursor: pointer !important
+
+    &--disabled
+      pointer-events none
+
+  &__content
+    position: absolute
+    display: inline-block
+    border-radius: $border-radius
+    max-width: 80%
+    overflow-y: auto
+    overflow-x: hidden
+    contain: content
+    box-shadow $box-shadow
+    border 1px solid $border-color
+    padding 10px 0
+    background white
+    z-index 9999
+
+    &--active
+      pointer-events: none
+
+    &--fixed
+      position fixed
+
+    &--multiple
+      padding 0
+      overflow-y hidden
+      display flex
+      flex-direction column
+
+      .vi-menu__items
+        margin-bottom 30px
+        overflow-y auto
+        position relative
+        max-height 100%
+
+      .vi-menu__confirm-button
+        position absolute
+        bottom 0
+        left 0
+        right 0
+        border-top-left-radius 0
+        border-top-right-radius 0
+
+  &__header
+    font-size 12px
+    color $font-color-2
+    line-height 1
+    padding 16px 16px 8px
+
+  &__confirm-button
+    width: 100%
+    border-radius 0
+    margin-top 8px
+
+  &__empty
+    padding 8px 16px
+    text-align center
+    color $font-color-3
+    font-size 14px

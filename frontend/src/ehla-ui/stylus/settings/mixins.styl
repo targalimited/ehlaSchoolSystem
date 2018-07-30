@@ -1,0 +1,118 @@
+@import 'variables.styl'
+@import 'colors.styl'
+
+// -------------- general mixins ---------------------------
+text-overflow()
+  overflow hidden
+  white-space nowrap
+  text-overflow ellipsis
+
+/*
+  a layout strategy of setting fixed height with flex, plus left & right padding
+  instead of giving top and bottom padding
+ */
+flex-row(height, pad)
+  display flex
+  align-items center
+  height height
+  padding-left pad
+  padding-right pad
+  line-height 1
+
+/*
+  a centering shortcut, both vertical and horizontal
+ */
+flex-center(inline = false)
+  display inline ? inline-flex : flex
+  align-items center
+  justify-content center
+
+circle(size)
+  width size
+  height size
+  border-radius size
+
+divider(direction, gutter)
+  border-{direction} 1px solid $border-color
+  padding-{direction} gutter
+  margin-{direction} gutter
+
+label(width = 10px, color = $brand, direction = left)
+  position relative
+
+  &:before
+    content: ''
+    display block
+    position absolute
+    top 0
+    bottom 0
+    {direction} 0
+    background color
+    width width
+
+// -------------- default css property mixins ---------------------------
+
+border()
+  border arguments
+  border 1px solid $border-color unless @border
+
+border-top()
+  border-top arguments
+  border-top 1px solid $border-color unless @border-top
+
+border-bottom()
+  border-bottom arguments
+  border-bottom 1px solid $border-color unless @border-bottom
+
+border-left()
+  border-left arguments
+  border-left 1px solid $border-color unless @border-left
+
+border-right()
+  border-right arguments
+  border-right 1px solid $border-color unless @border-right
+
+
+// -------------- styling shortcut mixins ---------------------------
+
+/* typo mixins */
+
+body(font-size = 14px)
+  font-size font-size
+  line-height 1.6
+
+title(font-size = 16px, uppercase = false, one-line = false)
+  font-size font-size
+  line-height one-line ? 1 : 1.2
+  color $font-color-3
+  font-weight bold
+  if uppercase = true
+    text-transform uppercase
+
+meta(font-size = 14px)
+  font-size font-size
+  line-height 1.2
+  color $font-color-1
+
+/* container mixins */
+card(pad, radius = small)
+  border-radius radius == small ? $border-radius : 10px
+  border 1px solid $border-color
+  background white
+  if pad
+    padding pad
+
+/**
+  Block mixins
+ */
+not-last()
+  &:not(:last-child)
+    {block}
+
+screen(size)
+  @media(max-width: size)
+    {block}
+
+screen-up(size)
+  @media(min-width: size + 1)
+    {block}

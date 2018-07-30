@@ -1,0 +1,20 @@
+@import './settings.styl'
+@import '../../ehla-ui/stylus/app.styl'
+
+$brand-gradient = linear-gradient(#ff7b38, #FF6338)
+$brand-gradient-reverse = linear-gradient(#FF6338, #ff7b38)
+
+.vi-button.vi-button--gradient
+  background-image $brand-gradient
+  border none
+
+  &--active,
+  &:hover
+    background-image $brand-gradient-reverse
+
+.vi-button--fill
+  font-weight bold
+
+.vi-button--icon
+  width 40px
+  height 40px

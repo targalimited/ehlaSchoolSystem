@@ -1,0 +1,129 @@
+@import '../../stylus/settings.styl'
+
+// the minimum width between 2 column
+$gap = 24px
+
+.vi-table
+  font-size 14px
+
+  &__head
+    display flex
+    font-size 14px
+    color $font-color-2
+    background $bg-color-1
+    padding 20px 24px 12px
+    margin 0
+
+    .vi-table__sort-icon
+      margin-left 4px
+      cursor pointer
+
+  &__body
+    margin 0
+
+  &__row
+    display flex
+    background white
+    padding 10px 24px
+    border-radius $border-radius
+    margin-bottom 8px
+    position relative
+
+    .vi-table--divided &
+      margin-bottom 0
+      padding 12px 24px
+      border-radius 0
+
+      &:before
+        content: ''
+        display block
+        position absolute
+        left 24px
+        right 24px
+        bottom 0
+        height 1px
+        background $border-color
+
+    &--link
+      cursor pointer
+      transition all $transition
+
+      &:hover
+        box-shadow $box-shadow
+
+  &__col
+    display flex
+    align-items center
+    justify-content center
+
+    +not-last()
+      margin-right $gap
+
+    &:first-child
+      justify-content flex-start
+
+    .text
+      line-height 1.2
+      text-align center
+
+    &--sortable
+      cursor pointer
+      user-select none
+
+      .vi-button:hover:not(.vi-button--active)
+         background none
+
+      .text
+        max-width calc(100% - 24px)
+        padding-right 2px
+
+      .vi-button
+        opacity 0
+
+      &:hover, &.vi-table__col--active
+        .vi-button
+          opacity 1
+
+      &.vi-table__col--sm-sort
+
+        .text
+          max-width calc(100% - 12px) !important
+
+        .vi-button
+          background none !important
+          width 12px !important
+          height 12px !important
+          padding-left 2px !important
+
+        &.vi-table__col--active
+          font-weight bold
+
+  &__no-data
+    display flex
+    justify-content center
+    padding 24px
+
+  &__no-result
+    display flex
+    justify-content center
+    padding 24px
+    color $font-color-1
+
+.vi-data-table__no-data
+  display flex
+  justify-content center
+  padding 40px
+
+.vi-table__clear
+  font-size 12px
+  text-transform: uppercase
+  color $font-color-1
+  border-bottom 1px solid currentColor
+  cursor pointer
+  margin-left 6px
+  line-height 1.2
+  position relative
+  top 2px
+
+  &:hover
+    color $brand

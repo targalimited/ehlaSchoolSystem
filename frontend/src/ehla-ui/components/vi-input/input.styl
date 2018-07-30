@@ -1,0 +1,156 @@
+@import '../../stylus/settings.styl'
+$input-padding-x := $el-padding-x
+$input-height := $el-height
+
+$input-border-color := $border-color-1
+$input-border-color-hover := $border-color-2
+
+$input-dark-border-color := $border-color-2
+$input-dark-border-color-hover := $border-color-3
+
+.vi-input
+  display flex
+  padding 0 $input-padding-x
+  align-items center
+  border 1px solid $input-border-color
+  background-color: white;
+  background-image: none;
+  font-size: 14px;
+  color: $font-color
+  border-radius: $border-radius;
+  transition: $transition;
+  outline none
+  min-height $input-height
+
+  &--valid
+    .vi-input__suffix-icon
+      color $brand !important
+
+  &--line
+    border-top none
+    border-left none
+    border-right none
+    border-radius 0
+    padding 0
+    background transparent
+
+    .vi-input__inner
+      padding 5px 0
+
+  &--darker
+    border-color $input-dark-border-color
+
+  &:hover, &--focused
+    border-color $input-border-color-hover
+
+    &.vi-input--darker
+      border-color $input-dark-border-color-hover
+
+  &--focused
+    &:not(.vi-input--line)
+      box-shadow $box-shadow-1
+
+    .vi-input__prefix, .vi-input__suffix
+      .vi-icon
+        color $font-color-3
+
+  &--selected
+    .vi-input__prefix, .vi-input__suffix
+      .vi-icon
+        color $font-color-3
+
+  &--clickable
+    input
+      cursor pointer
+
+  &--disabled
+    background $disable-bg-color !important
+    border-color $border-color-2 !important
+    color $font-color-0 !important
+
+    input
+      color $font-color-0
+      cursor no-drop
+
+  &--readonly:not(.vi-input--clickable)
+    border-color $border-color // TODO verify without !important // override hover color change
+    color $font-color-1 !important
+    box-shadow none !important
+
+    &.vi-input--darker
+      border-color $border-color-2 !important
+
+    input
+      cursor no-drop
+
+  &--error
+    border-color $error-color !important
+
+  &--select
+    // align with the height of the chip (otherwise will have extra 'top margin')
+    .vi-input__inner
+      height 28px
+
+  &--prepend
+    padding-left 0
+
+    .vi-input__inner
+      padding-left $el-padding-x
+
+  &__prefix, &__suffix
+    display inline-flex
+
+    > .vi-icon
+      color $font-color-0
+
+  &__prefix
+    margin-right $input-padding-x
+
+  &__suffix
+    margin-left $input-padding-x
+
+    .vi-icon__clear
+      margin-right -10px
+
+  &--no-resize
+    textarea
+      resize none
+
+  &__inner
+    display block
+    resize vertical
+    padding 9px 0
+    box-sizing border-box
+    width 100%
+    border-radius inherit
+    font-size inherit
+    color $font-color
+    border none
+    background none
+    outline none
+    font-family 'Lato', sans-serif
+    min-width 0
+    flex 1
+
+    &::placeholder
+      color: $font-color-0
+
+    &--textarea
+      height inherit
+      padding 9px 0
+      line-height 28px
+
+  &__selection
+    display flex
+    flex-wrap wrap
+    width 100%
+    align-items center
+    // max 3 row of tags
+    // TODO any way to position the scroll bar more nicely?
+    max-height 108px
+    overflow-y auto
+
+.vi-input-label
+  font-size 16px
+  font-weight bold
+  line-height 1

@@ -101,7 +101,7 @@
       }
     },
 
-    
+
     computed: {
       ...mapGetters([
         'levelOptions',
@@ -167,7 +167,7 @@
 </script>
 
 <style lang="stylus" scoped>
-  @import '../../../lib/stylus/main.styl'
+  @import '../../../lib/stylus/settings.styl'
 
   .vi-card
     background #dfeef6

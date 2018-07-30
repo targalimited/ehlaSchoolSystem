@@ -1,7 +1,0 @@
-import './education-career'
-import './emotional-well-being'
-import './financial-matters'
-import './leisure'
-import './personal-growth'
-import './physical-health'
-import './relationships'

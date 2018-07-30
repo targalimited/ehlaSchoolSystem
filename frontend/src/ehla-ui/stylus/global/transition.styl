@@ -1,0 +1,65 @@
+@import '../../stylus/settings.styl'
+
+// Generic transitions
+.scale-transition
+  &-enter-active, &-leave-active
+    transition: $transition
+
+  &-enter, &-leave, &-leave-to
+    opacity: 0
+    transform: scale(0)
+
+.slide-y-transition
+  &-enter-active, &-leave-active
+    transition: $transition
+
+  &-enter, &-leave-to
+    opacity: 0
+    transform: translateY(-15px)
+
+.slide-y-reverse-transition
+  &-enter-active, &-leave-active
+    transition: $transition
+
+  &-enter, &-leave-to
+    opacity: 0
+    transform: translateY(15px)
+
+.slide-x-transition
+  &-enter-active, &-leave-active
+    transition: $transition
+
+  &-enter, &-leave-to
+    opacity: 0
+    transform: translateX(-15px)
+
+.slide-x-reverse-transition
+  &-enter-active, &-leave-active
+    transition: $transition
+
+  &-enter, &-leave-to
+    opacity: 0
+    transform: translateX(15px)
+
+.fade-transition
+  &-enter-active, &-leave-active
+    transition: $transition
+
+  &-enter, &-leave-to
+    opacity: 0
+
+.fab-transition
+  &-enter-active, &-leave-active
+    transition: $transition
+
+  &-enter, &-leave-to
+    transform: scale(0) rotate(-45deg)
+
+.dialog-transition
+  &-enter, &-leave-to
+    transition: $transition
+    transform: scale(0.5)
+    opacity: 0
+
+  &-enter-to, &-leave
+    opacity: 1

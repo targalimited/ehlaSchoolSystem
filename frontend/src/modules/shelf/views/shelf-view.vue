@@ -4,8 +4,8 @@
     <vi-app-bar title="Accessible Items Overview">
       <div class="vi-banner__info">{{selectedCount}}/ {{summary.total_item_qtt}} reading packs</div>
       <div slot="secondaryAction">
-        <vi-button @click="onConfirm" class="confirm-button" dark>
-          <vi-icon left name="done-filled" size="24"/>
+        <vi-button @click="onConfirm" class="confirm-button" dark flat>
+          <vi-icon left name="done" size="24"/>
           Confirm
         </vi-button>
       </div>
@@ -27,7 +27,6 @@
         :pagination.sync="pagination"
         :no-header="true"
         :item-height="103"
-        :table-height="600"
         :items="selectedItems"
         :headers="headers"
         :search="search">
@@ -39,7 +38,7 @@
           </vi-table-col>
 
           <vi-table-col>
-            <vi-chip>{{item.cat_type}}</vi-chip>
+            <vi-chip color="default">{{item.cat_type}}</vi-chip>
 
           </vi-table-col>
 
@@ -211,7 +210,7 @@
 </style>
 
 <style scoped lang="stylus">
-  @import '../../../lib/stylus/main.styl'
+  @import '../../../project-ui/stylus/settings.styl'
   .banner
     padding 24px
     text-align center

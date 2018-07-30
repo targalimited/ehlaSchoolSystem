@@ -1,0 +1,97 @@
+@import '../../stylus/settings.styl'
+
+.vi-spacer
+  flex-grow: 1
+
+.vi-divider
+  background $border-color-1
+  height 1px
+  width 100%
+  margin 24px 0
+
+.vi-container
+  max-width 874px + 80
+  margin 0 auto
+  padding 30px 40px
+
+  @media(max-width: $screen-md)
+    padding 30px 16px
+
+.vi-page-title
+  font-size 24px
+  color $font-color-3
+  line-height 1.2
+  font-weight 400
+  margin-bottom 30px
+
+  &:not(:first-child)
+    margin-top 30px
+
+.vi-row
+  display: flex
+  flex: 1 1 auto
+  flex-wrap: nowrap
+  min-width: 0
+
+  &--has-col
+    margin -8px
+
+  > .vi-col
+    flex 1 1 auto
+    padding 8px
+
+  &.row
+    flex-direction: row
+
+    &.reverse
+      flex-direction: row-reverse
+
+  &.column
+    flex-direction: column
+
+    > .flex
+      max-width: 100%
+
+    &.reverse
+      flex-direction: column-reverse
+
+  &.wrap
+    flex-wrap: wrap
+
+  &.align
+    &-start
+      align-items: flex-start
+
+    &-end
+      align-items: flex-end
+
+    &-center
+      align-items: center
+
+    &-baseline
+      align-items: baseline
+
+  &.justify
+    &-start
+      justify-content: flex-start
+
+    &-end
+      justify-content: flex-end
+
+    &-center
+      justify-content: center
+
+    &-space-around
+      justify-content: space-around
+
+    &-space-between
+      justify-content: space-between
+
+
+for $size, $width in $breakpoints
+  @media all and (min-width: $width)
+    for n in (1..12)
+      .vi-col.{$size}{n}
+        flex-basis: (n / 12 * 100)%
+        flex-grow: 0
+        max-width: (n / 12 * 100)%

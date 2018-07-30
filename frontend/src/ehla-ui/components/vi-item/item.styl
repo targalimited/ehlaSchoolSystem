@@ -1,0 +1,121 @@
+@import '../../stylus/settings.styl'
+
+$width = 40px // the width of the avatar and action column
+$item-link-bg := $bg-color
+
+.vi-item
+  align-items: center
+  color: $font-color-3
+  display: flex
+  font-size: 14px
+  font-weight: 400
+  height: 40px
+  margin: 0
+  position: relative
+  text-decoration: none
+  transition: $transition
+  user-select: none
+
+  a
+    text-decoration inherit
+    color inherit
+
+  &--disabled
+    pointer-events none
+    cursor default
+    color $font-color-0
+
+  &--link
+    cursor pointer
+    padding: 0 16px
+
+    &:hover
+      background $item-link-bg
+      color: $font-color-4
+
+    &-no-style
+      &:hover
+        background none
+
+    &-float
+      border-radius $border-radius
+
+      &:hover
+        box-shadow $box-shadow-2
+        background none
+
+    &-menu
+      &:hover
+        color $brand
+        background none
+
+        .vi-icon
+          color $brand
+
+  &--divided
+    +not-last()
+      border-bottom 1px solid $border-color
+
+  &__content,
+  &__action
+    height: 100%
+
+  &__title,
+  &__sub-title
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+    transition: $transition
+    width: 100%
+
+  &__title
+    line-height 1.2
+    color $font-color-3
+    font-weight bold
+    position: relative
+    text-align: left
+
+  &__sub-title
+    line-height 1.2
+    color $font-color-2
+    padding-top 4px
+
+  &__avatar
+    display: flex
+    justify-content: flex-start
+    min-width $width - 8
+    padding-right 8px
+    flex-shrink 0
+
+    .vi-icon
+      color $font-color-1
+
+  &__action
+    display: flex
+    justify-content: flex-start
+    min-width $width - 8
+    padding-right 8px
+    align-items: center
+    flex-shrink 0
+
+  &__content
+    text-align: left
+    flex: 1 1 auto
+    overflow: hidden
+    display: flex
+    align-items: flex-start
+    justify-content: center
+    flex-direction: column
+
+    ~ .vi-item__avatar
+      justify-content: flex-end
+
+    ~ .vi-item__action
+      justify-content: flex-end
+      padding-right 0
+
+.vi-item-divider
+  background $border-color
+  height 1px
+  display block
+  margin 12px 20px

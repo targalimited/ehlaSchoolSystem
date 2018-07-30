@@ -32,7 +32,7 @@
 </script>
 
 <style lang="stylus" scoped>
-  @import '../lib/stylus/main.styl'
+  @import '../lib/stylus/settings.styl'
 
   .reading-item
     display inline-flex

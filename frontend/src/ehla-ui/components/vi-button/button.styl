@@ -1,0 +1,238 @@
+@import '../../stylus/settings.styl'
+
+$button-height-sm := $el-height-1
+$button-height-lg := $el-height-3
+$button-height := $el-height
+$button-padding-x := $el-padding-x
+$button-flat-hover-opacity := 0.15
+
+.vi-button
+  align-items: center
+  border-radius: $border-radius
+  display: inline-flex
+  height: $button-height
+  flex: 0 1 auto
+  font-size: 14px
+  font-weight: 400
+  justify-content: center
+  margin: 0
+  min-width: 80px
+  outline: 0
+  text-transform: uppercase
+  text-decoration: none
+  transition: 0.3s
+  position: relative
+  vertical-align: middle
+  user-select: none
+  cursor pointer
+  padding 0
+  font-family 'Lato', sans-serif
+  color $font-color
+  background $bg-color
+  border 1px solid transparent
+
+  &--active,
+  &:hover,
+  &:focus
+    color $brand
+    background $bg-color-3
+
+  &--disabled
+    background $disable-bg-color !important
+    border-color $disable-bg-color !important
+    color white !important
+    cursor default
+    box-shadow none !important
+
+  &__content
+    align-items: center
+    border-radius: inherit
+    color: inherit
+    display: flex
+    height: inherit
+    flex: 1 0 auto
+    justify-content: center
+    margin: 0 auto
+    padding: 0 $button-padding-x
+    // transition: $transition
+    white-space: nowrap
+    width: inherit
+    position relative
+    top -1px // TODO
+
+  &--fill
+    color white !important // TODO otherwise sometimes the text is black? (in cached multiple dropdown)
+    box-shadow $box-shadow-2
+
+    .vi-icon
+      color inherit
+
+    &:hover
+      color white
+      box-shadow $box-shadow-3
+
+    for color_name, color_value in $colors
+
+      &.vi-button--{color_name}
+        background-color color_value
+        border-color: color_value
+
+        &--active,
+        &:hover
+          background-color lighten(color_value, 15%)
+          border-color lighten(color_value, 15%)
+
+  &--outline
+    box-shadow: none
+    background none
+    border-color $border-color
+    color $font-color
+
+    &:hover,
+    &:focus
+      color $brand
+      border-color currentColor
+      background none
+
+    &-secondary
+      color $font-color-2
+      border-color currentColor
+
+      &:hover,
+      &:focus
+        color $font-color-3
+        border-color currentColor
+
+    &-tertiary
+      color $font-color-1
+      border-color currentColor
+
+      &:hover,
+      &:focus
+        color $font-color-3
+        border-color currentColor
+
+    for color_name, color_value in $colors
+      &.vi-button--{color_name}
+        color color_value
+        border-color color_value
+
+        &.vi-button--active,
+        &:hover
+          background color_value
+          color white
+
+  &--text
+    box-shadow none
+    background none !important
+    border-color transparent !important
+    min-width 0
+    color $font-color-2
+
+    .vi-button__content
+      padding-left 0
+      padding-right 0
+
+    .vi-icon
+      color inherit
+
+    &:hover
+      color $brand
+
+    &-secondary
+      color $font-color-2
+
+      &:hover
+        color $font-color-4
+
+    &-tertiary
+      color $font-color-1
+
+      &:hover
+        color $font-color-3
+
+    for color_name, color_value in $colors
+      &.vi-button--{color_name}
+        color color_value
+
+        &.vi-button--active,
+        &:hover
+          color lighten(color_value, 30%)
+
+  &--flat.vi-button
+    box-shadow: none
+    background none
+    border-color transparent
+
+    .vi-button__content:before
+      transition opacity $transition
+      content: ''
+      display block
+      position absolute
+      width inherit
+      height @width
+      left 0
+      right 0
+      top 0
+      bottom 0
+      background currentColor
+      opacity 0
+      border-radius inherit
+
+    &:hover,
+    &.vi-button--active
+      color $font-color
+
+      .vi-button__content:before
+        opacity $button-flat-hover-opacity
+
+    for color_name, color_value in $colors
+      &.vi-button--{color_name}
+        color color_value
+
+  &--small
+    height $button-height-sm
+    font-size 12px
+
+    &.vi-button--icon
+      width: $button-height-sm
+      height: @width
+
+  &--large
+    height $button-height-lg
+    font-size 16px
+
+    &.vi-button--icon
+      width: $button-height-lg
+      height: @width
+
+  &--round
+    border-radius 500em
+
+  &--lowercase
+    text-transform none
+
+  &--float
+    box-shadow $box-shadow-2
+
+    &.vi-button--active,
+    &:hover,
+    &:focus
+      box-shadow $box-shadow-3
+
+  &--icon
+    border-radius: 50%
+    justify-content: center
+    min-width: 0
+    width: $button-height
+    height: @width
+
+    .vi-button__content
+      padding 0
+
+  .vi-icon
+    &--left
+      margin-right 6px
+
+    &--right
+      margin-left 6px

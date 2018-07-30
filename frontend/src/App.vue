@@ -14,7 +14,7 @@
       <div class="sidebar__main">
         <router-link :to="{name: 'home'}">
           <vi-item class="nav-item" :link="true" height="60">
-            <vi-item-avatar><vi-icon class="ml-4" name="home" size="30"/></vi-item-avatar>
+            <vi-item-avatar><vi-icon class="ml-4" name="home" size="40"/></vi-item-avatar>
             <vi-item-content>Home</vi-item-content>
           </vi-item>
         </router-link>
@@ -97,7 +97,7 @@ export default {
 <style lang="stylus">
 
   @import url('https://fonts.googleapis.com/css?family=Lato:300,400,700');
-  @import './lib/stylus/main.styl'
+  @import './project-ui/stylus/settings.styl'
   @import 'vue-loading-overlay/dist/vue-loading.min.css'
 
   html, body
@@ -126,6 +126,15 @@ export default {
     overflow hidden
     transition width 0.3s
 
+    .vi-item
+      color white
+
+      &:hover
+        color white
+
+    .vi-icon
+      color white !important
+
     &__submenu
       border-radius 0
       background #878787
@@ -138,7 +147,7 @@ export default {
         padding 8px 0
 
       .vi-item
-        color white
+        color $font-color
         font-size 16px
 
         &:hover
@@ -153,7 +162,7 @@ export default {
       .spacer
         flex 1
 
-    +screen(900px)
+    @media (max-width 900px)
       width 74px
 
       #layout-1 > polygon:first-child
@@ -181,7 +190,7 @@ export default {
         font-weight bold
         line-height 1.2
 
-        +screen(900px)
+        @media (max-width 900px)
           opacity 0
 
       .vi-item__avatar
@@ -195,6 +204,7 @@ export default {
       align-items flex-end
       width 220px
       height 70px
+      color $font-color !important
 
       &__logo
         width 56px
@@ -217,9 +227,10 @@ export default {
     width 100%
     min-height 100vh
 
-    +screen(900px)
+    @media (max-width 900px)
       padding-left 74px
 
   .vdp-datepicker__calendar
     border none
 </style>
+
