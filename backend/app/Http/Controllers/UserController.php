@@ -1089,12 +1089,18 @@ class UserController extends Controller
       $access_token = json_decode(Auth::user()->session)->access_token;
       $client = new EhlaGuzzleClient();
       $res = $client->post(config('variables.createAccount') . $access_token, $input);
+      
+      $debug = new Debug();
+      $debug->context = 'Create Single Student '.json_encode($res);
+      $debug->save();
 
-      $scs = New StudentClassSubject();
-      $scs->class_id = $class_id;
-      $scs->student_id = $res['data'][0]['user_id'];
-      $scs->subject_id = '1';
-      $scs->save();
+        if($res['success']){
+        $scs = New StudentClassSubject();
+        $scs->class_id = $class_id;
+        $scs->student_id = $res['data'][0]['user_id'];
+        $scs->subject_id = '1';
+        $scs->save();
+      }
 
       return return_success();
 
@@ -1328,18 +1334,23 @@ class UserController extends Controller
       $res = $client->post(config('variables.getUsersByIDs') . $access_token, $inputs);
 
 
-//      print_r($res);
+//      print_r($res);die();
 
       $students = StudentClassSubject::with('single_class')->get()->toArray();
 
 //      print_r($students);
 //      die();
       foreach ($students as $k => &$v) {
-        $v['realname_en'] = $res['data'][$v['student_id']]['realname_en'];
-        $v['realname_zh'] = $res['data'][$v['student_id']]['realname_zh'];
-        $v['username'] = $res['data'][$v['student_id']]['username'];
-        $v['school_num'] = $res['data'][$v['student_id']]['school_num'];
-//        $v['realname'] = 'CTM';
+        if(empty($res['data'][$v['student_id']])){
+          $debug = New Debug();
+          $debug->context = $v['student_id'];
+          $debug->save();
+        }else{
+          $v['realname_en'] = $res['data'][$v['student_id']]['realname_en'];
+          $v['realname_zh'] = $res['data'][$v['student_id']]['realname_zh'];
+          $v['username'] = $res['data'][$v['student_id']]['username'];
+          $v['school_num'] = $res['data'][$v['student_id']]['school_num'];
+        }
       }
 //      print_r($students);
 //      die();
