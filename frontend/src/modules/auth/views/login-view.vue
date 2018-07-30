@@ -84,7 +84,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  @import '../../../lib/stylus/settings.styl'
+  @import '../../../project-ui/stylus/settings.styl'
 
   .login
     background-image url(../assets/home_banner.png)

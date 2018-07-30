@@ -27,7 +27,7 @@
       <vi-section-header class="mb-8">Exercises</vi-section-header>
       <vi-item v-for="(ex, i) in exerciseOptions" :key="i" :height="60">
         <vi-item-avatar>
-          <vi-checkbox v-model="selectedExercises" :option-value="ex.exercise_id"/>
+          <vi-checkbox v-model="selectedExercises" :value="ex.exercise_id"/>
         </vi-item-avatar>
         <vi-item-content>
           <vi-item-title>0{{i + 1}}. {{ex.title_en}}</vi-item-title>
@@ -50,7 +50,7 @@
 
       <vi-item v-for="opt in videoOptions" :key="opt.value" :height="60">
         <vi-item-avatar>
-          <vi-checkbox v-model="selectedVideos" :option-value="opt.exercise_id"/>
+          <vi-checkbox v-model="selectedVideos" :value="opt.exercise_id"/>
         </vi-item-avatar>
         <vi-item-content>
           <vi-item-title>{{opt.name_en}}</vi-item-title>
@@ -160,7 +160,7 @@
 </script>
 
 <style lang="stylus" scoped>
-  @import '../../../lib/stylus/settings.styl'
+  @import '../../../project-ui/stylus/settings.styl'
 
   .input-group
     position relative

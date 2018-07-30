@@ -60,10 +60,10 @@
 
         <vi-table-col>
           <vi-button color="brand" outline>Preview</vi-button>
-          <vi-checkbox-boolean
+          <vi-checkbox
             class="ml-20"
             @click.native="toggle(item)"
-            :value="checked"/>
+            :input-value="checked"/>
         </vi-table-col>
       </div>
     </vi-data-table>
@@ -137,7 +137,7 @@
 </script>
 
 <style lang="stylus">
-  @import '../../../lib/stylus/settings.styl'
+  @import '../../../project-ui/stylus/settings.styl'
 
   .pick-item-view
     margin-top 65px

@@ -125,7 +125,7 @@
 </script>
 
 <style lang="stylus">
-  @import '../../../lib/stylus/settings.styl'
+  @import '../../../project-ui/stylus/settings.styl'
 
   .search-box
     background none

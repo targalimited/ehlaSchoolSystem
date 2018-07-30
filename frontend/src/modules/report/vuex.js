@@ -49,7 +49,8 @@ export default {
       weaknessCode = 'Match'
       weaknessIds = [1082, 1091]
       return await new AuthHttp().post('/get_school_weakness_report', {
-        batch_id: batchId,
+        subject_id: 1,
+        academic_id: 1,
         class_id: classId,
         weakness_code: weaknessCode,
         weakness_ids: weaknessIds

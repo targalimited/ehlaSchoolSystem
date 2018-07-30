@@ -139,7 +139,7 @@
         </vi-table-col>
 
         <vi-table-col>
-          <vi-checkbox-boolean
+          <vi-checkbox
             @input="toggleReading(item)"
             :disabled="loading"
             :value="item.chose"/>
@@ -329,7 +329,7 @@
 </script>
 
 <style lang="stylus" scoped>
-  @import '../../../lib/stylus/settings.styl'
+  @import '../../../project-ui/stylus/settings.styl'
   .lib-table .vi-table__col
     &:nth-child(1)
       flex 1
@@ -388,7 +388,7 @@
 </style>
 
 <style lang="stylus">
-  @import '../../../lib/stylus/settings.styl'
+  @import '../../../project-ui/stylus/settings.styl'
   .filter-menu
     top: 70px !important
     left: 220px !important

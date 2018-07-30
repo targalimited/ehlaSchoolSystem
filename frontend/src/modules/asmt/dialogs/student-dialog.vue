@@ -21,7 +21,7 @@
 
           <!-- TODO select all -->
           <div slot="toggleAll">
-            <vi-checkbox-boolean :value="true"/>
+            <vi-checkbox :input-value="true"/>
           </div>
 
 
@@ -29,7 +29,7 @@
                @click="toggle(item)"
                class="vi-table__row vi-table__row--link">
             <vi-table-col>
-              <vi-checkbox-boolean :value="checked"/>
+              <vi-checkbox :input-value="checked"/>
             </vi-table-col>
             <vi-table-col>
               {{item.name}}

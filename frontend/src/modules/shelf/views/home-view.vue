@@ -165,7 +165,7 @@ export default {
 </script>
 
 <style scoped lang="stylus">
-  @import '../../../lib/stylus/settings.styl'
+  @import '../../../project-ui/stylus/settings.styl'
   .home-view
     margin-top -70px
 
