@@ -826,22 +826,24 @@ class UserController extends Controller
     $res = $client->post(config('variables.createAccount') . $access_token, $input);
 
     $debug = new Debug();
-    $debug->context = json_encode($res);
+    $debug->context = 'Create Single Teacher '.json_encode($res);
     $debug->save();
 
-    foreach ($request->className as $k => $v) {
-      $class_id = $this->getClassID($v);
-      $scs = New TeacherClassSubject();
-      $scs->class_id = $class_id;
-      $scs->teacher_id = $res['data'][0]['user_id'];
-      $scs->subject_id = '1';
-      $scs->save();
-    }
+    if($res['success']){
+      foreach ($request->className as $k => $v) {
+        $class_id = $this->getClassID($v);
+        $scs = New TeacherClassSubject();
+        $scs->class_id = $class_id;
+        $scs->teacher_id = $res['data'][0]['user_id'];
+        $scs->subject_id = '1';
+        $scs->save();
+      }
 
-    $role_user = new RoleUser();
-    $role_user->user_id = $res['data'][0]['user_id'];
-    $role_user->role_id = $request->role_id;
-    $role_user->save();
+      $role_user = new RoleUser();
+      $role_user->user_id = $res['data'][0]['user_id'];
+      $role_user->role_id = $request->role_id;
+      $role_user->save();
+    }
 
     return return_success();
 
@@ -950,28 +952,29 @@ class UserController extends Controller
     $res = $client->post(config('variables.updateUserInfo') . $access_token, $input);
 
     $debug = new Debug();
-    $debug->context = json_encode($res);
+    $debug->context = 'Update single teacher '.json_encode($res);
     $debug->save();
 
-    TeacherClassSubject::where('teacher_id', $request->teacher_id)->delete();
+    if($res['success']){
+      TeacherClassSubject::where('teacher_id', $request->teacher_id)->delete();
 
-    foreach ($request->className as $k => $v) {
-      $class_id = $this->getClassID($v);
-      $scs = New TeacherClassSubject();
-      $scs->class_id = $class_id;
-      $scs->teacher_id = $request->teacher_id;
-      $scs->subject_id = '1';
-      $scs->save();
+      foreach ($request->className as $k => $v) {
+        $class_id = $this->getClassID($v);
+        $scs = New TeacherClassSubject();
+        $scs->class_id = $class_id;
+        $scs->teacher_id = $request->teacher_id;
+        $scs->subject_id = '1';
+        $scs->save();
+      }
+
+      RoleUser::where('user_id',$request->teacher_id)->delete();
+      $role = New RoleUser();
+      $role->user_id=$request->teacher_id;
+      $role->role_id=$request->role_id;
+      $role->save();
     }
 
-    RoleUser::where('user_id',$request->teacher_id)->delete();
-    $role = New RoleUser();
-    $role->user_id=$request->teacher_id;
-    $role->role_id=$request->role_id;
-    $role->save();
-
-
-    return return_success();
+    return success();
 
 
 //    if ($class_id = $this->getClassID($request->className)) {
@@ -1220,7 +1223,11 @@ class UserController extends Controller
       $client = new EhlaGuzzleClient();
       $res = $client->post(config('variables.updateUserInfo') . $access_token, $input);
 
-      if ($res) {
+      $debug = new Debug();
+      $debug->context = 'Update Single Teacher '.json_encode($res);
+      $debug->save();
+
+      if ($res['success']) {
         $scs = StudentClassSubject::where('student_id', $request->id)->first();
         $scs->class_id = $class_id;
         $scs->save();
