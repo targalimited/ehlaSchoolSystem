@@ -113,6 +113,7 @@
           OptionClass: this.option_class
         }).then(res => {
           // console.log("response", res.fullname);
+          if(res)
           this.$store.dispatch('STUDENT_CREATE', {
             realname_en: res.realname_en,
             username: res.username,
@@ -134,7 +135,7 @@
           OptionClass: this.option_class,
           oldClass: student.single_class.c_name
         }).then(res=>{
-          // console.log(student)
+          if(res)
            this.$store.dispatch('STUDENT_UPDATE',{id:student.student_id,fullname:res.fullname,className:res.className})
         })
       },

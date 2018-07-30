@@ -264,11 +264,13 @@ class UserController extends Controller
 
         $i = 0;
 
-        if ($results[0]) {
-          foreach (array_keys($results[0]) as $v) {
-            $subjects[] = $v;
-          }
-        }
+//        if ($results[0]) {
+//          foreach (array_keys($results[0][0]) as $v) {
+//            $subjects[] = $v;
+//          }
+//        }
+
+        $subjects_from_excel = array_keys($results[0][0]);
 
         $subjects_db = Subject::all();
 
@@ -276,9 +278,9 @@ class UserController extends Controller
           $new_subject_db[] = strtolower(str_replace(' ', '_', $v->s_name_en));
         }
 
-        for ($j = 4; $j < count($subjects); $j++) {
-          if (!in_array(strtolower($subjects[$j]), $new_subject_db)) {
-            $this->errors[$i] = 'No this subject ' . $subjects[$j];
+        for ($j = 4; $j < count($subjects_from_excel); $j++) {
+          if (!in_array(strtolower($subjects_from_excel[$j]), $new_subject_db)) {
+            $this->errors[$i] = 'No this subject ' . $subjects_from_excel[$j];
           }
         }
 
@@ -826,22 +828,24 @@ class UserController extends Controller
     $res = $client->post(config('variables.createAccount') . $access_token, $input);
 
     $debug = new Debug();
-    $debug->context = json_encode($res);
+    $debug->context = 'Create Single Teacher '.json_encode($res);
     $debug->save();
 
-    foreach ($request->className as $k => $v) {
-      $class_id = $this->getClassID($v);
-      $scs = New TeacherClassSubject();
-      $scs->class_id = $class_id;
-      $scs->teacher_id = $res['data'][0]['user_id'];
-      $scs->subject_id = '1';
-      $scs->save();
-    }
+    if($res['success']){
+      foreach ($request->className as $k => $v) {
+        $class_id = $this->getClassID($v);
+        $scs = New TeacherClassSubject();
+        $scs->class_id = $class_id;
+        $scs->teacher_id = $res['data'][0]['user_id'];
+        $scs->subject_id = '1';
+        $scs->save();
+      }
 
-    $role_user = new RoleUser();
-    $role_user->user_id = $res['data'][0]['user_id'];
-    $role_user->role_id = $request->role_id;
-    $role_user->save();
+      $role_user = new RoleUser();
+      $role_user->user_id = $res['data'][0]['user_id'];
+      $role_user->role_id = $request->role_id;
+      $role_user->save();
+    }
 
     return return_success();
 
@@ -950,28 +954,29 @@ class UserController extends Controller
     $res = $client->post(config('variables.updateUserInfo') . $access_token, $input);
 
     $debug = new Debug();
-    $debug->context = json_encode($res);
+    $debug->context = 'Update single teacher '.json_encode($res);
     $debug->save();
 
-    TeacherClassSubject::where('teacher_id', $request->teacher_id)->delete();
+    if($res['success']){
+      TeacherClassSubject::where('teacher_id', $request->teacher_id)->delete();
 
-    foreach ($request->className as $k => $v) {
-      $class_id = $this->getClassID($v);
-      $scs = New TeacherClassSubject();
-      $scs->class_id = $class_id;
-      $scs->teacher_id = $request->teacher_id;
-      $scs->subject_id = '1';
-      $scs->save();
+      foreach ($request->className as $k => $v) {
+        $class_id = $this->getClassID($v);
+        $scs = New TeacherClassSubject();
+        $scs->class_id = $class_id;
+        $scs->teacher_id = $request->teacher_id;
+        $scs->subject_id = '1';
+        $scs->save();
+      }
+
+      RoleUser::where('user_id',$request->teacher_id)->delete();
+      $role = New RoleUser();
+      $role->user_id=$request->teacher_id;
+      $role->role_id=$request->role_id;
+      $role->save();
     }
 
-    RoleUser::where('user_id',$request->teacher_id)->delete();
-    $role = New RoleUser();
-    $role->user_id=$request->teacher_id;
-    $role->role_id=$request->role_id;
-    $role->save();
-
-
-    return return_success();
+    return success();
 
 
 //    if ($class_id = $this->getClassID($request->className)) {
@@ -1090,11 +1095,17 @@ class UserController extends Controller
       $client = new EhlaGuzzleClient();
       $res = $client->post(config('variables.createAccount') . $access_token, $input);
 
-      $scs = New StudentClassSubject();
-      $scs->class_id = $class_id;
-      $scs->student_id = $res['data'][0]['user_id'];
-      $scs->subject_id = '1';
-      $scs->save();
+      $debug = new Debug();
+      $debug->context = 'Create Single Student '.json_encode($res);
+      $debug->save();
+
+      if($res['success']){
+        $scs = New StudentClassSubject();
+        $scs->class_id = $class_id;
+        $scs->student_id = $res['data'][0]['user_id'];
+        $scs->subject_id = '1';
+        $scs->save();
+      }
 
       return return_success();
 
@@ -1206,7 +1217,10 @@ class UserController extends Controller
 
 
       $input['id'] = $request->id;
-      $input['realname_en'] = $request->fullname;
+      $input['realname_en'] = $request->realname_en;
+      $input['realname_zh'] = $request->realname_zh;
+      if (!empty($request->password))
+        $input['password'] = $request->password;
       $input['school_num'] = $request->student_num;
 
       $access_token = json_decode(Auth::user()->session)->access_token;
@@ -1214,7 +1228,11 @@ class UserController extends Controller
       $client = new EhlaGuzzleClient();
       $res = $client->post(config('variables.updateUserInfo') . $access_token, $input);
 
-      if ($res) {
+      $debug = new Debug();
+      $debug->context = 'Update Single Student '.json_encode($res);
+      $debug->save();
+
+      if ($res['success']) {
         $scs = StudentClassSubject::where('student_id', $request->id)->first();
         $scs->class_id = $class_id;
         $scs->save();
@@ -1328,18 +1346,23 @@ class UserController extends Controller
       $res = $client->post(config('variables.getUsersByIDs') . $access_token, $inputs);
 
 
-//      print_r($res);
+//      print_r($res);die();
 
       $students = StudentClassSubject::with('single_class')->get()->toArray();
 
 //      print_r($students);
 //      die();
       foreach ($students as $k => &$v) {
-        $v['realname_en'] = $res['data'][$v['student_id']]['realname_en'];
-        $v['realname_zh'] = $res['data'][$v['student_id']]['realname_zh'];
-        $v['username'] = $res['data'][$v['student_id']]['username'];
-        $v['school_num'] = $res['data'][$v['student_id']]['school_num'];
-//        $v['realname'] = 'CTM';
+        if(empty($res['data'][$v['student_id']])){
+          $debug = New Debug();
+          $debug->context = $v['student_id'];
+          $debug->save();
+        }else{
+          $v['realname_en'] = $res['data'][$v['student_id']]['realname_en'];
+          $v['realname_zh'] = $res['data'][$v['student_id']]['realname_zh'];
+          $v['username'] = $res['data'][$v['student_id']]['username'];
+          $v['school_num'] = $res['data'][$v['student_id']]['school_num'];
+        }
       }
 //      print_r($students);
 //      die();
