@@ -1089,12 +1089,12 @@ class UserController extends Controller
       $access_token = json_decode(Auth::user()->session)->access_token;
       $client = new EhlaGuzzleClient();
       $res = $client->post(config('variables.createAccount') . $access_token, $input);
-      
+
       $debug = new Debug();
       $debug->context = 'Create Single Student '.json_encode($res);
       $debug->save();
 
-        if($res['success']){
+      if($res['success']){
         $scs = New StudentClassSubject();
         $scs->class_id = $class_id;
         $scs->student_id = $res['data'][0]['user_id'];
