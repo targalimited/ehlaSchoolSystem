@@ -1,15 +1,28 @@
 <template lang="pug">
   vi-row.asmt-item
     .asmt-item__l
-      vi-avatar(:size="100") Ts
+      vi-avatar(:size="100" :src="asmtData.thumbnail_path")
     .asmt-item__r
-      .asmt-item__title Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil, suscipit?
-      span.asmt-item__date 23 JUL
+      .asmt-item__title {{asmtData.item.name_en}}
+      span.asmt-item__date {{asmtData.end_date | formatDate}}
       div.asmt-item__meta 16/20
       vi-button edit
 </template>
 
-<script lang="stylus">
+
+<script>
+  export default {
+    name: 'asmt-item',
+
+    props: {
+      asmtData: {
+        type: Object
+      }
+    }
+  }
+</script>
+
+<style lang="stylus">
   @import '../project-ui/stylus/settings.styl'
   .asmt-item
     padding 16px
@@ -26,6 +39,4 @@
     &__date
       color $red
       font-size 12px
-
-
-</script>
+</style>

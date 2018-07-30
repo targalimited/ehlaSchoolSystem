@@ -15,6 +15,20 @@
         vi-icon(name="avatar" size="16")
 </template>
 
+<script>
+  export default {
+    data () {
+      return {
+        classes: []
+      }
+    },
+    // TODO: where should we call this API
+    async created () {
+      this.classes = await this.$store.dispatch('getClasses')
+    }
+  }
+</script>
+
 <style lang="stylus">
   @import '../project-ui/stylus/settings.styl'
   .top-bar

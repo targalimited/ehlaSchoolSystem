@@ -1,9 +1,8 @@
 <template lang="pug">
-  .panel-layout
-    .panel-layout__l
+  panel-layout
+    div(slot="left")
       asmt-item
-      asmt-item
-    .panel-layout__r
+    div(slot="right")
       vi-data-table(
         :items="students"
         :item-height="600"
