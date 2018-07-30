@@ -162,6 +162,7 @@ class AssignmentController extends Controller
 
 		//usermodel
 		$UAS = new UsermodelApiServices($request);
+		
 		$feedback = $UAS->schoolApiGetSchoolAssignment($params);
 		
         $this->result['data'] = $feedback['data'];

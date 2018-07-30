@@ -68,15 +68,16 @@ class UsermodelApiServices extends Model {
 		return $result;
 	}
 	
-	public function resultApiGetSchoolWeaknessReport($academicId, $studentIds, $subjectId, $weaknessCode) {
+	public function resultApiGetSchoolWeaknessReport($academicId, $studentIds, $subjectId, $weaknessCode, $weaknessIds) {
 		$inputs = [
 			'academic_id' => $academicId,
 			'student_ids' => $studentIds,
 			'subject_id' => $subjectId,
-			'weakness_code' => $weaknessCode
+			'weakness_code' => $weaknessCode,
+			'weakness_ids' => $weaknessIds
 		];
-	
 		$result = $this->client->post(config('variables.resultApiGetSchoolWeaknessReportUrl').$this->suffix, $inputs);
+		
 		return $result;
 	}
 	

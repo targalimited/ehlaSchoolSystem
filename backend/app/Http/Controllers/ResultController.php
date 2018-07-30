@@ -72,12 +72,13 @@ class ResultController extends Controller
 			$studentIds[0] = $params['student_id'];
 		}
 		
+		$subjectId = $params['subject_id'];
 		$weaknessCode = $params['weakness_code'];
 		$weaknessIds = $params['weakness_ids'];
 		
 		//usermodel
 		$UAS = New UsermodelApiServices($request);
-		$result = $UAS->resultApiGetSchoolWeaknessReport($academicId, $studentIds, $weaknessCode, $weaknessIds);	
+		$result = $UAS->resultApiGetSchoolWeaknessReport($academicId, $studentIds, $subjectId, $weaknessCode, $weaknessIds);	
 				
 		$output["data"] = $result["data"];
 		$output["metadata"] = $result["metadata"];
