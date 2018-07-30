@@ -31,19 +31,6 @@
       }
     },
     methods: {
-      getWeaknessList (classId) {
-        this.$store.dispatch('report/getClassWeaknessList', {classId})
-      },
-      getItemList (classId) {
-        this.$store.dispatch('report/getClassItemList', {classId})
-      },
-      getWeaknessReport () {
-        this.$store.dispatch('getClassWeaknessReport', {
-          classId: 1,
-          batchId: 1,
-          itemId: 1,
-        })
-      },
       onSelect (d) {
         this.selectedAsmt = d
       }

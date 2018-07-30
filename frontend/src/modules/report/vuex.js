@@ -19,8 +19,14 @@ export default {
       state.asmtList = asmtList
     },
     gotAsmtReport (state, {batchId, report}) {
-      console.log('sss',batchId, report)
       Vue.set(state.asmtReport, batchId, report)
+    },
+    gotWeaknessList (state, list) {
+      console.log(list)
+      state.weaknessList = list
+    },
+    gotWeaknessReport (state, {batchId, report}) {
+      Vue.set(state.weaknessList, batchId, report)
     }
   },
 
@@ -37,14 +43,17 @@ export default {
       return classes
     },
 
-    // TODO: @bill got 500
-    async getClassWeaknessList ({}, {classId}) {
-      return await new AuthHttp().post('/get_class_weakness', {
+    async getClassWeaknessList ({commit}, {classId}) {
+      const res = await new AuthHttp().post('/get_class_weakness', {
         academic_id: 1, // TODO @bill - what is this
         class_id: classId,
         subject_id: 1,
         weakness_code: "MATCH", // TODO @bill - what is this
       })
+      const list = res.data
+      console.log(list, 'weakness')
+      commit('gotWeaknessList', list)
+      return list
     },
 
     async getClassItemList ({rootGetters, commit}, {classId}) {

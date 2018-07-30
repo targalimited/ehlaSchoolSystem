@@ -8,7 +8,7 @@
           :class="{'top-bar__tab--active':true}"
         ) Current Assignment
         li.top-bar__tab Completed Assignment
-        li.top-bar__tab Weakness
+        router-link.top-bar__tab(tag="li" :to="{name:'weakness-report', params:{class_id: 1}}") Weakness
     vi-spacer
     .top-bar__r
       vi-avatar(size="24")
