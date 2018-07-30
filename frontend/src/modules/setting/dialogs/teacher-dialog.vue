@@ -94,7 +94,7 @@
           this.realname_en &&
           this.realname_zh &&
           this.username &&
-          this.className &&
+          (this.className.length) &&
           this.role &&
           this.teacher_num
       }
