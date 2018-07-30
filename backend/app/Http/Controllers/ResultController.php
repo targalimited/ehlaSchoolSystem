@@ -33,7 +33,7 @@ class ResultController extends Controller
 		$academicId = $user['academic_id'];
 		$studentIds = $PBS->getStudents();		
 		
-		if (empty($studentIds) && $params['student_id']) {
+		if (empty($studentIds) && isset($params['student_id'])) {
 			$studentIds[0] = $params['student_id'];
 		}
 		
@@ -68,7 +68,7 @@ class ResultController extends Controller
 		$academicId = $user['academic_id'];
 		$studentIds = $PBS->getStudents();		
 		
-		if (empty($studentIds) && $params['student_id']) {
+		if (empty($studentIds) && isset($params['student_id'])) {
 			$studentIds[0] = $params['student_id'];
 		}
 		
@@ -103,7 +103,7 @@ class ResultController extends Controller
 		$academicId = $user['academic_id'];
 		$studentIds = $PBS->getStudents();		
 		
-		if (empty($studentIds) && $params['student_id']) {
+		if (empty($studentIds) && isset($params['student_id'])) {
 			$studentIds[0] = $params['student_id'];
 		}
 		
@@ -122,7 +122,7 @@ class ResultController extends Controller
 	}
 	
 	//['class_id' / 'student_id', 'subject_id','weakness_code']
-	public function get_school_weakness_report(Request $request) {	
+	/*public function get_school_weakness_report(Request $request) {	
 		//params
 		$params = $request->params;
 	
@@ -152,7 +152,7 @@ class ResultController extends Controller
 		$output["metadata"] = $result["metadata"];
 	
 		return json($output);
-	}
+	}*/
 	
 	//['class_id' / 'student_id', 'subject_id','weakness_code']
 	public function get_class_weakness(Request $request) {	

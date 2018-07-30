@@ -103,6 +103,18 @@ class AssignmentController extends Controller
 			
 			$this->result['data'] = $feedback['data'];
 			$this->result['metadata'] = $feedback['metadata'];
+			/*
+			if (!isset($feedback['metadata']['itemIds'])) {
+				$itemIds = $feedback['metadata']['itemIds'];
+				
+				$passParams = [];
+				$passParams['params']['teacher_id'] = $user['user_id'];
+				$passParams['params']['class_id'] = $classId;
+				$passParams['params']['subject_id'] = $subjectId;
+				
+				$feedback = $UAS->schoolApiGetSchoolAssignment();
+			}*/
+			
 			return Response()->json($this->result,200);
 		}
         $this->result['data'] = [];
