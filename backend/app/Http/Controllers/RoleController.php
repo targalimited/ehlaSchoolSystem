@@ -44,7 +44,7 @@ class RoleController extends Controller
     }
 
     public function readRole(Request $request){
-        $role = Role::all();
+        $role = Role::where('name','!=','student')->get();
         $result['data'] = $role;
         return json($result);
     }

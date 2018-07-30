@@ -3,7 +3,7 @@
     <vi-card>
       <vi-toolbar :brand="true">
         <div class="vi-toolbar__title">
-          Batch import teacher
+          Batch import
         </div>
       </vi-toolbar>
 

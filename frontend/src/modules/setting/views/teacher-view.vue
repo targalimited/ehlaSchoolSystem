@@ -104,7 +104,8 @@
       async onBatchImport () {
         const file = await batchImportDialog()
         if (!file) return
-        // TODO: @Hilton call api with selected excel file
+        this.$store.dispatch('TEACHER_BATCH_CREATE',file)
+
       },
       async onAddTeacher () {
         const res = await teacherDialog({
@@ -123,9 +124,9 @@
           oldUsername: teacher.username,
           oldClass: teacher.classes,
           OptionClass: this.option_class,
-          oldTeacher_num: teacher.teacher_num,
+          oldTeacher_num: teacher.school_num,
+          oldRole: teacher.role_id,
         }).then(res=>{
-          console.log('submit edit teacher',res)
           res.teacher_id=teacher.teacher_id
           this.$store.dispatch('TEACHER_UPDATE',res)
         })
@@ -139,8 +140,7 @@
             title: 'Delete teacher',
             message: `Are you sure you want to delete teacher ${teacher.name}`
           })
-          // TODO cal API
-          this.$store.dispatch('USER_DELETE',{user_id:teacher.teacher_id})
+          this.$store.dispatch('TEACHER_DESTROY',{user_id:teacher.teacher_id})
 
         } catch (e) {}
       },
@@ -169,6 +169,7 @@
     mounted (){
       // console.log(this.teachers)
       this.$store.dispatch('FETCH_OPTIONCLASS')
+      this.$store.dispatch('FETCH_ROLE')
       this.$store.dispatch('FETCH_TEACHER')
     }
   }

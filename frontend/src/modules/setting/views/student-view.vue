@@ -4,7 +4,7 @@
     <vi-app-bar title="Students">
 
       <div slot="action">
-        <vi-button @click="onAddStudent" dark>
+        <vi-button @click="onBatchImport" dark>
           <vi-icon left name="add-thick" size="12"/>
           Batch import
         </vi-button>
@@ -35,7 +35,7 @@
       <div slot="item" slot-scope="{item}" class="vi-table__row">
 
         <vi-table-col>
-          {{item.realname}}
+          {{item.realname_en}}
         </vi-table-col>
 
         <vi-table-col>
@@ -60,7 +60,7 @@
 <script>
 
   import { mapGetters } from 'vuex'
-  import {studentDialog} from '../dialogs'
+  import {studentDialog, batchImportDialog} from '../dialogs'
 
   export default {
     name: 'student-view',
@@ -102,6 +102,12 @@
     },
 
     methods: {
+      async onBatchImport () {
+        const file = await batchImportDialog()
+        if (!file) return
+        this.$store.dispatch('STUDENT_BATCH_CREATE',file)
+
+      },
       onAddStudent () {
         studentDialog({
           OptionClass: this.option_class
@@ -118,9 +124,13 @@
         })
       },
       onEdit (student) {
+        console.log(student);
+
         studentDialog({
-          oldFullname: student.realname,
-          // oldUsername: student.username,
+          oldRealname_en: student.realname_en,
+          oldRealname_zh: student.realname_zh,
+          oldUsername: student.username,
+          oldSchool_num: student.school_num,
           OptionClass: this.option_class,
           oldClass: student.single_class.c_name
         }).then(res=>{

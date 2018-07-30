@@ -41,7 +41,7 @@
 
         <div class="input-group">
           <vi-input-label>Class</vi-input-label>
-          <vi-select placeholder="Select Student Class" v-model="className" :options="OptionClass" :chip="true"/>
+          <vi-select placeholder="Select Student Class" v-model="className" :options="OptionClass" />
         </div>
 
         <vi-button-row>
@@ -57,17 +57,17 @@
 export default {
   name: 'level-dialog',
 
-  props: ['oldRealname_en', 'oldUsername', 'oldClass', 'OptionClass', 'oldRealname_zh','oldPassword', 'oldstudent_num'],
+  props: ['oldRealname_en', 'oldUsername', 'oldClass', 'OptionClass', 'oldRealname_zh','oldPassword', 'oldSchool_num'],
 
   data () {
     return {
       realname_en: this.oldRealname_en ? this.oldRealname_en : '',
       realname_zh: this.oldRealname_zh ? this.oldRealname_zh : '',
       username: this.oldUsername ? this.oldUsername : '',
-      className: [],
+      className: this.oldClass ? this.oldClass: '',
       password: '',
       password_confirmation: '',
-      student_num: this.oldstudent_num ? this.oldstudent_num : '',
+      student_num: this.oldSchool_num ? this.oldSchool_num : '',
     }
   },
 
@@ -89,9 +89,7 @@ export default {
   },
 
   created () {
-    if (this.oldClass) {
-      this.className = this.oldClass.map(c => c.name)
-    }
+
   },
 
   methods: {
