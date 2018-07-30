@@ -264,11 +264,13 @@ class UserController extends Controller
 
         $i = 0;
 
-        if ($results[0]) {
-          foreach (array_keys($results[0]) as $v) {
-            $subjects[] = $v;
-          }
-        }
+//        if ($results[0]) {
+//          foreach (array_keys($results[0][0]) as $v) {
+//            $subjects[] = $v;
+//          }
+//        }
+
+        $subjects_from_excel = array_keys($results[0][0]);
 
         $subjects_db = Subject::all();
 
@@ -276,9 +278,9 @@ class UserController extends Controller
           $new_subject_db[] = strtolower(str_replace(' ', '_', $v->s_name_en));
         }
 
-        for ($j = 4; $j < count($subjects); $j++) {
-          if (!in_array(strtolower($subjects[$j]), $new_subject_db)) {
-            $this->errors[$i] = 'No this subject ' . $subjects[$j];
+        for ($j = 4; $j < count($subjects_from_excel); $j++) {
+          if (!in_array(strtolower($subjects_from_excel[$j]), $new_subject_db)) {
+            $this->errors[$i] = 'No this subject ' . $subjects_from_excel[$j];
           }
         }
 
