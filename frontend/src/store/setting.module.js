@@ -26,6 +26,7 @@ const getters = {
   students: state => state.students,
   teachers: state => state.teachers,
   option_class: state => state.option_class,
+  roleOptions: state => state.roleOptions,
 
   single_class: state => id => state.classes.data.find(c => c.id === id),
 
@@ -47,7 +48,7 @@ const getters = {
       return cus_level
     }
   },
-  roleOptions: state => state.roleOptions
+
 }
 
 const actions = {
@@ -69,7 +70,6 @@ const actions = {
     }
   },
 
-
   async FETCH_TEACHER ({commit}){
     try{
       let res = await new AuthHttp().get('teachers')
@@ -82,6 +82,15 @@ const actions = {
   async STUDENT_CREATE (context,payload){
     try{
       await new AuthHttp().http_post('student_single',payload)
+      context.dispatch('FETCH_STUDENT')
+    }catch (e) {
+
+    }
+  },
+
+  async STUDENT_BATCH_CREATE (context,payload){
+    try{
+      let res = await new AuthHttp().post_file('student_batch',payload)
       context.dispatch('FETCH_STUDENT')
     }catch (e) {
 
@@ -125,6 +134,15 @@ const actions = {
     }
   },
 
+  async TEACHER_BATCH_CREATE (context,payload){
+    try{
+      let res = await new AuthHttp().post_file('teacher_batch',payload)
+      context.dispatch('FETCH_TEACHER')
+    }catch (e) {
+
+    }
+  },
+
   async TEACHER_UPDATE (context,payload){
     try{
       let res = await new AuthHttp().put('teacher_single',payload)
@@ -158,9 +176,9 @@ const actions = {
 
   async FETCH_ROLE ({commit}) {
     try {
-      let res = await new AuthHttp().get('get_role_options')
+      let res = await new AuthHttp().get('read_role')
       console.log('FETCH ROLE action',res)
-      commit('SET_ROLE',res)
+      commit('SET_ROLE',res.data)
     } catch (e) {}
   },
 
@@ -210,10 +228,6 @@ const mutations = {
 
   SET_OPTIONCLASS (state,option_class){
     state.option_class = option_class
-  },
-
-  ADD_STUDENT (state,result){
-
   },
 
   [SET_CLASS] (state,classes) {
