@@ -111,6 +111,7 @@
         const res = await teacherDialog({
           OptionClass: this.option_class
         }).then(res => {
+          if(res)
           this.$store.dispatch('TEACHER_CREATE',res)
         })
         if (!res) return
@@ -128,6 +129,7 @@
           oldRole: teacher.role_id,
         }).then(res=>{
           res.teacher_id=teacher.teacher_id
+          if(res)
           this.$store.dispatch('TEACHER_UPDATE',res)
         })
 
