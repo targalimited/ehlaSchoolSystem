@@ -145,8 +145,9 @@
           OptionClass: this.option_class,
           oldClass: student.single_class.c_name
         }).then(res=>{
+          res.student_id=student.student_id
           if(res)
-           this.$store.dispatch('STUDENT_UPDATE',{id:student.student_id,fullname:res.fullname,className:res.className})
+           this.$store.dispatch('STUDENT_UPDATE',res)
         })
       },
       async onDelete (student) {

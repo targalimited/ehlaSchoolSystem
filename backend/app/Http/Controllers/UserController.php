@@ -775,12 +775,12 @@ class UserController extends Controller
     if ($class_id = $this->getClassID($request->className)) {
 
 
-      $input['id'] = $request->id;
+      $input['id'] = $request->student_id;
       $input['realname_en'] = $request->realname_en;
       $input['realname_zh'] = $request->realname_zh;
       if (!empty($request->password))
         $input['password'] = $request->password;
-      $input['school_num'] = $request->student_num;
+      $input['school_num'] = $request->school_num;
 
       $access_token = json_decode(Auth::user()->session)->access_token;
 
@@ -792,18 +792,19 @@ class UserController extends Controller
       $debug->save();
 
       if ($res['success']) {
-        $scs = StudentClassSubject::where('student_id', $request->id)->first();
+        $scs = StudentClassSubject::where('student_id', $request->student_id)->first();
         $scs->class_id = $class_id;
         $scs->save();
 
         $data = [
           'realname_zh' =>$request->realname_zh,
           'realname_en' =>$request->realname_en,
-          'school_num' =>$request->school_num];
+          'school_num' =>$request->school_num
+        ];
         if (!empty($request->password))
         $data['default_password'] = $request->password;
 
-        $this->createUserInfo($data,$request->id);
+        $this->createUserInfo($data,$request->student_id);
 
       }
 
