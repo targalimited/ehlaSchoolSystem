@@ -130,7 +130,8 @@
             password: res.password,
             school_num: res.school_num,
             realname_zh: res.realname_zh,
-            className: res.className
+            className: res.className,
+            classNo: res.classNo
           })
         })
       },
@@ -143,11 +144,13 @@
           oldUsername: student.username,
           oldSchool_num: student.school_num,
           OptionClass: this.option_class,
-          oldClass: student.single_class.c_name
+          oldClass: student.single_class.c_name,
+          oldClassNo: student.student_detail.class_no
         }).then(res=>{
-          res.student_id=student.student_id
-          if(res)
-           this.$store.dispatch('STUDENT_UPDATE',res)
+          if(res) {
+            res.student_id = student.student_id
+            this.$store.dispatch('STUDENT_UPDATE', res)
+          }
         })
       },
       async onDelete (student) {

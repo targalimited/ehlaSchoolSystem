@@ -20,6 +20,6 @@ class StudentClassSubject extends Model
     }
 
   public function studentDetail(){
-    return $this->hasOne(UserInfo::class,'user_id');
+    return $this->hasOne(UserInfo::class,'user_id','student_id');
   }
 }

@@ -659,6 +659,7 @@ class UserController extends Controller
           'realname_zh' =>$request->realname_zh,
           'realname_en' =>$request->realname_en,
           'school_num' =>$request->school_num,
+          'class_no' =>$request->classNo,
           'default_password' =>$request->password,
         ];
 
@@ -772,6 +773,8 @@ class UserController extends Controller
   {
 
 
+//    print_r($request);
+    
     if ($class_id = $this->getClassID($request->className)) {
 
 
@@ -799,7 +802,8 @@ class UserController extends Controller
         $data = [
           'realname_zh' =>$request->realname_zh,
           'realname_en' =>$request->realname_en,
-          'school_num' =>$request->school_num
+          'school_num' =>$request->school_num,
+          'class_no' => $request->classNo,
         ];
         if (!empty($request->password))
         $data['default_password'] = $request->password;
@@ -906,7 +910,7 @@ class UserController extends Controller
     if (Auth::user()->can('view_students')) {
 
 
-      $students = StudentClassSubject::with('single_class')->get()->pluck('student_id');
+      $students = StudentClassSubject::get()->pluck('student_id');
 
       $access_token = json_decode(Auth::user()->session)->access_token;
 
@@ -918,7 +922,7 @@ class UserController extends Controller
 
 //      print_r($res);die();
 
-      $students = StudentClassSubject::with('single_class')->get()->toArray();
+      $students = StudentClassSubject::with('single_class')->with('studentDetail')->get()->toArray();
 
 //      print_r($students);
 //      die();
