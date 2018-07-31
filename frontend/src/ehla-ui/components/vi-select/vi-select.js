@@ -50,6 +50,10 @@ export default {
     attach: {
       type: null,
       default: false
+    },
+    minimal: {
+      type: Boolean,
+      default: false
     }
   },
   data () {

@@ -3,7 +3,7 @@
     .asmt-item__l
       vi-avatar(:size="100" :src="asmtData.thumbnail_path")
     .asmt-item__r
-      .asmt-item__title {{asmtData.item.name_en}}
+      .asmt-item__title {{asmtData.name_en}}
       span.asmt-item__date {{asmtData.end_date | formatDate}}
       div.asmt-item__meta 16/20
       vi-button edit

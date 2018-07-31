@@ -3,7 +3,7 @@ import {default as AuthRoutes} from '@/modules/auth/routes'
 import {default as LibRoutes} from '@/modules/lib/routes'
 import {default as AssignRoutes} from '@/modules/asmt/routes'
 import {default as SettingRoutes} from '@/modules/setting/routes'
-import {default as ReportRoutes} from '@/modules/report/routes'
+import {default as TeachRoutes} from '@/modules/teach/routes'
 import WildRoute from './wild-route'
 import ComingSoonView from './wild-route-2'
 import Vue from 'vue'
@@ -11,26 +11,14 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     ...ShelfRoutes,
     ...AuthRoutes,
     ...LibRoutes,
     ...AssignRoutes,
     ...SettingRoutes,
-    ...ReportRoutes,
-    {
-      path: '/report',
-      name: 'report',
-      component: ComingSoonView,
-      props: { title: 'Report' }
-    },
-    {
-      path: '/assignment',
-      name: 'assignment',
-      component: ComingSoonView,
-      props: { title: 'Assign Homework' }
-    },
+    ...TeachRoutes,
     {
       path: '/config',
       name: 'config',
@@ -50,3 +38,10 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  console.log(to)
+  next()
+})
+
+export default router

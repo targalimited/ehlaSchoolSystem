@@ -1,7 +1,7 @@
 import shelf from '@/modules/shelf/vuex'
 import auth from '@/modules/auth/vuex'
 import asmt from '@/modules/asmt/vuex'
-import report from '@/modules/report/vuex'
+import teach from '@/modules/teach/vuex'
 import settings from '@/store/setting.module'
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -14,7 +14,7 @@ export default new Vuex.Store({
     shelf,
     auth,
     asmt,
-    report,
+    teach,
     settings
   },
   strict: debug,

@@ -14,6 +14,7 @@ export default {
         class: {
           'vi-input--line': this.line,
           'vi-input--darker': this.darker,
+          'vi-input--minimal': this.minimal,
           'vi-input--selected': this.selection
         }
       }
@@ -281,7 +282,7 @@ export default {
       }
 
       data.props = {
-        selectable: true
+        link: true
       }
 
       let children

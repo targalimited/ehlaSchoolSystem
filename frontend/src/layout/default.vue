@@ -1,9 +1,9 @@
 <template>
   <div class="default-layout">
-    <top-bar/>
-    <main class="default-layout__main">
+    <!--<top-bar/>-->
+    <!--<main class="default-layout__main">-->
       <router-view/>
-    </main>
+    <!--</main>-->
   </div>
 </template>
 
