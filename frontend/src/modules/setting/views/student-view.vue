@@ -150,6 +150,7 @@
         } catch (e) {}
       },
       filterByClass (items) {
+         console.log('filterByClass',items);
         if (!this.classFilters) return items
         return items.filter(i => {
           return this.classFilters === i.single_class.c_name
@@ -160,9 +161,8 @@
         search = search.toString().toLowerCase()
         if (search.trim() === '') return items
 
-        return items.filter(i => (
-          filter(i.realname, search)
-        ))
+        // console.log('filter',filter);
+        return items.filter(i => filter(i.realname_en, search))
       },
     },
 

@@ -1404,6 +1404,8 @@ class UserController extends Controller
 
       $teachers = TeacherClassSubject::with('classes')->with('subjects')->with('role')->get()->toArray();
 
+      $t = [];
+
       foreach ($teachers as $k => $v) {
         $t[$v['teacher_id']]['teacher_id'] = $v['teacher_id'];
         $t[$v['teacher_id']]['realname_en'] = $res['data'][$v['teacher_id']]['realname_en'];

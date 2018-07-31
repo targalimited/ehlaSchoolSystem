@@ -4,6 +4,10 @@
     <vi-app-bar title="Teachers">
 
       <div slot="action">
+        <vi-button @click="onExport" dark>
+          <vi-icon left name="add-thick" size="12"/>
+          Export
+        </vi-button>
         <vi-button @click="onBatchImport" dark>
           <vi-icon left name="add-thick" size="12"/>
           Batch import
@@ -101,6 +105,9 @@
     },
 
     methods: {
+      async onExport () {
+        this.$store.dispatch('EXPORT_TEACHER')
+      },
       async onBatchImport () {
         const file = await batchImportDialog()
         if (!file) return
@@ -147,18 +154,22 @@
         } catch (e) {}
       },
       filterByClass (items) {
+        // console.log('filterByClass',items);
         if (this.classFilters.length === 0) return items
         return items.filter(i => {
-          return this.classFilters.includes(i.class)
+
+         return this.classFilters.includes(i.classes.name)
+
         })
       },
       filterFunction (items, search, filter) {
         items = this.filterByClass(items)
         search = search.toString().toLowerCase()
+        console.log('filterFunction',search)
         if (search.trim() === '') return items
 
         return items.filter(i => (
-          filter(i.name, search)
+          filter(i.realname_en, search)
         ))
       },
     },
