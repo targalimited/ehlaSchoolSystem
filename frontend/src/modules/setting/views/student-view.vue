@@ -4,6 +4,12 @@
     <vi-app-bar title="Students">
 
       <div slot="action">
+
+
+        <vi-button @click="onExport" dark>
+          <vi-icon left name="add-thick" size="12"/>
+          Export
+        </vi-button>
         <vi-button @click="onBatchImport" dark>
           <vi-icon left name="add-thick" size="12"/>
           Batch import
@@ -45,6 +51,7 @@
         </vi-table-col>
 
         <vi-table-col>
+
           <vi-button @click="onEdit(item)" icon text>
             <vi-icon name="edit" size="22"/>
           </vi-button>
@@ -102,6 +109,9 @@
     },
 
     methods: {
+      async onExport () {
+        this.$store.dispatch('EXPORT_STUDENT')
+      },
       async onBatchImport () {
         const file = await batchImportDialog()
         if (!file) return

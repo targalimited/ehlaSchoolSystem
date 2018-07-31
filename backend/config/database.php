@@ -12,7 +12,7 @@ $array['mysql']['prefix'] = env('DB_PREFIX', 'school_');
 $array['mysql']['strict'] = true;
 $array['mysql']['engine'] = null;
 
- for ($i = 1 ;  $i<=2; $i++){
+ for ($i = 1 ;  $i<=120; $i++){
    $array['school_'.$i]['driver'] = 'mysql';
    $array['school_'.$i]['host'] = env('DB_HOST_SCHOOL');
    $array['school_'.$i]['port'] = env('DB_PORT_SCHOOL');

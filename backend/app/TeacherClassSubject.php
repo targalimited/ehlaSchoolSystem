@@ -40,4 +40,8 @@ class TeacherClassSubject extends Model
   {
     return $this->hasOne(RoleUser::class,'user_id','teacher_id');
   }
+
+  public function teacherDetail(){
+    return $this->hasOne(UserInfo::class,'user_id');
+  }
 }

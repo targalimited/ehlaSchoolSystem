@@ -26,6 +26,7 @@ class AddLockToClassTable extends Migration
      */
     public function down()
     {
+      if (Schema::hasTable('classes'))
         Schema::table('classes', function (Blueprint $table) {
           $table->dropColumn('lock');
         });

@@ -9,7 +9,7 @@
 
       <vi-card-content>
 
-        <input ref="input" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" @change="onFileImport"/>
+        <input ref="input" type="file" accept=".xlsx, .xls, .csv" @change="onFileImport"/>
 
         <vi-button-row>
           <vi-button @click="$close(false)">Cancel</vi-button>

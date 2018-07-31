@@ -1,6 +1,7 @@
 import Axios from 'axios'
 import router from '@/router'
 import store from '@/store'
+const download = require('js-file-download');
 
 class AuthHttp {
   http = Axios.create({
@@ -20,6 +21,24 @@ class AuthHttp {
     } catch (e) {
       return this.handleException(e)
     }
+  }
+
+  get_file(url) {
+    Axios({
+      url: (process.env.API_BASE_URL || '') + '/v1/' + url,
+      method: 'GET',
+      headers: {
+        'extoken': localStorage.getItem('extoken'),
+        'school-id': localStorage.getItem('school_id')
+      }
+    }).then((response) => {
+      var a = document.createElement("a");
+      a.href = response.data.file;
+      a.download = response.data.name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    });
   }
 
   async post(url, data) {
