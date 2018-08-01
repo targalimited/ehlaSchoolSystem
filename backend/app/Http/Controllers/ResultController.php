@@ -45,8 +45,13 @@ class ResultController extends Controller
 		$UAS = New UsermodelApiServices($request);
 		$result = $UAS->resultApiGetSchoolStatusReport($academicId, $studentIds, $itemId, $subjectId, $batchId);	
 				
-		$output["data"] = $result["data"];
-		$output["metadata"] = $result["metadata"];
+		if (empty($studentIds)) {
+			$output["data"] = [];
+			$output["metadata"] = [];
+		} else {
+			$output["data"] = $result["data"];
+			$output["metadata"] = $result["metadata"];
+		}
 		
 		return json($output);
 	}
@@ -80,8 +85,13 @@ class ResultController extends Controller
 		$UAS = New UsermodelApiServices($request);
 		$result = $UAS->resultApiGetSchoolWeaknessReport($academicId, $studentIds, $subjectId, $weaknessCode, $weaknessIds);	
 				
-		$output["data"] = $result["data"];
-		$output["metadata"] = $result["metadata"];
+		if (empty($studentIds)) {
+			$output["data"] = [];
+			$output["metadata"] = [];
+		} else {
+			$output["data"] = $result["data"];
+			$output["metadata"] = $result["metadata"];
+		}
 		
 		return json($output);
 	}
@@ -116,8 +126,13 @@ class ResultController extends Controller
 		$UAS = New UsermodelApiServices($request);
 		$result = $UAS->resultApiGetSchoolBatchItemResultReport($academicId, $studentIds, $itemId, $subjectId, $batchId);	
 				
-		$output["data"] = $result["data"];
-		$output["metadata"] = $result["metadata"];
+		if (empty($studentIds)) {
+			$output["data"] = [];
+			$output["metadata"] = [];
+		} else {
+			$output["data"] = $result["data"];
+			$output["metadata"] = $result["metadata"];
+		}
 		
 		return json($output);
 	}
@@ -177,9 +192,15 @@ class ResultController extends Controller
 		
 		//usermodel
 		$UAS = New UsermodelApiServices($request);
-		$result = $UAS->resultApiGetSchoolWeaknessList($academicId, $studentIds, $subjectId, $weaknessCode);	
-		$output["data"] = $result["data"];
-		$output["metadata"] = $result["metadata"];
+		
+		if (empty($studentIds)) {
+			$output["data"] = [];
+			$output["metadata"] = [];
+		} else {
+			$result = $UAS->resultApiGetSchoolWeaknessList($academicId, $studentIds, $subjectId, $weaknessCode);	
+			$output["data"] = $result["data"];
+			$output["metadata"] = $result["metadata"];
+		}
 	
 		return json($output);
 	}
