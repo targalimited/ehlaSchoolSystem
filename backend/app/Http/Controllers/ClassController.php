@@ -45,13 +45,16 @@ class ClassController extends Controller
 		$permission = $PCS->checkUserPermission($user);
 		
 		$studentIds = $PBS->getStudents();
+				
+		if (empty($studentIds)) {
+			$this->result['data'] = [];
+		} else {
+			//usermodel
+			$UAS = New UsermodelApiServices($request);
+			$feedback = $UAS->schoolApiGetSchoolUserBasic($studentIds);
+			$this->result['data'] = $feedback['data'];
+		}
 		
-		//usermodel
-		$UAS = New UsermodelApiServices($request);
-		$feedback = $UAS->schoolApiGetSchoolUserBasic($studentIds);
-		
-		
-		$this->result['data'] = $feedback['data'];
         return json($this->result,200);	
 	}
 	
