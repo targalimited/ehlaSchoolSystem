@@ -1,5 +1,6 @@
 <template lang="pug">
   .top-bar
+    img.top-bar__logo(src="../modules/auth/assets/app-logo.jpg")
     .top-bar__l
       .top-bar__l__top
         vi-select(
@@ -18,14 +19,18 @@
           :key="tab.title"
           tag="li"
           @click="navigate(tab.route)"
+          :class="{'top-bar__tab--active': isTabActive(tab.route.name)}"
         ) {{tab.title}}
     vi-spacer
     .top-bar__r
-      vi-avatar(size="24")
+      vi-button(icon color="brand" size="24" style="font-size: 20px" @click="createAsmt")
+        div +
+      vi-avatar(size="24" class="ml-8")
         vi-icon(name="avatar" size="16")
 </template>
 
 <script>
+  import {createAsmtDialog} from '../modules/teach/dialogs'
   export default {
     data () {
       return {
@@ -33,16 +38,13 @@
         tabs: [
           {
             route: {
-              name: 'asmt-report'
+              name: 'asmt-status'
             },
             title: 'Current Assignment'
           },
           {
             route: {
-              name: 'asmt-report',
-              query: {
-                completed: true
-              }
+              name: 'asmt-report'
             },
             title: 'Completed Assignment'
           },
@@ -71,6 +73,12 @@
           }
         }
         this.$router.push(newRoute)
+      },
+      createAsmt () {
+        createAsmtDialog()
+      },
+      isTabActive (routeName) {
+        return routeName === this.$route.name
       }
     },
     computed: {
@@ -96,9 +104,9 @@
     display flex
     align-items center
     box-shadow $box-shadow-2
-    z-index 100
+    z-index 3
     position fixed
-    left 0
+    left 40px
     top 0
     right 0
 
@@ -117,6 +125,11 @@
       font-weight bold
       color $font-color-3
 
+    &__logo
+      width 60px
+      height @width
+      margin-right 16px
+
     &__tabs
       display flex
       height 30px
@@ -127,6 +140,6 @@
       border-bottom 4px solid transparent
       cursor pointer
 
-      &.router-link-exact-active
+      &--active
         border-color $brand
 </style>

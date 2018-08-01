@@ -1,3 +1,4 @@
+import {batchListSchema} from './schema'
 import {http, AuthHttp} from '../../http'
 import Vue from 'vue'
 
@@ -8,6 +9,7 @@ export default {
     asmt_list: {},
     asmt_report: {},
     weakness_list: [],
+    batchList: {},
     weaknessReport: {}
   },
 
@@ -68,6 +70,9 @@ export default {
       return weakness_report
     },
 
+    /**
+     * get the list of assignment from a class
+     */
     async getAsmtList ({rootGetters, commit}, {class_id}) {
       const res = await new AuthHttp().post('/get_school_assignment', {
         teacher_id: rootGetters.teacherId,
@@ -77,7 +82,6 @@ export default {
       let batches = res.data
       batches = batches.filter(batch => batch.items.length > 0)
       batches.forEach(batch => {
-        // batch.item = batch.items[0]
         for (const prop in batch.items[0]) {
           batch[prop] = batch.items[0][prop]
         }
@@ -90,6 +94,9 @@ export default {
       return batches
     },
 
+    /**
+     * get the status (whether is done or not) of an assignment assigned to a class
+     */
     async getAsmtReport ({commit}, {class_id, batch_id, item_id}) {
       const res = await new AuthHttp().post('/get_status_report', {
         class_id: class_id,
@@ -102,14 +109,87 @@ export default {
         report, batch_id
       })
       return report
-    }
+    },
+
+    async getItemListByClassCat ({commit}, {class_id, cat_id}) {
+      const res = await new AuthHttp().post('/get_item_list_by_cls_sub_cat', {
+        class_id: class_id,
+        subject_id: 1,
+        cat_grouper: cat_id
+      })
+      return res.data
+    },
+
+    async setAssignment ({commit, rootState, dispatch}, {classId, itemId, batchId, itemType, startDate, endDate, remark, exercises, videos}) {
+      const teacherId = rootState.auth.user.user_id
+      const exercise_assignments = exercises.map(e => {
+        return {
+          exercise_id: e
+        }
+      })
+      const video_assignments = videos.map(v => {
+        return {
+          exercise_id: v
+        }
+      })
+      const item = {
+        item_id: itemId,
+        item_type: itemType,
+        exercise_assignments: exercise_assignments,
+        videos_assignments: video_assignments
+      }
+      const payload = {
+        teacher_id: teacherId,
+        class_id: classId,
+        subject_id: 1,
+        batch_id: batchId,
+        start_date: startDate + ' 00:00:00',
+        end_date: endDate + ' 23:59:59',
+        remark: remark,
+        is_published: 1, // TODO: is this needed?
+        is_deleted: 0, // TODO: is this needed?
+        items: [item]
+      }
+      await new AuthHttp().post('/set_school_assignment', payload)
+      dispatch('getAsmtList',  {
+        class_id: classId
+      })
+    },
+
+    async lockAsmt ({dispatch}, {batchId, classId}) {
+      await new AuthHttp().post('lock_school_assignment', {
+        batch_id: batchId
+      })
+      dispatch('getAsmtList',  {
+        class_id: classId
+      })
+      return 'done'
+    },
+
+    /**
+     * get the details of an item, which includes exercises and videos of an item
+     */
+    async getItemById ({commit}, {classId, itemId}) {
+      const res = await new AuthHttp().post('/get_item_by_id', {
+        class_id: classId,
+        subject_id: 1,
+        item_id: itemId
+      })
+      return res.data
+    },
   },
 
   getters: {
     // get asmt list by class id
     asmtList: (state) => (class_id) => {
       // TODO: filtering
-      return state.asmt_list[class_id]
+      return state.asmt_list[class_id] || []
+    },
+    lockedAsmtList: (state, getters) => (classId) => {
+      return getters.asmtList(classId).filter(item => !!parseInt(item.is_locked))
+    },
+    activeAsmtList: (state, getters) => (classId) => {
+      return getters.asmtList(classId).filter(item => !parseInt(item.is_locked))
     },
     asmtReport: (state) => (batch_id) => {
       return state.asmt_report[batch_id]

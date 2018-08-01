@@ -1,10 +1,8 @@
-<template>
-  <div class="default-layout">
-    <!--<top-bar/>-->
-    <!--<main class="default-layout__main">-->
-      <router-view/>
-    <!--</main>-->
-  </div>
+<template lang="pug">
+  .default-layout
+    .default-layout__l
+    .default-layout__r
+      router-view
 </template>
 
 <script>
@@ -16,6 +14,16 @@
 </script>
 
 <style lang="stylus">
-  .default-layout__main
-    margin-top 75px
+  .default-layout
+    &__l
+      width 40px
+      position fixed
+      top 0
+      bottom 0
+      left 0
+      background #4b90b6
+
+    &__r
+      margin-left 40px
+
 </style>

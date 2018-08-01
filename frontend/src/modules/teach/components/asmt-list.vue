@@ -6,20 +6,28 @@
       v-else
       v-for="d in asmtList"
       :key="d.batch_id"
+      :locked="locked"
       :asmt-data="d"
       @click.native="onSelect(d)"
     )
 </template>
 
 <script>
+  import AsmtItem from './asmt-item'
   export default {
     name: "asmt-list",
+
+    components: { AsmtItem },
+
+    props: ['locked'],
+
     computed: {
       $class_id () {
         return this.$route.params.class_id
       },
       asmtList () {
-        return this.$store.getters.asmtList(this.$class_id) || []
+        const TYPE = this.locked ? 'lockedAsmtList' : 'activeAsmtList'
+        return this.$store.getters[TYPE](this.$class_id) || []
       }
     },
     data () {

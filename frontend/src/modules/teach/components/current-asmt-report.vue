@@ -11,11 +11,17 @@
     )
       template(slot="item" slot-scope="{item}")
         vi-table-col {{item.realname_en}}
-        vi-table-col(v-for="(ex,i) in item.exercise" :key="i") {{ex.status}}
+        vi-table-col(v-for="(ex,i) in item.exercise" :key="i") {{locked ? ex.marks: ex.status}}
 </template>
 
 <script>
   export default {
+    props: {
+      locked: {
+        type: Boolean,
+        default: false
+      }
+    },
     data() {
       return {
         loading: false,

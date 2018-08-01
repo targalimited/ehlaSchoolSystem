@@ -12,10 +12,22 @@ export default [
     children: [
       {
         path: 'assignment',
+        name: 'asmt-status',
+        components: {
+          left: AsmtList,
+          right: AsmtReport
+        }
+      },
+      {
+        path: 'assignment/mark',
         name: 'asmt-report',
         components: {
           left: AsmtList,
           right: AsmtReport
+        },
+        props: {
+          left: {locked: true},
+          right: {locked: true}
         }
       },
       {
