@@ -26,7 +26,7 @@
         return this.$route.params.class_id
       },
       asmtList () {
-        const TYPE = this.locked ? 'lockedAsmtList' : 'activeAsmtList'
+        const TYPE = this.locked ? 'lockedBatchList' : 'activeBatchList'
         return this.$store.getters[TYPE](this.$class_id) || []
       }
     },

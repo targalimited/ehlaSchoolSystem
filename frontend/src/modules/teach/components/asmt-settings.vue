@@ -1,7 +1,7 @@
 <template lang="pug">
   .asmt-settings
-    img(:src="asmtData.thumbnail_path")
-    h2 {{isEdit ? 'Edit' : 'Create'}} {{asmtData.name_en}}
+    img(:src="item.thumbnail_path")
+    h2 {{isEdit ? 'Edit' : 'Create'}} {{item.name_en}}
     vi-row
       vi-col(xs6)
         vi-date-picker(v-model="startDate" placeholder="Start Date")
@@ -34,9 +34,9 @@
 
     data () {
       return {
-        startDate: this.prevStartDate || '',
-        endDate: this.prevEndDate || '',
-        remark: this.prevRemark || '',
+        startDate: '',
+        endDate: '',
+        remark: '',
         asmtData: {}
       }
     },
@@ -44,11 +44,19 @@
     computed: {
       isEdit () {
         return !!this.batchId
+      },
+      prevSettings () {
+        if (!this.batchId) return null
+        return this.$store.getters.getBatchById(this.batchId)
+      },
+      item () {
+        return this.$store.getters.getItemById(this.itemId)
       }
     },
 
     methods: {
       async initFetch () {
+        // if (this.isEdit) return
         this.asmtData = await this.$store.dispatch('getItemById', {
           classId: this.classId,
           itemId: this.itemId
@@ -72,6 +80,11 @@
 
     created () {
       this.initFetch()
+      if (this.prevSettings) {
+        this.startDate = this.prevSettings.start_date
+        this.endDate = this.prevSettings.end_date
+        this.remark = this.prevSettings.remark
+      }
     }
   }
 </script>

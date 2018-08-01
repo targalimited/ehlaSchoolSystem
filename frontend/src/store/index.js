@@ -3,6 +3,7 @@ import auth from '@/modules/auth/vuex'
 import asmt from '@/modules/asmt/vuex'
 import teach from '@/modules/teach/vuex'
 import settings from '@/store/setting.module'
+import entities from './entities'
 import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
@@ -15,7 +16,8 @@ export default new Vuex.Store({
     auth,
     asmt,
     teach,
-    settings
+    settings,
+    entities
   },
   strict: debug,
 })

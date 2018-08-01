@@ -13,24 +13,23 @@
   export default {
     name: 'asmt-options',
 
-    data () {
-      return {
-        items: []
-      }
-    },
-
     props: {
       selectedClass: [String, Number],
       selectedCat: String
     },
 
+    computed: {
+      items () {
+        return this.$store.getters.getItemListByClassCat(this.selectedClass, this.selectedCat)
+      }
+    },
+
     methods: {
       async initFetch () {
-        const res = await this.$store.dispatch('getItemListByClassCat', {
-          class_id: this.selectedClass,
-          cat_id: this.selectedCat
+        this.$store.dispatch('getItemListByClassCat', {
+          classId: this.selectedClass,
+          catId: this.selectedCat
         })
-        this.items = res
       }
     },
 

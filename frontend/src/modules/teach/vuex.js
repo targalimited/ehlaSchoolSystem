@@ -1,4 +1,5 @@
-import {batchListSchema} from './schema'
+import {batchListSchema, itemListSchema} from './schema'
+import { normalize, denormalize } from 'normalizr'
 import {http, AuthHttp} from '../../http'
 import Vue from 'vue'
 
@@ -9,7 +10,8 @@ export default {
     asmt_list: {},
     asmt_report: {},
     weakness_list: [],
-    batchList: {},
+    batchList: {}, // the assigned list of the class
+    itemList: {}, // the assignable items for the class
     weaknessReport: {}
   },
 
@@ -17,8 +19,12 @@ export default {
     gotClasses (state, classList) {
       state.classList = classList
     },
-    gotAsmtList (state, {asmt_list, class_id}) {
-      Vue.set(state.asmt_list, class_id, asmt_list)
+    gotBatchList (state, {asmtList, classId}) {
+      Vue.set(state.asmt_list, classId, asmtList)
+    },
+    gotItemList (state, {itemList, classId, catId}) {
+      const id = classId + catId
+      Vue.set(state.itemList, id, itemList)
     },
     gotAsmtReport (state, {batch_id, report}) {
       Vue.set(state.asmt_report, batch_id, report)
@@ -87,9 +93,11 @@ export default {
         }
         delete batch.items
       })
-      commit('gotAsmtList', {
-        asmt_list: batches,
-        class_id: class_id
+      const {entities, result} = normalize(batches, batchListSchema)
+      commit('updateEntities', entities)
+      commit('gotBatchList', {
+        asmtList: result,
+        classId: class_id
       })
       return batches
     },
@@ -111,13 +119,21 @@ export default {
       return report
     },
 
-    async getItemListByClassCat ({commit}, {class_id, cat_id}) {
+    async getItemListByClassCat ({commit}, {classId, catId}) {
       const res = await new AuthHttp().post('/get_item_list_by_cls_sub_cat', {
-        class_id: class_id,
+        class_id: classId,
         subject_id: 1,
-        cat_grouper: cat_id
+        cat_grouper: catId
       })
-      return res.data
+      const itemList = res.data
+      const {entities, result} = normalize(itemList, itemListSchema)
+      commit('updateEntities', entities)
+      commit('gotItemList', {
+        itemList: result,
+        classId: classId,
+        catId: catId
+      })
+      return itemList
     },
 
     async setAssignment ({commit, rootState, dispatch}, {classId, itemId, batchId, itemType, startDate, endDate, remark, exercises, videos}) {
@@ -181,15 +197,30 @@ export default {
 
   getters: {
     // get asmt list by class id
-    asmtList: (state) => (class_id) => {
-      // TODO: filtering
-      return state.asmt_list[class_id] || []
+    getBatchListByClass: (state, getters, rootState) => (classId) => {
+      const batchIdList = state.asmt_list[classId]
+      return denormalize(batchIdList, batchListSchema, {
+        batch: rootState.entities.batch
+      }) || []
     },
-    lockedAsmtList: (state, getters) => (classId) => {
-      return getters.asmtList(classId).filter(item => !!parseInt(item.is_locked))
+    getBatchById: (state, getters, rootState) => (batchId) => {
+      return rootState.entities.batch[batchId]
     },
-    activeAsmtList: (state, getters) => (classId) => {
-      return getters.asmtList(classId).filter(item => !parseInt(item.is_locked))
+    getItemListByClassCat: (state, getters, rootState) => (classId, catId) => {
+      const id = classId + catId
+      const itemIdList = state.itemList[id]
+      return denormalize(itemIdList, itemListSchema, {
+        item: rootState.entities.item
+      }) || []
+    },
+    getItemById: (state, getters, rootState) => (itemId) => {
+      return rootState.entities.item[itemId]
+    },
+    lockedBatchList: (state, getters) => (classId) => {
+      return getters.getBatchListByClass(classId).filter(item => !!parseInt(item.is_locked))
+    },
+    activeBatchList: (state, getters) => (classId) => {
+      return getters.getBatchListByClass(classId).filter(item => !parseInt(item.is_locked))
     },
     asmtReport: (state) => (batch_id) => {
       return state.asmt_report[batch_id]
