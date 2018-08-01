@@ -40,13 +40,18 @@ class ResultController extends Controller
 		$itemId    = $params['item_id'];
 		$subjectId = $params['subject_id'];
 		$batchId   = $params['batch_id'];
+			
+		if (empty($studentIds)) {
+			$output["data"] = [];
+			$output["metadata"] = [];
+		} else {
+			//usermodel
+			$UAS = New UsermodelApiServices($request);
+			$result = $UAS->resultApiGetSchoolStatusReport($academicId, $studentIds, $itemId, $subjectId, $batchId);
 		
-		//usermodel
-		$UAS = New UsermodelApiServices($request);
-		$result = $UAS->resultApiGetSchoolStatusReport($academicId, $studentIds, $itemId, $subjectId, $batchId);	
-				
-		$output["data"] = $result["data"];
-		$output["metadata"] = $result["metadata"];
+			$output["data"] = $result["data"];
+			$output["metadata"] = $result["metadata"];
+		}
 		
 		return json($output);
 	}
@@ -76,12 +81,18 @@ class ResultController extends Controller
 		$weaknessCode = $params['weakness_code'];
 		$weaknessIds = $params['weakness_ids'];
 		
-		//usermodel
-		$UAS = New UsermodelApiServices($request);
-		$result = $UAS->resultApiGetSchoolWeaknessReport($academicId, $studentIds, $subjectId, $weaknessCode, $weaknessIds);	
 				
-		$output["data"] = $result["data"];
-		$output["metadata"] = $result["metadata"];
+		if (empty($studentIds)) {
+			$output["data"] = [];
+			$output["metadata"] = [];
+		} else {
+			//usermodel
+			$UAS = New UsermodelApiServices($request);
+			$result = $UAS->resultApiGetSchoolWeaknessReport($academicId, $studentIds, $subjectId, $weaknessCode, $weaknessIds);	
+		
+			$output["data"] = $result["data"];
+			$output["metadata"] = $result["metadata"];
+		}
 		
 		return json($output);
 	}
@@ -111,13 +122,18 @@ class ResultController extends Controller
 		$itemId    = $params['item_id'];
 		$subjectId = $params['subject_id'];
 		$batchId   = $params['batch_id'];
-		
-		//usermodel
-		$UAS = New UsermodelApiServices($request);
-		$result = $UAS->resultApiGetSchoolBatchItemResultReport($academicId, $studentIds, $itemId, $subjectId, $batchId);	
 				
-		$output["data"] = $result["data"];
-		$output["metadata"] = $result["metadata"];
+		if (empty($studentIds)) {
+			$output["data"] = [];
+			$output["metadata"] = [];
+		} else {
+			//usermodel
+			$UAS = New UsermodelApiServices($request);
+			$result = $UAS->resultApiGetSchoolBatchItemResultReport($academicId, $studentIds, $itemId, $subjectId, $batchId);	
+		
+			$output["data"] = $result["data"];
+			$output["metadata"] = $result["metadata"];
+		}
 		
 		return json($output);
 	}
@@ -175,11 +191,17 @@ class ResultController extends Controller
 		$subjectId    = $params['subject_id'];
 		$weaknessCode = $params['weakness_code'];
 		
-		//usermodel
-		$UAS = New UsermodelApiServices($request);
-		$result = $UAS->resultApiGetSchoolWeaknessList($academicId, $studentIds, $subjectId, $weaknessCode);	
-		$output["data"] = $result["data"];
-		$output["metadata"] = $result["metadata"];
+		
+		if (empty($studentIds)) {
+			$output["data"] = [];
+			$output["metadata"] = [];
+		} else {
+			//usermodel
+			$UAS = New UsermodelApiServices($request);
+			$result = $UAS->resultApiGetSchoolWeaknessList($academicId, $studentIds, $subjectId, $weaknessCode);	
+			$output["data"] = $result["data"];
+			$output["metadata"] = $result["metadata"];
+		}
 	
 		return json($output);
 	}
