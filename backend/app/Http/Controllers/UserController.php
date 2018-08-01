@@ -141,13 +141,20 @@ class UserController extends Controller
 
 
 
-    if($request->type == 'student')
+    if($request->type == 'student') {
       $ids = StudentClassSubject::get()->pluck('student_id');
-    else if ($request->type =='teacher')
-       $ids = TeacherClassSubject::get()->pluck('teacher_id');
+      $school_list = UserInfo::whereIn('user_id',$ids)
+        ->leftJoin('student_class_subject', 'user_info.user_id', '=', 'student_class_subject.student_id')
+        ->leftJoin('classes','student_class_subject.class_id','=','classes.id')
+        ->select('realname_zh','realname_en','school_num','default_password','c_name as class_name','class_no')->get()->toArray();
+    }
+    else if ($request->type =='teacher') {
+      $ids = TeacherClassSubject::get()->pluck('teacher_id');
+      $school_list = UserInfo::whereIn('user_id', $ids)->get();
+    }
 
 
-    $school_list = UserInfo::whereIn('user_id',$ids)->get();
+
 
 
     $myFile =  Excel::create('school_list', function ($excel) use ($school_list) {
