@@ -158,7 +158,7 @@ class UserController extends Controller
 
     $myFile = $myFile->string('xlsx'); //change xlsx for the format you want, default is xls
     $response =  array(
-      'name' => "student_list", //no extention needed
+      'name' => $request->type."_list", //no extention needed
       'file' => "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,".base64_encode($myFile) //mime type of used format
     );
     return response()->json($response);
