@@ -1,5 +1,6 @@
 <template lang="pug">
   vi-dialog.edit-asmt-dialog(:value="true")
+    .vi-dialog__header Edit Assignment
     asmt-settings(
       :item-id="itemId"
       :class-id="classId"

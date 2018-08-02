@@ -23,9 +23,11 @@
         ) {{tab.title}}
     vi-spacer
     .top-bar__r
-      vi-button(icon color="brand" size="24" style="font-size: 20px" @click="createAsmt")
-        div +
-      vi-avatar(size="24" class="ml-8")
+      vi-menu(left)
+        vi-button(slot="activator" icon color="brand" size="24" style="font-size: 20px")
+          div +
+        vi-item(v-for="cat in catList" :key="cat.key" @click="createAsmt(cat.key)" link) {{cat.name_en}}
+      vi-avatar(size="24" class="ml-16")
         vi-icon(name="avatar" size="16")
 </template>
 
@@ -74,8 +76,10 @@
         }
         this.$router.push(newRoute)
       },
-      createAsmt () {
-        createAsmtDialog()
+      createAsmt (id) {
+        createAsmtDialog({
+          catId: id
+        })
       },
       isTabActive (routeName) {
         return routeName === this.$route.name
@@ -87,6 +91,9 @@
       },
       class_id () {
         return parseInt(this.$route.params.class_id)
+      },
+      catList () {
+        return this.$store.state.teach.catList
       }
     },
     // TODO: where should we call this API

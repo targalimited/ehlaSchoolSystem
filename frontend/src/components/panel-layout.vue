@@ -15,6 +15,7 @@
 
     &__l
       width 350px
+      flex-shrink 0
 
     &__r
       flex 1

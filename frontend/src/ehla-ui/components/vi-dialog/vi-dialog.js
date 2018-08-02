@@ -30,7 +30,7 @@ export default {
   data () {
     return {
       isDependent: false,
-      stackClass: 'v-dialog__content__active',
+      stackClass: 'vi-dialog__content__active',
       stackMinZIndex: 200,
       activeZIndex: 200 // TODO hardcoded value
     }
@@ -65,17 +65,17 @@ export default {
   computed: {
     classes () {
       return {
-        [(`v-dialog ${this.contentClass}`).trim()]: true,
-        'v-dialog--active': this.isActive,
-        'v-dialog--persistent': this.persistent,
-        'v-dialog--fullscreen': this.fullscreen,
-        'v-dialog--scrollable': this.scrollable
+        [(`vi-dialog ${this.contentClass}`).trim()]: true,
+        'vi-dialog--active': this.isActive,
+        'vi-dialog--persistent': this.persistent,
+        'vi-dialog--fullscreen': this.fullscreen,
+        'vi-dialog--scrollable': this.scrollable
       }
     },
     contentClasses () {
       return {
-        'v-dialog__content': true,
-        'v-dialog__content__active': this.isActive
+        'vi-dialog__content': true,
+        'vi-dialog__content__active': this.isActive
       }
     }
   },
@@ -160,7 +160,7 @@ export default {
 
     if (this.$slots.activator) {
       children.push(h('div', {
-        'class': 'v-dialog__activator',
+        'class': 'vi-dialog__activator',
         on: {
           click: e => {
             e.stopPropagation()
@@ -188,7 +188,7 @@ export default {
     }, [dialog]))
 
     return h('div', {
-      staticClass: 'v-dialog__container',
+      staticClass: 'vi-dialog__container',
       style: {
         display: (!this.$slots.activator || this.fullWidth) ? 'block' : 'inline-block'
       }

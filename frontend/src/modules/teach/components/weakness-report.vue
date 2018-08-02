@@ -1,5 +1,5 @@
 <template lang="pug">
-  div
+  div.weakness-report
     vi-spinner(v-if="!weakness_report")
     vi-data-table(
       v-else
@@ -69,3 +69,9 @@
     }
   }
 </script>
+
+<style lang="stylus">
+  .weakness-report
+    .vi-table__col
+      flex 1
+</style>

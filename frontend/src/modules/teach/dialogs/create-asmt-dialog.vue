@@ -1,8 +1,11 @@
 <template lang="pug">
   // TODO: hardcoded
-  vi-dialog.create-asmt-dialog(:value="true")
-    asmt-options(v-if="!selectedAsmt" :selectedClass="classId " selectedCat="RCD" @input="v => {selectedAsmt = v}")
-    asmt-settings(v-if="selectedAsmt" :item-id="selectedAsmt.id" :class-id="classId" @done="onFinish")
+  vi-dialog(scrollable :value="true" max-width="640")
+    .vi-dialog__main
+      .vi-dialog__header Create assignment
+      template
+        asmt-options(v-if="!selectedAsmt" :selectedClass="classId " :selectedCat="catId" @input="v => {selectedAsmt = v}")
+        asmt-settings(v-if="selectedAsmt" :item-id="selectedAsmt.id" :class-id="classId" @done="onFinish" @cancel="$close()")
 </template>
 
 <script>
@@ -12,6 +15,10 @@
     name: 'create-asmt-dialog',
 
     components: { AsmtOptions, AsmtSettings },
+
+    props: {
+      catId: String
+    },
 
     computed: {
       classId () {

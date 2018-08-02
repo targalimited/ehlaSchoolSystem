@@ -77,3 +77,9 @@
     }
   }
 </script>
+
+<style lang="stylus">
+  .current-asmt-report
+    .vi-table__col
+      flex 1
+</style>

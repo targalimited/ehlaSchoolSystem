@@ -3,8 +3,27 @@ import { normalize, denormalize } from 'normalizr'
 import {http, AuthHttp} from '../../http'
 import Vue from 'vue'
 
-export default {
+// TODO: move this to somewhere to share across module
+const catList = [
+  {
+    key: 'DR',
+    name_en: 'Daily Fun Reading'
+  },
+  {
+    key: 'WR',
+    name_en: 'Weekly Fun Reading',
+  },
+  {
+    key: 'RCD',
+    name_en: 'Reading Comprehension Diagnosis',
+  },
+  {
+    key: 'BR',
+    name_en: 'Daily Fun Reading (Bridging)'
+  }
+]
 
+export default {
   state: {
     classList: null,
     asmt_list: {},
@@ -12,7 +31,8 @@ export default {
     weakness_list: [],
     batchList: {}, // the assigned list of the class
     itemList: {}, // the assignable items for the class
-    weaknessReport: {}
+    weaknessReport: {},
+    catList: catList
   },
 
   mutations: {
