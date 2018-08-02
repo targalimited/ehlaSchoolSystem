@@ -4,6 +4,12 @@
     <vi-app-bar title="Students">
 
       <div slot="action">
+
+
+        <vi-button @click="onExport" dark>
+          <vi-icon left name="add-thick" size="12"/>
+          Export
+        </vi-button>
         <vi-button @click="onBatchImport" dark>
           <vi-icon left name="add-thick" size="12"/>
           Batch import
@@ -45,6 +51,7 @@
         </vi-table-col>
 
         <vi-table-col>
+
           <vi-button @click="onEdit(item)" icon text>
             <vi-icon name="edit" size="22"/>
           </vi-button>
@@ -102,6 +109,9 @@
     },
 
     methods: {
+      async onExport () {
+        this.$store.dispatch('EXPORT_STUDENT')
+      },
       async onBatchImport () {
         const file = await batchImportDialog()
         if (!file) return
@@ -120,7 +130,8 @@
             password: res.password,
             school_num: res.school_num,
             realname_zh: res.realname_zh,
-            className: res.className
+            className: res.className,
+            classNo: res.classNo
           })
         })
       },
@@ -133,10 +144,13 @@
           oldUsername: student.username,
           oldSchool_num: student.school_num,
           OptionClass: this.option_class,
-          oldClass: student.single_class.c_name
+          oldClass: student.single_class.c_name,
+          oldClassNo: student.student_detail.class_no
         }).then(res=>{
-          if(res)
-           this.$store.dispatch('STUDENT_UPDATE',{id:student.student_id,fullname:res.fullname,className:res.className})
+          if(res) {
+            res.student_id = student.student_id
+            this.$store.dispatch('STUDENT_UPDATE', res)
+          }
         })
       },
       async onDelete (student) {
@@ -150,6 +164,7 @@
         } catch (e) {}
       },
       filterByClass (items) {
+         console.log('filterByClass',items);
         if (!this.classFilters) return items
         return items.filter(i => {
           return this.classFilters === i.single_class.c_name
@@ -160,9 +175,8 @@
         search = search.toString().toLowerCase()
         if (search.trim() === '') return items
 
-        return items.filter(i => (
-          filter(i.realname, search)
-        ))
+        // console.log('filter',filter);
+        return items.filter(i => filter(i.realname_en, search))
       },
     },
 

@@ -40,8 +40,9 @@ class MigrateRollbackAllCommand extends Command
       foreach (\Config::get('database.connections') as $name => $details)
       {
         if($name !== 'mysql'){
-          $this->info('Running migration for "' . $name . '"');
-          $this->call('migrate:rollback', ['--pretend'=>true,'--force' => true, '--database' => $name]);
+          $this->info('Running Rollback for "' . $name . '"');
+          $this->call('migrate:rollback', ['--force' => true, '--database' => $name]);
+          \DB::connection()->setPdo(null);
         }
         //$this->call('migrate', array('--database' => $name, '--path' => 'app/database/migrations/' . $name));
       }

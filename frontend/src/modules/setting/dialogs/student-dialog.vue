@@ -28,6 +28,11 @@
           <vi-input placeholder="Student Number" v-model="student_num"/>
         </div>
 
+        <div class="input-group">
+          <vi-input-label>Class No.</vi-input-label>
+          <vi-input placeholder="Class Number" v-model="class_no"/>
+        </div>
+
         <div class="input-group" >
           <vi-input-label>Password</vi-input-label>
           <vi-input placeholder="Password" v-model="password" type="password"/>
@@ -57,7 +62,7 @@
 export default {
   name: 'level-dialog',
 
-  props: ['oldRealname_en', 'oldUsername', 'oldClass', 'OptionClass', 'oldRealname_zh','oldPassword', 'oldSchool_num'],
+  props: ['oldRealname_en', 'oldUsername', 'oldClass', 'OptionClass', 'oldRealname_zh','oldPassword', 'oldSchool_num', 'oldClassNo'],
 
   data () {
     return {
@@ -68,6 +73,7 @@ export default {
       password: '',
       password_confirmation: '',
       student_num: this.oldSchool_num ? this.oldSchool_num : '',
+      class_no: this.oldClassNo ? this.oldClassNo :''
     }
   },
 
@@ -84,6 +90,7 @@ export default {
         this.realname_zh &&
         this.username &&
         this.className &&
+        this.class_no &&
         this.student_num
     }
   },
@@ -113,7 +120,8 @@ export default {
           password: this.password,
           school_num: this.student_num,
           realname_zh: this.realname_zh,
-          className: this.className
+          className: this.className,
+          classNo: this.class_no
         })
       }
     }

@@ -162,7 +162,7 @@ class AssignmentController extends Controller
 
 		//usermodel
 		$UAS = new UsermodelApiServices($request);
-		
+				
 		$feedback = $UAS->schoolApiGetSchoolAssignment($params);
 		
         $this->result['data'] = $feedback['data'];
@@ -179,6 +179,28 @@ class AssignmentController extends Controller
 		$PCS = New PermissionControlServices($request);
 		$permission = $PCS->checkUserPermission($user);
 
+		$studentIds = $PBS->getStudents();
+				
+		if (isset($params['items'])) {			
+			foreach ($params['items'] as &$item) {
+				if (isset($item['exercise_assignments'])) {
+					foreach ($item['exercise_assignments'] as &$assignments) {
+						if (!isset($assignments['student_ids'])) {
+							$assignments['student_ids'] = $studentIds;
+						}
+					}
+				}
+				
+				if (isset($item['video_assignments'])) {
+					foreach ($item['video_assignments'] as &$assignments) {
+						if (!isset($assignments['student_ids'])) {
+							$assignments['student_ids'] = $studentIds;
+						}
+					}
+				}
+			}
+		}
+		
 		//usermodel
 		$UAS = new UsermodelApiServices($request);
 		$feedback = $UAS->schoolApiSetSchoolAssignment($params);
