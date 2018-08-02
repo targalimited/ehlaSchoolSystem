@@ -11,7 +11,14 @@
     )
       template(slot="item" slot-scope="{item}")
         vi-table-col {{item.realname_en}}
-        vi-table-col(v-for="(ex,i) in item.exercise" :key="i") {{locked ? ex.marks: ex.status}}
+        vi-table-col(v-for="(ex,i) in item.exercise" :key="i")
+          template(v-if="locked") {{ex.marks}}
+          template(v-else)
+            template(v-if="ex.status === 0")
+              vi-icon(name="clear" size="12" color="red")
+            template(v-if="ex.status === 1")
+              vi-icon(name="done" size="12" color="green")
+            template(v-if="ex.status === 2") N/A
 </template>
 
 <script>

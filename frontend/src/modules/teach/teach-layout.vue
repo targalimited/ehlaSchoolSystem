@@ -28,9 +28,17 @@
     margin-top 75px
 
     &__l
+      margin 20px
       width 350px
+      flex-shrink 0
+      background white
+      border-radius $border-radius
+      box-shadow $box-shadow-2
 
     &__r
       flex 1
-      border-left 1px solid $border-color
+      border-radius $border-radius
+      box-shadow $box-shadow-2
+      margin 20px 20px 20px 0
+      background white
 </style>

@@ -1,15 +1,31 @@
 <template lang="pug">
-  vi-row.asmt-item
-    .asmt-item__l
-      vi-avatar(:size="100" :src="asmtData.thumbnail_path")
-    .asmt-item__r
-      .asmt-item__title {{asmtData.name_en}}
-      span.asmt-item__date {{asmtData.end_date | formatDate}}
-      div.asmt-item__meta 16/20
-      div lock {{asmtData.is_locked}}
-      div(v-if="!locked")
-        vi-button(@click="onEdit(asmtData)") edit
-        vi-button(@click="lockAsmt(asmtData)") lock
+  .asmt-item(:class="{'asmt-item--active': isSelected}")
+    vi-row(align-center)
+      .asmt-item__date {{asmtData.start_date | formatDate}} - {{asmtData.end_date | formatDate}}
+      vi-spacer
+      vi-menu(left v-if="!locked")
+        vi-button(slot="activator" icon flat size="30")
+          vi-icon(name="more" size="18")
+        vi-item(link @click="onEdit(asmtData)")
+          vi-item-avatar
+            vi-icon(name="edit" size="18")
+          vi-item-content Edit Assignment
+        vi-item(link @click="lockAsmt(asmtData)")
+          vi-item-avatar
+            vi-icon(name="lock" size="18")
+          vi-item-content Lock Assignment
+        vi-item(link @click="lockAsmt")
+          vi-item-avatar
+            vi-icon(name="trash" size="18")
+          vi-item-content Delete Assignment
+    vi-item(height="80")
+      vi-item-avatar
+        vi-avatar(:size="60" :src="asmtData.thumbnail_path")
+      vi-item-content
+        vi-item-title {{asmtData.name_en}}
+        vi-item-subtitle(v-if="asmtData.exercise_assignments") ({{asmtData.exercise_assignments.length}} exercises, 3 Videos)
+        vi-item-subtitle 16/20 std completed
+    // .asmt-item__remark(v-if="asmtData.remark") {{asmtData.remark}}
 </template>
 
 
@@ -26,6 +42,13 @@
         type: Boolean,
         required: false,
         default: false
+      }
+    },
+
+    computed: {
+      isSelected () {
+        const id = this.$route.query.batch_id
+        return parseInt(this.asmtData.batch_id) === parseInt(id)
       }
     },
 
@@ -49,18 +72,22 @@
 <style lang="stylus">
   @import '../../../project-ui/stylus/settings.styl'
   .asmt-item
-    padding 16px
     border-bottom 1px solid $border-color
+    padding 10px 20px
+    cursor pointer
 
-    &__r
-      margin-left 8px
+    &:hover
+      background $bg-color-1
 
-    &__title
-      font-weight bold
-      font-size 16px
-      line-height 1.2
+    &--active
+      border-top 1px solid $border-color
+      background $bg-color-1
+      border-color $brand
 
     &__date
-      color $red
+      text-transform uppercase
       font-size 12px
+
+    .vi-item
+      // padding 0 20px
 </style>

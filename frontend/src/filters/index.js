@@ -3,7 +3,7 @@ import moment from 'moment'
 import store from '@/store'
 
 Vue.filter('formatDate', date => {
-  return moment(date, 'YYYY-MM-DDTHH:mm:ss').format('DD MMM YYYY')
+  return moment(date, 'YYYY-MM-DDTHH:mm:ss').format('DD MMM')
 })
 
 Vue.filter('levelName', lv => {
