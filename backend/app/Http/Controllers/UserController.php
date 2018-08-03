@@ -80,35 +80,6 @@ class UserController extends Controller
     }
   }
 
-  private function init_()
-  {
-
-    foreach (Subject::all() as $v) {
-      $this->subject[$v->id] = strtolower(str_replace(' ', '_', $v->s_name_en));
-    }
-
-    foreach (SchoolClass::all() as $v) {
-      $this->class[$v->id] = strtolower($v->c_name);
-    }
-
-    foreach (User::where('user_group', 3)->get() as $v) {
-      $this->teacher[$v->id]['username'] = $v->username;
-      $this->teacher[$v->id]['email'] = $v->email;
-    }
-
-
-    foreach (TeacherClassSubject::all() as $k => $v) {
-      $this->teacher_subject_class[$v->id]['multiple'] = $v->multiple_teacher;
-      $this->teacher_subject_class[$v->id]['email'] = $this->teacher[$v->teacher_id]['email'];
-      $this->teacher_subject_class[$v->id]['class_id'] = $v->class_id;
-      $this->teacher_subject_class[$v->id]['subject_id'] = $v->subject_id;
-      $this->teacher_subject_class[$v->id]['class_name'] = $this->class[$v->class_id];
-      $this->teacher_subject_class[$v->id]['subject_name'] = $this->subject[$v->subject_id];
-    }
-
-  }
-
-
   public function changepw(Request $request)
   {
 
@@ -133,7 +104,7 @@ class UserController extends Controller
       $school_list = UserInfo::whereIn('user_id',$ids)
         ->leftJoin('student_class_subject', 'user_info.user_id', '=', 'student_class_subject.student_id')
         ->leftJoin('classes','student_class_subject.class_id','=','classes.id')
-        ->select('c_name as class_name','class_no','realname_zh','realname_en','username','default_password')->get()->toArray();
+        ->select('c_name as class_name','class_no','realname_zh','realname_en','username','default_password')->orderBy('class_name','asc')->orderBy('class_no')->get()->toArray();
     }
     else if ($request->type =='teacher') {
       $ids = TeacherClassSubject::get()->pluck('teacher_id');
@@ -295,9 +266,10 @@ class UserController extends Controller
   {
     $this->init();
 
+    $total_receive = 0;
     if ($request->hasFile('file')) {
       $path = $request->file('file')->getRealPath();
-      Excel::load($path, function ($reader) use ($request) {
+      Excel::load($path, function ($reader) use ($request,&$total_receive) {
         $results = $reader->get()->toArray();
         $student_sheet = $results[0];
 
@@ -319,7 +291,7 @@ class UserController extends Controller
           $new_subject_db[] = strtolower(str_replace(' ', '_', $v->s_name_en));
         }
 
-        for ($j = 6; $j < count($subjects_from_excel); $j++) {
+        for ($j = 5; $j < count($subjects_from_excel); $j++) {
           if (!in_array(strtolower($subjects_from_excel[$j]), $new_subject_db)) {
             $this->errors[$i] = 'No this subject ' . $subjects_from_excel[$j];
           }
@@ -349,7 +321,6 @@ class UserController extends Controller
             $student[$v['student_no']]['school_num'] = $v['student_no'];
             $student[$v['student_no']]['realname_en'] = $v['realname_en'];
             $student[$v['student_no']]['realname_zh'] = $v['realname_zh'];
-            $student[$v['student_no']]['password'] = $v['password'];
 
 //            $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
 //            $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
@@ -358,67 +329,74 @@ class UserController extends Controller
 
           $students = array_values($student);
 
-          $input['userGroup'] = 'student';
-          $input['accType'] = "";
-          $input['users'] = $students;
+
 
 //          $debug = New Debug();
 //          $debug->context = json_encode($input);
 //          $debug->save();
 
-          $res = $this->_client->post(config('variables.createAccount') . $this->access_token, $input);
+          $total_sent = count($students);
+          $chuck_no = ceil($total_sent/250);
 
-          $debug = New Debug();
-          $debug->context = json_encode($res);
-          $debug->save();
+          foreach(array_chunk($students, $chuck_no) as $curta ){
+            $input['userGroup'] = 'student';
+            $input['accType'] = "";
+            $input['users'] = $curta;
+            $res = $this->_client->post(config('variables.createAccount') . $this->access_token, $input);
 
-          die();
+  //          $debug = New Debug();
+  //          $debug->context = json_encode($res);
+  //          $debug->save();
 
-          if ($res['success']) {
-            foreach ($res['data'] as $key => $value) {
-              $student_num_id[$value['school_num']]['user_id'] = $value['user_id'];
-              $student_num_id[$value['school_num']]['password'] = $value['password'];
-              $student_num_id[$value['school_num']]['username'] = $value['username'];
-//              $teacher_role[$key]['role_id'] = array_search('student', $this->role);
-//              $teacher_role[$key]['user_id'] = $value['user_id'];
+            if ($res['success']) {
+              foreach ($res['data'] as $key => $value) {
+                $student_num_id[$value['school_num']]['user_id'] = $value['user_id'];
+                $student_num_id[$value['school_num']]['password'] = $value['password'];
+                $student_num_id[$value['school_num']]['username'] = $value['username'];
+  //              $teacher_role[$key]['role_id'] = array_search('student', $this->role);
+  //              $teacher_role[$key]['user_id'] = $value['user_id'];
+              }
             }
           }
 
+          $total_receive = count($student_num_id);
 
+          if($total_sent == $total_receive) {
 
-          foreach ($student_sheet as $k => $v) {
-            if($v['english']==='Y'){
-              $new_student_set[$k]['student_id'] = $student_num_id[$v['student_no']]['user_id'];
-              $new_student_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
-              $new_student_set[$k]['subject_id'] = array_search('english', $this->subject);
-              $new_student_set[$k]['created_at'] = Carbon::now();
-              $new_student_set[$k]['updated_at'] = Carbon::now();
+            foreach ($student_sheet as $k => $v) {
+              if($v['english']==='Y'){
+                $new_student_set[$k]['student_id'] = $student_num_id[$v['student_no']]['user_id'];
+                $new_student_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
+                $new_student_set[$k]['subject_id'] = array_search('english', $this->subject);
+                $new_student_set[$k]['created_at'] = Carbon::now();
+                $new_student_set[$k]['updated_at'] = Carbon::now();
 
-              $student_info_set[$k]['user_id']=$student_num_id[$v['student_no']]['user_id'];
-              $student_info_set[$k]['username']=$student_num_id[$v['student_no']]['username'];
-              $student_info_set[$k]['realname_en']=$v['realname_en'];
-              $student_info_set[$k]['realname_zh']=$v['realname_zh'];
-              $student_info_set[$k]['school_num']=$v['student_no'];
-              $student_info_set[$k]['class_no']=$v['class_no'];
-              $student_info_set[$k]['default_password']= $student_num_id[$v['student_no']]['password'];
-              $student_info_set[$k]['created_at']=Carbon::now();
-              $student_info_set[$k]['updated_at']=Carbon::now();
+                $student_info_set[$k]['user_id']=$student_num_id[$v['student_no']]['user_id'];
+                $student_info_set[$k]['username']=$student_num_id[$v['student_no']]['username'];
+                $student_info_set[$k]['realname_en']=$v['realname_en'];
+                $student_info_set[$k]['realname_zh']=$v['realname_zh'];
+                $student_info_set[$k]['school_num']=$v['student_no'];
+                $student_info_set[$k]['class_no']=$v['class_no'];
+                $student_info_set[$k]['default_password']= $student_num_id[$v['student_no']]['password'];
+                $student_info_set[$k]['created_at']=Carbon::now();
+                $student_info_set[$k]['updated_at']=Carbon::now();
+
+              }
+            }
+
+            try{
+              DB::transaction(function () use ($new_student_set,$student_info_set) {
+                StudentClassSubject::insert($new_student_set);
+                UserInfo::insert($student_info_set);
+              },3);
+            } catch (\Exception $e) {
 
             }
+          }else{
+            $this->errors[$i] = 'Excel not match usermodel';
           }
-
-          StudentClassSubject::insert($new_student_set);
-          UserInfo::insert($student_info_set);
-
-          try{
-            DB::transaction(function () use ($new_student_set,$student_info_set) {
-
-            },3);
-          } catch (\Exception $e) {
-
-          }
-
 //          RoleUser::insert($teacher_role);
+          ;
         }
       });
       if ($this->errors) {
@@ -427,9 +405,19 @@ class UserController extends Controller
           'code' => '',
           'message' => $this->errors
         ];
+
         return json($result);
       } else
-        return success();
+
+        $message[0] = 'Total import '.$total_receive;
+        $result = [
+          'status' => false,
+          'code' => '',
+          'message' => $message
+        ];
+
+      return json($result);
+
     } else {
       $result = [
         'status' => false,

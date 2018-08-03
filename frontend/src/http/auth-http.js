@@ -67,7 +67,7 @@ class AuthHttp {
     formData.append('file', data);
 
     try {
-      const res = await Axios.post((process.env.API_BASE_URL || '') + '/v1/'+url,
+      let res = await Axios.post((process.env.API_BASE_URL || '') + '/v1/'+url,
         formData,
         {
           headers: {
@@ -76,8 +76,7 @@ class AuthHttp {
             'school-id': localStorage.getItem('school_id')
           }
         }
-      )
-      // console.log('success',res.data);
+      );
       return res.data
     } catch (e) {
       console.log(e.message);

@@ -104,7 +104,8 @@
     computed: {
       ...mapGetters([
         'students',
-        'option_class'
+        'option_class',
+        'batch_create'
       ]),
     },
 
@@ -116,6 +117,12 @@
         const file = await batchImportDialog()
         if (!file) return
         this.$store.dispatch('STUDENT_BATCH_CREATE',file)
+        const result = this.batch_create;
+        console.log('onBatch',this.batch_create)
+        // if(result.status === false){
+        //   console.log('false')
+          alert(result.message[0])
+        // }
 
       },
       onAddStudent () {
@@ -164,7 +171,7 @@
         } catch (e) {}
       },
       filterByClass (items) {
-         console.log('filterByClass',items);
+         // console.log('filterByClass',items);
         if (!this.classFilters) return items
         return items.filter(i => {
           return this.classFilters === i.single_class.c_name
