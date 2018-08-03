@@ -128,25 +128,12 @@ class UserController extends Controller
   public function getExcel(Request $request)
   {
 
-//    $this->init();
-//
-//
-//    foreach (TeacherClassSubject::all() as $k => $v) {
-//      //$teacher_subject_class[$k]['username'] = $v->subject_id;
-//      $teacher_class_subject[$k]['username'] = $this->teacher[$v['teacher_id']]['username'];
-//      $teacher_class_subject[$k]['email'] = $this->teacher[$v['teacher_id']]['email'];
-//      $teacher_class_subject[$k]['class'] = $this->class[$v['class_id']];
-//      $teacher_class_subject[$k]['subject'] = $this->subject[$v['subject_id']];
-//    }
-
-
-
     if($request->type == 'student') {
       $ids = StudentClassSubject::get()->pluck('student_id');
       $school_list = UserInfo::whereIn('user_id',$ids)
         ->leftJoin('student_class_subject', 'user_info.user_id', '=', 'student_class_subject.student_id')
         ->leftJoin('classes','student_class_subject.class_id','=','classes.id')
-        ->select('realname_zh','realname_en','school_num','username','default_password','c_name as class_name','class_no')->get()->toArray();
+        ->select('c_name as class_name','class_no','realname_zh','realname_en','username','default_password')->get()->toArray();
     }
     else if ($request->type =='teacher') {
       $ids = TeacherClassSubject::get()->pluck('teacher_id');
@@ -332,7 +319,7 @@ class UserController extends Controller
           $new_subject_db[] = strtolower(str_replace(' ', '_', $v->s_name_en));
         }
 
-        for ($j = 5; $j < count($subjects_from_excel); $j++) {
+        for ($j = 6; $j < count($subjects_from_excel); $j++) {
           if (!in_array(strtolower($subjects_from_excel[$j]), $new_subject_db)) {
             $this->errors[$i] = 'No this subject ' . $subjects_from_excel[$j];
           }
@@ -362,6 +349,7 @@ class UserController extends Controller
             $student[$v['student_no']]['school_num'] = $v['student_no'];
             $student[$v['student_no']]['realname_en'] = $v['realname_en'];
             $student[$v['student_no']]['realname_zh'] = $v['realname_zh'];
+            $student[$v['student_no']]['password'] = $v['password'];
 
 //            $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
 //            $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
@@ -374,9 +362,17 @@ class UserController extends Controller
           $input['accType'] = "";
           $input['users'] = $students;
 
-          $access_token = json_decode(Auth::user()->session)->access_token;
-          $client = new EhlaGuzzleClient();
-          $res = $client->post(config('variables.createAccount') . $access_token, $input);
+//          $debug = New Debug();
+//          $debug->context = json_encode($input);
+//          $debug->save();
+
+          $res = $this->_client->post(config('variables.createAccount') . $this->access_token, $input);
+
+          $debug = New Debug();
+          $debug->context = json_encode($res);
+          $debug->save();
+
+          die();
 
           if ($res['success']) {
             foreach ($res['data'] as $key => $value) {
@@ -388,8 +384,7 @@ class UserController extends Controller
             }
           }
 
-//          print_r($student_num_id);
-//          die();
+
 
           foreach ($student_sheet as $k => $v) {
             if($v['english']==='Y'){
