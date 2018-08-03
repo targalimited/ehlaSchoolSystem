@@ -92,7 +92,7 @@ const actions = {
   async STUDENT_BATCH_CREATE (context,payload){
     try{
       new AuthHttp().post_file('student_batch',payload).then(res=>{
-        console.log('action_batch',res)
+        // console.log('action_batch',res)
         context.commit('SET_BATCH_CREATE_RESULT',res)
         context.dispatch('FETCH_STUDENT')
       })
@@ -260,7 +260,7 @@ const mutations = {
   },
 
   SET_BATCH_CREATE_RESULT (state,result){
-    console.log('set_batch',result)
+    // console.log('set_batch',result)
     state.batch_create = result
   },
 

@@ -5,8 +5,11 @@
 
       <div slot="action">
 
+        <vi-input v-if="batch_create.message" v-model="batch_create.message[0]" />
+
 
         <vi-button @click="onExport" dark>
+
           <vi-icon left name="add-thick" size="12"/>
           Export
         </vi-button>
@@ -116,13 +119,9 @@
       async onBatchImport () {
         const file = await batchImportDialog()
         if (!file) return
-        this.$store.dispatch('STUDENT_BATCH_CREATE',file)
-        const result = this.batch_create;
-        console.log('onBatch',this.batch_create)
-        // if(result.status === false){
-        //   console.log('false')
-          alert(result.message[0])
-        // }
+        this.$store.dispatch('STUDENT_BATCH_CREATE',file).then(()=>{
+          // console.log(this.$store.getters.batch_create.message)
+        })
 
       },
       onAddStudent () {
@@ -194,7 +193,6 @@
     },
 
     mounted (){
-      console.log(this.students)
       this.$store.dispatch('FETCH_OPTIONCLASS')
       this.$store.dispatch('FETCH_STUDENT')
     }

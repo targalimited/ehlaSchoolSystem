@@ -411,7 +411,7 @@ class UserController extends Controller
 
         $message[0] = 'Total import '.$total_receive;
         $result = [
-          'status' => false,
+          'status' => true,
           'code' => '',
           'message' => $message
         ];
