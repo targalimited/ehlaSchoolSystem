@@ -210,6 +210,29 @@ class ItemController extends Controller {
 		return json($output);	
 	}
 	
+	public function confirm_items (Request $request) {
+		//params
+		$params = $request->params;
+		//params basic
+		$PBS = new ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		
+		//permission
+		$PCS = new PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+		
+		//usermodel
+		$UAS = new UsermodelApiServices($request);
+		
+		$result = $UAS->schoolApiConfirmItems($params);
+		
+		$output["success"] = $result["data"]['success'];
+		$output['message'] = $result["data"]['msg'];
+		
+		return json($output);	
+	}
+	
+	
 	public function choose_items_for_level (Request $request) {
 		//params
 		$params = $request->params;
@@ -257,6 +280,28 @@ class ItemController extends Controller {
 		$UAS = new UsermodelApiServices($request);
 		
 		$result = $UAS->schoolApiChooseItemForLevel($itemId, $itemLv);
+		$output["success"] = $result["data"]['success'];
+		$output['message'] = $result["data"]['msg'];
+		
+		return json($output);		
+	}
+	
+	
+	public function confirm_item_for_level (Request $request) {
+		//params
+		$params = $request->params;
+		//params basic
+		$PBS = new ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		
+		//permission
+		$PCS = new PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+		
+		//usermodel
+		$UAS = new UsermodelApiServices($request);
+		
+		$result = $UAS->schoolApiConfirmItemForLevel($params);
 		$output["success"] = $result["data"]['success'];
 		$output['message'] = $result["data"]['msg'];
 		

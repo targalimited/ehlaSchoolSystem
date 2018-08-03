@@ -30,6 +30,7 @@ class ParamBasicServices extends Model {
 		$subjectId = $this->userBasic['subject_id'];
 		
 		$sql  = " SELECT class_id, c_name, level ";
+		//$sql .= "        (CASE WHEN `lock` = 1 THEN 1 ELSE 0 END) `lock`";
 		$sql .= " FROM   ".\DB::getTablePrefix()."teacher_class_subject tcs";
 		$sql .= " LEFT JOIN ".\DB::getTablePrefix()."classes c";;
 		$sql .= " ON tcs.class_id = c.id";

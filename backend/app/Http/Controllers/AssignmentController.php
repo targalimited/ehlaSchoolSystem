@@ -28,7 +28,85 @@ class AssignmentController extends Controller
 {
 
     protected $wk_set;
-
+	
+	public function delete_school_assignment(Request $request) {
+		//params
+		$params = $request->params;	
+		$params['is_deleted'] = 1;
+		
+		//params basic
+		$PBS = New ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		//permission
+		$PCS = New PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+		
+		$UAS = new UsermodelApiServices($request);
+		$feedback = $UAS->schoolApiEditSchoolAssignment($params);
+		
+        $this->result['data'] = $feedback['data'];
+        return Response()->json($this->result,200);	
+	}
+	
+	public function publish_school_assignment(Request $request) {
+		//params
+		$params = $request->params;	
+		$params['is_published'] = 1;
+		
+		//params basic
+		$PBS = New ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		//permission
+		$PCS = New PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+		
+		$UAS = new UsermodelApiServices($request);
+		$feedback = $UAS->schoolApiEditSchoolAssignment($params);
+		
+        $this->result['data'] = $feedback['data'];
+        return Response()->json($this->result,200);
+	}
+	
+	public function unpublish_school_assignment(Request $request) {
+		//params
+		$params = $request->params;	
+		$params['is_published'] = 0;
+		
+		//params basic
+		$PBS = New ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		//permission
+		$PCS = New PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+		
+		$UAS = new UsermodelApiServices($request);
+		$feedback = $UAS->schoolApiEditSchoolAssignment($params);
+		
+        $this->result['data'] = $feedback['data'];
+        return Response()->json($this->result,200);
+	}
+	
+	
+	public function edit_school_assignment(Request $request) {
+		//params
+		$params = $request->params;	
+		
+		//params basic
+		$PBS = New ParamBasicServices($request);
+		$user = $PBS->getUserBasic();
+		//permission
+		$PCS = New PermissionControlServices($request);
+		$permission = $PCS->checkUserPermission($user);
+		
+		$UAS = new UsermodelApiServices($request);
+		$feedback = $UAS->schoolApiEditSchoolAssignment($params);
+		
+        $this->result['data'] = $feedback['data'];
+        return Response()->json($this->result,200);
+	}
+	
+	
+	
 	public function get_cls_cat(Request $request) {
 		//params
 		$params = $request->params;		
