@@ -146,7 +146,7 @@ class UserController extends Controller
       $school_list = UserInfo::whereIn('user_id',$ids)
         ->leftJoin('student_class_subject', 'user_info.user_id', '=', 'student_class_subject.student_id')
         ->leftJoin('classes','student_class_subject.class_id','=','classes.id')
-        ->select('realname_zh','realname_en','school_num','default_password','c_name as class_name','class_no')->get()->toArray();
+        ->select('realname_zh','realname_en','school_num','username','default_password','c_name as class_name','class_no')->get()->toArray();
     }
     else if ($request->type =='teacher') {
       $ids = TeacherClassSubject::get()->pluck('teacher_id');
@@ -254,6 +254,7 @@ class UserController extends Controller
             foreach ($res['data'] as $key => $value) {
               $teacher_num_id[$value['school_num']]['user_id'] = $value['user_id'];
               $teacher_num_id[$value['school_num']]['password'] = $value['password'];
+              $teacher_num_id[$value['school_num']]['username'] = $value['username'];
               $teacher_role[$key]['role_id'] = array_search('teacher', $this->role);
               $teacher_role[$key]['user_id'] = $value['user_id'];
             }
@@ -266,6 +267,7 @@ class UserController extends Controller
             $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
 
             $teacher_info_set[$v['teacher_no']]['user_id']=$teacher_num_id[$v['teacher_no']]['user_id'];
+            $teacher_info_set[$v['teacher_no']]['username']=$teacher_num_id[$v['teacher_no']]['username'];
             $teacher_info_set[$v['teacher_no']]['realname_en']=$v['realname_en'];
             $teacher_info_set[$v['teacher_no']]['realname_zh']=$v['realname_zh'];
             $teacher_info_set[$v['teacher_no']]['school_num']=$v['teacher_no'];
@@ -380,10 +382,14 @@ class UserController extends Controller
             foreach ($res['data'] as $key => $value) {
               $student_num_id[$value['school_num']]['user_id'] = $value['user_id'];
               $student_num_id[$value['school_num']]['password'] = $value['password'];
+              $student_num_id[$value['school_num']]['username'] = $value['username'];
 //              $teacher_role[$key]['role_id'] = array_search('student', $this->role);
 //              $teacher_role[$key]['user_id'] = $value['user_id'];
             }
           }
+
+//          print_r($student_num_id);
+//          die();
 
           foreach ($student_sheet as $k => $v) {
             if($v['english']==='Y'){
@@ -394,6 +400,7 @@ class UserController extends Controller
               $new_student_set[$k]['updated_at'] = Carbon::now();
 
               $student_info_set[$k]['user_id']=$student_num_id[$v['student_no']]['user_id'];
+              $student_info_set[$k]['username']=$student_num_id[$v['student_no']]['username'];
               $student_info_set[$k]['realname_en']=$v['realname_en'];
               $student_info_set[$k]['realname_zh']=$v['realname_zh'];
               $student_info_set[$k]['school_num']=$v['student_no'];
@@ -481,6 +488,7 @@ class UserController extends Controller
         'realname_en' =>$request->realname_en,
         'school_num' =>$request->school_num,
         'default_password' =>$request->password,
+        'username' => $request->username,
       ];
 
       $this->createUserInfo($data);
@@ -618,7 +626,8 @@ class UserController extends Controller
       $data = [
         'realname_zh' =>$request->realname_zh,
         'realname_en' =>$request->realname_en,
-        'school_num' =>$request->school_num
+        'school_num' =>$request->school_num,
+        'username' => $request->username
       ];
       if (!empty($request->password))
         $data['default_password'] = $request->password;
@@ -668,6 +677,7 @@ class UserController extends Controller
           'school_num' =>$request->school_num,
           'class_no' =>$request->classNo,
           'default_password' =>$request->password,
+          'username' => $res['data'][0]['username'],
         ];
 
         $this->createUserInfo($data);
@@ -811,6 +821,7 @@ class UserController extends Controller
           'realname_en' =>$request->realname_en,
           'school_num' =>$request->school_num,
           'class_no' => $request->classNo,
+          'username' =>$request->username,
         ];
         if (!empty($request->password))
         $data['default_password'] = $request->password;
