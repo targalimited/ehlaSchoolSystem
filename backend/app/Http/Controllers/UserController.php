@@ -162,6 +162,9 @@ class UserController extends Controller
           }
         }
 
+        $teacher_sheet = array_map('array_filter', $teacher_sheet);
+        $teacher_sheet = array_filter($teacher_sheet);
+
         foreach ($teacher_sheet as $v) {
 
           if (!in_array(strtolower($v['class']), $this->class)) {
@@ -300,6 +303,8 @@ class UserController extends Controller
           }
         }
 
+        $student_sheet = array_map('array_filter', $student_sheet);
+        $student_sheet = array_filter($student_sheet);
 
         foreach ($student_sheet as $v) {
 
