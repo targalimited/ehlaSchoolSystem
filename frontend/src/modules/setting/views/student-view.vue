@@ -44,7 +44,7 @@
       <div slot="item" slot-scope="{item}" class="vi-table__row">
 
         <vi-table-col>
-          {{item.realname_en}}
+          {{item.student_detail.realname_en}}
         </vi-table-col>
 
         <vi-table-col>
@@ -145,10 +145,10 @@
         console.log(student);
 
         studentDialog({
-          oldRealname_en: student.realname_en,
-          oldRealname_zh: student.realname_zh,
-          oldUsername: student.username,
-          oldSchool_num: student.school_num,
+          oldRealname_en: student.student_detail.realname_en,
+          oldRealname_zh: student.student_detail.realname_zh,
+          oldUsername: student.student_detail.username,
+          oldSchool_num: student.student_detail.school_num,
           OptionClass: this.option_class,
           oldClass: student.single_class.c_name,
           oldClassNo: student.student_detail.class_no

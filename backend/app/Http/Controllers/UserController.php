@@ -911,36 +911,31 @@ class UserController extends Controller
     if (Auth::user()->can('view_students')) {
 
 
-      $students = StudentClassSubject::get()->pluck('student_id');
+//      $students = StudentClassSubject::get()->pluck('student_id');
+//
+//      $access_token = json_decode(Auth::user()->session)->access_token;
+//
+//      $inputs['ids'] = $students->toArray();
+//
+//      $client = new EhlaGuzzleClient();
+//      $res = $client->post(config('variables.getUsersByIDs') . $access_token, $inputs);
 
-      $access_token = json_decode(Auth::user()->session)->access_token;
-
-      $inputs['ids'] = $students->toArray();
-
-      $client = new EhlaGuzzleClient();
-      $res = $client->post(config('variables.getUsersByIDs') . $access_token, $inputs);
-
-
-//      print_r($res);die();
 
       $students = StudentClassSubject::with('single_class')->with('studentDetail')->get()->toArray();
 
-//      print_r($students);
-//      die();
-      foreach ($students as $k => &$v) {
-        if(empty($res['data'][$v['student_id']])){
-          $debug = New Debug();
-          $debug->context = $v['student_id'];
-          $debug->save();
-        }else{
-          $v['realname_en'] = $res['data'][$v['student_id']]['realname_en'];
-          $v['realname_zh'] = $res['data'][$v['student_id']]['realname_zh'];
-          $v['username'] = $res['data'][$v['student_id']]['username'];
-          $v['school_num'] = $res['data'][$v['student_id']]['school_num'];
-        }
-      }
-//      print_r($students);
-//      die();
+//      foreach ($students as $k => &$v) {
+//        if(empty($res['data'][$v['student_id']])){
+//          $debug = New Debug();
+//          $debug->context = $v['student_id'];
+//          $debug->save();
+//        }else{
+//          $v['realname_en'] = $res['data'][$v['student_id']]['realname_en'];
+//          $v['realname_zh'] = $res['data'][$v['student_id']]['realname_zh'];
+//          $v['username'] = $res['data'][$v['student_id']]['username'];
+//          $v['school_num'] = $res['data'][$v['student_id']]['school_num'];
+//        }
+//      }
+
 
       $result['data'] = $students;
       return Response()->json($result, 200);
@@ -960,33 +955,35 @@ class UserController extends Controller
     if (Auth::user()->can('view_teachers')) {
 
 
-      $teachers = TeacherClassSubject::get()->pluck('teacher_id');
+//      $teachers = TeacherClassSubject::get()->pluck('teacher_id');
+//
+//
+//      $access_token = json_decode(Auth::user()->session)->access_token;
+//
+//      $inputs['ids'] = $teachers->toArray();
+//
+////      print_r($inputs);
+//
+//      $client = new EhlaGuzzleClient();
+//      $res = $client->post(config('variables.getUsersByIDs') . $access_token, $inputs);
+//
+//
+//      $debug = new Debug();
+//      $debug->context = 'Get_teachers' . json_encode($res);
+//      $debug->save();
+
+      $teachers = TeacherClassSubject::with('classes')->with('subjects')->with('role')->with('teacherDetail')->get()->toArray();
 
 
-      $access_token = json_decode(Auth::user()->session)->access_token;
 
-      $inputs['ids'] = $teachers->toArray();
-
-//      print_r($inputs);
-
-      $client = new EhlaGuzzleClient();
-      $res = $client->post(config('variables.getUsersByIDs') . $access_token, $inputs);
-
-
-      $debug = new Debug();
-      $debug->context = 'Get_teachers' . json_encode($res);
-      $debug->save();
-
-      $teachers = TeacherClassSubject::with('classes')->with('subjects')->with('role')->get()->toArray();
-
-      $t = [];
+//      $t = [];
 
       foreach ($teachers as $k => $v) {
         $t[$v['teacher_id']]['teacher_id'] = $v['teacher_id'];
-        $t[$v['teacher_id']]['realname_en'] = $res['data'][$v['teacher_id']]['realname_en'];
-        $t[$v['teacher_id']]['realname_zh'] = $res['data'][$v['teacher_id']]['realname_zh'];
-        $t[$v['teacher_id']]['username'] = $res['data'][$v['teacher_id']]['username'];
-        $t[$v['teacher_id']]['school_num'] = $res['data'][$v['teacher_id']]['school_num'];
+        $t[$v['teacher_id']]['realname_en'] = $v['teacher_detail']['realname_en'];
+        $t[$v['teacher_id']]['realname_zh'] = $v['teacher_detail']['realname_zh'];
+        $t[$v['teacher_id']]['username'] = $v['teacher_detail']['username'];
+        $t[$v['teacher_id']]['school_num'] = $v['teacher_detail']['school_num'];
         $t[$v['teacher_id']]['role_id'] = $v['role']['role_id'];
         $t[$v['teacher_id']]['classes'][]['name'] = $v['classes']['c_name'];
       }
@@ -1027,6 +1024,7 @@ class UserController extends Controller
     RoleUser::where('user_id', $request->user_id)->delete();
     StudentClassSubject::where('student_id', $request->user_id)->delete();
     TeacherClassSubject::where('teacher_id', $request->user_id)->delete();
+    UserInfo::where('user_id',$request->user_id)->delete();
     return return_success();
   }
 }
