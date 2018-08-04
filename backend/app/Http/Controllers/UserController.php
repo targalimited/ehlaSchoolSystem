@@ -101,7 +101,32 @@ class UserController extends Controller
     $sheet = array_filter($sheet);
     return $sheet;
   }
+  private function header_validate($title,$sheet_header){
+    foreach ($title as $v) {
+      if (!array_key_exists($v, $sheet_header)) {
+        $this->errors[] = 'No this column ' . $v;
+      }
+    }
+  }
 
+  private function import_validate($sheet){
+
+    foreach ($sheet as $v) {
+
+      if (!in_array(strtolower($v['class']), $this->class)) {
+        $this->errors[] = 'No this class ' . $v['class'];
+      }
+      if (!in_array(strtolower($v['subject']), $this->subject)) {
+        $this->errors[] = 'No this subject ' . $v['subject'];
+      }
+
+      if(!empty($this->_teachers_no))
+        if(in_array(strtolower($v['teacher_no']),$this->_teachers_no)){
+          $this->errors[] = 'Teacher No. cannot be duplicated ' . $v['teacher_no'];
+        }
+
+    }
+  }
   private function after_sheet(){
 
   }
@@ -180,33 +205,9 @@ class UserController extends Controller
 
         $title = ['teacher_no', 'realname_en', 'realname_zh', 'class', 'subject'];
 
-        $i = 0;
+        $this->header_validate($title,$teacher_sheet[0]);
 
-        foreach ($title as $v) {
-          if (!array_key_exists($v, $teacher_sheet[0])) {
-            $this->errors[$i] = 'No this column ' . $v;
-            $i++;
-          }
-        }
-
-        foreach ($teacher_sheet as $v) {
-
-          if (!in_array(strtolower($v['class']), $this->class)) {
-            $this->errors[$i] = 'No this class ' . $v['class'];
-            $i++;
-          }
-          if (!in_array(strtolower($v['subject']), $this->subject)) {
-            $this->errors[$i] = 'No this subject ' . $v['subject'];
-            $i++;
-          }
-
-          if(!empty($this->_teachers_no))
-          if(in_array(strtolower($v['teacher_no']),$this->_teachers_no)){
-            $this->errors[$i] = 'Teacher No. cannot be duplicated ' . $v['teacher_no'];
-            $i++;
-          }
-
-        }
+        $this->import_validate($teacher_sheet);
 
         if (!$this->errors) {
           foreach ($teacher_sheet as $k => $v) {
@@ -263,7 +264,7 @@ class UserController extends Controller
             RoleUser::insert($teacher_role);
             UserInfo::insert($t_set);
           }else{
-            $this->errors[$i] = 'Excel not match usermodel';
+            $this->errors[] = 'Excel not match usermodel';
           }
 
         }
@@ -295,9 +296,7 @@ class UserController extends Controller
       Excel::load($path, function ($reader) use ($request,&$total_receive) {
         $results = $reader->get()->toArray();
         $student_sheet = $results[0];
-
-
-
+        
         $i = 0;
 
         $subjects_from_excel = array_keys($results[0][0]);
@@ -316,13 +315,7 @@ class UserController extends Controller
 
         $title = ['student_no', 'realname_en', 'realname_zh', 'class'];
 
-
-        foreach ($title as $v) {
-          if (!array_key_exists($v, $student_sheet[0])) {
-            $this->errors[$i] = 'No this column ' . $v;
-            $i++;
-          }
-        }
+        $this->header_validate($title,$student_sheet[0]);
 
         $student_sheet = array_map('array_filter', $student_sheet);
         $student_sheet = array_filter($student_sheet);
