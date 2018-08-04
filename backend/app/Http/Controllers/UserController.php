@@ -96,11 +96,6 @@ class UserController extends Controller
     return json($result);
   }
 
-  private function before_sheet($sheet){
-    $sheet = array_map('array_filter', $sheet);
-    $sheet = array_filter($sheet);
-    return $sheet;
-  }
   private function header_validate($title,$sheet_header){
     foreach ($title as $v) {
       if (!array_key_exists($v, $sheet_header)) {
@@ -108,7 +103,6 @@ class UserController extends Controller
       }
     }
   }
-
   private function import_validate($sheet){
 
     foreach ($sheet as $v) {
@@ -126,6 +120,12 @@ class UserController extends Controller
         }
 
     }
+  }
+
+  private function before_sheet($sheet){
+    $sheet = array_map('array_filter', $sheet);
+    $sheet = array_filter($sheet);
+    return $sheet;
   }
   private function after_sheet(){
 
@@ -296,7 +296,7 @@ class UserController extends Controller
       Excel::load($path, function ($reader) use ($request,&$total_receive) {
         $results = $reader->get()->toArray();
         $student_sheet = $results[0];
-        
+
         $i = 0;
 
         $subjects_from_excel = array_keys($results[0][0]);
