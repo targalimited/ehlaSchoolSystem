@@ -163,7 +163,7 @@
         try {
           await this.$messageBox({
             title: 'Delete student',
-            message: `Are you sure you want to delete student ${student.name}`
+            message: `Are you sure you want to delete student ${student.student_detail.realname_en}`
           })
           // TODO cal API
           this.$store.dispatch('STUDENT_DESTROY',{user_id:student.student_id})

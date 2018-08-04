@@ -172,7 +172,7 @@
         if (search.trim() === '') return items
 
         return items.filter(i => (
-          filter(i.student_detail.realname_en, search)
+          filter(i.realname_en, search)
         ))
       },
     },

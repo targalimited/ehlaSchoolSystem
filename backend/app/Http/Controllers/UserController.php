@@ -176,6 +176,7 @@ class UserController extends Controller
             $i++;
           }
 
+          if(!empty($this->_teachers_no))
           if(in_array(strtolower($v['teacher_no']),$this->_teachers_no)){
             $this->errors[$i] = 'Teacher No. cannot be duplicated ' . $v['teacher_no'];
             $i++;
@@ -187,7 +188,7 @@ class UserController extends Controller
           foreach ($teacher_sheet as $k => $v) {
             $teacher[$v['teacher_no']]['school_num'] = $v['teacher_no'];
             $teacher[$v['teacher_no']]['realname_en'] = $v['realname_en'];
-            $teacher[$v['teacher_no']]['realname_zh'] = $v['realname_zh'];
+            $teacher[$v['teacher_no']]['realname_zh'] = (isset($v['realname_zh']))?$v['realname_zh']:'';
 
             $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
             $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
@@ -223,7 +224,7 @@ class UserController extends Controller
             $teacher_info_set[$v['teacher_no']]['user_id']=$teacher_num_id[$v['teacher_no']]['user_id'];
             $teacher_info_set[$v['teacher_no']]['username']=$teacher_num_id[$v['teacher_no']]['username'];
             $teacher_info_set[$v['teacher_no']]['realname_en']=$v['realname_en'];
-            $teacher_info_set[$v['teacher_no']]['realname_zh']=$v['realname_zh'];
+            $teacher_info_set[$v['teacher_no']]['realname_zh']=(isset($v['realname_zh']))?$v['realname_zh']:'';
             $teacher_info_set[$v['teacher_no']]['school_num']=$v['teacher_no'];
             $teacher_info_set[$v['teacher_no']]['default_password']= $teacher_num_id[$v['teacher_no']]['password'];
             $teacher_info_set[$v['teacher_no']]['created_at']=Carbon::now();
@@ -313,6 +314,7 @@ class UserController extends Controller
             $i++;
           }
 
+          if(!empty($this->_students_no))
           if(in_array(strtolower($v['student_no']),$this->_students_no)){
             $this->errors[$i] = 'Student No. cannot be duplicated ' . $v['student_no'];
             $i++;
@@ -321,10 +323,15 @@ class UserController extends Controller
         }
 
         if (!$this->errors) {
+
+          $debug = New Debug();
+          $debug->context= json_encode($student_sheet);
+          $debug->save();
+
           foreach ($student_sheet as $k => $v) {
             $student[$v['student_no']]['school_num'] = $v['student_no'];
             $student[$v['student_no']]['realname_en'] = $v['realname_en'];
-            $student[$v['student_no']]['realname_zh'] = $v['realname_zh'];
+            $student[$v['student_no']]['realname_zh'] = (isset($v['realname_zh']))?$v['realname_zh']:'';
 
 //            $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
 //            $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
@@ -378,7 +385,7 @@ class UserController extends Controller
                 $student_info_set[$k]['user_id']=$student_num_id[$v['student_no']]['user_id'];
                 $student_info_set[$k]['username']=$student_num_id[$v['student_no']]['username'];
                 $student_info_set[$k]['realname_en']=$v['realname_en'];
-                $student_info_set[$k]['realname_zh']=$v['realname_zh'];
+                $student_info_set[$k]['realname_zh']=(isset($v['realname_zh']))?$v['realname_zh']:'';
                 $student_info_set[$k]['school_num']=$v['student_no'];
                 $student_info_set[$k]['class_no']=$v['class_no'];
                 $student_info_set[$k]['default_password']= $student_num_id[$v['student_no']]['password'];
@@ -980,7 +987,7 @@ class UserController extends Controller
 
 
 
-//      $t = [];
+      $t = [];
 
       foreach ($teachers as $k => $v) {
         $t[$v['teacher_id']]['teacher_id'] = $v['teacher_id'];
