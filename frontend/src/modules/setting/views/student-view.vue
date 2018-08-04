@@ -182,7 +182,7 @@
         if (search.trim() === '') return items
 
         // console.log('filter',filter);
-        return items.filter(i => filter(i.realname_en, search))
+        return items.filter(i => filter(i.student_detail.realname_en, search))
       },
     },
 
