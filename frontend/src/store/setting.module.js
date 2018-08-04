@@ -162,8 +162,12 @@ const actions = {
 
   async TEACHER_BATCH_CREATE (context,payload){
     try{
-      let res = await new AuthHttp().post_file('teacher_batch',payload)
-      context.dispatch('FETCH_TEACHER')
+      let res = await new AuthHttp().post_file('teacher_batch',payload).then(res=>{
+        // console.log('action_batch',res)
+        context.commit('SET_BATCH_CREATE_RESULT',res)
+        context.dispatch('FETCH_TEACHER')
+      })
+
     }catch (e) {
 
     }

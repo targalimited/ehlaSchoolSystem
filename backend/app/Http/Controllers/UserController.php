@@ -32,6 +32,7 @@ class UserController extends Controller
   public $teacher_subject_class;
   public $access_token;
   public $_client;
+  public $_teachers_no, $_students_no;
 
   public function __construct()
   {
@@ -64,7 +65,6 @@ class UserController extends Controller
     $ID = SchoolClass::where('c_name', $class_name)->pluck('id')->first();
     return $ID;
   }
-
   private function init()
   {
     foreach (Subject::all() as $v) {
@@ -77,6 +77,14 @@ class UserController extends Controller
 
     foreach (Role::all() as $v) {
       $this->role[$v->id] = strtolower($v->name);
+    }
+
+    foreach(UserInfo::whereNull('class_no')->get() as $v){
+      $this->_teachers_no[$v->user_id] = strtolower($v->school_num);
+    }
+
+    foreach(UserInfo::whereNotNull('class_no')->get() as $v){
+      $this->_students_no[$v->user_id] = strtolower($v->school_num);
     }
   }
 
@@ -95,7 +103,7 @@ class UserController extends Controller
     return $data;
   }
 
-
+  //Done
   public function getExcel(Request $request)
   {
 
@@ -130,34 +138,13 @@ class UserController extends Controller
 
   }
 
-  //TODO student_id to student name and student email
-  public function getStudentExcel_backup(Request $request)
-  {
-
-    $this->init();
-
-    $student_subject = StudentSubject::get();
-
-
-    foreach ($student_subject as $k => $v) {
-      $new_student_list[$v->student_id]['class_id'] = $this->teacher_subject_class[$v->teacher_class_subject_id]['class_name'];
-      $new_student_list[$v->student_id]['student_id'] = $v->student_id;
-      $new_student_list[$v->student_id][$this->teacher_subject_class[$v->teacher_class_subject_id]['subject_name']] = ($this->teacher_subject_class[$v->teacher_class_subject_id]['multiple']) ? $this->teacher_subject_class[$v->teacher_class_subject_id]['email'] : 'Y';
-    }
-    sort($new_student_list);
-
-    return Excel::create('student_list', function ($excel) use ($new_student_list) {
-      $excel->sheet('teacher_class_subject', function ($sheet) use ($new_student_list) {
-        $sheet->fromArray($new_student_list);
-      });
-    })->export('xlsx');
-
-  }
-
   //Done Import teacher
   public function postTeacher(Request $request)
   {
+
+//    print_r();
     $this->init();
+
     if ($request->hasFile('file')) {
       $path = $request->file('file')->getRealPath();
       Excel::load($path, function ($reader) use ($request) {
@@ -185,6 +172,12 @@ class UserController extends Controller
             $this->errors[$i] = 'No this subject ' . $v['subject'];
             $i++;
           }
+
+          if(in_array(strtolower($v['teacher_no']),$this->_teachers_no)){
+            $this->errors[$i] = 'Teacher No. cannot be duplicated ' . $v['teacher_no'];
+            $i++;
+          }
+
         }
 
         if (!$this->errors) {
@@ -314,6 +307,12 @@ class UserController extends Controller
             $this->errors[$i] = 'No this class ' . $v['class'];
             $i++;
           }
+
+          if(in_array(strtolower($v['student_no']),$this->_students_no)){
+            $this->errors[$i] = 'Student No. cannot be duplicated ' . $v['student_no'];
+            $i++;
+          }
+
         }
 
         if (!$this->errors) {
