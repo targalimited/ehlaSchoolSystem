@@ -87,6 +87,32 @@ class UserController extends Controller
       $this->_students_no[$v->user_id] = strtolower($v->school_num);
     }
   }
+  private function result($status, $message){
+    $result = [
+      'status' => $status,
+      'code' => '',
+      'message' => $message
+    ];
+    return json($result);
+  }
+
+  private function before_sheet($sheet){
+    $sheet = array_map('array_filter', $sheet);
+    $sheet = array_filter($sheet);
+    return $sheet;
+  }
+
+  private function after_sheet(){
+
+  }
+
+  private function before_post(){
+
+  }
+
+  private function after_post(){
+
+  }
 
   public function changepw(Request $request)
   {
@@ -147,9 +173,10 @@ class UserController extends Controller
 
     if ($request->hasFile('file')) {
       $path = $request->file('file')->getRealPath();
-      Excel::load($path, function ($reader) use ($request) {
+      Excel::load($path, function ($reader) use ($request, &$total_receive) {
         $results = $reader->get()->toArray();
-        $teacher_sheet = $results[0];
+
+        $teacher_sheet = $this->before_sheet($results[0]);
 
         $title = ['teacher_no', 'realname_en', 'realname_zh', 'class', 'subject'];
 
@@ -161,9 +188,6 @@ class UserController extends Controller
             $i++;
           }
         }
-
-        $teacher_sheet = array_map('array_filter', $teacher_sheet);
-        $teacher_sheet = array_filter($teacher_sheet);
 
         foreach ($teacher_sheet as $v) {
 
@@ -201,9 +225,7 @@ class UserController extends Controller
           $input['accType'] = "";
           $input['users'] = $teachers;
 
-          $access_token = json_decode(Auth::user()->session)->access_token;
-          $client = new EhlaGuzzleClient();
-          $res = $client->post(config('variables.createAccount') . $access_token, $input);
+          $res = $this->_client->post(config('variables.createAccount') . $this->access_token, $input);
 
           if ($res['success']) {
             foreach ($res['data'] as $key => $value) {
@@ -215,39 +237,43 @@ class UserController extends Controller
             }
           }
 
+          $total_sent = count($teachers);
+          $total_receive = count($teacher_num_id);
 
-          foreach ($teacher_sheet as $k => $v) {
-            $new_teacher_set[$k]['teacher_id'] = $teacher_num_id[$v['teacher_no']]['user_id'];
-            $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
-            $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
+          if($total_sent == $total_receive){
+            foreach ($teacher_sheet as $k => $v) {
+              $new_teacher_set[$k]['teacher_id'] = $teacher_num_id[$v['teacher_no']]['user_id'];
+              $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
+              $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
 
-            $teacher_info_set[$v['teacher_no']]['user_id']=$teacher_num_id[$v['teacher_no']]['user_id'];
-            $teacher_info_set[$v['teacher_no']]['username']=$teacher_num_id[$v['teacher_no']]['username'];
-            $teacher_info_set[$v['teacher_no']]['realname_en']=$v['realname_en'];
-            $teacher_info_set[$v['teacher_no']]['realname_zh']=(isset($v['realname_zh']))?$v['realname_zh']:'';
-            $teacher_info_set[$v['teacher_no']]['school_num']=$v['teacher_no'];
-            $teacher_info_set[$v['teacher_no']]['default_password']= $teacher_num_id[$v['teacher_no']]['password'];
-            $teacher_info_set[$v['teacher_no']]['created_at']=Carbon::now();
-            $teacher_info_set[$v['teacher_no']]['updated_at']=Carbon::now();
+              $teacher_info_set[$v['teacher_no']]['user_id']=$teacher_num_id[$v['teacher_no']]['user_id'];
+              $teacher_info_set[$v['teacher_no']]['username']=$teacher_num_id[$v['teacher_no']]['username'];
+              $teacher_info_set[$v['teacher_no']]['realname_en']=$v['realname_en'];
+              $teacher_info_set[$v['teacher_no']]['realname_zh']=(isset($v['realname_zh']))?$v['realname_zh']:'';
+              $teacher_info_set[$v['teacher_no']]['school_num']=$v['teacher_no'];
+              $teacher_info_set[$v['teacher_no']]['default_password']= $teacher_num_id[$v['teacher_no']]['password'];
+              $teacher_info_set[$v['teacher_no']]['created_at']=Carbon::now();
+              $teacher_info_set[$v['teacher_no']]['updated_at']=Carbon::now();
 
+            }
+
+            $t_set = array_values($teacher_info_set);
+
+            TeacherClassSubject::insert($new_teacher_set);
+            RoleUser::insert($teacher_role);
+            UserInfo::insert($t_set);
+          }else{
+            $this->errors[$i] = 'Excel not match usermodel';
           }
 
-          $t_set = array_values($teacher_info_set);
-
-          TeacherClassSubject::insert($new_teacher_set);
-          RoleUser::insert($teacher_role);
-          UserInfo::insert($t_set);
         }
       });
       if ($this->errors) {
-        $result = [
-          'status' => false,
-          'code' => '',
-          'message' => $this->errors
-        ];
-        return json($result);
-      } else
-        return success();
+          return $this->result(0,$this->errors);
+      } else{
+        $message[0] = 'Total import '.$total_receive;
+        return $this->result(0,$message);
+      }
     } else {
       $result = [
         'status' => false,
@@ -273,12 +299,6 @@ class UserController extends Controller
 
 
         $i = 0;
-
-//        if ($results[0]) {
-//          foreach (array_keys($results[0][0]) as $v) {
-//            $subjects[] = $v;
-//          }
-//        }
 
         $subjects_from_excel = array_keys($results[0][0]);
 
@@ -324,10 +344,6 @@ class UserController extends Controller
 
         if (!$this->errors) {
 
-          $debug = New Debug();
-          $debug->context= json_encode($student_sheet);
-          $debug->save();
-
           foreach ($student_sheet as $k => $v) {
             $student[$v['student_no']]['school_num'] = $v['student_no'];
             $student[$v['student_no']]['realname_en'] = $v['realname_en'];
@@ -355,20 +371,15 @@ class UserController extends Controller
             $input['users'] = $curta;
             $res = $this->_client->post(config('variables.createAccount') . $this->access_token, $input);
 
-  //          $debug = New Debug();
-  //          $debug->context = json_encode($res);
-  //          $debug->save();
-
             if ($res['success']) {
               foreach ($res['data'] as $key => $value) {
                 $student_num_id[$value['school_num']]['user_id'] = $value['user_id'];
                 $student_num_id[$value['school_num']]['password'] = $value['password'];
                 $student_num_id[$value['school_num']]['username'] = $value['username'];
-  //              $teacher_role[$key]['role_id'] = array_search('student', $this->role);
-  //              $teacher_role[$key]['user_id'] = $value['user_id'];
               }
             }
           }
+
 
           $total_receive = count($student_num_id);
 
@@ -418,16 +429,17 @@ class UserController extends Controller
         ];
 
         return json($result);
-      } else
+      } else {
 
-        $message[0] = 'Total import '.$total_receive;
-        $result = [
-          'status' => true,
-          'code' => '',
-          'message' => $message
-        ];
+          $message[0] = 'Total import '.$total_receive;
+          $result = [
+            'status' => true,
+            'code' => '',
+            'message' => $message
+          ];
 
-      return json($result);
+        return json($result);
+      }
 
     } else {
       $result = [
