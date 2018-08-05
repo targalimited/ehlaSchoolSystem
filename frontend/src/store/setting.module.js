@@ -8,6 +8,7 @@ const state = {
   classes: [],
   students: [],
   teachers: [],
+  batch_create: [],
   levelOptions: [],
   option_class: [],
   summary: [],
@@ -27,7 +28,7 @@ const getters = {
   teachers: state => state.teachers,
   option_class: state => state.option_class,
   roleOptions: state => state.roleOptions,
-
+  batch_create: state => state.batch_create,
   single_class: state => id => state.classes.data.find(c => c.id === id),
 
   levelOptions(state){
@@ -90,10 +91,14 @@ const actions = {
 
   async STUDENT_BATCH_CREATE (context,payload){
     try{
-      let res = await new AuthHttp().post_file('student_batch',payload)
-      context.dispatch('FETCH_STUDENT')
-    }catch (e) {
+      new AuthHttp().post_file('student_batch',payload).then(res=>{
+        // console.log('action_batch',res)
+        context.commit('SET_BATCH_CREATE_RESULT',res)
+        context.dispatch('FETCH_STUDENT')
+      })
 
+    }catch (e) {
+      console.log(e);
     }
   },
 
@@ -157,8 +162,12 @@ const actions = {
 
   async TEACHER_BATCH_CREATE (context,payload){
     try{
-      let res = await new AuthHttp().post_file('teacher_batch',payload)
-      context.dispatch('FETCH_TEACHER')
+      let res = await new AuthHttp().post_file('teacher_batch',payload).then(res=>{
+        // console.log('action_batch',res)
+        context.commit('SET_BATCH_CREATE_RESULT',res)
+        context.dispatch('FETCH_TEACHER')
+      })
+
     }catch (e) {
 
     }
@@ -254,7 +263,10 @@ const mutations = {
     state.classes = classes
   },
 
-
+  SET_BATCH_CREATE_RESULT (state,result){
+    // console.log('set_batch',result)
+    state.batch_create = result
+  },
 
   [SET_SINGLE_CLASS] (state,single_class) {
     state.single_class = single_class

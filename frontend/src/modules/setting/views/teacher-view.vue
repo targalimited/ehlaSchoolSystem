@@ -4,6 +4,8 @@
     <vi-app-bar title="Teachers">
 
       <div slot="action">
+        <vi-input v-if="batch_create.message" v-model="batch_create.message[0]" />
+
         <vi-button @click="onExport" dark>
           <vi-icon left name="add-thick" size="12"/>
           Export
@@ -100,7 +102,8 @@
     computed: {
       ...mapGetters([
         'teachers',
-        'option_class'
+        'option_class',
+        'batch_create'
       ])
     },
 

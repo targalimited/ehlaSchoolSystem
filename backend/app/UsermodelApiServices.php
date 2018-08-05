@@ -93,6 +93,13 @@ class UsermodelApiServices extends Model {
 		return $result;
 	}
 	
+	public function schoolApiEditSchoolAssignment($params) {
+		$inputs = $params;
+		
+		$result = $this->client->post(config('variables.schoolApiEditSchoolAssignmentUrl').$this->suffix, $inputs);				
+		return $result;
+	}
+	
 	public function schoolApiGetCatBySubjectLevel($subjectId, $levels) {
 		$inputs = [
 			'subject_id' => $subjectId,
@@ -150,6 +157,28 @@ class UsermodelApiServices extends Model {
 		$result = $this->client->get(config('variables.schoolApiGetSchoolCategoryUrl').$subjectId.$this->suffix);
 		return $result['data'];
 	}
+	
+	
+	
+	
+	
+	public function schoolApiConfirmItems($params) {
+		$inputs = $params;
+		$result = $this->client->post(config('variables.schoolApiConfirmItemsUrl').$this->suffix, $inputs);				
+		return $result;
+	}
+	
+	public function schoolApiConfirmItemForLevel($params) {
+		$inputs = $params;
+		
+		$result = $this->client->post(config('variables.schoolApiConfirmItemForLevelUrl').$this->suffix, $inputs);				
+		return $result;
+	}
+	
+	
+	
+	
+	
 	
 	public function schoolApiGetSchoolItemSummary() {
 		$url = config('variables.schoolApiGetSchoolItemSummaryUrl').$this->suffix;

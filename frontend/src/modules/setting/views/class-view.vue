@@ -25,7 +25,7 @@
                   Edit class
                 </vi-item-content>
               </vi-item>
-              <vi-item :link="true" @click="onDelete(c)" v-if="!c.lock">
+              <vi-item :link="true" @click="onDelete(c)" v-if="!c.lock && !c.students.length && !c.teachers.length">
                 <vi-item-avatar>
                   <vi-icon name="trash"/>
                 </vi-item-avatar>
