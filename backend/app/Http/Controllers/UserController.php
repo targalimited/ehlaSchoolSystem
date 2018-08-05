@@ -207,9 +207,10 @@ class UserController extends Controller
 
         $this->header_validate($title,$teacher_sheet[0]);
 
-        $this->import_validate($teacher_sheet);
-
         if (!$this->errors) {
+
+          $this->import_validate($teacher_sheet);
+
           foreach ($teacher_sheet as $k => $v) {
             $teacher[$v['teacher_no']]['school_num'] = $v['teacher_no'];
             $teacher[$v['teacher_no']]['realname_en'] = $v['realname_en'];
@@ -295,47 +296,40 @@ class UserController extends Controller
       $path = $request->file('file')->getRealPath();
       Excel::load($path, function ($reader) use ($request,&$total_receive) {
         $results = $reader->get()->toArray();
-        $student_sheet = $results[0];
 
-        $i = 0;
-
-        $subjects_from_excel = array_keys($results[0][0]);
-
-        $subjects_db = Subject::all();
-
-        foreach ($subjects_db as $v) {
-          $new_subject_db[] = strtolower(str_replace(' ', '_', $v->s_name_en));
-        }
-
-        for ($j = 5; $j < count($subjects_from_excel); $j++) {
-          if (!in_array(strtolower($subjects_from_excel[$j]), $new_subject_db)) {
-            $this->errors[$i] = 'No this subject ' . $subjects_from_excel[$j];
-          }
-        }
+        $student_sheet = $this->before_sheet($results[0]);
 
         $title = ['student_no', 'realname_en', 'realname_zh', 'class'];
 
         $this->header_validate($title,$student_sheet[0]);
 
-        $student_sheet = array_map('array_filter', $student_sheet);
-        $student_sheet = array_filter($student_sheet);
-
-        foreach ($student_sheet as $v) {
-
-          if (!in_array(strtolower($v['class']), $this->class)) {
-            $this->errors[$i] = 'No this class ' . $v['class'];
-            $i++;
-          }
-
-          if(!empty($this->_students_no))
-          if(in_array(strtolower($v['student_no']),$this->_students_no)){
-            $this->errors[$i] = 'Student No. cannot be duplicated ' . $v['student_no'];
-            $i++;
-          }
-
-        }
-
         if (!$this->errors) {
+          $subjects_from_excel = array_keys($results[0][0]);
+
+          $subjects_db = Subject::all();
+
+          foreach ($subjects_db as $v) {
+            $new_subject_db[] = strtolower(str_replace(' ', '_', $v->s_name_en));
+          }
+
+          for ($j = 5; $j < count($subjects_from_excel); $j++) {
+            if (!in_array(strtolower($subjects_from_excel[$j]), $new_subject_db)) {
+              $this->errors[] = 'No this subject ' . $subjects_from_excel[$j];
+            }
+          }
+
+          foreach ($student_sheet as $v) {
+
+            if (!in_array(strtolower($v['class']), $this->class)) {
+              $this->errors[] = 'No this class ' . $v['class'];
+            }
+
+            if (!empty($this->_students_no))
+              if (in_array(strtolower($v['student_no']), $this->_students_no)) {
+                $this->errors[] = 'Student No. cannot be duplicated ' . $v['student_no'];
+              }
+
+          }
 
           foreach ($student_sheet as $k => $v) {
             $student[$v['student_no']]['school_num'] = $v['student_no'];
@@ -408,7 +402,7 @@ class UserController extends Controller
 
             }
           }else{
-            $this->errors[$i] = 'Excel not match usermodel';
+            $this->errors[] = 'Excel not match usermodel';
           }
 //          RoleUser::insert($teacher_role);
           ;
