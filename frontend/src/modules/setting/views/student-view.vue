@@ -5,9 +5,6 @@
 
       <div slot="action">
 
-        <vi-input v-if="batch_create.message" v-model="batch_create.message[0]" />
-
-
         <vi-button @click="onExport" dark>
 
           <vi-icon left name="add-thick" size="12"/>
@@ -184,6 +181,18 @@
         // console.log('filter',filter);
         return items.filter(i => filter(i.student_detail.realname_en, search))
       },
+    },
+
+    watch: {
+      batch_create: function (val) {
+        this.$message({
+          message: val.message,
+          duration: 4000,
+          type: 'error',
+          position: 'center'
+        })
+      },
+      deep: true
     },
 
     created () {

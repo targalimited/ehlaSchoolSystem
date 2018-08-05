@@ -98,11 +98,11 @@
     },
 
     computed: {
-      ...mapGetters({
-        teachers: 'teachers',
-        option_class: 'option_class',
-        batchResult: 'batch_create'
-      })
+      ...mapGetters([
+        'teachers',
+        'option_class',
+        'batch_create'
+      ])
     },
 
     methods: {
@@ -176,8 +176,13 @@
     },
 
     watch: {
-      batchResult: function (val) {
-        this.$message(val.message[0])
+      batch_create: function (val) {
+        this.$message({
+          message: val.message,
+          duration: 4000,
+          type: 'error',
+          position: 'center'
+        })
       },
       deep: true
     },

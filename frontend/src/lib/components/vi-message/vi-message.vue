@@ -1,10 +1,19 @@
 <template>
   <transition name="scale-transition">
-    <div v-show="visible" class="vi-message">
+    <div v-show="visible" class="vi-message"
+         :class="{
+         error: type !== 'success',
+         top: position === 'top',
+         center: position === 'center',
+         bottom: position === 'bottom'
+         }">
       <div class="vi-message__icon">
         <vi-icon size="16" :name="type === 'success' ? 'done' : 'clear'"/>
       </div>
-      <div class="vi-message__content" v-html="message"></div>
+      <div class="vi-message__content" v-if="message.length > 1">
+        <p v-for="(item, index) in message" :key="index" v-html="item"></p>
+      </div>
+      <div class="vi-message__content" v-else v-html="message"></div>
     </div>
   </transition>
 </template>
@@ -22,7 +31,8 @@
         message: '',
         duration: 3000,
         type: 'success',
-        timer: null
+        timer: null,
+        position: 'top'
       }
     },
 
@@ -66,7 +76,7 @@
     max-width 500px
     position fixed
     margin 0 auto
-    bottom 20px
+    padding 10px 20px
     left 50%
     transform: translateX(-50%)
     z-index 9999
@@ -76,4 +86,21 @@
 
     &__icon
       margin-right 8px
+
+    &.error
+      background #ff5252
+
+    &.top
+      top 20px
+
+    &.bottom
+      bottom 20px
+
+    &.center
+      top 50%
+      transform translate3d(-50%, -50%, 0)
+
+
+    .vi-message__content
+      text-align left
 </style>
