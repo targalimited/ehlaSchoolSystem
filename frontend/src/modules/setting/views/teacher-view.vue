@@ -4,8 +4,6 @@
     <vi-app-bar title="Teachers">
 
       <div slot="action">
-        <vi-input v-if="batch_create.message" v-model="batch_create.message[0]" />
-
         <vi-button @click="onExport" dark>
           <vi-icon left name="add-thick" size="12"/>
           Export
@@ -100,11 +98,11 @@
     },
 
     computed: {
-      ...mapGetters([
-        'teachers',
-        'option_class',
-        'batch_create'
-      ])
+      ...mapGetters({
+        teachers: 'teachers',
+        option_class: 'option_class',
+        batchResult: 'batch_create'
+      })
     },
 
     methods: {
@@ -175,6 +173,13 @@
           filter(i.realname_en, search)
         ))
       },
+    },
+
+    watch: {
+      batchResult: function (val) {
+        this.$message(val.message[0])
+      },
+      deep: true
     },
 
     created () {
