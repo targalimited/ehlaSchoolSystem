@@ -60,13 +60,13 @@ export default [
         }
       },
       {
-        path: '/:key',
+        path: ':key',
         name: 'browse-category',
         components: {
           top: BrowseTopbar,
           left: ItemFilter,
           default: LibView,
-          bottom: BrowseBottomBar
+          viewBottom: BrowseBottomBar
         }
       }
     ]

@@ -19,7 +19,7 @@
     router-link(:to="{name: 'free-access'}")
       vi-button(icon flat)
         vi-icon(name="free-access")
-    router-link(:to="{name: 'lib-cat'}")
+    router-link(:to="{name: 'browse-root'}")
       vi-button(icon flat)
         vi-icon(name="pilot")
 </template>

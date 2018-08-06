@@ -1,13 +1,5 @@
 <template>
-  <div class="lib-view">
-
-    <!--<vi-row align-center class="search-terms" v-show="searchList.length > 0">-->
-      <!--<vi-icon name="search" size="16" class="mr-10"/>-->
-      <!--<div class="text-ellipsis">Searching for <span class="text-bold ml-6">{{searchList | join}}</span></div>-->
-      <!--<vi-button text icon @click="clearAllFilter">-->
-        <!--<vi-icon name="clear" size="14"/>-->
-      <!--</vi-button>-->
-    <!--</vi-row>-->
+  <panel class="lib-view">
 
     <vi-row v-if="!readings" justify-center style="margin-top: 40px">
       <vi-spinner/>
@@ -18,6 +10,7 @@
       :pagination.sync="pagination"
       class="lib-table"
       :no-header="true"
+      :table-height="500"
       :item-height="135"
       :items="readings"
       :headers="headers"
@@ -42,7 +35,7 @@
         </vi-table-col>
       </div>
     </vi-data-table>
-  </div>
+  </panel>
 </template>
 
 <script>
@@ -87,6 +80,24 @@
     },
 
     computed: {
+      levelFilter () {
+        return this.$store.state.shelf.levelFilter
+      },
+      difficultyFilter () {
+        return this.$store.state.shelf.difficultyFilter
+      },
+      texttypeFilter () {
+        return this.$store.state.shelf.texttypeFilter
+      },
+      themeFilter () {
+        return this.$store.state.shelf.themeFilter
+      },
+      subthemeFilter () {
+        return this.$store.state.shelf.subthemeFilter
+      },
+      weaknessFilter () {
+        return this.$store.state.shelf.weaknessFilter
+      },
       $key () {
         return this.$route.params.key
       },
@@ -109,14 +120,35 @@
         if (this.catChosen >= this.catMax) return 'cat'
         else if (this.$store.getters['shelf/isFull']) return 'total'
         else return false
-      },
-      searchList () {
-        return ''
-        // return [...this.levelList.map(obj => obj.value_name_en), ...this.difficultyList.map(obj => obj.value_name_en), ...this.themeList.map(obj => obj.value_name_en), ...this.subthemeList.map(obj => obj.value_name_en), ...this.weaknessList.map(obj => obj.value_name_en), ...this.texttypeList.map(obj => obj.value_name_en)]
       }
     },
 
     methods: {
+      searchFilter (items, search) {
+        items = this.filterByType(items, 'level')
+        items = this.filterByType(items, 'difficulty')
+        items = this.filterByType(items, 'texttype')
+        items = this.filterByType(items, 'theme')
+        items = this.filterByType(items, 'subtheme')
+        items = this.filterByType(items, 'weakness')
+        return items
+      },
+      filterByType (items, type) {
+        if (this[`${type}Filter`] && this[`${type}Filter`].length === 0) return items
+        let result = items.filter(item => {
+          if (!item[`ei_${type}`]) return
+          return item[`ei_${type}`].some(t => {
+            let value = typeof t === 'string' ? t : t.value
+            value = value.toLowerCase()
+            let filterIds = this[`${type}Filter`]
+            return filterIds.some(filter => {
+              filter = filter.toLowerCase()
+              return filter === value
+            })
+          })
+        })
+        return result
+      },
       toggleReading (i) {
         if (i.chose) this.removeReading(i)
         else this.addReading(i.id)
@@ -159,22 +191,6 @@
     created () {
       this.$store.dispatch('shelf/getItemsByCategory', {
         cat: this.$key
-      }).then(metadata => {
-        const searchTags = metadata.searchTag
-
-        const level = searchTags.find(item => item.key === 'level')
-        const difficulty = searchTags.find(item => item.key === 'difficulty')
-        const texttype = searchTags.find(item => item.key === 'texttype')
-        const theme = searchTags.find(item => item.key === 'theme')
-        const subtheme = searchTags.find(item => item.key === 'subtheme')
-        const weakness = searchTags.find(item => item.key === 'weakness')
-
-        this.levelOptions = level && level.values
-        this.difficultyOptions = difficulty && difficulty.values
-        this.texttypeOptions = texttype && texttype.values
-        this.themeOptions = theme && theme.values
-        this.subthemeOptions = subtheme && subtheme.values
-        this.weaknessOptions = weakness && weakness.values
       })
     }
   }

@@ -62,10 +62,40 @@ export default {
     cats: defaultCategories,
     selectedItems: null,
     summary: {},
-    levels_translate: {}
+    levels_translate: {},
+    levelOptions: [],
+    difficultyOptions: [],
+    texttypeOptions: [],
+    themeOptions: [],
+    subthemeOptions: [],
+    weaknessOptions: [],
+    levelFilter: [],
+    difficultyFilter: [],
+    texttypeFilter: [],
+    themeFilter: [],
+    subthemeFilter: [],
+    weaknessFilter: []
   },
 
   mutations: {
+    changeLevelFilter (state, filters) {
+      state.levelFilter = filters
+    },
+    changeDifficultyFilter (state, filters) {
+      state.difficultyFilter = filters
+    },
+    changeTexttypeFilter (state, filters) {
+      state.texttypeFilter = filters
+    },
+    changeThemeFilter (state, filters) {
+      state.themeFilter = filters
+    },
+    changeSubthemeFilter (state, filters) {
+      state.subthemeFilter = filters
+    },
+    changeWeaknessFilter (state, filters) {
+      state.weaknessFilter = filters
+    },
     reset (state) {
       state.summary = {}
       state.items = {}
@@ -97,10 +127,24 @@ export default {
       })
     },
 
-    gotItemsByCategory (state, {items, category, selected, max}) {
+    gotItemsByCategory (state, {items, category, selected, max, searchTags}) {
       Vue.set(state.items, category, items)
       state.cats[category].max = max
       state.cats[category].selectedCount = selected
+
+      const level = searchTags.find(item => item.key === 'level')
+      const difficulty = searchTags.find(item => item.key === 'difficulty')
+      const texttype = searchTags.find(item => item.key === 'texttype')
+      const theme = searchTags.find(item => item.key === 'theme')
+      const subtheme = searchTags.find(item => item.key === 'subtheme')
+      const weakness = searchTags.find(item => item.key === 'weakness')
+
+      state.levelOptions = level && level.values
+      state.difficultyOptions = difficulty && difficulty.values
+      state.texttypeOptions = texttype && texttype.values
+      state.themeOptions = theme && theme.values
+      state.subthemeOptions = subtheme && subtheme.values
+      state.weaknessOptions = weakness && weakness.values
     },
 
     gotSelectedItems (state, selectedItems) {
@@ -226,6 +270,7 @@ export default {
           category: cat,
           selected: res.metadata.catChosen,
           max: res.metadata.catMax,
+          searchTags: res.metadata.searchTag
         })
         return res.metadata
       } catch (e) {}

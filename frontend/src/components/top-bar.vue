@@ -138,6 +138,6 @@
       border-bottom 4px solid transparent
       cursor pointer
 
-      &--active
+      &--active, &.router-link-active
         border-color $brand
 </style>

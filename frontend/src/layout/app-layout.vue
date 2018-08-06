@@ -8,7 +8,10 @@
       .app-view__l
         router-view(name="left")
       .app-view__r
-        router-view(name="default")
+        .app-view__r__default
+          router-view(name="default")
+        .app-view__r__bottom
+          router-view(name="viewBottom")
     .app-main__btm
       router-view(name="bottom")
 </template>
@@ -45,10 +48,17 @@
         margin 0 auto
 
     &--menu
+      .app-view__r
+        margin 0
+
+        &__default
+          padding 20px
+
       .app-view__l
         margin 0
         background #f9f9f9
         width 240px
+        overflow-y scroll
 
   .app-view
     display flex
@@ -61,5 +71,8 @@
     &__r
       flex 1
       margin 20px 20px 0 10px
+      height 100%
+      display flex
+      flex-direction column
       // overflow scroll // TODO make it optional
 </style>
