@@ -103,22 +103,53 @@ class UserController extends Controller
       }
     }
   }
-  private function import_validate($sheet){
-
+  private function import_validate($sheet,$type){
     foreach ($sheet as $v) {
-
-      if (!in_array(strtolower($v['class']), $this->class)) {
-        $this->errors[] = 'No this class ' . $v['class'];
+      $this->import_validate_class($v);
+      $this->import_validate_realname_zh($v);
+      if($type == 'teacher'){
+        $this->import_validate_subject($v);
+        $this->import_validate_teacher_no($v);
+      }else if($type == 'student'){
+        $this->import_validate_student($v);
       }
-      if (!in_array(strtolower($v['subject']), $this->subject)) {
-        $this->errors[] = 'No this subject ' . $v['subject'];
+    }
+  }
+  private function import_validate_realname_zh($v){
+    if(!isset($v['realname_zh'])){
+      $this->errors[] = 'Missing realname_zh';
+    }
+  }
+  
+  private function import_validate_student($v){
+    if (!empty($this->_students_no))
+      if(!isset($v['student_no'])){
+        $this->errors[] = 'There is a empty student number';
+      }else if (in_array(strtolower($v['student_no']), $this->_students_no)) {
+        $this->errors[] = 'Student No. cannot be duplicated ' . $v['student_no'];
       }
-
-      if(!empty($this->_teachers_no))
-        if(in_array(strtolower($v['teacher_no']),$this->_teachers_no)){
-          $this->errors[] = 'Teacher No. cannot be duplicated ' . $v['teacher_no'];
-        }
-
+  }
+  private function import_validate_class($v){
+    if(!isset($v['class'])){
+      $this->errors[] = 'There is a empty class';
+    }else if (!in_array(strtolower($v['class']), $this->class)) {
+      $this->errors[] = 'No this class ' . $v['class'];
+    }
+  }
+  private function import_validate_subject($v){
+    if(!isset($v['subject'])){
+      $this->errors[] = 'There is a empty subject';
+    }else if (!in_array(strtolower($v['subject']), $this->subject)) {
+      $this->errors[] = 'No this subject ' . $v['subject'];
+    }
+  }
+  private function import_validate_teacher_no($v){
+    if(!empty($this->_teachers_no)){
+      if(!isset($v['teacher_no'])){
+        $this->errors[] = 'There is a empty teacher number';
+      }else if(in_array(strtolower($v['teacher_no']),$this->_teachers_no)){
+        $this->errors[] = 'Teacher No. cannot be duplicated ' . $v['teacher_no'];
+      }
     }
   }
 
@@ -208,7 +239,7 @@ class UserController extends Controller
         $this->header_validate($title,$teacher_sheet[0]);
 
         if (!$this->errors) {
-              $this->import_validate($teacher_sheet);
+              $this->import_validate($teacher_sheet,'teacher');
 
           if(!$this->errors){
               foreach ($teacher_sheet as $k => $v) {
@@ -322,18 +353,7 @@ class UserController extends Controller
             }
           }
 
-          foreach ($student_sheet as $v) {
-
-            if (!in_array(strtolower($v['class']), $this->class)) {
-              $this->errors[] = 'No this class ' . $v['class'];
-            }
-
-            if (!empty($this->_students_no))
-              if (in_array(strtolower($v['student_no']), $this->_students_no)) {
-                $this->errors[] = 'Student No. cannot be duplicated ' . $v['student_no'];
-              }
-
-          }
+          $this->import_validate($student_sheet,'student');
 
           if(!$this->errors){
               foreach ($student_sheet as $k => $v) {
