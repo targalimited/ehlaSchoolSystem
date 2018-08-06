@@ -22,7 +22,7 @@
 
     computed: {
       classId () {
-        return parseInt(this.$route.params.class_id)
+        return parseInt(this.$route.params.classId)
       }
     },
 
@@ -38,7 +38,7 @@
           this.$router.push({
             name: 'asmt-status',
             params: {
-              class_id: this.$route.params.class_id
+              classId: this.$route.params.classId
             }
           })
         }

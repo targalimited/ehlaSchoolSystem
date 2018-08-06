@@ -1,7 +1,7 @@
 <template>
   <div class="library-main-view">
 
-    <vi-app-bar title="EHLA Categories"/>
+    <top-bar>EHLA Categories</top-bar>
 
     <vi-container>
 

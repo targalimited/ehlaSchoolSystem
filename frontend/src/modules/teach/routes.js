@@ -1,41 +1,60 @@
-import TeachLayout from './teach-layout'
+import AppLayout from '@/layout/app-layout'
+import AsmtAppBar from './layout/asmt-top-bar'
+import WeaknessTopBar from './layout/weakness-top-bar'
 import AsmtList from './components/asmt-list'
 import AsmtReport from './components/current-asmt-report'
 import WeaknessList from './components/weakness-list'
 import WeaknessReport from './components/weakness-report'
 import {ifNotAuthenticated, ifAuthenticated } from '@/router/guard.js'
+
 export default [
   {
-    path: '/class/:class_id',
-    component: TeachLayout,
+    path: 'assignment/class/1',
+    component: AppLayout,
     beforeEnter: ifAuthenticated,
+    props: {
+      type: 'Panel'
+    },
     children: [
       {
-        path: 'assignment',
-        name: 'asmt-status',
+        path: '/',
+        name: 'asmt-class-progress',
         components: {
           left: AsmtList,
-          right: AsmtReport
+          default: AsmtReport,
+          top: AsmtAppBar
         }
       },
       {
-        path: 'assignment/mark',
-        name: 'asmt-report',
+        path: 'locked',
+        name: 'asmt-class-locked',
         components: {
           left: AsmtList,
-          right: AsmtReport
+          default: AsmtReport,
+          top: AsmtAppBar
         },
         props: {
           left: {locked: true},
-          right: {locked: true}
+          default: {locked: true}
         }
-      },
+      }
+    ]
+  },
+  {
+    path: 'report/class/1',
+    component: AppLayout,
+    beforeEnter: ifAuthenticated,
+    props: {
+      type: 'Panel'
+    },
+    children: [
       {
         path: 'weakness',
-        name: 'weakness-report',
+        name: 'report-class-weakness',
         components: {
           left: WeaknessList,
-          right: WeaknessReport
+          default: WeaknessReport,
+          top: WeaknessTopBar
         }
       }
     ]

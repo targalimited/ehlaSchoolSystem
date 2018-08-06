@@ -1,8 +1,6 @@
 <template>
   <div class="lib-cat-view" :class="{'no-access' : accessNotAllow}">
 
-    <vi-app-bar title="School Pilot 100"/>
-
     <vi-row align-center class="ui-message" v-if="accessNotAllow">
       <vi-icon name="alert"/>
       <template v-if="type === 'pilot'">
@@ -43,7 +41,7 @@
                 ({{cat.selectedCount}} item selected)
               </div>
 
-              <router-link :to="{name: 'lib', params: {key: cat.key}}">
+              <router-link :to="{name: 'browse-category', params: {key: cat.key}}">
                 <vi-button class="add-button" color="green" large>
                   Add <vi-icon size="18" right name="right"/>
                 </vi-button>

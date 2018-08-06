@@ -1,26 +1,7 @@
 <template>
   <div class="home-view">
 
-    <vi-app-bar title="Accessible Items Overview">
-      <div class="vi-banner__info">{{selectedCount}}/ {{summary.total_item_qtt}} reading packs</div>
-      <div slot="secondaryAction">
-        <vi-button @click="onConfirm" class="confirm-button" dark flat>
-          <vi-icon left name="done" size="24"/>
-          Confirm
-        </vi-button>
-      </div>
-    </vi-app-bar>
-
-    <div v-if="levelsQuota" class="level-section">
-      <vi-row>
-        <vi-col v-for="(lv, i) in levelsQuota" :key="i">
-          <span class="level-label level-label--dark">{{lv.level | levelName}}</span>
-          {{lv.selected}}/{{lv.maxQuota}} <span v-if="lv.full" class="full">Full</span>
-        </vi-col>
-      </vi-row>
-    </div>
-
-    <div class="pt-40" v-if="selectedItems">
+    <div v-if="selectedItems">
 
       <vi-data-table
         class="selected-item-table"
@@ -113,20 +94,11 @@
     },
 
     computed: {
-      summary () {
-        return this.$store.state.shelf.summary || {}
-      },
       selectedItems () {
         return this.$store.state.shelf.selectedItems
       },
       readingCategories () {
         return this.$store.getters['shelf/categories']
-      },
-      selectedCount () {
-        return this.$store.getters['shelf/selectedCount']
-      },
-      levelsQuota () {
-        return this.$store.getters['shelf/levelsQuota']()
       }
     },
 

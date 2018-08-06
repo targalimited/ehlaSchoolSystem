@@ -1,5 +1,5 @@
 <template lang="pug">
-  div
+  panel
     vi-spinner(v-if="!weakness_list")
     template(v-else)
       vi-item(v-for="(weakness,i) in weakness_list" :key="i")
@@ -20,10 +20,10 @@
     },
     computed: {
       weakness_list () {
-        return this.$store.getters.weakness_list(this.class_id)
+        return this.$store.getters.weakness_list(this.classId)
       },
-      class_id () {
-        return this.$route.params.class_id
+      classId () {
+        return this.$route.params.classId
       }
     },
     methods: {
@@ -40,7 +40,7 @@
       },
       fetch () {
         this.$store.dispatch('getWeaknessList', {
-          class_id: this.class_id
+          classId: this.classId
         })
       }
     },
@@ -48,7 +48,7 @@
       this.fetch()
     },
     watch: {
-      class_id () {
+      classId () {
         this.fetch()
       }
     }

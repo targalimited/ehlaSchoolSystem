@@ -138,7 +138,7 @@
       height 70px
       background $green
       color white
-      padding 8px 8px
+      padding 8px
       display flex
       align-items center
       position absolute
@@ -170,8 +170,7 @@
       color white !important
 
     &__title
-      font-size 22px
-      font-weight bold
+      font-size 24px
       line-height 1
 
     &__info

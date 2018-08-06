@@ -226,7 +226,7 @@ const actions = {
   },
 
   async CLASS_DESTROY (context,payload){
-    await new AuthHttp().delete(`classes/${payload.class_id}`)
+    await new AuthHttp().delete(`classes/${payload.classId}`)
     context.dispatch('FETCH_CLASS')
     context.dispatch('FETCH_LEVEL')
   }

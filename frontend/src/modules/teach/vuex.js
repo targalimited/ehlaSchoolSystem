@@ -49,8 +49,8 @@ export default {
     gotAsmtReport (state, {batch_id, report}) {
       Vue.set(state.asmt_report, batch_id, report)
     },
-    gotWeaknessList (state, {weakness_list, class_id}) {
-      Vue.set(state.weakness_list, class_id, weakness_list)
+    gotWeaknessList (state, {weakness_list, classId}) {
+      Vue.set(state.weakness_list, classId, weakness_list)
     },
     gotWeaknessReport (state, {batchId, report}) {
       Vue.set(state.weaknessList, batchId, report)
@@ -70,25 +70,25 @@ export default {
       return classes
     },
 
-    async getWeaknessList ({commit}, {class_id}) {
+    async getWeaknessList ({commit}, {classId}) {
       const res = await new AuthHttp().post('/get_class_weakness', {
         academic_id: 1, // TODO hardcode
-        class_id: class_id,
+        classId: classId,
         subject_id: 1,
         weakness_code: "MATCH", // TODO need to filter?
       })
       const weakness_list = res.data
       commit('gotWeaknessList', {
-        class_id, weakness_list
+        classId, weakness_list
       })
       return weakness_list
     },
 
-    async getClassWeaknessReport ({}, {class_id, weakness_ids}) {
+    async getClassWeaknessReport ({}, {classId, weakness_ids}) {
       const res = await new AuthHttp().post('/get_school_weakness_report', {
         subject_id: 1,
         academic_id: 1,
-        class_id: class_id,
+        classId: classId,
         weakness_code: 'MATCH',
         weakness_ids: weakness_ids
       })
@@ -99,10 +99,10 @@ export default {
     /**
      * get the list of assignment from a class
      */
-    async getAsmtList ({rootGetters, commit}, {class_id}) {
+    async getAsmtList ({rootGetters, commit}, {classId}) {
       const res = await new AuthHttp().post('/get_school_assignment', {
         teacher_id: rootGetters.teacherId,
-        class_id: class_id,
+        classId: classId,
         subject_id: 1
       })
       let batches = res.data
@@ -117,7 +117,7 @@ export default {
       commit('updateEntities', entities)
       commit('gotBatchList', {
         asmtList: result,
-        classId: class_id
+        classId: classId
       })
       return batches
     },
@@ -125,9 +125,9 @@ export default {
     /**
      * get the status (whether is done or not) of an assignment assigned to a class
      */
-    async getAsmtReport ({commit}, {class_id, batch_id, item_id}) {
+    async getAsmtReport ({commit}, {classId, batch_id, item_id}) {
       const res = await new AuthHttp().post('/get_status_report', {
-        class_id: class_id,
+        classId: classId,
         subject_id: 1,
         batch_id: batch_id,
         item_id: item_id
@@ -141,7 +141,7 @@ export default {
 
     async getItemListByClassCat ({commit}, {classId, catId}) {
       const res = await new AuthHttp().post('/get_item_list_by_cls_sub_cat', {
-        class_id: classId,
+        classId: classId,
         subject_id: 1,
         cat_grouper: catId
       })
@@ -176,7 +176,7 @@ export default {
       }
       const payload = {
         teacher_id: teacherId,
-        class_id: classId,
+        classId: classId,
         subject_id: 1,
         batch_id: batchId,
         start_date: startDate + ' 00:00:00',
@@ -188,7 +188,7 @@ export default {
       }
       await new AuthHttp().post('/set_school_assignment', payload)
       dispatch('getAsmtList',  {
-        class_id: classId
+        classId: classId
       })
     },
 
@@ -197,7 +197,7 @@ export default {
         batch_id: batchId
       })
       dispatch('getAsmtList',  {
-        class_id: classId
+        classId: classId
       })
       return 'done'
     },
@@ -207,7 +207,7 @@ export default {
      */
     async getItemById ({commit}, {classId, itemId}) {
       const res = await new AuthHttp().post('/get_item_by_id', {
-        class_id: classId,
+        classId: classId,
         subject_id: 1,
         item_id: itemId
       })
@@ -245,8 +245,8 @@ export default {
     asmtReport: (state) => (batch_id) => {
       return state.asmt_report[batch_id]
     },
-    weakness_list: (state) => (class_id) => {
-      return state.weakness_list[class_id]
+    weakness_list: (state) => (classId) => {
+      return state.weakness_list[classId]
     },
   }
 }

@@ -1,15 +1,18 @@
 <template lang="pug">
-  div
-    vi-spinner(v-if="loading && asmtList.length === 0")
-    vi-no-data(v-else-if="asmtList.length === 0" title="no data")
-    asmt-item(
+  panel.asmt-list
+    template(slot="head")
+      vi-button(color="brand") add
+    template
+      vi-spinner(v-if="loading && asmtList.length === 0")
+      vi-no-data(v-else-if="asmtList.length === 0" title="no data")
+      asmt-item(
       v-else
       v-for="d in asmtList"
-      :key="d.batch_id"
-      :locked="locked"
-      :asmt-data="d"
-      @click.native="onSelect(d)"
-    )
+        :key="d.batch_id"
+        :locked="locked"
+        :asmt-data="d"
+        @click.native="onSelect(d)"
+      )
 </template>
 
 <script>
@@ -22,12 +25,12 @@
     props: ['locked'],
 
     computed: {
-      $class_id () {
-        return this.$route.params.class_id
+      $classId () {
+        return this.$route.params.classId
       },
       asmtList () {
         const TYPE = this.locked ? 'lockedBatchList' : 'activeBatchList'
-        return this.$store.getters[TYPE](this.$class_id) || []
+        return this.$store.getters[TYPE](this.$classId) || []
       }
     },
     data () {
@@ -51,7 +54,7 @@
       async initFetch () {
         this.loading = true
         await this.$store.dispatch('getAsmtList', {
-          class_id: this.$class_id
+          classId: this.$classId
         })
         this.loading = false
       }
@@ -60,9 +63,23 @@
       this.initFetch()
     },
     watch: {
-      '$class_id': function () {
+      '$classId': function () {
         this.initFetch()
       }
     }
   }
 </script>
+
+<style lang="stylus">
+  @import '../../../project-ui/stylus/main.styl'
+  .asmt-list
+    &__head
+      border-bottom 1px solid $border-color
+      height 50px
+      display flex
+      align-items center
+      padding 0 16px
+
+    &__body
+      //
+</style>

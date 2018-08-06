@@ -45,7 +45,7 @@ export default {
      */
     async getItemListByClassCat ({commit}, {classId, catId}) {
       return new AuthHttp().post('/get_item_list_by_cls_sub_cat', {
-        class_id: classId,
+        classId: classId,
         subject_id: 1, // TODO: hardcoded the subject ID right now
         cat_grouper: catId
       })

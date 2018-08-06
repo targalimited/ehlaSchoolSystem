@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.weakness-report
+  panel.weakness-report
     vi-spinner(v-if="!weakness_report")
     vi-data-table(
       v-else
@@ -27,8 +27,8 @@
       }
     },
     computed: {
-      $class_id () {
-        return this.$route.params.class_id
+      $classId () {
+        return this.$route.params.classId
       },
       $weakness_ids () {
         return this.$route.query.weakness_ids
@@ -51,9 +51,9 @@
     },
     methods: {
       async initFetch () {
-        if (!(this.$class_id && this.$weakness_ids)) return
+        if (!(this.$classId && this.$weakness_ids)) return
         const res = await this.$store.dispatch('getClassWeaknessReport', {
-          class_id: this.$class_id,
+          classId: this.$classId,
           weakness_ids: this.$weakness_ids,
         })
         this.weakness_report = res

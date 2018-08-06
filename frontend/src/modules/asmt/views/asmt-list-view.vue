@@ -36,7 +36,7 @@
         </vi-table-col>
 
         <vi-table-col>
-          <vi-chip :prepend="item.class_id">
+          <vi-chip :prepend="item.classId">
             <!--{{item.whole_class ? 'All' : 'Some'}}-->
           </vi-chip>
         </vi-table-col>

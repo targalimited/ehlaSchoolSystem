@@ -1,5 +1,7 @@
 <template lang="pug">
-  .current-asmt-report
+  panel.current-asmt-report
+    template(slot="head") HI
+    template(slot="foot") YO
     vi-no-data(v-if="!batch_id" title="Select a assignment")
     vi-spinner(v-else-if="loading")
     vi-data-table(
@@ -36,8 +38,8 @@
       }
     },
     computed: {
-      class_id () {
-        return parseInt(this.$route.params.class_id)
+      classId () {
+        return parseInt(this.$route.params.classId)
       },
       batch_id () {
         return parseInt(this.$route.query.batch_id)
@@ -68,7 +70,7 @@
       fetch () {
         if (!this.batch_id) return
         this.$store.dispatch('getAsmtReport', {
-          class_id: this.class_id ,
+          classId: this.classId ,
           batch_id: this.batch_id,
           item_id: this.item_id,
         })

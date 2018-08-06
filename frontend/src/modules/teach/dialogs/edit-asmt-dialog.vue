@@ -30,7 +30,7 @@
 
     computed: {
       classId () {
-        return parseInt(this.$route.params.class_id)
+        return parseInt(this.$route.params.classId)
       }
     },
 

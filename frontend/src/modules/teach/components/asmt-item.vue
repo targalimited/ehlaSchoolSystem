@@ -62,7 +62,7 @@
       lockAsmt (asmtData) {
         this.$store.dispatch('lockAsmt', {
           batchId: asmtData.batch_id,
-          classId: this.$route.params.class_id
+          classId: this.$route.params.classId
         })
       }
     }

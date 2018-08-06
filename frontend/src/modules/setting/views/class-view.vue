@@ -141,7 +141,7 @@
             message: `Are you sure you want to delete Class ${c.c_name}`
           })
           // TODO cal API
-          this.$store.dispatch('CLASS_DESTROY',{class_id:c.id})
+          this.$store.dispatch('CLASS_DESTROY',{classId:c.id})
         } catch (e) {}
       },
       async onConfirm(c){

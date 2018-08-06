@@ -1,117 +1,13 @@
 <template>
-  <div class="lib-view" :class="{'mt-38' : searchList.length > 0}">
+  <div class="lib-view">
 
-    <vi-app-bar
-      :title="catName">
-      <div>
-        {{catChosen}} Reading packs selected<small v-if="catMax !== 999">(out of {{catMax}} quota)</small>
-      </div>
-      <div slot="action">
-        <vi-menu v-model="menu" content-class="filter-menu" :close-on-content-click="false">
-          <vi-button slot="activator" icon flat>
-            <vi-icon name="search"/>
-          </vi-button>
-          <div class="search-panel">
-
-            <vi-row class="search-row" justify-center>
-              <vi-button @click="menu = false" size="200" primary>Search</vi-button>
-            </vi-row>
-
-            <div v-if="levelOptions">
-              <vi-input-label>Filter by levels</vi-input-label>
-              <div class="options-container">
-                <vi-checkbox
-                  :inlineFlex="true"
-                  v-for="opt in levelOptions"
-                  :key="opt.value"
-                  v-model="levelList"
-                  :option-value="opt"
-                  :label="opt.value_name_en"
-                />
-              </div>
-            </div>
-
-            <div v-if="difficultyOptions">
-              <vi-input-label>Filter by difficulties</vi-input-label>
-              <div class="options-container">
-                <vi-checkbox
-                  :inlineFlex="true"
-                  v-for="opt in difficultyOptions"
-                  :key="opt.value"
-                  v-model="difficultyList"
-                  :option-value="opt"
-                  :label="opt.value_name_en"
-                />
-              </div>
-            </div>
-
-            <div v-if="texttypeOptions">
-              <vi-input-label>Filter by text types</vi-input-label>
-              <div class="options-container">
-                <vi-checkbox
-                  :inlineFlex="true"
-                  v-for="opt in texttypeOptions"
-                  :key="opt.value"
-                  v-model="texttypeList"
-                  :option-value="opt"
-                  :label="opt.value_name_en"
-                />
-              </div>
-            </div>
-
-            <div v-if="themeOptions">
-              <vi-input-label>Filter by themes</vi-input-label>
-              <div class="options-container">
-                <vi-checkbox
-                  :inlineFlex="true"
-                  v-for="opt in themeOptions"
-                  :key="opt.value"
-                  v-model="themeList"
-                  :option-value="opt"
-                  :label="opt.value_name_en"
-                />
-              </div>
-            </div>
-
-            <div v-if="subthemeOptions">
-              <vi-input-label>Filter by sub-themes</vi-input-label>
-              <div class="options-container">
-                <vi-checkbox
-                  :inlineFlex="true"
-                  v-for="opt in subthemeOptions"
-                  :key="opt.value"
-                  v-model="subthemeList"
-                  :option-value="opt"
-                  :label="opt.value_name_en"
-                />
-              </div>
-            </div>
-
-            <div v-if="weaknessOptions">
-              <vi-input-label>Filter by weakness</vi-input-label>
-              <div class="options-container">
-                <vi-checkbox
-                  class="mb-20"
-                  v-for="opt in weaknessOptions"
-                  :key="opt.value"
-                  v-model="weaknessList"
-                  :option-value="opt"
-                  :label="opt.value_name_en"
-                />
-              </div>
-            </div>
-          </div>
-        </vi-menu>
-      </div>
-    </vi-app-bar>
-
-    <vi-row align-center class="search-terms" v-show="searchList.length > 0">
-      <vi-icon name="search" size="16" class="mr-10"/>
-      <div class="text-ellipsis">Searching for <span class="text-bold ml-6">{{searchList | join}}</span></div>
-      <vi-button text icon @click="clearAllFilter">
-        <vi-icon name="clear" size="14"/>
-      </vi-button>
-    </vi-row>
+    <!--<vi-row align-center class="search-terms" v-show="searchList.length > 0">-->
+      <!--<vi-icon name="search" size="16" class="mr-10"/>-->
+      <!--<div class="text-ellipsis">Searching for <span class="text-bold ml-6">{{searchList | join}}</span></div>-->
+      <!--<vi-button text icon @click="clearAllFilter">-->
+        <!--<vi-icon name="clear" size="14"/>-->
+      <!--</vi-button>-->
+    <!--</vi-row>-->
 
     <vi-row v-if="!readings" justify-center style="margin-top: 40px">
       <vi-spinner/>
@@ -142,7 +38,7 @@
           <vi-checkbox
             @input="toggleReading(item)"
             :disabled="loading"
-            :value="item.chose"/>
+            :input-value="item.chose"/>
         </vi-table-col>
       </div>
     </vi-data-table>
@@ -186,19 +82,7 @@
             text: ''
           }
         ],
-        pagination: {},
-        levelList: [],
-        difficultyList: [],
-        texttypeList: [],
-        themeList: [],
-        subthemeList: [],
-        weaknessList: [],
-        levelOptions: [],
-        difficultyOptions: [],
-        texttypeOptions: [],
-        themeOptions: [],
-        subthemeOptions: [],
-        weaknessOptions: []
+        pagination: {}
       }
     },
 
@@ -227,7 +111,8 @@
         else return false
       },
       searchList () {
-        return [...this.levelList.map(obj => obj.value_name_en), ...this.difficultyList.map(obj => obj.value_name_en), ...this.themeList.map(obj => obj.value_name_en), ...this.subthemeList.map(obj => obj.value_name_en), ...this.weaknessList.map(obj => obj.value_name_en), ...this.texttypeList.map(obj => obj.value_name_en)]
+        return ''
+        // return [...this.levelList.map(obj => obj.value_name_en), ...this.difficultyList.map(obj => obj.value_name_en), ...this.themeList.map(obj => obj.value_name_en), ...this.subthemeList.map(obj => obj.value_name_en), ...this.weaknessList.map(obj => obj.value_name_en), ...this.texttypeList.map(obj => obj.value_name_en)]
       }
     },
 
@@ -268,39 +153,6 @@
       },
       async previewReading (item) {
         previewDialog(item.id)
-      },
-      searchFilter (items, search) {
-        items = this.filterByType(items, 'level')
-        items = this.filterByType(items, 'difficulty')
-        items = this.filterByType(items, 'texttype')
-        items = this.filterByType(items, 'theme')
-        items = this.filterByType(items, 'subtheme')
-        items = this.filterByType(items, 'weakness')
-        return items
-      },
-      filterByType (items, type) {
-        if (this[`${type}List`].length === 0) return items
-        let result = items.filter(item => {
-          if (!item[`ei_${type}`]) return
-          return item[`ei_${type}`].some(t => {
-            let value = typeof t === 'string' ? t : t.value
-            value = value.toLowerCase()
-            let filterIds = typeof this[`${type}List`][0] === 'string' ? this[`${type}List`] : this[`${type}List`].map(obj => obj.value)
-            return filterIds.some(filter => {
-              filter = filter.toLowerCase()
-              return filter === value
-            })
-          })
-        })
-        return result
-      },
-      clearAllFilter () {
-        this.difficultyList = []
-        this.levelList = []
-        this.themeList = []
-        this.subthemeList = []
-        this.weaknessList = []
-        this.texttypeList = []
       }
     },
 
