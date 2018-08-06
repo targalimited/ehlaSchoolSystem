@@ -106,7 +106,7 @@ class UserController extends Controller
   private function import_validate($sheet,$type){
     foreach ($sheet as $v) {
       $this->import_validate_class($v);
-      $this->import_validate_realname_zh($v);
+      $this->import_validate_realname_en($v);
       if($type == 'teacher'){
         $this->import_validate_subject($v);
         $this->import_validate_teacher_no($v);
@@ -115,9 +115,9 @@ class UserController extends Controller
       }
     }
   }
-  private function import_validate_realname_zh($v){
-    if(!isset($v['realname_zh'])){
-      $this->errors[] = 'Missing realname_zh';
+  private function import_validate_realname_en($v){
+    if(!isset($v['realname_en'])){
+      $this->errors[] = 'Missing realname_en';
     }
   }
 
