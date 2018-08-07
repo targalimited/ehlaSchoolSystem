@@ -2,8 +2,8 @@
   .app-main(:class="`app-main--${type}`")
     .app-main__top
       router-view(name="top")
-    .app-main__tab
-      router-view(name="tab")
+    .app-main__top2
+      router-view(name="top2")
     .app-view
       .app-view__l
         router-view(name="left")
@@ -60,23 +60,23 @@
         width 240px
         overflow-y scroll
 
+    &--panel
+      .app-view__l
+        width 320px
+        padding 20px 10px 0 20px
+        flex-shrink 0
+
+      .app-view__r
+        width calc(100% - 320px)
+        padding 20px 20px 0 10px
+        display flex
+        flex-direction column
+
+        &__default
+          height 100%
+
   .app-view
     display flex
     flex 1
     background #f9f9f9
-
-    &__l
-      width 320px
-      padding 20px 10px 0 20px
-      flex-shrink 0
-
-    &__r
-      width calc(100% - 320px)
-      padding 20px 20px 0 10px
-      display flex
-      flex-direction column
-
-      &__default
-        height 100%
-      // overflow scroll // TODO make it optional
 </style>

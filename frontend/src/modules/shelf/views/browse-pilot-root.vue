@@ -1,30 +1,6 @@
 <template>
   <div class="lib-cat-view" :class="{'no-access' : accessNotAllow}">
 
-    <vi-row align-center class="ui-message" v-if="accessNotAllow">
-      <vi-icon name="alert"/>
-      <template v-if="type === 'pilot'">
-        You don't have access to this category. Please go to the <router-link class="ml-4 ui-link" :to="{name: 'free-access'}">free access scheme</router-link>
-      </template>
-      <template v-else>
-        You don't have access to this category. Please go to the <router-link class="ml-4 ui-link" :to="{name: 'lib-cat'}">pilot page</router-link>
-      </template>
-
-    </vi-row>
-
-    <div class="welcome" v-if="type === 'pilot'">
-      <p>
-        Thank you for your enrolment in EHLA’s ‘School Pilot 100’ Programme.
-
-      </p>
-      <p>Your journey starts here.</p>
-      <p>
-        You may select teaching resources from the menu below
-      </p>
-
-      <vi-icon class="mt-8" name="down"/>
-    </div>
-
     <vi-container>
 
       <div class="reading-section">
@@ -41,7 +17,7 @@
                 ({{cat.selectedCount}} item selected)
               </div>
 
-              <router-link :to="{name: 'browse-category', params: {key: cat.key}}">
+              <router-link :to="{name: 'browse-pilot-category', params: {key: cat.key}}">
                 <vi-button class="add-button" color="green" large>
                   Add <vi-icon size="18" right name="right"/>
                 </vi-button>
@@ -87,9 +63,6 @@
   @import '../../../project-ui/stylus/settings.styl'
 
   .reading-section
-    background $bg-color
-    padding 24px
-
     .no-access &
       opacity 0.3
       pointer-events none
@@ -137,29 +110,4 @@
     width 100%
     height 200px
     background-size cover
-
-  .welcome
-    background #42d495
-    color white
-    font-weight bold
-    padding 20px
-    text-align center
-    // color $brand
-    font-size 20px
-    margin-bottom 24px
-
-  .ui-message
-    padding 20px
-    display flex
-    background orange
-    color white
-
-    .vi-icon
-      flex-shrink 0
-      margin-right 20px
-
-    a
-      border-bottom 1px solid currentColor
-
-
 </style>

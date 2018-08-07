@@ -1,8 +1,6 @@
 <template>
   <div class="library-main-view">
 
-    <top-bar>EHLA Categories</top-bar>
-
     <vi-container>
 
       <div class="reading-section">

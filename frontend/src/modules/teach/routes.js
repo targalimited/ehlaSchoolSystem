@@ -13,7 +13,7 @@ export default [
     component: AppLayout,
     beforeEnter: ifAuthenticated,
     props: {
-      type: 'Panel'
+      type: 'panel'
     },
     children: [
       {
@@ -45,7 +45,7 @@ export default [
     component: AppLayout,
     beforeEnter: ifAuthenticated,
     props: {
-      type: 'Panel'
+      type: 'panel'
     },
     children: [
       {

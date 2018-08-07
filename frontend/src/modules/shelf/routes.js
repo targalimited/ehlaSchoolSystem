@@ -1,15 +1,17 @@
 import {ifNotAuthenticated, ifAuthenticated } from '@/router/guard.js'
 import HomeView from './views/home-view'
 import LibView from './views/lib-view'
-import LibCatsView from './views/lib-cats-view'
+import LibCatsView from './views/browse-pilot-root'
 import ShelfView from './views/shelf-view'
-import Topbar from '@/components/top-bar'
+import TopBar from '@/components/top-bar'
 import AppLayout from '../../layout/app-layout'
 import ShelfTopbar from './components/shelf-top-bar'
 import ShelfBottomBar from './components/shelf-bottom-bar'
 import BrowseBottomBar from './components/browse-bottom-bar'
-import BrowseTopbar from './components/browse-top-bar'
+import PilotTopBar from './components/pilot-top-bar'
 import ItemFilter from './components/item-filter'
+import PilotIntroBar from './components/pilot-intro-bar'
+import EhlaRoot from './views/lib-main-view'
 
 export default [
   {
@@ -63,30 +65,44 @@ export default [
     component: AppLayout,
     beforeEnter: ifAuthenticated,
     props: {
-      type: 'menu'
+      type: 'single'
     },
     children: [
       {
         path: '/',
-        name: 'browse-root',
+        name: 'browse-pilot-root',
         components: {
-          top: Topbar,
+          top: PilotTopBar,
+          top2: PilotIntroBar,
           default: LibCatsView
         },
         props: {
           top: {
             title: 'Pilot 100'
           },
+          top2: {
+            type: 'pilot'
+          },
           default: {
             type: 'pilot'
           }
         }
-      },
+      }
+    ]
+  },
+  {
+    path: '/pilot/browse',
+    component: AppLayout,
+    beforeEnter: ifAuthenticated,
+    props: {
+      type: 'menu'
+    },
+    children: [
       {
         path: ':key',
-        name: 'browse-category',
+        name: 'browse-pilot-category',
         components: {
-          top: BrowseTopbar,
+          top: PilotTopBar,
           left: ItemFilter,
           default: LibView,
           viewBottom: BrowseBottomBar
@@ -95,20 +111,56 @@ export default [
     ]
   },
   {
-    path: '/free-access-scheme',
-    name: 'free-access',
-    components: {
-      top: Topbar,
-      right: LibCatsView
-    },
+    path: '/free-access-scheme/browse',
+    component: AppLayout,
     beforeEnter: ifAuthenticated,
     props: {
-      top: {
-        title: 'School Pilot 100'
-      },
-      right: {
-        type: 'free'
+      type: 'single'
+    },
+    children: [
+      {
+        path: '/',
+        name: 'browse-free-root',
+        components: {
+          top: PilotTopBar,
+          top2: PilotIntroBar,
+          default: LibCatsView
+        },
+        props: {
+          top: {
+            title: 'Pilot 100'
+          },
+          top2: {
+            type: 'free'
+          },
+          default: {
+            type: 'free'
+          }
+        }
       }
-    }
+    ]
+  },
+  {
+    path: '/ehla-content/browse',
+    component: AppLayout,
+    beforeEnter: ifAuthenticated,
+    props: {
+      type: 'single'
+    },
+    children: [
+      {
+        path: '/',
+        name: 'browse-ehla-root',
+        components: {
+          top: TopBar,
+          default: EhlaRoot
+        },
+        props: {
+          top: {
+            title: 'EHLA Category'
+          }
+        }
+      }
+    ]
   }
 ]
