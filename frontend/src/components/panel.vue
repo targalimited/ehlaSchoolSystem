@@ -1,12 +1,20 @@
 <template lang="pug">
-  .panel
-    .panel__head
+  .panel(:class="{'panel--disabled': disabled}")
+    .panel__head(v-if="$slots.head")
       slot(name="head")
     .panel__body
       slot(name="default")
     .panel__foot(v-if="$slots.foot")
       slot(name="foot")
 </template>
+
+<script>
+  export default {
+    props: {
+      disabled: Boolean
+    }
+  }
+</script>
 
 <style lang="stylus">
   @import '../project-ui/stylus/main.styl'
@@ -15,6 +23,10 @@
     height 100%
     display flex
     flex-direction column
+    background white
+
+    &--disabled
+      background #f9f9f9
 
     &__head
       border-bottom 1px solid $border-color

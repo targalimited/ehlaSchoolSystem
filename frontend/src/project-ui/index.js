@@ -24,9 +24,9 @@ import {ViDialog, ViDialogTitle} from '@/ehla-ui/components/vi-dialog'
 import ViDatePicker from '@/ehla-ui/components/vi-date-picker'
 import Sticky from '@/ehla-ui/directives/sticky'
 import Scroll from '@/ehla-ui/directives/scroll'
-import ViMessage from '@/ehla-ui/components/vi-message/vi-message.vue'
-import ViMessageBox from '@/ehla-ui/components/vi-message-box/vi-message-box.vue'
-import ViDeletePrompt from '@/ehla-ui/components/vi-delete-prompt/vi-delete-prompt.vue'
+import ViMessage from '@/ehla-ui/components/vi-message'
+import ViMessageBox from '@/ehla-ui/components/vi-message-box'
+import ViDeletePrompt from '@/ehla-ui/components/vi-delete-prompt'
 // project component
 import ViAppBar from './components/vi-app-bar'
 import ViButtonRow from './components/vi-button-row'
@@ -82,9 +82,9 @@ const ProjectUI = {
     Vue.component('vi-no-data', ViNoData)
     Vue.directive('sticky', Sticky)
     Vue.directive('scroll', Scroll)
-    Vue.prototype.$message = ViMessage;
-    Vue.prototype.$messageBox = ViMessageBox;
-    Vue.prototype.$deletePrompt = ViDeletePrompt;
+    Vue.prototype.$message = ViMessage
+    Vue.prototype.$messageBox = ViMessageBox
+    Vue.prototype.$deletePrompt = ViDeletePrompt
     Vue.component('vi-app-bar', ViAppBar)
     Vue.component('vi-button-row', ViButtonRow)
     Vue.component('vi-button-toggle', ViButtonToggle)

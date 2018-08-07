@@ -27,7 +27,6 @@ export default {
   state: {
     classList: null,
     asmt_list: {},
-    asmt_report: {},
     weakness_list: [],
     batchList: {}, // the assignment list of the class
     itemList: {}, // the assignable items for the class
@@ -45,9 +44,6 @@ export default {
     gotItemList (state, {itemList, classId, catId}) {
       const id = classId + catId
       Vue.set(state.itemList, id, itemList)
-    },
-    gotAsmtReport (state, {batchId, report}) {
-      Vue.set(state.asmt_report, batchId, report)
     },
     gotWeaknessList (state, {weakness_list, classId}) {
       Vue.set(state.weakness_list, classId, weakness_list)
@@ -133,9 +129,14 @@ export default {
         item_id: itemId
       })
       const report = res.data
-      commit('gotAsmtReport', {
-        report, batchId
-      })
+      const entity = {
+        batch: {
+          [batchId]: {
+            report: report
+          }
+        }
+      }
+      commit('updateEntities', entity)
       return report
     },
 
@@ -242,8 +243,8 @@ export default {
     activeBatchList: (state, getters) => (classId) => {
       return getters.getBatchListByClass(classId).filter(item => !parseInt(item.is_locked))
     },
-    asmtReport: (state) => (batch_id) => {
-      return state.asmt_report[batch_id]
+    asmtReport: (state, getters, rootState) => (batch_id) => {
+      return rootState.entities.batch[batch_id]
     },
     weakness_list: (state) => (classId) => {
       return state.weakness_list[classId]

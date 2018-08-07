@@ -8,85 +8,15 @@
         slot(name="tabs")
     vi-spacer
     .top-bar__r
-      vi-menu(left)
-        vi-button(slot="activator" icon color="brand" size="24" style="font-size: 20px")
-          div +
-        vi-item(v-for="cat in catList" :key="cat.key" @click="createAsmt(cat.key)" link) {{cat.name_en}}
       vi-avatar(size="24" class="ml-16")
         vi-icon(name="avatar" size="16")
 </template>
 
 <script>
-  import {createAsmtDialog} from '../modules/teach/dialogs'
+
   export default {
     props: {
       title: String
-    },
-    data () {
-      return {
-        classes: [],
-        tabs: [
-          {
-            route: {
-              name: 'asmt-status'
-            },
-            title: 'Current Assignment'
-          },
-          {
-            route: {
-              name: 'asmt-report'
-            },
-            title: 'Completed Assignment'
-          },
-          {
-            route: {
-              name: 'weakness-report'
-            },
-            title: 'Weakness'
-          }
-        ]
-      }
-    },
-    methods: {
-      onClassChange (new_classId) {
-        const newRoute = Object.assign({}, this.$route, {
-          params: {
-            classId: new_classId
-          }
-        })
-        this.$router.push(newRoute)
-      },
-      navigate (route) {
-        const newRoute = {
-          ...route, ...{
-            params: this.$route.params.classId
-          }
-        }
-        this.$router.push(newRoute)
-      },
-      createAsmt (id) {
-        createAsmtDialog({
-          catId: id
-        })
-      },
-      isTabActive (routeName) {
-        return routeName === this.$route.name
-      }
-    },
-    computed: {
-      class_option () {
-        return this.$store.state.teach.classList
-      },
-      classId () {
-        return parseInt(this.$route.params.classId)
-      },
-      catList () {
-        return this.$store.state.teach.catList
-      }
-    },
-    // TODO: where should we call this API
-    async created () {
-      this.classes = await this.$store.dispatch('getClasses')
     }
   }
 </script>

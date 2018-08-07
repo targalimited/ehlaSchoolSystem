@@ -63,16 +63,20 @@
   .app-view
     display flex
     flex 1
+    background #f9f9f9
 
     &__l
       width 320px
-      margin 20px 10px 0 20px
+      padding 20px 10px 0 20px
+      flex-shrink 0
 
     &__r
-      flex 1
-      margin 20px 20px 0 10px
-      height 100%
+      width calc(100% - 320px)
+      padding 20px 20px 0 10px
       display flex
       flex-direction column
+
+      &__default
+        height 100%
       // overflow scroll // TODO make it optional
 </style>
