@@ -25,7 +25,8 @@
       large: Boolean,
       small: Boolean,
       size: [String, Number],
-      active: Boolean
+      active: Boolean,
+      dark: Boolean
     },
     computed: {
       computedClasses () {
@@ -45,6 +46,7 @@
           'vi-button--large': this.large,
           'vi-button--small': this.small,
           'vi-button--icon': this.icon,
+          'vi-button--dark': this.dark,
           ['vi-button--' + this.color]: !!this.color,
         }
       },

@@ -1,9 +1,6 @@
 <template>
   <div class="home-view">
 
-    <vi-app-bar :fixed="false" :back="false"/>
-
-
     <div class="dashboard">
 
       <vi-row justify-center>

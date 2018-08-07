@@ -1,69 +1,66 @@
 <template>
-  <div class="home-view">
+  <panel v-if="selectedItems">
 
-    <panel v-if="selectedItems">
+    <vi-data-table
+      class="selected-item-table"
+      :pagination.sync="pagination"
+      :no-header="true"
+      :item-height="126"
+      :table-height="500"
+      :items="selectedItems"
+      :headers="headers"
+      :search="search">
 
-      <vi-data-table
-        class="selected-item-table"
-        :pagination.sync="pagination"
-        :no-header="true"
-        :item-height="103"
-        :table-height="500"
-        :items="selectedItems"
-        :headers="headers"
-        :search="search">
+      <div slot="item" slot-scope="{item}" class="vi-table__row">
 
-        <div slot="item" slot-scope="{item}" class="vi-table__row">
-
-          <vi-table-col class="ellipsis">
-            <reading-item small :item="item"/>
-          </vi-table-col>
-
-          <vi-table-col>
-            <vi-chip color="default">{{item.cat_type}}</vi-chip>
-
-          </vi-table-col>
-
-          <vi-table-col>
+        <vi-table-col class="ellipsis">
+          <div>
             <div>
-              <template v-if="item.levels.length === 0">
-                <vi-button @click="chooseLevel(item)">Assign level(s)</vi-button>
-              </template>
-              <template v-else>
-                <div class="level-label" v-for="lv in item.levels">{{lv | levelName}}</div>
-              </template>
+              <vi-chip small color="default">{{item.cat_type}}</vi-chip>
             </div>
-          </vi-table-col>
+            <reading-item small :item="item"/>
+          </div>
+        </vi-table-col>
 
-          <vi-table-col>
-            <vi-menu left min-width="200">
-              <vi-button
-                slot="activator"
-                :disabled="loading"
-                text icon>
-                <vi-icon left name="more" size="20"/>
-              </vi-button>
+        <vi-table-col>
+          <div>
+            <template v-if="item.levels.length === 0">
+              <vi-button small outline color="brand" @click="chooseLevel(item)">Assign level(s)</vi-button>
+            </template>
+            <template v-else>
+              <div class="level-label" v-for="lv in item.levels">{{lv | levelName}}</div>
+            </template>
+          </div>
+        </vi-table-col>
 
-              <vi-item @click="chooseLevel(item)" :link="true">
-                <vi-item-avatar>
-                  <vi-icon name="edit"/>
-                </vi-item-avatar>
-                <vi-item-content>{{item.levels.length === 0 ? 'Assign' : 'Edit'}} level(s)</vi-item-content>
-              </vi-item>
+        <vi-table-col>
+          <vi-menu left min-width="200">
+            <vi-button
+              slot="activator"
+              :disabled="loading"
+              text icon>
+              <vi-icon left name="more" size="20"/>
+            </vi-button>
 
-              <vi-item @click="removeReading(item)" :link="true">
-                <vi-item-avatar>
-                  <vi-icon name="trash"/>
-                </vi-item-avatar>
-                <vi-item-content>Remove item</vi-item-content>
-              </vi-item>
-            </vi-menu>
+            <vi-item @click="chooseLevel(item)" :link="true">
+              <vi-item-avatar>
+                <vi-icon name="edit"/>
+              </vi-item-avatar>
+              <vi-item-content>{{item.levels.length === 0 ? 'Assign' : 'Edit'}} level(s)</vi-item-content>
+            </vi-item>
 
-          </vi-table-col>
-        </div>
-      </vi-data-table>
-    </panel>
-  </div>
+            <vi-item @click="removeReading(item)" :link="true">
+              <vi-item-avatar>
+                <vi-icon name="trash"/>
+              </vi-item-avatar>
+              <vi-item-content>Remove item</vi-item-content>
+            </vi-item>
+          </vi-menu>
+
+        </vi-table-col>
+      </div>
+    </vi-data-table>
+  </panel>
 </template>
 
 <script>
@@ -87,9 +84,6 @@
         headers: [
           {
             text: 'Name'
-          },
-          {
-            text: 'cat'
           },
           {
             text: 'level'

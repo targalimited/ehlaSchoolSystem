@@ -1,8 +1,8 @@
 import {ifNotAuthenticated, ifAuthenticated } from '@/router/guard.js'
 import HomeView from './views/home-view'
-import LibView from './views/lib-view'
-import LibCatsView from './views/browse-pilot-root'
-import ShelfView from './views/shelf-view'
+import BrowseList from './views/browse-list'
+import BrowsePilotRoot from './views/browse-pilot-root'
+import LibraryList from './views/library-list'
 import TopBar from '@/components/top-bar'
 import AppLayout from '../../layout/app-layout'
 import ShelfTopbar from './components/shelf-top-bar'
@@ -11,7 +11,7 @@ import BrowseBottomBar from './components/browse-bottom-bar'
 import PilotTopBar from './components/pilot-top-bar'
 import ItemFilter from './components/item-filter'
 import PilotIntroBar from './components/pilot-intro-bar'
-import EhlaRoot from './views/lib-main-view'
+import EhlaRoot from './views/browse-ehla-root'
 
 export default [
   {
@@ -25,7 +25,7 @@ export default [
     component: AppLayout,
     beforeEnter: ifAuthenticated,
     props: {
-      type: 'menu'
+      type: 'single'
     },
     children: [
       {
@@ -33,8 +33,7 @@ export default [
         name: 'library-unassigned',
         components: {
           top: ShelfTopbar,
-          left: ItemFilter,
-          default: ShelfView,
+          default: LibraryList,
           bottom: ShelfBottomBar
         },
         props: {
@@ -48,8 +47,7 @@ export default [
         name: 'library-assigned',
         components: {
           top: ShelfTopbar,
-          left: ItemFilter,
-          default: ShelfView,
+          default: LibraryList,
           bottom: ShelfBottomBar
         },
         props: {
@@ -74,7 +72,7 @@ export default [
         components: {
           top: PilotTopBar,
           top2: PilotIntroBar,
-          default: LibCatsView
+          default: BrowsePilotRoot
         },
         props: {
           top: {
@@ -104,7 +102,7 @@ export default [
         components: {
           top: PilotTopBar,
           left: ItemFilter,
-          default: LibView,
+          default: BrowseList,
           viewBottom: BrowseBottomBar
         }
       }
@@ -124,7 +122,7 @@ export default [
         components: {
           top: PilotTopBar,
           top2: PilotIntroBar,
-          default: LibCatsView
+          default: BrowsePilotRoot
         },
         props: {
           top: {

@@ -1,32 +1,29 @@
 <template>
   <div class="lib-cat-view" :class="{'no-access' : accessNotAllow}">
 
-    <vi-container>
+    <div class="reading-section">
+      <vi-row wrap>
+        <vi-col v-for="(cat, i) in readingCategories" xs6 :key="i">
+          <div class="reading-item">
 
-      <div class="reading-section">
-        <vi-row wrap>
-          <vi-col v-for="(cat, i) in readingCategories" xs6 :key="i">
-            <div class="reading-item">
+            <img v-if="school_level === 'P'" :src="cat.image.primary" alt="">
+            <img v-if="school_level === 'S'" :src="cat.image.secondary" alt="">
 
-              <img v-if="school_level === 'P'" :src="cat.image.primary" alt="">
-              <img v-if="school_level === 'S'" :src="cat.image.secondary" alt="">
+            {{cat.name_en}}
 
-              {{cat.name_en}}
-
-              <div>
-                ({{cat.selectedCount}} item selected)
-              </div>
-
-              <router-link :to="{name: 'browse-pilot-category', params: {key: cat.key}}">
-                <vi-button class="add-button" color="green" large>
-                  Add <vi-icon size="18" right name="right"/>
-                </vi-button>
-              </router-link>
+            <div>
+              ({{cat.selectedCount}} item selected)
             </div>
-          </vi-col>
-        </vi-row>
-      </div>
-    </vi-container>
+
+            <router-link :to="{name: 'browse-pilot-category', params: {key: cat.key}}">
+              <vi-button class="add-button" color="green" large>
+                Add <vi-icon size="18" right name="right"/>
+              </vi-button>
+            </router-link>
+          </div>
+        </vi-col>
+      </vi-row>
+    </div>
 
   </div>
 </template>

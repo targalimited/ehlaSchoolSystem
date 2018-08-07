@@ -21,18 +21,18 @@ export default {
 
   .app-layout
     &__side
-      width 40px
+      width 60px
       position fixed
       top 0
       bottom 0
       left 0
-      background #4b90b6
+      background #2e81af
 
       .logo
         width 40px
 
     &__main
-      margin-left 40px
+      margin-left 60px
       height 100vh
       display flex
       flex-direction column

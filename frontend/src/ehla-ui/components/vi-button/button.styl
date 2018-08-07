@@ -186,6 +186,15 @@ $button-flat-hover-opacity := 0.15
       .vi-button__content:before
         opacity $button-flat-hover-opacity
 
+    &.vi-button--dark
+      color rgba(255,255,255,0.85)
+
+      .vi-icon
+        color inherit
+
+      &:hover
+        color white
+
     for color_name, color_value in $colors
       &.vi-button--{color_name}
         color color_value
