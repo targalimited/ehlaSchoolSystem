@@ -52,17 +52,19 @@
           height 100% // TODO: how to stretch with 100%
 
     &--menu
-      .app-view__r
-        margin 0
-
-        &__default
-          padding 20px
-
       .app-view__l
-        margin 0
-        background #f9f9f9
+        padding 20px 16px
+        background #f0f0f0
         width 240px
         overflow-y scroll
+        border-right 1px solid $border-color
+
+      .app-view__r
+        width calc(100% - 240px)
+
+        &__default
+          padding 16px
+          height 100%
 
     &--panel
       .app-view__l
@@ -83,4 +85,7 @@
     display flex
     flex 1
     background #f9f9f9
+
+    &__l
+      flex-shrink 0
 </style>

@@ -1,8 +1,6 @@
 <template>
   <div class="reading-item" :class="{'reading-item--sm': small}">
-    <div class="reading-item__image">
-      <img :src="item.thumbnail_path" alt="">
-    </div>
+    <div class="reading-item__image" :style="{'background-image': `url(${item.thumbnail_path})`}"></div>
     <div class="reading-item__content">
       <div class="reading-item__title text-ellipsis">{{item.name_en}}</div>
       <div class="reading-item__info text-ellipsis">{{item.info_nd_en}}</div>
@@ -43,8 +41,12 @@
 
     &__image
       flex-shrink 0
-      max-width 180px
+      width 150px
+      height 90px
       margin-right 20px
+      background-size cover
+      background-position center
+      border-radius 10px
 
       .reading-item--sm &
         max-width 120px
@@ -52,10 +54,10 @@
 
     &__content
       flex 1
-      max-width 100%
+      overflow hidden
 
     &__title
-      font-size 20px
+      font-size 18px
       margin-bottom 4px
       text-align left
 
@@ -64,7 +66,7 @@
 
     &__info
       text-align left
-      font-size 16px
+      font-size 14px
       color $mild-grey
 
       .reading-item--sm &

@@ -1,5 +1,9 @@
 <template>
-  <panel class="lib-view">
+  <panel class="browse-list">
+
+    <template slot="head">
+      <vi-input v-model="search" placeholder="Search daily fun reading" prefix-icon="search"></vi-input>
+    </template>
 
     <vi-row v-if="!readings" justify-center style="margin-top: 40px">
       <vi-spinner/>
@@ -8,10 +12,10 @@
     <vi-data-table
       v-else
       :pagination.sync="pagination"
+      divided
       class="lib-table"
       :no-header="true"
-      :table-height="500"
-      :item-height="135"
+      :item-height="118"
       :items="readings"
       :headers="headers"
       :custom-filter="searchFilter"
@@ -24,14 +28,9 @@
         </vi-table-col>
 
         <vi-table-col>
-          <vi-button @click="previewReading(item)" color="brand" outline>Preview</vi-button>
-        </vi-table-col>
 
-        <vi-table-col>
-          <vi-checkbox
-            @input="toggleReading(item)"
-            :disabled="loading"
-            :input-value="item.chose"/>
+            <vi-button @click="toggleReading(item)" color="brand" small outline class="mb-4" :disabled="item.chose">{{item.chose ? 'Added' : 'Add'}}</vi-button>
+            <vi-button @click="previewReading(item)" color="brand" small flat>Preview</vi-button>
         </vi-table-col>
       </div>
     </vi-data-table>
@@ -67,9 +66,6 @@
         headers: [
           {
             text: 'name'
-          },
-          {
-            text: ''
           },
           {
             text: ''
@@ -124,7 +120,8 @@
     },
 
     methods: {
-      searchFilter (items, search) {
+      searchFilter (items, search, filter) {
+        items = this.filterBySearch(items, search, filter)
         items = this.filterByType(items, 'level')
         items = this.filterByType(items, 'difficulty')
         items = this.filterByType(items, 'texttype')
@@ -132,6 +129,14 @@
         items = this.filterByType(items, 'subtheme')
         items = this.filterByType(items, 'weakness')
         return items
+      },
+      filterBySearch (items, search, filter) {
+        search = search.toString().toLowerCase()
+        if (search.trim() === '') return items
+
+        return items.filter(i => (
+          Object.keys(i).some(j => filter(i[j], search))
+        ))
       },
       filterByType (items, type) {
         if (this[`${type}Filter`] && this[`${type}Filter`].length === 0) return items
@@ -209,14 +214,20 @@
   @import '../../../project-ui/stylus/settings.styl'
   .lib-table .vi-table__col
     &:nth-child(1)
-      flex 1
+      width calc(100% - 100px)
 
     &:nth-child(2)
-      width 50px
-
-    &:nth-child(3)
       width 100px
+      justify-content flex-end
+      flex-direction: column;
+      align-items: flex-end;
 
   .vi-col
     width 33%
+
+  .browse-list
+    .vi-input
+      box-shadow none
+      border none
+      width 100%
 </style>

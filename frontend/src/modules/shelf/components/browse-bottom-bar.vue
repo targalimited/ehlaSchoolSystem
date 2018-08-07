@@ -1,5 +1,5 @@
 <template lang="pug">
-  bottom-bar {{catChosen}} Reading packs selected
+  .browse-notice {{catChosen}} Reading packs selected
     small(v-if="catMax !== 999") (out of {{catMax}} quota)
 </template>
 
@@ -18,3 +18,9 @@
     }
   }
 </script>
+
+<style lang="stylus">
+  .browse-notice
+    padding 8px 20px
+    background #f1f1ce
+</style>

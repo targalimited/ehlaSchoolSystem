@@ -103,7 +103,7 @@ export default [
           top: PilotTopBar,
           left: ItemFilter,
           default: BrowseList,
-          viewBottom: BrowseBottomBar
+          top2: BrowseBottomBar
         }
       }
     ]

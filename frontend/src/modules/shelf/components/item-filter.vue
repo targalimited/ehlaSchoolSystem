@@ -1,7 +1,7 @@
 <template>
   <div class="search-panel">
 
-    <div v-if="levelOptions">
+    <div v-if="levelOptions" class="search-panel__section">
       <vi-input-label>Filter by levels</vi-input-label>
       <div class="options-container">
         <vi-checkbox
@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <div v-if="difficultyOptions">
+    <div v-if="difficultyOptions" class="search-panel__section">
       <vi-input-label>Filter by difficulties</vi-input-label>
       <div class="options-container">
         <vi-checkbox
@@ -29,7 +29,7 @@
       </div>
     </div>
 
-    <div v-if="texttypeOptions">
+    <div v-if="texttypeOptions" class="search-panel__section">
       <vi-input-label>Filter by text types</vi-input-label>
       <div class="options-container">
         <vi-checkbox
@@ -43,7 +43,7 @@
       </div>
     </div>
 
-    <div v-if="themeOptions">
+    <div v-if="themeOptions" class="search-panel__section">
       <vi-input-label>Filter by themes</vi-input-label>
       <div class="options-container">
         <vi-checkbox
@@ -57,7 +57,7 @@
       </div>
     </div>
 
-    <div v-if="subthemeOptions">
+    <div v-if="subthemeOptions" class="search-panel__section">
       <vi-input-label>Filter by sub-themes</vi-input-label>
       <div class="options-container">
         <vi-checkbox
@@ -71,7 +71,7 @@
       </div>
     </div>
 
-    <div v-if="weaknessOptions">
+    <div v-if="weaknessOptions" class="search-panel__section">
       <vi-input-label>Filter by weakness</vi-input-label>
       <div class="options-container">
         <vi-checkbox
@@ -85,7 +85,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -143,3 +142,15 @@
     }
   }
 </script>
+
+<style lang="stylus">
+  .search-panel
+    &__section
+      margin-bottom 24px
+
+    .vi-input-label
+      font-size 12px
+      display block
+      text-transform: uppercase
+      margin-bottom 8px
+</style>
