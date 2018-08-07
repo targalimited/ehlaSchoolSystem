@@ -9,7 +9,7 @@ import {ifNotAuthenticated, ifAuthenticated } from '@/router/guard.js'
 
 export default [
   {
-    path: 'assignment/class/1',
+    path: '/assignment/class/:classId',
     component: AppLayout,
     beforeEnter: ifAuthenticated,
     props: {
@@ -41,7 +41,7 @@ export default [
     ]
   },
   {
-    path: 'report/class/1',
+    path: '/report/class/:classId',
     component: AppLayout,
     beforeEnter: ifAuthenticated,
     props: {

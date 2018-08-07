@@ -5,7 +5,7 @@
       :value="classId"
       @input="onClassChange"
       option-name="c_name"
-      option-value="classId"
+      option-value="class_id"
       minimal
     )
       template(slot="selection" slot-scope="{selection}")

@@ -185,13 +185,22 @@
       },
       async previewReading (item) {
         previewDialog(item.id)
+      },
+      async initFetch () {
+        this.$store.dispatch('shelf/getItemsByCategory', {
+          cat: this.$key
+        })
       }
     },
 
     created () {
-      this.$store.dispatch('shelf/getItemsByCategory', {
-        cat: this.$key
-      })
+      this.initFetch()
+    },
+
+    watch: {
+      '$route.params.key': function () {
+        this.initFetch()
+      }
     }
   }
 </script>
@@ -210,72 +219,4 @@
 
   .vi-col
     width 33%
-
-  .search-panel
-    // padding 10px 0
-
-  .vi-menu__activator
-    .vi-button--flat.vi-button:hover
-      background rgba(255,255,255,0.4)
-
-    &.vi-menu__activator--active .vi-button
-      background rgba(255,255,255,0.4)
-
-  .search-terms
-    font-size 14px
-    background #fffade
-    padding 8px 30px
-    top: 70px !important
-    left: 220px !important
-    right: 0 !important
-    position: fixed !important
-    max-width: 100% !important
-    box-shadow $shadow
-    z-index 2
-    position relative
-
-    +screen(900px)
-      left 74px !important
-
-    .vi-button
-      position absolute
-      right 0
-
-  .options-container
-    margin 4px 0 32px
-    font-size 15px
-
-  .search-row
-    position fixed
-    bottom 0
-    left 0
-    right 0
-    padding 20px
-    background white
-
-</style>
-
-<style lang="stylus">
-  @import '../../../project-ui/stylus/settings.styl'
-  .filter-menu
-    top: 70px !important
-    left: 220px !important
-    right: 0 !important
-    bottom: 0 !important
-    position: fixed !important
-    max-width: 100% !important
-    background #f4f4f4
-    border-radius !important
-    max-height: 9999px !important
-    overflow hidden
-
-    +screen(900px)
-      left 74px !important
-      right: 0 !important
-
-    .search-panel
-      overflow auto
-      padding 20px 32px
-      height 100%
-      padding-bottom 80px
 </style>

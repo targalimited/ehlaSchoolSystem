@@ -380,6 +380,16 @@ export default {
 
     isPilot (state) {
       return state.summary.is_pilot
+    },
+
+    unassignedItems (state) {
+      if (!state.selectedItems) return
+      return state.selectedItems.filter(item => item.levels.length === 0)
+    },
+
+    assignedItems (state) {
+      if (!state.selectedItems) return
+      return state.selectedItems.filter(item => item.levels.length > 0)
     }
   }
 }

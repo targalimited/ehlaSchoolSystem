@@ -28,7 +28,6 @@
     },
     methods: {
       onSelect (id) {
-        console.log(this.selected)
         this.$router.push({
           ...this.route,
           ...{

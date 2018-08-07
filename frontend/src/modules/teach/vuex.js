@@ -29,7 +29,7 @@ export default {
     asmt_list: {},
     asmt_report: {},
     weakness_list: [],
-    batchList: {}, // the assigned list of the class
+    batchList: {}, // the assignment list of the class
     itemList: {}, // the assignable items for the class
     weaknessReport: {},
     catList: catList
@@ -46,8 +46,8 @@ export default {
       const id = classId + catId
       Vue.set(state.itemList, id, itemList)
     },
-    gotAsmtReport (state, {batch_id, report}) {
-      Vue.set(state.asmt_report, batch_id, report)
+    gotAsmtReport (state, {batchId, report}) {
+      Vue.set(state.asmt_report, batchId, report)
     },
     gotWeaknessList (state, {weakness_list, classId}) {
       Vue.set(state.weakness_list, classId, weakness_list)
@@ -73,9 +73,9 @@ export default {
     async getWeaknessList ({commit}, {classId}) {
       const res = await new AuthHttp().post('/get_class_weakness', {
         academic_id: 1, // TODO hardcode
-        classId: classId,
+        class_id: classId,
         subject_id: 1,
-        weakness_code: "MATCH", // TODO need to filter?
+        weakness_code: "MATCH"
       })
       const weakness_list = res.data
       commit('gotWeaknessList', {
@@ -88,7 +88,7 @@ export default {
       const res = await new AuthHttp().post('/get_school_weakness_report', {
         subject_id: 1,
         academic_id: 1,
-        classId: classId,
+        class_id: classId,
         weakness_code: 'MATCH',
         weakness_ids: weakness_ids
       })
@@ -97,12 +97,12 @@ export default {
     },
 
     /**
-     * get the list of assignment from a class
+     * get the list of assignment for a class
      */
     async getAsmtList ({rootGetters, commit}, {classId}) {
       const res = await new AuthHttp().post('/get_school_assignment', {
         teacher_id: rootGetters.teacherId,
-        classId: classId,
+        class_id: classId,
         subject_id: 1
       })
       let batches = res.data
@@ -125,23 +125,23 @@ export default {
     /**
      * get the status (whether is done or not) of an assignment assigned to a class
      */
-    async getAsmtReport ({commit}, {classId, batch_id, item_id}) {
+    async getAsmtReport ({commit}, {classId, batchId, itemId}) {
       const res = await new AuthHttp().post('/get_status_report', {
-        classId: classId,
+        class_id: classId,
         subject_id: 1,
-        batch_id: batch_id,
-        item_id: item_id
+        batch_id: batchId,
+        item_id: itemId
       })
       const report = res.data
       commit('gotAsmtReport', {
-        report, batch_id
+        report, batchId
       })
       return report
     },
 
     async getItemListByClassCat ({commit}, {classId, catId}) {
       const res = await new AuthHttp().post('/get_item_list_by_cls_sub_cat', {
-        classId: classId,
+        class_id: classId,
         subject_id: 1,
         cat_grouper: catId
       })
@@ -176,7 +176,7 @@ export default {
       }
       const payload = {
         teacher_id: teacherId,
-        classId: classId,
+        class_id: classId,
         subject_id: 1,
         batch_id: batchId,
         start_date: startDate + ' 00:00:00',
@@ -207,7 +207,7 @@ export default {
      */
     async getItemById ({commit}, {classId, itemId}) {
       const res = await new AuthHttp().post('/get_item_by_id', {
-        classId: classId,
+        class_id: classId,
         subject_id: 1,
         item_id: itemId
       })

@@ -19,18 +19,41 @@ export default [
     beforeEnter: ifAuthenticated
   },
   {
-    path: '/selected-reading',
-    name: 'shelf',
+    path: '/my-library',
     component: AppLayout,
     beforeEnter: ifAuthenticated,
+    props: {
+      type: 'menu'
+    },
     children: [
       {
-        path: '/',
+        path: 'unassigned',
+        name: 'library-unassigned',
         components: {
           top: ShelfTopbar,
           left: ItemFilter,
           default: ShelfView,
           bottom: ShelfBottomBar
+        },
+        props: {
+          default: {
+            state: 'unassigned'
+          }
+        }
+      },
+      {
+        path: 'assigned',
+        name: 'library-assigned',
+        components: {
+          top: ShelfTopbar,
+          left: ItemFilter,
+          default: ShelfView,
+          bottom: ShelfBottomBar
+        },
+        props: {
+          default: {
+            state: 'assigned'
+          }
         }
       }
     ]

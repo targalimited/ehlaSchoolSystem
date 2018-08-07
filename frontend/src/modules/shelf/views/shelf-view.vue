@@ -1,13 +1,14 @@
 <template>
   <div class="home-view">
 
-    <div v-if="selectedItems">
+    <panel v-if="selectedItems">
 
       <vi-data-table
         class="selected-item-table"
         :pagination.sync="pagination"
         :no-header="true"
         :item-height="103"
+        :table-height="500"
         :items="selectedItems"
         :headers="headers"
         :search="search">
@@ -61,7 +62,7 @@
           </vi-table-col>
         </div>
       </vi-data-table>
-    </div>
+    </panel>
   </div>
 </template>
 
@@ -70,6 +71,13 @@
 
   export default {
     name: 'shelf-view',
+
+    props: {
+      state: {
+        type: String,
+        default: 'unassigned'
+      }
+    },
 
     data () {
       return {
@@ -95,7 +103,8 @@
 
     computed: {
       selectedItems () {
-        return this.$store.state.shelf.selectedItems
+        const getter = this.state === 'unassigned' ? 'shelf/unassignedItems' : 'shelf/assignedItems'
+        return this.$store.getters[getter]
       },
       readingCategories () {
         return this.$store.getters['shelf/categories']

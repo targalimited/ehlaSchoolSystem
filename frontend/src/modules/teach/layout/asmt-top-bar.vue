@@ -21,21 +21,15 @@
         tabs: [
           {
             route: {
-              name: 'asmt-status'
+              name: 'asmt-class-progress'
             },
             title: 'In Progress'
           },
           {
             route: {
-              name: 'asmt-report'
+              name: 'asmt-class-locked'
             },
             title: 'Locked'
-          },
-          {
-            route: {
-              name: 'weakness-report'
-            },
-            title: 'Draft'
           }
         ]
       }

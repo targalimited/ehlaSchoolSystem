@@ -1,13 +1,21 @@
 <template lang="pug">
   panel.current-asmt-report
-    template(slot="head") HI
+    template(slot="head")
+      vi-spacer
+      vi-button(icon flat)
+        vi-icon(name="edit")
+      vi-button(icon flat)
+        vi-icon(name="lock")
+      vi-button(icon flat)
+        vi-icon(name="trash")
     template(slot="foot") YO
     vi-no-data(v-if="!batch_id" title="Select a assignment")
     vi-spinner(v-else-if="loading")
     vi-data-table(
       v-else
       :items="students"
-      :item-height="600"
+      :item-height="60"
+      :table-height="500"
       :headers="headers"
       :pagination="pagination"
     )
@@ -70,9 +78,9 @@
       fetch () {
         if (!this.batch_id) return
         this.$store.dispatch('getAsmtReport', {
-          classId: this.classId ,
-          batch_id: this.batch_id,
-          item_id: this.item_id,
+          classId: this.classId,
+          batchId: this.batch_id,
+          itemId: this.item_id,
         })
       }
     },

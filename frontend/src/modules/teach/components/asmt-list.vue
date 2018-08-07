@@ -64,6 +64,7 @@
     },
     watch: {
       '$classId': function () {
+        console.log('fetch')
         this.initFetch()
       }
     }
