@@ -32,7 +32,7 @@ class UserController extends Controller
   public $teacher_subject_class;
   public $access_token;
   public $_client;
-  public $_teachers_no, $_students_no;
+  public $_teachers_no, $_students_no, $_school_no_from_sheet;
 
   public function __construct()
   {
@@ -107,17 +107,33 @@ class UserController extends Controller
     foreach ($sheet as $v) {
       $this->import_validate_class($v);
       $this->import_validate_realname_en($v);
-      if($type == 'teacher'){
+      $this->import_validat_from_sheet($type);
+      if($type == 'Teacher'){
         $this->import_validate_subject($v);
         $this->import_validate_teacher_no($v);
-      }else if($type == 'student'){
+      }else if($type == 'Student'){
         $this->import_validate_student($v);
+        $this->import_validate_class_no(isset($v['class_no'])?$v['class_no']:null);
       }
     }
   }
   private function import_validate_realname_en($v){
     if(!isset($v['realname_en'])){
       $this->errors[] = 'Missing realname_en';
+    }
+  }
+
+  private function import_validate_class_no($v){
+    if(!isset($v)){
+      $this->errors[] = 'Missing class number';
+    }
+  }
+
+  private function import_validat_from_sheet($type){
+    foreach (array_count_values($this->_school_no_from_sheet) as $k=>$v){
+      if($v>1){
+        $this->errors[] = $type.' No. cannot be duplicated ' . $k;
+      }
     }
   }
 
@@ -239,10 +255,11 @@ class UserController extends Controller
         $this->header_validate($title,$teacher_sheet[0]);
 
         if (!$this->errors) {
-              $this->import_validate($teacher_sheet,'teacher');
 
-          if(!$this->errors){
+
+
               foreach ($teacher_sheet as $k => $v) {
+                $this->_school_no_from_sheet[] = $v['teacher_no'];
                 $teacher[$v['teacher_no']]['school_num'] = $v['teacher_no'];
                 $teacher[$v['teacher_no']]['realname_en'] = $v['realname_en'];
                 $teacher[$v['teacher_no']]['realname_zh'] = (isset($v['realname_zh']))?$v['realname_zh']:'';
@@ -251,7 +268,9 @@ class UserController extends Controller
                 $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
 
               }
+          $this->import_validate($teacher_sheet,'Teacher');
 
+          if(!$this->errors){
               $teachers = array_values($teacher);
 
               $input['userGroup'] = 'teacher';
@@ -353,15 +372,18 @@ class UserController extends Controller
             }
           }
 
-          $this->import_validate($student_sheet,'student');
 
-          if(!$this->errors){
+
               foreach ($student_sheet as $k => $v) {
-                $student[$v['student_no']]['school_num'] = $v['student_no'];
-                $student[$v['student_no']]['realname_en'] = $v['realname_en'];
-                $student[$v['student_no']]['realname_zh'] = (isset($v['realname_zh']))?$v['realname_zh']:'';
+                if(isset($v['english']) && $v['english']==='Y') {
+                  $this->_school_no_from_sheet[] = $v['student_no'];
+                  $student[$v['student_no']]['school_num'] = $v['student_no'];
+                  $student[$v['student_no']]['realname_en'] = $v['realname_en'];
+                  $student[$v['student_no']]['realname_zh'] = (isset($v['realname_zh'])) ? $v['realname_zh'] : '';
+                }
               }
-
+          $this->import_validate($student_sheet,'Student');
+          if(!$this->errors){
               $students = array_values($student);
 
     //          $debug = New Debug();
@@ -391,7 +413,7 @@ class UserController extends Controller
               if($total_sent == $total_receive) {
 
                 foreach ($student_sheet as $k => $v) {
-                  if($v['english']==='Y'){
+                  if(isset($v['english']) && $v['english']==='Y') {
                     $new_student_set[$k]['student_id'] = $student_num_id[$v['student_no']]['user_id'];
                     $new_student_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
                     $new_student_set[$k]['subject_id'] = array_search('english', $this->subject);
