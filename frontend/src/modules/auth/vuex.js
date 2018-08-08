@@ -9,13 +9,6 @@ export default {
     schoolName: ''
   },
 
-  getters: {
-    isAuthenticated: state => !!state.extoken,
-    authStatus: state => state.authStatus,
-    user: state => state.user,
-    teacherId: state => state.user && state.user.user_id
-  },
-
   mutations: {
     login (state) {
       state.authStatus = 'loading'
@@ -43,7 +36,6 @@ export default {
   },
 
   actions: {
-
     async login ({commit, dispatch}, {password, username}) {
       commit('login');
       const res = await http.post('/userApi/login', {
@@ -76,5 +68,13 @@ export default {
       })
       return res
     }
+  },
+
+  getters: {
+    isAuthenticated: state => !!state.extoken,
+    authStatus: state => state.authStatus,
+    user: state => state.user,
+    username: state => state.user && state.user.username,
+    teacherId: state => state.user && state.user.user_id
   }
 }

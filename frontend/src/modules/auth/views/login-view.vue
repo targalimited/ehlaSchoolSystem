@@ -3,7 +3,7 @@
     <vi-card>
       <vi-card-content>
 
-        <vi-item class="header-item" height="auto">
+        <vi-item class="header-item" height="80">
           <vi-item-avatar>
             <img class="logo" src="../assets/app-logo.jpg" alt="">
           </vi-item-avatar>
@@ -31,7 +31,7 @@
 
           <vi-input-error class="mb-24" v-if="error">username / password is wrong</vi-input-error>
 
-          <vi-button :disabled="loading" @click="submit" primary>{{loading ? 'Loggin in...' : 'Login'}}</vi-button>
+          <vi-button :disabled="loading" @click="submit" color="brand">{{loading ? 'Loggin in...' : 'Login'}}</vi-button>
 
           <vi-row class="notice">
             <vi-icon name="info-circular" size="32" class="no-shrink mr-20"/>

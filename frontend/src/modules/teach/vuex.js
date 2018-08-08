@@ -241,7 +241,7 @@ export default {
       const itemIdList = state.itemList[id]
       return denormalize(itemIdList, itemListSchema, {
         item: rootState.entities.item
-      }) || []
+      })
     },
     getItemById: (state, getters, rootState) => (itemId) => {
       return rootState.entities.item[itemId]

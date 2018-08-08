@@ -8,8 +8,19 @@
         slot(name="tabs")
     vi-spacer
     .top-bar__r
-      vi-avatar(size="24" class="ml-16")
-        vi-icon(name="avatar" size="16")
+      vi-menu
+        vi-item.profile-btn(slot="activator")
+          vi-item-avatar
+            vi-avatar(size="24" class="ml-16")
+              vi-icon(name="avatar" size="16")
+          vi-item-content
+            vi-item-title {{$store.getters.username}}
+        router-link(:to="{name: 'config'}")
+          vi-item(link) Config
+        router-link(:to="{name: 'profile'}")
+          vi-item(link) Profile
+        router-link(:to="{name: 'logout'}")
+          vi-item(link) Logout
 </template>
 
 <script>
@@ -44,19 +55,9 @@
         flex 1
         display flex
         align-items center
-        font-size 20px
-        font-weight bold
+        font-size 22px
+        font-weight normal
         color $font-color-3
-
-    &__title
-      font-size 20px
-      font-weight bold
-      color $font-color-3
-
-    &__logo
-      width 60px
-      height @width
-      margin-right 16px
 
     &__tabs
       display flex
@@ -70,4 +71,11 @@
 
       &--active, &.router-link-active
         border-color $brand
+
+    .profile-btn
+      max-width 100px
+
+      .vi-item__title
+        font-size 12px
+        font-weight normal
 </style>

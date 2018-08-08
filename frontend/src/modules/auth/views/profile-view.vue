@@ -1,12 +1,9 @@
 <template>
   <div>
-    <vi-app-bar title="Profile" />
-    <vi-container>
-      <vi-section-header>Change password</vi-section-header>
-      <vi-input v-model="oldPw" placeholder="Enter your current password"/>
-      <vi-input v-model="newPw" placeholder="Enter your new password"/>
-      <vi-button @click="changePW" color="brand">Submit</vi-button>
-    </vi-container>
+    <vi-section-header>Change password</vi-section-header>
+    <vi-input v-model="oldPw" placeholder="Enter your current password"/>
+    <vi-input v-model="newPw" placeholder="Enter your new password"/>
+    <vi-button @click="changePW" color="brand">Submit</vi-button>
   </div>
 </template>
 

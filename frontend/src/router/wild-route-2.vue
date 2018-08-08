@@ -1,6 +1,6 @@
 <template>
   <div class="coming-soon">
-    <vi-app-bar :title="title"></vi-app-bar>
+    <top-bar :title="title"></top-bar>
     <vi-row align-center justify-center>
       <div>
         <img class="logo" src="../modules/auth/assets/app-logo.jpg" alt="">
