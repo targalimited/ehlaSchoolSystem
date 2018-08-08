@@ -10,15 +10,31 @@ import ShelfBottomBar from './components/shelf-bottom-bar'
 import BrowseBottomBar from './components/browse-bottom-bar'
 import PilotTopBar from './components/pilot-top-bar'
 import ItemFilter from './components/item-filter'
-import PilotIntroBar from './components/pilot-intro-bar'
+import PilotIntroBar from './components/pilot-notice-bar'
+import HomeIntroBar from './components/home-notice-bar'
 import EhlaRoot from './views/browse-ehla-root'
 
 export default [
   {
     path: '/home',
-    name: 'home',
-    component: HomeView,
-    beforeEnter: ifAuthenticated
+    component: AppLayout,
+    beforeEnter: ifAuthenticated,
+    children: [
+      {
+        name: 'home',
+        path: '/',
+        components: {
+          top: TopBar,
+          top2: HomeIntroBar,
+          default: HomeView
+        },
+        props: {
+          top: {
+            title: 'Home'
+          }
+        }
+      }
+    ]
   },
   {
     path: '/my-library',

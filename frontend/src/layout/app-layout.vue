@@ -40,6 +40,9 @@
     flex-direction column
 
     &--single
+      .app-view
+      overflow-y: hidden scroll
+
       .app-view__l
         display none
 

@@ -29,7 +29,7 @@
 
 <script>
   export default {
-    name: 'pilot-intro-bar',
+    name: 'pilot-notice-bar',
 
     props: ['type'], // type: 'pilot' or 'free'
 
@@ -62,7 +62,7 @@
   .ui-message
     padding 20px
     display flex
-    background orange
+    background #efb03e
     color white
 
     .vi-icon

@@ -65,6 +65,7 @@ export default {
 
   methods: {
     async submit () {
+      this.loading = true
       let loader = this.$loading.show()
       const res = await this.$store.dispatch('login', {
         username: this.username,
@@ -77,6 +78,7 @@ export default {
       } else {
         this.error = true
       }
+      this.loading = false
       loader.hide()
     }
   }

@@ -1,59 +1,23 @@
-<template>
-  <div class="home-view">
-
-    <div class="dashboard">
-
-      <vi-row justify-center>
-        <vi-avatar size="120">
-          <vi-icon name="school" color="light-grey" size="120"/>
-        </vi-avatar>
-      </vi-row>
-
-      <div class="dashboard__title">{{$store.state.auth.schoolName}}</div>
-
-      <div class="stat-section">
-
-        <router-link class="stat" :to="{name: 'shelf'}">
-          <vi-item height="auto">
-            <vi-item-avatar>
-              <vi-icon class="stat__icon" name="shelf" size="50"/>
-            </vi-item-avatar>
-            <vi-item-content>
-              <vi-row align-center>
-                <div class="stat__int">{{selectedCount}}</div>
-                <div class="stat__name">Accessible Items</div>
-              </vi-row>
-              <!--<div class="stat__info">Quota: {{summary.total_item_qtt}} readings</div>-->
-            </vi-item-content>
-          </vi-item>
-        </router-link>
-      </div>
-    </div>
-
-    <router-link :to="{name: 'lib-cat'}" class="start">
-      <vi-icon name="pilot" size="60" class="pr-16"/>
-      <span>The journey of Pilot School starts here</span>
-      <vi-spacer/>
-      <vi-icon name="arrow-right" size="40" class="pl-10"/>
-    </router-link>
-
-    <vi-container class="pdf-section">
-      <vi-section-header>Resources:</vi-section-header>
-      <vi-row wrap>
-        <vi-col v-for="(resource, i) in resources" xs4 :key="i">
-          <div class="pdf">
-            <div class="pdf__img">
-              <img v-if="school_level === 'P'" :src="resource.cover.primary" alt="">
-              <img v-if="school_level === 'S'" :src="resource.cover.secondary" alt="">
-            </div>
-            <a v-if="school_level === 'P'" :href="resource.source.primary" class="vi-link" download target="_blank">{{resource.name_l1}}<br/><br/>{{resource.name_l2}}<br/><br/>{{resource.name_l3}}<br/><br/>{{resource.name_l4}}</a>
-            <a v-if="school_level === 'S'" :href="resource.source.secondary" class="vi-link" download target="_blank">{{resource.name_l1}}<br/><br/>{{resource.name_l2}}<br/><br/>{{resource.name_l3}}<br/><br/>{{resource.name_l4}}</a>
-          </div>
-        </vi-col>
-      </vi-row>
-    </vi-container>
-
-  </div>
+<template lang="pug">
+  .home-view
+    .home-view__header
+      h2 Welcome John from Munsang Colleage
+      p get start from the followings
+    vi-row.board-section
+      vi-col(xs6 md3 v-for="link in links")
+        .home-view__board
+          vi-icon(:name="link.icon" size="46" color="brand")
+          h3 {{link.name}}
+          p {{link.content}}
+    vi-row(wrap).section
+      vi-col(v-for="(resource, i) in resources" :key="i" xs6 md3)
+        a.home-view__pdf(:href="school_level === 'P' ? resource.source.primary : resource.source.secondary")
+          img(:src="school_level === 'P' ? resource.cover.primary : resource.cover.secondary")
+          ul
+            li {{resource.name_l1}}
+            li {{resource.name_l2}}
+            li {{resource.name_l3}}
+            li {{resource.name_l4}}
 </template>
 
 <script>
@@ -139,6 +103,40 @@ export default {
              secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Reading+section.pdf",
           }
         }
+      ],
+      links: [
+        {
+          icon: 'pilot',
+          name: 'Browse',
+          content: 'Browse and select the item',
+          route: {
+            name: 'browse-pilot-root'
+          }
+        },
+        {
+          icon: 'shelf',
+          name: 'Manage',
+          content: 'Manage the selected item',
+          route: {
+            name: 'library-unassigned'
+          }
+        },
+        {
+          icon: 'assignment',
+          name: 'Assign',
+          content: 'Assign and track the progress of the assignment',
+          route: {
+            name: 'asmt-class-progress'
+          }
+        },
+        {
+          icon: 'report',
+          name: 'Report',
+          content: 'Get insight of the students performance from our report',
+          route: {
+            name: 'report-class-weakness'
+          }
+        }
       ]
     }
   },
@@ -164,93 +162,40 @@ export default {
 <style scoped lang="stylus">
   @import '../../../project-ui/stylus/settings.styl'
   .home-view
-    margin-top -70px
+    padding 24px 0
 
-  .dashboard
-    padding 24px 40px
+    .board-section
+      padding 16px 0 32px 0
 
-    .vi-avatar
-      margin-top -80px
-      background white
-      position relative
-      z-index 3
-
-    &__title
+    &__header
       text-align center
-      font-size 32px
-      margin-top 8px
-      margin-bottom 12px
 
-  .stat-section
-    display flex
-    justify-content center
+    &__pdf
+      font-size 12px
 
-  .stat
-    display inline-flex
-    align-items center
-    line-height 1
-    font-size 18px
-    cursor pointer
+      ul
+        list-style disc
 
-    &:hover
-      *
-        color $brand
+    &__board
+      text-align center
+      line-height 1.2
+      cursor pointer
+      padding 16px
+      border-radius 8px
 
-    .vi-item
-      display inline-flex !important
+      &:hover
+        box-shadow $box-shadow
 
-      &__action
-        margin-left 48px
+      h3
+        color $font-color-3
+        font-size 18px
+        font-weight bold
+        margin-bottom 8px
+        margin-top 4px
 
-    &__icon
-      color $brand
-
-    &__int
-      color $dark-grey
-      font-size 30px
-
-    &__name
-      color $mild-grey
-      margin-left 8px
-      font-size 18px
-      position relative
-      top 2px
-
-    &__info
-      width 100%
-      margin-top 4px
-      margin-left 8px
-      color $mild-grey
-      font-size 16px
-
-  .pdf-section
-    background #f9f9f9
-    text-align center
-
-  .pdf
-    text-align center
-    margin-bottom: 20px
-    font-size 14px
-
-    &__img
-      width 80%
-      height auto
-      margin 0 auto 8px auto
+      p
+        font-size 13px
+        color $font-color-2
 
 
-  .start
-    background #42d495
-    color white
-    font-weight bold
-    padding 20px
-    text-align center
-    font-size 20px
-    margin 24px
-    border-radius 20px
-    align-items center
-    display flex
-    cursor pointer
-
-    &:hover
-      background darken(#42d495, 10%)
 </style>
