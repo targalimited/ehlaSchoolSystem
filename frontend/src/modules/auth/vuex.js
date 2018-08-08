@@ -77,6 +77,10 @@ export default {
     authStatus: state => state.authStatus,
     user: state => state.user,
     username: state => state.user && state.user.username,
+    schoolName: state => {
+      if (!state.user) return
+      return state.user.school.s_name
+    },
     teacherId: state => state.user && state.user.user_id
   }
 }

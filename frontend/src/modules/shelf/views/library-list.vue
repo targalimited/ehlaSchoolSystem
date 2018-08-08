@@ -1,13 +1,16 @@
 <template>
-  <panel v-if="selectedItems">
+  <panel class="library-list">
+    <vi-spinner v-if="!selectedItems"></vi-spinner>
 
     <vi-data-table
+      v-else
       class="selected-item-table"
       :pagination.sync="pagination"
       :no-header="true"
-      :item-height="126"
+      :item-height="1156"
       :items="selectedItems"
       :headers="headers"
+      divided
       :search="search">
 
       <div slot="item" slot-scope="{item}" class="vi-table__row">
@@ -15,7 +18,7 @@
         <vi-table-col class="ellipsis">
           <div>
             <div>
-              <vi-chip small color="default">{{item.cat_type}}</vi-chip>
+              <vi-chip small class="mb-4">{{item.cat_type}}</vi-chip>
             </div>
             <reading-item small :item="item"/>
           </div>
@@ -146,8 +149,10 @@
       }
     },
 
-    mounted () {
+    created () {
+      this.loading = true
       this.$store.dispatch('shelf/getDashboard')
+      this.loading = false
     }
   }
 </script>
@@ -158,25 +163,17 @@
 
     &:nth-child(1)
       flex 1
-      // width 50%
-      // max-width 340px
-      /*width 40%*/
       justify-content flex-start
 
     &:nth-child(2)
       width 18%
-      // max-width 150px
-      // min-width 120px
       justify-content flex-start
       @media(max-width: 750px)
         width 90px
 
     &:nth-child(3)
-      width 18%
-      justify-content flex-start
-      @media(max-width: 750px)
-        width 90px
-      // min-width 100px
+      width 60px
+      justify-content flex-end
 
     &:nth-child(4)
       flex-shrink 0
@@ -185,6 +182,9 @@
 
 <style scoped lang="stylus">
   @import '../../../project-ui/stylus/settings.styl'
+  .library-list
+    width 700px
+
   .banner
     padding 24px
     text-align center

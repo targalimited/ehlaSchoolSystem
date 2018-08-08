@@ -392,12 +392,12 @@ export default {
     },
 
     unassignedItems (state) {
-      if (!state.selectedItems) return
+      if (!state.selectedItems) return null
       return state.selectedItems.filter(item => item.levels.length === 0)
     },
 
     assignedItems (state) {
-      if (!state.selectedItems) return
+      if (!state.selectedItems) return null
       return state.selectedItems.filter(item => item.levels.length > 0)
     }
   }

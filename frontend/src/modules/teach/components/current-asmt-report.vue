@@ -13,11 +13,11 @@
       template(slot="head")
         vi-spacer
         template(v-if="!locked")
-          vi-button(icon flat @click="editAsmt")
+          // vi-button(icon flat @click="editAsmt" disabled)
             vi-icon(name="edit")
           vi-button(icon flat @click="lockAsmt")
             vi-icon(name="lock")
-          vi-button(icon flat @click="deleteAsmt")
+          // vi-button(icon flat @click="deleteAsmt" disabled)
             vi-icon(name="trash")
       template(slot="foot")
         .remark(v-if="remark") Remark: {{remark}}

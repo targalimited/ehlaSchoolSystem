@@ -2,17 +2,15 @@
   <vi-dialog :value="true" width="400">
     <vi-card>
 
-      <vi-toolbar :brand="true">
-        <div class="vi-toolbar__title">
-          Assign level to reading
-        </div>
-      </vi-toolbar>
+      <div class="vi-dialog__header">
+        Assign level to reading
+      </div>
 
       <vi-card-content v-if="levels">
         <div class="input-group">
           <vi-row v-for="level in levels" :key="level.level">
             <vi-checkbox
-              :option-value="level.level"
+              :value="level.level"
               :label="level.level | levelName"
               :disabled="isDisabled(level)"
               v-model="newSelected"/>
@@ -21,9 +19,9 @@
           </vi-row>
         </div>
 
-        <vi-button-row class="pt-30">
-          <vi-button @click="$close(false)" size="135">Cancel</vi-button>
-          <vi-button @click="onSubmit" primary size="135">Assign</vi-button>
+        <vi-button-row class="vi-dialog__footer">
+          <vi-button small outline @click="$close(false)" size="135">Cancel</vi-button>
+          <vi-button small @click="onSubmit" color="brand" size="135">Assign</vi-button>
         </vi-button-row>
       </vi-card-content>
     </vi-card>

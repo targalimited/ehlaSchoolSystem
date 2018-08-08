@@ -39,6 +39,9 @@
     display flex
     flex-direction column
 
+    &__top
+      position relative
+
     &--single
       .app-view
       overflow-y: hidden scroll

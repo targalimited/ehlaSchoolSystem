@@ -145,6 +145,9 @@
 <style lang="stylus" scoped>
   @import '../../../project-ui/stylus/settings.styl'
 
+  .class-view
+    width 660px
+
   .vi-card
     background #dfeef6
     height 200px

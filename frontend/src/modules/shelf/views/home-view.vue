@@ -1,11 +1,11 @@
 <template lang="pug">
   .home-view
     .home-view__header
-      h2 Welcome John from Munsang Colleage
-      p get start from the followings
+      h2 Hi, {{$store.getters.username}} from School {{$store.getters.schoolName}}
+      p Let's get started!
     vi-row.board-section
       vi-col(xs6 md3 v-for="(link,i) in links" :key="i")
-        .home-view__board
+        router-link.home-view__board(:to="link.route" tag="div")
           vi-icon(:name="link.icon" size="46" color="brand")
           h3 {{link.name}}
           p {{link.content}}
@@ -103,8 +103,22 @@ export default {
              secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Reading+section.pdf",
           }
         }
-      ],
-      links: [
+      ]
+    }
+  },
+
+  computed: {
+    summary () {
+      return this.$store.state.shelf.summary
+    },
+    readingCategories () {
+      return this.$store.getters['shelf/categories']
+    },
+    selectedCount () {
+      return this.$store.getters['shelf/selectedCount']
+    },
+    links () {
+      return [
         {
           icon: 'pilot',
           name: 'Browse',
@@ -126,7 +140,10 @@ export default {
           name: 'Assign',
           content: 'Assign and track the progress of the assignment',
           route: {
-            name: 'asmt-class-progress'
+            name: 'asmt-class-progress',
+            params: {
+              classId: this.$store.getters.defaultClassId
+            }
           }
         },
         {
@@ -134,22 +151,13 @@ export default {
           name: 'Report',
           content: 'Get insight of the students performance from our report',
           route: {
-            name: 'report-class-weakness'
+            name: 'report-class-weakness',
+            params: {
+              classId: this.$store.getters.defaultClassId
+            }
           }
         }
       ]
-    }
-  },
-
-  computed: {
-    summary () {
-      return this.$store.state.shelf.summary
-    },
-    readingCategories () {
-      return this.$store.getters['shelf/categories']
-    },
-    selectedCount () {
-      return this.$store.getters['shelf/selectedCount']
     }
   },
 

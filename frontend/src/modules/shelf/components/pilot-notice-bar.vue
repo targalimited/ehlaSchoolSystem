@@ -4,10 +4,10 @@
     <vi-row align-center class="ui-message" v-if="accessNotAllow">
       <vi-icon name="alert"/>
       <template v-if="type === 'pilot'">
-        You don't have access to this category. Please go to the <router-link class="ml-4 ui-link" :to="{name: 'free-access'}">free access scheme</router-link>
+        You don't have access to this category. Please go to the <router-link class="ml-4 ui-link" :to="{name: 'browse-free-root'}">free access scheme</router-link>
       </template>
       <template v-else>
-        You don't have access to this category. Please go to the <router-link class="ml-4 ui-link" :to="{name: 'lib-cat'}">pilot page</router-link>
+        You don't have access to this category. Please go to the <router-link class="ml-4 ui-link" :to="{name: 'browse-pilot-root'}">pilot page</router-link>
       </template>
 
     </vi-row>

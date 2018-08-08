@@ -10,12 +10,13 @@
     router-link(:to="{name: 'library-unassigned'}")
       vi-button(icon flat dark)
         vi-icon(name="shelf" size="30")
-    router-link(:to="{name: 'asmt-class-progress', params:{classId: defaultClassId}}")
-      vi-button(icon flat dark)
-        vi-icon(name="assignment" size="28")
-    router-link(:to="{name: 'report-class-weakness', params:{classId: defaultClassId}}")
-      vi-button(icon flat dark)
-        vi-icon(name="report" size="28")
+    template(v-if="defaultClassId")
+      router-link(:to="{name: 'asmt-class-progress', params:{classId: defaultClassId}}")
+        vi-button(icon flat dark)
+          vi-icon(name="assignment" size="28")
+      router-link(:to="{name: 'report-class-weakness', params:{classId: defaultClassId}}")
+        vi-button(icon flat dark)
+          vi-icon(name="report" size="28")
     router-link(:to="{name: 'settings-class'}")
       vi-button(icon flat dark)
         vi-icon(name="config" size="20")
@@ -64,4 +65,8 @@
 
     .vi-button
       margin 8px 10px
+
+    .router-link-active
+      .vi-button
+        background rgba(255,255,255,0.2)
 </style>
