@@ -4,7 +4,7 @@
 </template>
 
 <style lang="stylus">
-  @import '../project-ui/stylus/main.styl'
+  @import '../project-ui/stylus/settings.styl'
   .bottom-bar
     padding 20px
     position relative

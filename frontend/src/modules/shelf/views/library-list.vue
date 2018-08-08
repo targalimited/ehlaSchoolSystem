@@ -6,7 +6,6 @@
       :pagination.sync="pagination"
       :no-header="true"
       :item-height="126"
-      :table-height="500"
       :items="selectedItems"
       :headers="headers"
       :search="search">

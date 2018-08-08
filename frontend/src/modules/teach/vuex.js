@@ -212,6 +212,15 @@ export default {
         subject_id: 1,
         item_id: itemId
       })
+      const entity = {
+        item: {
+          [itemId]: {
+            videos: res.data.videos,
+            exercises: res.data.exercises
+          }
+        }
+      }
+      commit('updateEntities', entity, {root: true})
       return res.data
     },
   },
@@ -249,5 +258,15 @@ export default {
     weakness_list: (state) => (classId) => {
       return state.weakness_list[classId]
     },
+    getClassNameById: (state) => (classId) => {
+      if (!state.classList) return
+      const classObj = state.classList.find(c => c.class_id === classId)
+      return classObj && classObj.c_name
+    },
+    getCatNameById: (state) => (catId) => {
+      if (!state.catList) return
+      const catObj = state.catList.find(c => c.key === catId)
+      return catObj && catObj.name_en
+    }
   }
 }

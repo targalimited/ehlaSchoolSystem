@@ -34,7 +34,7 @@ export default [
         components: {
           top: ShelfTopbar,
           default: LibraryList,
-          bottom: ShelfBottomBar
+          top2: ShelfBottomBar
         },
         props: {
           default: {
@@ -48,7 +48,7 @@ export default [
         components: {
           top: ShelfTopbar,
           default: LibraryList,
-          bottom: ShelfBottomBar
+          top2: ShelfBottomBar
         },
         props: {
           default: {

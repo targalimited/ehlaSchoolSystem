@@ -1,12 +1,13 @@
 export default {
   methods: {
     genHeader () {
-      if ((this.noHeader) || (this.items && this.items.length === 0)) return null
+      if ((this.noHeader) || !this.headers ||  (this.items && this.items.length === 0)) return null
 
       let row
       if (this.$slots.head) {
         row = this.$slots.head
       } else {
+        console.log(this.headers)
         row = this.headers.map(h => {
           if (h.slot) {
             // use the slot specified

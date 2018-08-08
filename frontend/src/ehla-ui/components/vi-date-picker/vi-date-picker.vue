@@ -54,7 +54,7 @@
         type: Boolean
       },
       width: {
-        default: '400px'
+        default: 'auto'
       },
       value: {
         type: String

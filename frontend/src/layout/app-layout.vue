@@ -33,7 +33,7 @@
 </script>
 
 <style lang="stylus">
-  @import '../project-ui/stylus/main.styl'
+  @import '../project-ui/stylus/settings.styl'
   .app-main
     height 100%
     display flex

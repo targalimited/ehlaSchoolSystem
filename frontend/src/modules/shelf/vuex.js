@@ -281,7 +281,16 @@ export default {
         const res = await new AuthHttp().post('/get_preview_by_id', {
           id: id
         })
-        return res.data
+        const preview = res.data
+        const entity = {
+          item: {
+            [id]: {
+              preview: preview
+            }
+          }
+        }
+        commit('updateEntities', entity, { root: true })
+        return preview
       } catch (e) {}
     }
   },

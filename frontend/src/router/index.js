@@ -1,6 +1,5 @@
 import {default as ShelfRoutes} from '@/modules/shelf/routes'
 import {default as AuthRoutes} from '@/modules/auth/routes'
-import {default as AssignRoutes} from '@/modules/asmt/routes'
 import {default as SettingRoutes} from '@/modules/setting/routes'
 import {default as TeachRoutes} from '@/modules/teach/routes'
 import WildRoute from './wild-route'
@@ -14,7 +13,6 @@ const router = new Router({
   routes: [
     ...ShelfRoutes,
     ...AuthRoutes,
-    ...AssignRoutes,
     ...SettingRoutes,
     ...TeachRoutes,
     {

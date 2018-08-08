@@ -1,6 +1,5 @@
 import shelf from '@/modules/shelf/vuex'
 import auth from '@/modules/auth/vuex'
-import asmt from '@/modules/asmt/vuex'
 import teach from '@/modules/teach/vuex'
 import settings from '@/store/setting.module'
 import entities from './entities'
@@ -14,7 +13,6 @@ export default new Vuex.Store({
   modules: {
     shelf,
     auth,
-    asmt,
     teach,
     settings,
     entities

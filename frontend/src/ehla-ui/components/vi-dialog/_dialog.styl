@@ -55,12 +55,14 @@
   &__header
     display flex
     align-items center
-    padding 0 16px
-    background $brand
-    color white
+    padding 16px
     min-height 48px
-    font-weight bold
-    font-size 16px
+    font-size 20px
+    border-bottom 1px solid $border-color
+
+    b
+      padding 0 0.2em
+      color #2a739b
 
   &__footer
     border-top 1px solid $border-color
@@ -68,6 +70,7 @@
     align-items center
     justify-content center
     min-height 40px
+    padding 16px
 
   &__body
     padding 24px
@@ -79,9 +82,6 @@
       display: flex
       flex: 1 1 auto
       flex-direction: column
-
-    .vi-dialog__header, .vi-dialog__footer
-      flex: 0 0 40px
 
     .vi-dialog__body
       flex 1 0 auto

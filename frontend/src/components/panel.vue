@@ -17,7 +17,7 @@
 </script>
 
 <style lang="stylus">
-  @import '../project-ui/stylus/main.styl'
+  @import '../project-ui/stylus/settings.styl'
   .panel
     border 1px solid $border-color
     height 100%
