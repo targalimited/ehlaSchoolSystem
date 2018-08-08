@@ -31,7 +31,6 @@ class ClassController extends Controller
         return json($this->result,200);	
 	}
 	
-	
 	public function get_students_by_class_id(Request $request) {
 		//params
 		$params = $request->params;
@@ -57,8 +56,6 @@ class ClassController extends Controller
 		
         return json($this->result,200);	
 	}
-	
-	
 	
     public function getClasses(){
         $classes = SchoolClass::with('students')->with('teachers')->get();

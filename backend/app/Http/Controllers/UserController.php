@@ -32,6 +32,7 @@ class UserController extends Controller
   public $teacher_subject_class;
   public $access_token;
   public $_client;
+  public $_teachers_no, $_students_no, $_school_no_from_sheet;
 
   public function __construct()
   {
@@ -64,7 +65,6 @@ class UserController extends Controller
     $ID = SchoolClass::where('c_name', $class_name)->pluck('id')->first();
     return $ID;
   }
-
   private function init()
   {
     foreach (Subject::all() as $v) {
@@ -78,36 +78,113 @@ class UserController extends Controller
     foreach (Role::all() as $v) {
       $this->role[$v->id] = strtolower($v->name);
     }
+
+    foreach(UserInfo::whereNull('class_no')->get() as $v){
+      $this->_teachers_no[$v->user_id] = strtolower($v->school_num);
+    }
+
+    foreach(UserInfo::whereNotNull('class_no')->get() as $v){
+      $this->_students_no[$v->user_id] = strtolower($v->school_num);
+    }
+  }
+  private function result($status, $message){
+    $result = [
+      'status' => $status,
+      'code' => '',
+      'message' => $message
+    ];
+    return json($result);
   }
 
-  private function init_()
-  {
-
-    foreach (Subject::all() as $v) {
-      $this->subject[$v->id] = strtolower(str_replace(' ', '_', $v->s_name_en));
+  private function header_validate($title,$sheet_header){
+    foreach ($title as $v) {
+      if (!array_key_exists($v, $sheet_header)) {
+        $this->errors[] = 'No this column ' . $v;
+      }
     }
-
-    foreach (SchoolClass::all() as $v) {
-      $this->class[$v->id] = strtolower($v->c_name);
+  }
+  private function import_validate($sheet,$type){
+    foreach ($sheet as $v) {
+      $this->import_validate_class($v);
+      $this->import_validate_realname_en($v);
+      $this->import_validat_from_sheet($type);
+      if($type == 'Teacher'){
+        $this->import_validate_subject($v);
+        $this->import_validate_teacher_no($v);
+      }else if($type == 'Student'){
+        $this->import_validate_student($v);
+        $this->import_validate_class_no(isset($v['class_no'])?$v['class_no']:null);
+      }
     }
-
-    foreach (User::where('user_group', 3)->get() as $v) {
-      $this->teacher[$v->id]['username'] = $v->username;
-      $this->teacher[$v->id]['email'] = $v->email;
+  }
+  private function import_validate_realname_en($v){
+    if(!isset($v['realname_en'])){
+      $this->errors[] = 'Missing realname_en';
     }
+  }
 
-
-    foreach (TeacherClassSubject::all() as $k => $v) {
-      $this->teacher_subject_class[$v->id]['multiple'] = $v->multiple_teacher;
-      $this->teacher_subject_class[$v->id]['email'] = $this->teacher[$v->teacher_id]['email'];
-      $this->teacher_subject_class[$v->id]['class_id'] = $v->class_id;
-      $this->teacher_subject_class[$v->id]['subject_id'] = $v->subject_id;
-      $this->teacher_subject_class[$v->id]['class_name'] = $this->class[$v->class_id];
-      $this->teacher_subject_class[$v->id]['subject_name'] = $this->subject[$v->subject_id];
+  private function import_validate_class_no($v){
+    if(!isset($v)){
+      $this->errors[] = 'Missing class number';
     }
+  }
+
+  private function import_validat_from_sheet($type){
+    foreach (array_count_values($this->_school_no_from_sheet) as $k=>$v){
+      if($v>1){
+        $this->errors[] = $type.' No. cannot be duplicated ' . $k;
+      }
+    }
+  }
+
+  private function import_validate_student($v){
+    if (!empty($this->_students_no))
+      if(!isset($v['student_no'])){
+        $this->errors[] = 'There is a empty student number';
+      }else if (in_array(strtolower($v['student_no']), $this->_students_no)) {
+        $this->errors[] = 'Student No. cannot be duplicated ' . $v['student_no'];
+      }
+  }
+  private function import_validate_class($v){
+    if(!isset($v['class'])){
+      $this->errors[] = 'There is a empty class';
+    }else if (!in_array(strtolower($v['class']), $this->class)) {
+      $this->errors[] = 'No this class ' . $v['class'];
+    }
+  }
+  private function import_validate_subject($v){
+    if(!isset($v['subject'])){
+      $this->errors[] = 'There is a empty subject';
+    }else if (!in_array(strtolower($v['subject']), $this->subject)) {
+      $this->errors[] = 'No this subject ' . $v['subject'];
+    }
+  }
+  private function import_validate_teacher_no($v){
+    if(!empty($this->_teachers_no)){
+      if(!isset($v['teacher_no'])){
+        $this->errors[] = 'There is a empty teacher number';
+      }else if(in_array(strtolower($v['teacher_no']),$this->_teachers_no)){
+        $this->errors[] = 'Teacher No. cannot be duplicated ' . $v['teacher_no'];
+      }
+    }
+  }
+
+  private function before_sheet($sheet){
+    $sheet = array_map('array_filter', $sheet);
+    $sheet = array_filter($sheet);
+    return $sheet;
+  }
+  private function after_sheet(){
 
   }
 
+  private function before_post(){
+
+  }
+
+  private function after_post(){
+
+  }
 
   public function changepw(Request $request)
   {
@@ -124,29 +201,16 @@ class UserController extends Controller
     return $data;
   }
 
-
+  //Done
   public function getExcel(Request $request)
   {
-
-//    $this->init();
-//
-//
-//    foreach (TeacherClassSubject::all() as $k => $v) {
-//      //$teacher_subject_class[$k]['username'] = $v->subject_id;
-//      $teacher_class_subject[$k]['username'] = $this->teacher[$v['teacher_id']]['username'];
-//      $teacher_class_subject[$k]['email'] = $this->teacher[$v['teacher_id']]['email'];
-//      $teacher_class_subject[$k]['class'] = $this->class[$v['class_id']];
-//      $teacher_class_subject[$k]['subject'] = $this->subject[$v['subject_id']];
-//    }
-
-
 
     if($request->type == 'student') {
       $ids = StudentClassSubject::get()->pluck('student_id');
       $school_list = UserInfo::whereIn('user_id',$ids)
         ->leftJoin('student_class_subject', 'user_info.user_id', '=', 'student_class_subject.student_id')
         ->leftJoin('classes','student_class_subject.class_id','=','classes.id')
-        ->select('realname_zh','realname_en','school_num','default_password','c_name as class_name','class_no')->get()->toArray();
+        ->select('c_name as class_name','class_no','realname_zh','realname_en','username','default_password')->orderBy('class_name','asc')->orderBy('class_no')->get()->toArray();
     }
     else if ($request->type =='teacher') {
       $ids = TeacherClassSubject::get()->pluck('teacher_id');
@@ -172,125 +236,97 @@ class UserController extends Controller
 
   }
 
-  //TODO student_id to student name and student email
-  public function getStudentExcel_backup(Request $request)
-  {
-
-    $this->init();
-
-    $student_subject = StudentSubject::get();
-
-
-    foreach ($student_subject as $k => $v) {
-      $new_student_list[$v->student_id]['class_id'] = $this->teacher_subject_class[$v->teacher_class_subject_id]['class_name'];
-      $new_student_list[$v->student_id]['student_id'] = $v->student_id;
-      $new_student_list[$v->student_id][$this->teacher_subject_class[$v->teacher_class_subject_id]['subject_name']] = ($this->teacher_subject_class[$v->teacher_class_subject_id]['multiple']) ? $this->teacher_subject_class[$v->teacher_class_subject_id]['email'] : 'Y';
-    }
-    sort($new_student_list);
-
-    return Excel::create('student_list', function ($excel) use ($new_student_list) {
-      $excel->sheet('teacher_class_subject', function ($sheet) use ($new_student_list) {
-        $sheet->fromArray($new_student_list);
-      });
-    })->export('xlsx');
-
-  }
-
-  //Done Import teacher
+  //Done Batch Import teacher
   public function postTeacher(Request $request)
   {
+
+//    print_r();
     $this->init();
+
     if ($request->hasFile('file')) {
       $path = $request->file('file')->getRealPath();
-      Excel::load($path, function ($reader) use ($request) {
+      Excel::load($path, function ($reader) use ($request, &$total_receive) {
         $results = $reader->get()->toArray();
-        $teacher_sheet = $results[0];
+
+        $teacher_sheet = $this->before_sheet($results[0]);
 
         $title = ['teacher_no', 'realname_en', 'realname_zh', 'class', 'subject'];
 
-        $i = 0;
-
-        foreach ($title as $v) {
-          if (!array_key_exists($v, $teacher_sheet[0])) {
-            $this->errors[$i] = 'No this column ' . $v;
-            $i++;
-          }
-        }
-
-        foreach ($teacher_sheet as $v) {
-
-          if (!in_array(strtolower($v['class']), $this->class)) {
-            $this->errors[$i] = 'No this class ' . $v['class'];
-            $i++;
-          }
-          if (!in_array(strtolower($v['subject']), $this->subject)) {
-            $this->errors[$i] = 'No this subject ' . $v['subject'];
-            $i++;
-          }
-        }
+        $this->header_validate($title,$teacher_sheet[0]);
 
         if (!$this->errors) {
-          foreach ($teacher_sheet as $k => $v) {
-            $teacher[$v['teacher_no']]['school_num'] = $v['teacher_no'];
-            $teacher[$v['teacher_no']]['realname_en'] = $v['realname_en'];
-            $teacher[$v['teacher_no']]['realname_zh'] = $v['realname_zh'];
 
-            $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
-            $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
 
-          }
 
-          $teachers = array_values($teacher);
+              foreach ($teacher_sheet as $k => $v) {
+                $this->_school_no_from_sheet[] = (int)$v['teacher_no'];
+                $teacher[$v['teacher_no']]['school_num'] = $v['teacher_no'];
+                $teacher[$v['teacher_no']]['realname_en'] = $v['realname_en'];
+                $teacher[$v['teacher_no']]['realname_zh'] = (isset($v['realname_zh']))?$v['realname_zh']:'';
 
-          $input['userGroup'] = 'teacher';
-          $input['accType'] = "";
-          $input['users'] = $teachers;
+                $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
+                $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
 
-          $access_token = json_decode(Auth::user()->session)->access_token;
-          $client = new EhlaGuzzleClient();
-          $res = $client->post(config('variables.createAccount') . $access_token, $input);
+              }
+          $this->import_validate($teacher_sheet,'Teacher');
 
-          if ($res['success']) {
-            foreach ($res['data'] as $key => $value) {
-              $teacher_num_id[$value['school_num']]['user_id'] = $value['user_id'];
-              $teacher_num_id[$value['school_num']]['password'] = $value['password'];
-              $teacher_role[$key]['role_id'] = array_search('teacher', $this->role);
-              $teacher_role[$key]['user_id'] = $value['user_id'];
+          if(!$this->errors){
+              $teachers = array_values($teacher);
+
+              $input['userGroup'] = 'teacher';
+              $input['accType'] = "";
+              $input['users'] = $teachers;
+
+              $res = $this->_client->post(config('variables.createAccount') . $this->access_token, $input);
+
+              if ($res['success']) {
+                foreach ($res['data'] as $key => $value) {
+                  $teacher_num_id[$value['school_num']]['user_id'] = $value['user_id'];
+                  $teacher_num_id[$value['school_num']]['password'] = $value['password'];
+                  $teacher_num_id[$value['school_num']]['username'] = $value['username'];
+                  $teacher_role[$key]['role_id'] = array_search('teacher', $this->role);
+                  $teacher_role[$key]['user_id'] = $value['user_id'];
+                }
+              }
+
+              $total_sent = count($teachers);
+              $total_receive = count($teacher_num_id);
+
+              if($total_sent == $total_receive){
+                foreach ($teacher_sheet as $k => $v) {
+                  $new_teacher_set[$k]['teacher_id'] = $teacher_num_id[$v['teacher_no']]['user_id'];
+                  $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
+                  $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
+
+                  $teacher_info_set[$v['teacher_no']]['user_id']=$teacher_num_id[$v['teacher_no']]['user_id'];
+                  $teacher_info_set[$v['teacher_no']]['username']=$teacher_num_id[$v['teacher_no']]['username'];
+                  $teacher_info_set[$v['teacher_no']]['realname_en']=$v['realname_en'];
+                  $teacher_info_set[$v['teacher_no']]['realname_zh']=(isset($v['realname_zh']))?$v['realname_zh']:'';
+                  $teacher_info_set[$v['teacher_no']]['school_num']=$v['teacher_no'];
+                  $teacher_info_set[$v['teacher_no']]['default_password']= $teacher_num_id[$v['teacher_no']]['password'];
+                  $teacher_info_set[$v['teacher_no']]['created_at']=Carbon::now();
+                  $teacher_info_set[$v['teacher_no']]['updated_at']=Carbon::now();
+
+                }
+
+                $t_set = array_values($teacher_info_set);
+
+                TeacherClassSubject::insert($new_teacher_set);
+                RoleUser::insert($teacher_role);
+                UserInfo::insert($t_set);
+              }else{
+                $this->errors[] = 'Excel not match usermodel';
+              }
             }
-          }
 
-
-          foreach ($teacher_sheet as $k => $v) {
-            $new_teacher_set[$k]['teacher_id'] = $teacher_num_id[$v['teacher_no']]['user_id'];
-            $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
-            $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
-
-            $teacher_info_set[$v['teacher_no']]['user_id']=$teacher_num_id[$v['teacher_no']]['user_id'];
-            $teacher_info_set[$v['teacher_no']]['realname_en']=$v['realname_en'];
-            $teacher_info_set[$v['teacher_no']]['realname_zh']=$v['realname_zh'];
-            $teacher_info_set[$v['teacher_no']]['school_num']=$v['teacher_no'];
-            $teacher_info_set[$v['teacher_no']]['default_password']= $teacher_num_id[$v['teacher_no']]['password'];
-            $teacher_info_set[$v['teacher_no']]['created_at']=Carbon::now();
-            $teacher_info_set[$v['teacher_no']]['updated_at']=Carbon::now();
-
-          }
-
-          $t_set = array_values($teacher_info_set);
-
-          TeacherClassSubject::insert($new_teacher_set);
-          RoleUser::insert($teacher_role);
-          UserInfo::insert($t_set);
         }
       });
       if ($this->errors) {
-        $result = [
-          'status' => false,
-          'code' => '',
-          'message' => $this->errors
-        ];
-        return json($result);
-      } else
-        return success();
+          return $this->result(0,$this->errors);
+      } else{
+        $message[0] = 'Total import '.$total_receive;
+        return $this->result(0,$message);
+      }
     } else {
       $result = [
         'status' => false,
@@ -306,117 +342,111 @@ class UserController extends Controller
   {
     $this->init();
 
+    $total_receive = 0;
     if ($request->hasFile('file')) {
       $path = $request->file('file')->getRealPath();
-      Excel::load($path, function ($reader) use ($request) {
+      Excel::load(/**
+       * @param $reader
+       */
+          $path, function ($reader) use ($request,&$total_receive) {
         $results = $reader->get()->toArray();
-        $student_sheet = $results[0];
 
-
-
-        $i = 0;
-
-//        if ($results[0]) {
-//          foreach (array_keys($results[0][0]) as $v) {
-//            $subjects[] = $v;
-//          }
-//        }
-
-        $subjects_from_excel = array_keys($results[0][0]);
-
-        $subjects_db = Subject::all();
-
-        foreach ($subjects_db as $v) {
-          $new_subject_db[] = strtolower(str_replace(' ', '_', $v->s_name_en));
-        }
-
-        for ($j = 5; $j < count($subjects_from_excel); $j++) {
-          if (!in_array(strtolower($subjects_from_excel[$j]), $new_subject_db)) {
-            $this->errors[$i] = 'No this subject ' . $subjects_from_excel[$j];
-          }
-        }
+        $student_sheet = $this->before_sheet($results[0]);
 
         $title = ['student_no', 'realname_en', 'realname_zh', 'class'];
 
-
-        foreach ($title as $v) {
-          if (!array_key_exists($v, $student_sheet[0])) {
-            $this->errors[$i] = 'No this column ' . $v;
-            $i++;
-          }
-        }
-
-
-        foreach ($student_sheet as $v) {
-
-          if (!in_array(strtolower($v['class']), $this->class)) {
-            $this->errors[$i] = 'No this class ' . $v['class'];
-            $i++;
-          }
-        }
+        $this->header_validate($title,$student_sheet[0]);
 
         if (!$this->errors) {
-          foreach ($student_sheet as $k => $v) {
-            $student[$v['student_no']]['school_num'] = $v['student_no'];
-            $student[$v['student_no']]['realname_en'] = $v['realname_en'];
-            $student[$v['student_no']]['realname_zh'] = $v['realname_zh'];
+          $subjects_from_excel = array_keys($results[0][0]);
 
-//            $new_teacher_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
-//            $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
+          $subjects_db = Subject::all();
 
+          foreach ($subjects_db as $v) {
+            $new_subject_db[] = strtolower(str_replace(' ', '_', $v->s_name_en));
           }
 
-          $students = array_values($student);
-
-          $input['userGroup'] = 'student';
-          $input['accType'] = "";
-          $input['users'] = $students;
-
-          $access_token = json_decode(Auth::user()->session)->access_token;
-          $client = new EhlaGuzzleClient();
-          $res = $client->post(config('variables.createAccount') . $access_token, $input);
-
-          if ($res['success']) {
-            foreach ($res['data'] as $key => $value) {
-              $student_num_id[$value['school_num']]['user_id'] = $value['user_id'];
-              $student_num_id[$value['school_num']]['password'] = $value['password'];
-//              $teacher_role[$key]['role_id'] = array_search('student', $this->role);
-//              $teacher_role[$key]['user_id'] = $value['user_id'];
+          for ($j = 5; $j < count($subjects_from_excel); $j++) {
+            if (!in_array(strtolower($subjects_from_excel[$j]), $new_subject_db)) {
+              $this->errors[] = 'No this subject ' . $subjects_from_excel[$j];
             }
           }
 
-          foreach ($student_sheet as $k => $v) {
-            if($v['english']==='Y'){
-              $new_student_set[$k]['student_id'] = $student_num_id[$v['student_no']]['user_id'];
-              $new_student_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
-              $new_student_set[$k]['subject_id'] = array_search('english', $this->subject);
-              $new_student_set[$k]['created_at'] = Carbon::now();
-              $new_student_set[$k]['updated_at'] = Carbon::now();
 
-              $student_info_set[$k]['user_id']=$student_num_id[$v['student_no']]['user_id'];
-              $student_info_set[$k]['realname_en']=$v['realname_en'];
-              $student_info_set[$k]['realname_zh']=$v['realname_zh'];
-              $student_info_set[$k]['school_num']=$v['student_no'];
-              $student_info_set[$k]['class_no']=$v['class_no'];
-              $student_info_set[$k]['default_password']= $student_num_id[$v['student_no']]['password'];
-              $student_info_set[$k]['created_at']=Carbon::now();
-              $student_info_set[$k]['updated_at']=Carbon::now();
 
-            }
+              foreach ($student_sheet as $k => $v) {
+                if(isset($v['english']) && $v['english']==='Y') {
+                  $this->_school_no_from_sheet[] = $v['student_no'];
+                  $student[$v['student_no']]['school_num'] = $v['student_no'];
+                  $student[$v['student_no']]['realname_en'] = $v['realname_en'];
+                  $student[$v['student_no']]['realname_zh'] = (isset($v['realname_zh'])) ? $v['realname_zh'] : '';
+                }
+              }
+          $this->import_validate($student_sheet,'Student');
+          if(!$this->errors){
+              $students = array_values($student);
+
+    //          $debug = New Debug();
+    //          $debug->context = json_encode($input);
+    //          $debug->save();
+
+              $total_sent = count($students);
+              $chuck_no = ceil($total_sent/250);
+
+              foreach(array_chunk($students, $chuck_no) as $curta ){
+                $input['userGroup'] = 'student';
+                $input['accType'] = "";
+                $input['users'] = $curta;
+                $res = $this->_client->post(config('variables.createAccount') . $this->access_token, $input);
+
+                if ($res['success']) {
+                  foreach ($res['data'] as $key => $value) {
+                    $student_num_id[$value['school_num']]['user_id'] = $value['user_id'];
+                    $student_num_id[$value['school_num']]['password'] = $value['password'];
+                    $student_num_id[$value['school_num']]['username'] = $value['username'];
+                  }
+                }
+              }
+
+              $total_receive = count($student_num_id);
+
+              if($total_sent == $total_receive) {
+
+                foreach ($student_sheet as $k => $v) {
+                  if(isset($v['english']) && $v['english']==='Y') {
+                    $new_student_set[$k]['student_id'] = $student_num_id[$v['student_no']]['user_id'];
+                    $new_student_set[$k]['class_id'] = array_search(strtolower($v['class']), $this->class);
+                    $new_student_set[$k]['subject_id'] = array_search('english', $this->subject);
+                    $new_student_set[$k]['created_at'] = Carbon::now();
+                    $new_student_set[$k]['updated_at'] = Carbon::now();
+
+                    $student_info_set[$k]['user_id']=$student_num_id[$v['student_no']]['user_id'];
+                    $student_info_set[$k]['username']=$student_num_id[$v['student_no']]['username'];
+                    $student_info_set[$k]['realname_en']=$v['realname_en'];
+                    $student_info_set[$k]['realname_zh']=(isset($v['realname_zh']))?$v['realname_zh']:'';
+                    $student_info_set[$k]['school_num']=$v['student_no'];
+                    $student_info_set[$k]['class_no']=$v['class_no'];
+                    $student_info_set[$k]['default_password']= $student_num_id[$v['student_no']]['password'];
+                    $student_info_set[$k]['created_at']=Carbon::now();
+                    $student_info_set[$k]['updated_at']=Carbon::now();
+
+                  }
+                }
+
+                try{
+                  DB::transaction(function () use ($new_student_set,$student_info_set) {
+                    StudentClassSubject::insert($new_student_set);
+                    UserInfo::insert($student_info_set);
+                  },3);
+                } catch (\Exception $e) {
+
+                }
+              }else{
+                $this->errors[] = 'Excel not match usermodel';
+              }
           }
-
-          StudentClassSubject::insert($new_student_set);
-          UserInfo::insert($student_info_set);
-
-          try{
-            DB::transaction(function () use ($new_student_set,$student_info_set) {
-
-            },3);
-          } catch (\Exception $e) {
-
-          }
-
 //          RoleUser::insert($teacher_role);
+          ;
         }
       });
       if ($this->errors) {
@@ -425,9 +455,20 @@ class UserController extends Controller
           'code' => '',
           'message' => $this->errors
         ];
+
         return json($result);
-      } else
-        return success();
+      } else {
+
+          $message[0] = 'Total import '.$total_receive;
+          $result = [
+            'status' => true,
+            'code' => '',
+            'message' => $message
+          ];
+
+        return json($result);
+      }
+
     } else {
       $result = [
         'status' => false,
@@ -481,6 +522,7 @@ class UserController extends Controller
         'realname_en' =>$request->realname_en,
         'school_num' =>$request->school_num,
         'default_password' =>$request->password,
+        'username' => $request->username,
       ];
 
       $this->createUserInfo($data);
@@ -618,7 +660,8 @@ class UserController extends Controller
       $data = [
         'realname_zh' =>$request->realname_zh,
         'realname_en' =>$request->realname_en,
-        'school_num' =>$request->school_num
+        'school_num' =>$request->school_num,
+        'username' => $request->username
       ];
       if (!empty($request->password))
         $data['default_password'] = $request->password;
@@ -668,6 +711,7 @@ class UserController extends Controller
           'school_num' =>$request->school_num,
           'class_no' =>$request->classNo,
           'default_password' =>$request->password,
+          'username' => $res['data'][0]['username'],
         ];
 
         $this->createUserInfo($data);
@@ -781,7 +825,7 @@ class UserController extends Controller
 
 
 //    print_r($request);
-    
+
     if ($class_id = $this->getClassID($request->className)) {
 
 
@@ -811,6 +855,7 @@ class UserController extends Controller
           'realname_en' =>$request->realname_en,
           'school_num' =>$request->school_num,
           'class_no' => $request->classNo,
+          'username' =>$request->username,
         ];
         if (!empty($request->password))
         $data['default_password'] = $request->password;
@@ -917,36 +962,31 @@ class UserController extends Controller
     if (Auth::user()->can('view_students')) {
 
 
-      $students = StudentClassSubject::get()->pluck('student_id');
+//      $students = StudentClassSubject::get()->pluck('student_id');
+//
+//      $access_token = json_decode(Auth::user()->session)->access_token;
+//
+//      $inputs['ids'] = $students->toArray();
+//
+//      $client = new EhlaGuzzleClient();
+//      $res = $client->post(config('variables.getUsersByIDs') . $access_token, $inputs);
 
-      $access_token = json_decode(Auth::user()->session)->access_token;
-
-      $inputs['ids'] = $students->toArray();
-
-      $client = new EhlaGuzzleClient();
-      $res = $client->post(config('variables.getUsersByIDs') . $access_token, $inputs);
-
-
-//      print_r($res);die();
 
       $students = StudentClassSubject::with('single_class')->with('studentDetail')->get()->toArray();
 
-//      print_r($students);
-//      die();
-      foreach ($students as $k => &$v) {
-        if(empty($res['data'][$v['student_id']])){
-          $debug = New Debug();
-          $debug->context = $v['student_id'];
-          $debug->save();
-        }else{
-          $v['realname_en'] = $res['data'][$v['student_id']]['realname_en'];
-          $v['realname_zh'] = $res['data'][$v['student_id']]['realname_zh'];
-          $v['username'] = $res['data'][$v['student_id']]['username'];
-          $v['school_num'] = $res['data'][$v['student_id']]['school_num'];
-        }
-      }
-//      print_r($students);
-//      die();
+//      foreach ($students as $k => &$v) {
+//        if(empty($res['data'][$v['student_id']])){
+//          $debug = New Debug();
+//          $debug->context = $v['student_id'];
+//          $debug->save();
+//        }else{
+//          $v['realname_en'] = $res['data'][$v['student_id']]['realname_en'];
+//          $v['realname_zh'] = $res['data'][$v['student_id']]['realname_zh'];
+//          $v['username'] = $res['data'][$v['student_id']]['username'];
+//          $v['school_num'] = $res['data'][$v['student_id']]['school_num'];
+//        }
+//      }
+
 
       $result['data'] = $students;
       return Response()->json($result, 200);
@@ -966,33 +1006,35 @@ class UserController extends Controller
     if (Auth::user()->can('view_teachers')) {
 
 
-      $teachers = TeacherClassSubject::get()->pluck('teacher_id');
+//      $teachers = TeacherClassSubject::get()->pluck('teacher_id');
+//
+//
+//      $access_token = json_decode(Auth::user()->session)->access_token;
+//
+//      $inputs['ids'] = $teachers->toArray();
+//
+////      print_r($inputs);
+//
+//      $client = new EhlaGuzzleClient();
+//      $res = $client->post(config('variables.getUsersByIDs') . $access_token, $inputs);
+//
+//
+//      $debug = new Debug();
+//      $debug->context = 'Get_teachers' . json_encode($res);
+//      $debug->save();
+
+      $teachers = TeacherClassSubject::with('classes')->with('subjects')->with('role')->with('teacherDetail')->get()->toArray();
 
 
-      $access_token = json_decode(Auth::user()->session)->access_token;
-
-      $inputs['ids'] = $teachers->toArray();
-
-//      print_r($inputs);
-
-      $client = new EhlaGuzzleClient();
-      $res = $client->post(config('variables.getUsersByIDs') . $access_token, $inputs);
-
-
-      $debug = new Debug();
-      $debug->context = 'Get_teachers' . json_encode($res);
-      $debug->save();
-
-      $teachers = TeacherClassSubject::with('classes')->with('subjects')->with('role')->get()->toArray();
 
       $t = [];
 
       foreach ($teachers as $k => $v) {
         $t[$v['teacher_id']]['teacher_id'] = $v['teacher_id'];
-        $t[$v['teacher_id']]['realname_en'] = $res['data'][$v['teacher_id']]['realname_en'];
-        $t[$v['teacher_id']]['realname_zh'] = $res['data'][$v['teacher_id']]['realname_zh'];
-        $t[$v['teacher_id']]['username'] = $res['data'][$v['teacher_id']]['username'];
-        $t[$v['teacher_id']]['school_num'] = $res['data'][$v['teacher_id']]['school_num'];
+        $t[$v['teacher_id']]['realname_en'] = $v['teacher_detail']['realname_en'];
+        $t[$v['teacher_id']]['realname_zh'] = $v['teacher_detail']['realname_zh'];
+        $t[$v['teacher_id']]['username'] = $v['teacher_detail']['username'];
+        $t[$v['teacher_id']]['school_num'] = $v['teacher_detail']['school_num'];
         $t[$v['teacher_id']]['role_id'] = $v['role']['role_id'];
         $t[$v['teacher_id']]['classes'][]['name'] = $v['classes']['c_name'];
       }
@@ -1033,6 +1075,7 @@ class UserController extends Controller
     RoleUser::where('user_id', $request->user_id)->delete();
     StudentClassSubject::where('student_id', $request->user_id)->delete();
     TeacherClassSubject::where('teacher_id', $request->user_id)->delete();
+    UserInfo::where('user_id',$request->user_id)->delete();
     return return_success();
   }
 }

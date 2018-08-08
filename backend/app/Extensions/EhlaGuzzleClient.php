@@ -37,7 +37,14 @@ class EhlaGuzzleClient {
 
 			return $data;
 		} catch (\Exception $e) {
-			return \GuzzleHttp\json_decode($e->getResponse()->getBody()->getContents(), true);
+		    if ($e->hasResponse()) {
+		        $exception = (string) $e->getResponse()->getBody();
+		        $exception = json_decode($exception);
+		        return Response()->json($exception, $e->getCode());
+		    } else {
+		        return Response()->json($e->getMessage(), 503);
+		    }
+			// return \GuzzleHttp\json_decode($e->hasResponse()->getBody()->getContents(), true);
 		}
 	}
 

@@ -28,7 +28,6 @@ import ViMessage from '@/ehla-ui/components/vi-message'
 import ViMessageBox from '@/ehla-ui/components/vi-message-box'
 import ViDeletePrompt from '@/ehla-ui/components/vi-delete-prompt'
 // project component
-import ViAppBar from './components/vi-app-bar'
 import ViButtonRow from './components/vi-button-row'
 import ViButtonToggle from './components/vi-button-toggle'
 import './stylus/main.styl'
@@ -85,7 +84,6 @@ const ProjectUI = {
     Vue.prototype.$message = ViMessage
     Vue.prototype.$messageBox = ViMessageBox
     Vue.prototype.$deletePrompt = ViDeletePrompt
-    Vue.component('vi-app-bar', ViAppBar)
     Vue.component('vi-button-row', ViButtonRow)
     Vue.component('vi-button-toggle', ViButtonToggle)
   }

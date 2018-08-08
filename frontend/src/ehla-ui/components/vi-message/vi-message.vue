@@ -1,6 +1,6 @@
 <template>
   <transition name="slide-y-reverse-transition">
-    <div v-show="visible" class="vi-message" :class="`vi-message--${type}`">
+    <div v-show="visible" class="vi-message" :class="classes">
       <div class="vi-message__icon">
         <vi-icon size="18" :name="iconName"/>
       </div>
@@ -33,14 +33,19 @@
     data () {
       return {
         visible: false,
-        // message: '',
         duration: 3000,
-        // type: 'success',
-        timer: null
+        timer: null,
+        position: 'top'
       }
     },
 
     computed: {
+      classes () {
+        return {
+          [`vi-message--${position}`]: true,
+          [`vi-message--${type}`]: true
+        }
+      },
       iconName () {
         const map = {
           'success': 'done',

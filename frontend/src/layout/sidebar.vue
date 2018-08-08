@@ -16,6 +16,9 @@
     router-link(:to="{name: 'report-class-weakness', params:{classId: 1}}")
       vi-button(icon flat dark)
         vi-icon(name="report" size="28")
+    router-link(:to="{name: 'settings-class'}")
+      vi-button(icon flat dark)
+        vi-icon(name="config" size="20")
     .sidebar__divider
     .sidebar__group
       router-link(:to="{name: 'browse-free-root'}")

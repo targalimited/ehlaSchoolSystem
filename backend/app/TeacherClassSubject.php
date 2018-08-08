@@ -42,6 +42,6 @@ class TeacherClassSubject extends Model
   }
 
   public function teacherDetail(){
-    return $this->hasOne(UserInfo::class,'user_id');
+    return $this->hasOne(UserInfo::class,'user_id','teacher_id');
   }
 }

@@ -74,6 +74,11 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('get_preview_by_id','ItemController@get_preview_by_id');	
 	Route::post('get_by_category','ItemController@get_by_category');
     Route::post('get_selected_item','ItemController@get_selected_item');
+	
+    Route::post('confirm_items','ItemController@choose_items');
+    Route::post('confirm_item_for_level','ItemController@choose_item_for_level');	
+	
+	
     Route::post('choose_items','ItemController@choose_items');
     Route::post('choose_item_for_level','ItemController@choose_item_for_level');	
     
@@ -90,6 +95,11 @@ Route::group(['prefix' => 'v1'], function () {
 	Route::post('get_school_assignment','AssignmentController@get_school_assignment');
     Route::post('set_school_assignment','AssignmentController@set_school_assignment');
     Route::post('lock_school_assignment','AssignmentController@lock_school_assignment');
+	
+    Route::post('edit_school_assignment','AssignmentController@edit_school_assignment');
+    Route::post('unpublish_school_assignment','AssignmentController@unpublish_school_assignment');
+    Route::post('publish_school_assignment','AssignmentController@publish_school_assignment');
+    Route::post('delete_school_assignment','AssignmentController@delete_school_assignment');
 	
     /*Route::post('get_assignment_by_item_id','ItemController@get_assignment_by_item_id');
     Route::post('set_assignments','ItemController@set_assignments');

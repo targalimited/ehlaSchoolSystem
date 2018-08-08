@@ -1,106 +1,82 @@
 <template>
-  <div class="class-view">
-    <vi-app-bar title="Class">
-      <div slot="action">
-        <vi-button @click="onAddClass" dark>
-          <vi-icon left name="add-thick" size="12"/>
-          Create class
-        </vi-button>
-      </div>
-    </vi-app-bar>
+  <panel class="class-view">
+    <vi-button slot="head" @click="onAddClass" dark>
+      <vi-icon left name="add-thick" size="12"/>
+      Create class
+    </vi-button>
 
-    <vi-container>
-      <vi-row wrap>
-        <vi-col xs3 v-for="(c,i) in classes" :key="i">
-          <vi-card>
-            <vi-menu left>
-              <vi-button slot="activator" icon text>
-                <vi-icon name="more"/>
+    <vi-row wrap px-16 my-16>
+      <vi-col xs3 v-for="(c,i) in classes" :key="i">
+        <vi-card>
+          <vi-menu left>
+            <vi-button slot="activator" icon text>
+              <vi-icon name="more"/>
+            </vi-button>
+            <vi-item :link="true" @click="onEdit(c)">
+              <vi-item-avatar>
+                <vi-icon name="edit"/>
+              </vi-item-avatar>
+              <vi-item-content>
+                Edit class
+              </vi-item-content>
+            </vi-item>
+            <vi-item :link="true" @click="onDelete(c)" v-if="!c.lock && !c.students.length && !c.teachers.length">
+              <vi-item-avatar>
+                <vi-icon name="trash"/>
+              </vi-item-avatar>
+              <vi-item-content>
+                Delete class
+              </vi-item-content>
+            </vi-item>
+            <vi-item :link="true" @click="onConfirm(c)" v-if="!c.lock">
+              <vi-item-avatar>
+                <vi-icon name="checkbox-checked"/>
+              </vi-item-avatar>
+              <vi-item-content>
+                Confirm class
+              </vi-item-content>
+            </vi-item>
+          </vi-menu>
+
+          <div class="bottom">
+            <router-link :to="{name: 'settings-student', query: {classes: c.c_name}}">
+              <vi-button text small style="font-size: 14px">
+                <vi-icon name="star" left size="12"/>
+                {{c.students.length}} Students
+                <vi-icon name="right" right size="10"/>
               </vi-button>
-              <vi-item :link="true" @click="onEdit(c)">
-                <vi-item-avatar>
-                  <vi-icon name="edit"/>
-                </vi-item-avatar>
-                <vi-item-content>
-                  Edit class
-                </vi-item-content>
-              </vi-item>
-              <vi-item :link="true" @click="onDelete(c)" v-if="!c.lock">
-                <vi-item-avatar>
-                  <vi-icon name="trash"/>
-                </vi-item-avatar>
-                <vi-item-content>
-                  Delete class
-                </vi-item-content>
-              </vi-item>
-              <vi-item :link="true" @click="onConfirm(c)" v-if="!c.lock">
-                <vi-item-avatar>
-                  <vi-icon name="checkbox-checked"/>
-                </vi-item-avatar>
-                <vi-item-content>
-                  Confirm class
-                </vi-item-content>
-              </vi-item>
-            </vi-menu>
+            </router-link>
 
-            <div class="bottom">
-              <router-link :to="{name: 'setting-student', query: {classes: c.c_name}}">
-                <vi-button text small style="font-size: 14px">
-                  <vi-icon name="star" left size="12"/>
-                  {{c.students.length}} Students
-                  <vi-icon name="right" right size="10"/>
-                </vi-button>
-              </router-link>
+            <router-link :to="{name: 'settings-teacher', query: {classes: c.c_name}}">
+              <vi-button text small style="font-size: 14px">
+                <vi-icon name="star" left size="12"/>
+                {{c.teachers.length}} Teachers
+                <vi-icon name="right" right size="10"/>
+              </vi-button>
+            </router-link>
+          </div>
 
-              <router-link :to="{name: 'setting-teacher', query: {classes: c.c_name}}">
-                <vi-button text small style="font-size: 14px">
-                  <vi-icon name="star" left size="12"/>
-                  {{c.teachers.length}} Teachers
-                  <vi-icon name="right" right size="10"/>
-                </vi-button>
-              </router-link>
-            </div>
+          <div class="lock" v-if="c.lock">
+            <vi-icon name="lock" left size="12"/>
+          </div>
 
-            <div class="lock" v-if="c.lock">
-              <vi-icon name="lock" left size="12"/>
-            </div>
-
-            <div class="center">
-              {{c.c_name}}
-            </div>
-          </vi-card>
-        </vi-col>
-      </vi-row>
-    </vi-container>
-  </div>
+          <div class="center">
+            {{c.c_name}}
+          </div>
+        </vi-card>
+      </vi-col>
+    </vi-row>
+  </panel>
 </template>
 
 <script>
-
   import { mapGetters } from 'vuex'
   import {FETCH_CLASS,FETCH_LEVEL, FETCH_SINGLE_CLASS, CLASS_CREATE, CLASS_UPDATE, CLASS_DESTROY, CHECK_AUTH} from "@/store/actions.type";
   import { mapFields } from 'vuex-map-fields';
-//
-//  function genData () {
-//    return [...Array(100).keys()].map(i => {
-//      const classes = ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
-//      return {
-//        className: classes[Math.floor(Math.random() * classes.length)]
-//      }
-//    })
-//  }
-
   import {classDialog} from '../dialogs'
 
   export default {
     name: 'class-view',
-
-    data() {
-      return {
-//        classList: ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D']
-      }
-    },
-
 
     computed: {
       ...mapGetters([

@@ -48,6 +48,13 @@ return [
 	'schoolApiLockSchoolAssignmentUrl' => env('USERMODEL_URL').'v1/schoolApi/lock_school_assignment',
 	
 	'schoolApiGetSchoolUserBasicUrl' => env('USERMODEL_URL').'v1/schoolApi/get_school_user_basic',
+	
+	
+	'schoolApiConfirmItemsUrl' => env('USERMODEL_URL').'v1/schoolApi/confirm_item',
+	'schoolApiConfirmItemForLevelUrl' => env('USERMODEL_URL').'v1/schoolApi/confirm_item_for_level',
+	
+	'schoolApiEditSchoolAssignmentUrl' => env('USERMODEL_URL').'v1/schoolApi/edit_school_assignment',
+	
 ]
 
 ?>

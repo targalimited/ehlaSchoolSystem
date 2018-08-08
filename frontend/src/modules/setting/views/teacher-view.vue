@@ -1,30 +1,22 @@
 <template>
-  <div class="teacher-view" style="margin-top: 60px">
+  <div class="teacher-view">
 
-    <vi-app-bar title="Teachers">
-
-      <div slot="action">
-        <vi-button @click="onExport" dark>
-          <vi-icon left name="add-thick" size="12"/>
-          Export
-        </vi-button>
-        <vi-button @click="onBatchImport" dark>
-          <vi-icon left name="add-thick" size="12"/>
-          Batch import
-        </vi-button>
-        <vi-button @click="onAddTeacher" dark>
-          <vi-icon left name="add-thick" size="12"/>
-          Create teacher
-        </vi-button>
-      </div>
-
-      <div slot="append">
-        <vi-row>
-          <vi-input style="flex: 1" v-model="search" slot="action" prefix-icon="search" placeholder="Search teacher by name or class"/>
-          <vi-select :options="option_class" v-model="classFilters" placeholder="Filter by class" max-width="300" style="width: 160px" class="ml-8"/>
-        </vi-row>
-      </div>
-    </vi-app-bar>
+    <div slot="head">
+      <vi-button @click="onExport" dark>
+        <vi-icon left name="add-thick" size="12"/>
+        Export
+      </vi-button>
+      <vi-button @click="onBatchImport" dark>
+        <vi-icon left name="add-thick" size="12"/>
+        Batch import
+      </vi-button>
+      <vi-button @click="onAddTeacher" dark>
+        <vi-icon left name="add-thick" size="12"/>
+        Create teacher
+      </vi-button>
+      <vi-input style="flex: 1" v-model="search" slot="action" prefix-icon="search" placeholder="Search teacher by name or class"/>
+      <vi-select :options="option_class" v-model="classFilters" placeholder="Filter by class" max-width="300" style="width: 160px" class="ml-8"/>
+    </div>
 
     <vi-data-table
       v-if="teachers"
@@ -100,7 +92,8 @@
     computed: {
       ...mapGetters([
         'teachers',
-        'option_class'
+        'option_class',
+        'batch_create'
       ])
     },
 
@@ -172,6 +165,19 @@
           filter(i.realname_en, search)
         ))
       },
+    },
+
+    watch: {
+      batch_create: function (val) {
+        let title = (val.status) ? 'success' : 'error'
+        this.$message({
+          message: val.message,
+          duration: 4000,
+          type: title,
+          position: 'center'
+        })
+      },
+      deep: true
     },
 
     created () {

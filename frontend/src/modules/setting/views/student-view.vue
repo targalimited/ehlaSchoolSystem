@@ -1,32 +1,22 @@
 <template>
-  <div class="student-view" style="margin-top: 60px">
+  <panel class="student-view">
 
-    <vi-app-bar title="Students">
-
-      <div slot="action">
-
-
-        <vi-button @click="onExport" dark>
-          <vi-icon left name="add-thick" size="12"/>
-          Export
-        </vi-button>
-        <vi-button @click="onBatchImport" dark>
-          <vi-icon left name="add-thick" size="12"/>
-          Batch import
-        </vi-button>
-        <vi-button @click="onAddStudent" dark>
-          <vi-icon left name="add-thick" size="12"/>
-          Create student
-        </vi-button>
-      </div>
-
-      <div slot="append">
-        <vi-row>
-          <vi-input style="flex: 1" v-model="search" slot="action" prefix-icon="search" placeholder="Search student by name or class"/>
-          <vi-select :options="option_class" v-model="classFilters" placeholder="Filter by class" max-width="300" style="width: 160px" class="ml-8"/>
-        </vi-row>
-      </div>
-    </vi-app-bar>
+    <div slot="head">
+      <vi-button @click="onExport" dark>
+        <vi-icon left name="add-thick" size="12"/>
+        Export
+      </vi-button>
+      <vi-button @click="onBatchImport" dark>
+        <vi-icon left name="add-thick" size="12"/>
+        Batch import
+      </vi-button>
+      <vi-button @click="onAddStudent" dark>
+        <vi-icon left name="add-thick" size="12"/>
+        Create student
+      </vi-button>
+      <vi-input style="flex: 1" v-model="search" slot="action" prefix-icon="search" placeholder="Search student by name or class"/>
+      <vi-select :options="option_class" v-model="classFilters" placeholder="Filter by class" max-width="300" style="width: 160px" class="ml-8"/>
+    </div>
 
     <vi-data-table
       v-if="students"
@@ -41,7 +31,7 @@
       <div slot="item" slot-scope="{item}" class="vi-table__row">
 
         <vi-table-col>
-          {{item.realname_en}}
+          {{item.student_detail.realname_en}}
         </vi-table-col>
 
         <vi-table-col>
@@ -61,7 +51,7 @@
         </vi-table-col>
       </div>
     </vi-data-table>
-  </div>
+  </panel>
 </template>
 
 <script>
@@ -104,7 +94,8 @@
     computed: {
       ...mapGetters([
         'students',
-        'option_class'
+        'option_class',
+        'batch_create'
       ]),
     },
 
@@ -115,7 +106,9 @@
       async onBatchImport () {
         const file = await batchImportDialog()
         if (!file) return
-        this.$store.dispatch('STUDENT_BATCH_CREATE',file)
+        this.$store.dispatch('STUDENT_BATCH_CREATE',file).then(()=>{
+          // console.log(this.$store.getters.batch_create.message)
+        })
 
       },
       onAddStudent () {
@@ -139,10 +132,10 @@
         console.log(student);
 
         studentDialog({
-          oldRealname_en: student.realname_en,
-          oldRealname_zh: student.realname_zh,
-          oldUsername: student.username,
-          oldSchool_num: student.school_num,
+          oldRealname_en: student.student_detail.realname_en,
+          oldRealname_zh: student.student_detail.realname_zh,
+          oldUsername: student.student_detail.username,
+          oldSchool_num: student.student_detail.school_num,
           OptionClass: this.option_class,
           oldClass: student.single_class.c_name,
           oldClassNo: student.student_detail.class_no
@@ -157,14 +150,14 @@
         try {
           await this.$messageBox({
             title: 'Delete student',
-            message: `Are you sure you want to delete student ${student.name}`
+            message: `Are you sure you want to delete student ${student.student_detail.realname_en}`
           })
           // TODO cal API
           this.$store.dispatch('STUDENT_DESTROY',{user_id:student.student_id})
         } catch (e) {}
       },
       filterByClass (items) {
-         console.log('filterByClass',items);
+         // console.log('filterByClass',items);
         if (!this.classFilters) return items
         return items.filter(i => {
           return this.classFilters === i.single_class.c_name
@@ -176,8 +169,21 @@
         if (search.trim() === '') return items
 
         // console.log('filter',filter);
-        return items.filter(i => filter(i.realname_en, search))
+        return items.filter(i => filter(i.student_detail.realname_en, search))
       },
+    },
+
+    watch: {
+      batch_create: function (val) {
+        let title = (val.status) ? 'success' : 'error'
+        this.$message({
+          message: val.message,
+          duration: 4000,
+          type: title,
+          position: 'center'
+        })
+      },
+      deep: true
     },
 
     created () {
@@ -187,7 +193,6 @@
     },
 
     mounted (){
-      console.log(this.students)
       this.$store.dispatch('FETCH_OPTIONCLASS')
       this.$store.dispatch('FETCH_STUDENT')
     }
