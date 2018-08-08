@@ -177,10 +177,11 @@
 
     watch: {
       batch_create: function (val) {
+        let title = (val.status) ? 'success' : 'error'
         this.$message({
           message: val.message,
           duration: 4000,
-          type: 'error',
+          type: title,
           position: 'center'
         })
       },

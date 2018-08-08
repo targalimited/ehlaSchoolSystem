@@ -13,7 +13,7 @@
       <div class="vi-message__content" v-if="message.length > 1">
         <p v-for="(item, index) in message" :key="index" v-html="item"></p>
       </div>
-      <div class="vi-message__content" v-else v-html="message"></div>
+      <div class="vi-message__content" v-else v-html="message[0]"></div>
     </div>
   </transition>
 </template>
@@ -78,6 +78,9 @@
     margin 0 auto
     padding 10px 20px
     left 50%
+    height auto
+    min-height 40px
+    font-size 0.85em
     transform: translateX(-50%)
     z-index 9999
     min-width 400px

@@ -264,6 +264,7 @@ const mutations = {
   },
 
   SET_BATCH_CREATE_RESULT (state,result){
+    console.log(result)
     // console.log('set_batch',result)
     state.batch_create = result
   },

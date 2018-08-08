@@ -259,7 +259,7 @@ class UserController extends Controller
 
 
               foreach ($teacher_sheet as $k => $v) {
-                $this->_school_no_from_sheet[] = $v['teacher_no'];
+                $this->_school_no_from_sheet[] = (int)$v['teacher_no'];
                 $teacher[$v['teacher_no']]['school_num'] = $v['teacher_no'];
                 $teacher[$v['teacher_no']]['realname_en'] = $v['realname_en'];
                 $teacher[$v['teacher_no']]['realname_zh'] = (isset($v['realname_zh']))?$v['realname_zh']:'';
