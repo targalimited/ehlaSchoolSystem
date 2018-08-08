@@ -59,6 +59,11 @@
         font-weight normal
         color $font-color-3
 
+    &__title
+      font-size 22px
+      font-weight normal
+      color $font-color-3
+
     &__tabs
       display flex
       height 30px
