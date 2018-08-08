@@ -26,8 +26,7 @@ export default {
       default: false
     },
     color: {
-      type: String,
-      default: false
+      type: String
     },
     error: {
       type: Boolean,

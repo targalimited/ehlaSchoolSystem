@@ -20,7 +20,10 @@ Vue.use(Loading)
 Vue.config.productionTip = false
 
 const user = localStorage.getItem('user')
-if (user) store.commit('gotUserInfo', user)
+if (user) {
+  store.commit('gotUserInfo', user)
+  store.dispatch('getClasses')
+}
 
 // initiate Event Bus
 const EventBus = new Vue()

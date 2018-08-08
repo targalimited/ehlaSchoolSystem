@@ -30,8 +30,8 @@ export default {
     weakness_list: [],
     batchList: {}, // the assignment list of the class
     itemList: {}, // the assignable items for the class
-    weaknessReport: {},
-    catList: catList
+    catList: catList,
+    selectedWeakness: null
   },
 
   mutations: {
@@ -48,15 +48,13 @@ export default {
     gotWeaknessList (state, {weakness_list, classId}) {
       Vue.set(state.weakness_list, classId, weakness_list)
     },
-    gotWeaknessReport (state, {batchId, report}) {
-      Vue.set(state.weaknessList, batchId, report)
+    updateSelectedWeakness (state, weakness) {
+      state.selectedWeakness = weakness
     }
   },
 
   actions: {
     async getClasses ({commit, rootGetters}) {
-      // TODO: @bill this should also return the number of ongoing/completed item, and also weakness
-      // so that the tab can display the cont
       const res = await new AuthHttp().post('/get_classes_by_teacher_id', {
         teacher_id: rootGetters.teacherId,
         subject_id: 1
@@ -267,6 +265,10 @@ export default {
       if (!state.catList) return
       const catObj = state.catList.find(c => c.key === catId)
       return catObj && catObj.name_en
+    },
+    defaultClassId (state) {
+      if (!(state.classList && state.classList.length)) return
+      return state.classList[0].class_id
     }
   }
 }

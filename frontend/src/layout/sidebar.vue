@@ -10,10 +10,10 @@
     router-link(:to="{name: 'library-unassigned'}")
       vi-button(icon flat dark)
         vi-icon(name="shelf" size="30")
-    router-link(:to="{name: 'asmt-class-progress', params:{classId: 1}}")
+    router-link(:to="{name: 'asmt-class-progress', params:{classId: defaultClassId}}")
       vi-button(icon flat dark)
         vi-icon(name="assignment" size="28")
-    router-link(:to="{name: 'report-class-weakness', params:{classId: 1}}")
+    router-link(:to="{name: 'report-class-weakness', params:{classId: defaultClassId}}")
       vi-button(icon flat dark)
         vi-icon(name="report" size="28")
     router-link(:to="{name: 'settings-class'}")
@@ -28,6 +28,17 @@
         vi-button(icon flat dark)
           vi-icon(name="pilot" size="28")
 </template>
+
+<script>
+  export default {
+    name: 'sidebar',
+    computed: {
+      defaultClassId () {
+        return this.$store.getters.defaultClassId
+      }
+    }
+  }
+</script>
 
 <style lang="stylus">
   .sidebar

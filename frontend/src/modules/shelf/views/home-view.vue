@@ -4,7 +4,7 @@
       h2 Welcome John from Munsang Colleage
       p get start from the followings
     vi-row.board-section
-      vi-col(xs6 md3 v-for="link in links")
+      vi-col(xs6 md3 v-for="(link,i) in links" :key="i")
         .home-view__board
           vi-icon(:name="link.icon" size="46" color="brand")
           h3 {{link.name}}

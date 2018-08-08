@@ -17,11 +17,6 @@
     props: {
       title: String
     },
-    data () {
-      return {
-        classes: []
-      }
-    },
     methods: {
       onClassChange (new_classId) {
         const newRoute = Object.assign({}, this.$route, {
@@ -39,10 +34,6 @@
       classId () {
         return parseInt(this.$route.params.classId)
       }
-    },
-    // TODO: where should we call this API
-    async created () {
-      this.classes = await this.$store.dispatch('getClasses')
     }
   }
 </script>

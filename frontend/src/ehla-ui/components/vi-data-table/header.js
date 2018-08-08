@@ -7,7 +7,6 @@ export default {
       if (this.$slots.head) {
         row = this.$slots.head
       } else {
-        console.log(this.headers)
         row = this.headers.map(h => {
           if (h.slot) {
             // use the slot specified

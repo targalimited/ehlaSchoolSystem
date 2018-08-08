@@ -111,6 +111,11 @@ export default {
       default: false
     },
 
+    max: {
+      type: [Number, String],
+      default: 999
+    },
+
     customFilter: {
       type: Function,
       default: (items, search, filter) => {
@@ -257,6 +262,11 @@ export default {
           else return this.value[this.itemKey]
         }
       }
+    },
+
+    isMax () {
+      if (!this.isMultiple) return false
+      else return this.computedValue.length >= this.max
     }
   },
 
@@ -280,6 +290,7 @@ export default {
     add(item) {
       let selected
       if (this.isMultiple) {
+        if (this.isMax) return
         selected = this.computedValue.slice()
         selected.push(item[this.itemKey])
       } else {

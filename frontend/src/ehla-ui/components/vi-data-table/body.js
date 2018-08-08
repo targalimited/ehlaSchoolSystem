@@ -50,7 +50,8 @@ export default {
         key: key,
         item: item,
         checked: this.isSelected(item),
-        toggle: this.toggle
+        toggle: this.toggle,
+        disabled: this.isMax && !(this.isSelected(item))
       })
       const children = [row]
       const data = {}

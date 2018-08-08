@@ -49,6 +49,8 @@ export default {
         localStorage.setItem("user", userInfo)
         commit('login_success', res)
         commit('gotUserInfo', userInfo)
+        // TODO: should also return classes in one single API
+        dispatch('getClasses')
       }
       return res
     },

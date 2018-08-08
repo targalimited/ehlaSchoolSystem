@@ -1,13 +1,27 @@
 <template lang="pug">
-  panel
-    vi-spinner(v-if="!weakness_list")
-    template(v-else)
-      vi-item(v-for="(weakness,i) in weakness_list" :key="i")
-        vi-item-avatar
-          vi-checkbox(@input="onSelect(weakness.id)" v-model="selected" :value="weakness.id")
-        vi-item-content {{weakness.name_en}}
-    div {{selected}}
-
+  panel.weakness-list
+    template(slot="head")
+      vi-input(v-model="search" placeholder="Search weakness" prefix-icon="search")
+    vi-spinner(v-if="loading && !weaknessList")
+    vi-no-data(v-else-if="weaknessList.length === 0" title="No weakness found" content="This class has no weakness")
+    vi-data-table(
+      v-else
+      :items="weaknessList"
+      :item-height="48"
+      v-model="selected"
+      item-key="id"
+      divided
+      :search="search"
+      :headers="headers"
+      no-header
+      :pagination.sync="pagination"
+      :max="3"
+      @input="onSelect"
+    )
+      .vi-table__row.vi-table__row--link(slot="item" slot-scope="{item, toggle, checked, disabled}" @click="toggle(item)" :class="{'vi-table__row--disabled': disabled}")
+        vi-table-col {{item.name_en}}
+        vi-table-col
+          vi-checkbox(:input-value="checked")
 </template>
 
 <script>
@@ -15,11 +29,25 @@
     name: "asmt-list",
     data () {
       return {
-        selected: []
+        selected: [],
+        loading: false,
+        search: '',
+        headers: [
+          {
+            text: '',
+            expand: true
+          },
+          {
+            text: '',
+            width: '25px',
+            align: 'right'
+          }
+        ],
+        pagination: {}
       }
     },
     computed: {
-      weakness_list () {
+      weaknessList () {
         return this.$store.getters.weakness_list(this.classId)
       },
       classId () {
@@ -27,20 +55,15 @@
       }
     },
     methods: {
-      onSelect (id) {
-        this.$router.push({
-          ...this.route,
-          ...{
-            query: {
-              weakness_ids: this.selected
-            }
-          }
-        })
+      onSelect () {
+        this.$store.commit('updateSelectedWeakness', this.selected)
       },
-      fetch () {
-        this.$store.dispatch('getWeaknessList', {
+      async fetch () {
+        this.loading = true
+        await  this.$store.dispatch('getWeaknessList', {
           classId: this.classId
         })
+        this.loading = true
       }
     },
     created () {
@@ -48,8 +71,17 @@
     },
     watch: {
       classId () {
+        this.$store.commit('updateSelectedWeakness', null)
         this.fetch()
       }
     }
   }
 </script>
+
+<style lang="stylus">
+  .weakness-list
+    .vi-input
+      border none
+      width 100%
+      box-shadow none
+</style>
