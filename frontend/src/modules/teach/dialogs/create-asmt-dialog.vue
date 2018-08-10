@@ -12,14 +12,14 @@
             asmt-options(:selectedClass="classId" :selectedCat="catId" @input="v => {selectedItemId = v}")
           vi-col(xs6 preview-container)
             item-preview(:item-id="selectedItemId")
-        asmt-settings(v-else-if="step === 2" :item-id="selectedItemId" :class-id="classId" v-model="form")
+        asmt-settings(v-else-if="step === 2" :item-id="selectedItemId" :class-id="classId" v-model="form" :valid.sync="valid")
       .vi-dialog__footer
         vi-button-row(v-if="step === 1")
           vi-button(outline @click="$close") Cancel
           vi-button(color="brand" :disabled="!selectedItemId" @click="step = 2") Next
         vi-button-row(v-if="step === 2")
           vi-button(outline @click="step = 1") Back
-          vi-button(color="brand" :disabled="invalid" @click="submit") Confirm
+          vi-button(color="brand" :disabled="!valid" @click="submit") Confirm
 </template>
 
 <script>
@@ -56,7 +56,8 @@
       return {
         step: 1,
         selectedItemId: '',
-        form: {}
+        form: {},
+        valid: false
       }
     },
 

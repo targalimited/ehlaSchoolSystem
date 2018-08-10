@@ -7,7 +7,7 @@
       class="selected-item-table"
       :pagination.sync="pagination"
       :no-header="true"
-      :item-height="1156"
+      :item-height="116"
       :items="selectedItems"
       :headers="headers"
       divided
@@ -69,7 +69,7 @@
   import {levelDialog} from '../dialogs'
 
   export default {
-    name: 'shelf-view',
+    name: 'library-list',
 
     props: {
       state: {

@@ -10,6 +10,7 @@
           .input-group
             label End Date
             vi-date-picker(v-model="form.endDate" placeholder="End Date" @input="update")
+            vi-input-error(v-if="dateInValid" class="mt-4") End date is eariler then start date
           .input-group
             label Remark
             vi-input.textarea(v-model="form.remark" placeholder="Remarks (optional)" type="textarea" @input="update" no-resize)
@@ -17,6 +18,7 @@
 </template>
 
 <script>
+  import moment from 'moment'
   export default {
     name: 'asmt-settings',
 
@@ -33,6 +35,10 @@
       batchId: {
         type: [String, Number],
         required: false
+      },
+      valid: {
+        type: Boolean,
+        required: true
       }
     },
 
@@ -63,6 +69,13 @@
       itemData () {
         if (!this.itemId) return null
         return this.$store.getters.getItemById(this.itemId)
+      },
+      dateInValid () {
+        if (!(this.form.startDate && this.form.endDate)) return false
+        else return moment(this.form.startDate).isAfter(this.form.endDate)
+      },
+      formInvalid () {
+        return !(this.form.startDate && this.form.endDate) || this.dateInValid
       }
     },
 
@@ -78,6 +91,7 @@
       },
       update () {
         this.$emit('input', this.form)
+        this.$emit('update:valid', !this.formInvalid)
       }
     },
 
