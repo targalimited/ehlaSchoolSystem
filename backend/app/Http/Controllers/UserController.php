@@ -959,7 +959,7 @@ class UserController extends Controller
   //Done Fetch students
   public function getStudents(Request $request)
   {
-    if (Auth::user()->can('view_students')) {
+    //if (Auth::user()->can('view_students')) {
 
 
 //      $students = StudentClassSubject::get()->pluck('student_id');
@@ -990,7 +990,7 @@ class UserController extends Controller
 
       $result['data'] = $students;
       return Response()->json($result, 200);
-    }
+    //}
   }
 
   //Done Get class options from DB
@@ -1003,7 +1003,7 @@ class UserController extends Controller
   //Done Fetch teachers
   public function getTeachers(Request $request)
   {
-    if (Auth::user()->can('view_teachers')) {
+    //if (Auth::user()->can('view_teachers')) {
 
 
 //      $teachers = TeacherClassSubject::get()->pluck('teacher_id');
@@ -1049,7 +1049,7 @@ class UserController extends Controller
 
       $result['data'] = array_values($t);
       return Response()->json($result, 200);
-    }
+    //}
   }
 
 
