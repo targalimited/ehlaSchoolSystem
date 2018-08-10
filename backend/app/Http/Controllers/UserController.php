@@ -497,6 +497,10 @@ class UserController extends Controller
     $client = new EhlaGuzzleClient();
     $res = $client->post(config('variables.createAccount') . $access_token, $input);
 
+    $debug = new Debug();
+    $debug->context = 'Create Single Teacher '.json_encode($res);
+    $debug->save();
+
     if($res['success']){
       foreach ($request->className as $k => $v) {
         $class_id = $this->getClassID($v);
@@ -631,6 +635,10 @@ class UserController extends Controller
     $client = new EhlaGuzzleClient();
     $res = $client->post(config('variables.updateUserInfo') . $access_token, $input);
 
+    $debug = new Debug();
+    $debug->context = 'Update single teacher '.json_encode($res);
+    $debug->save();
+
     if($res['success']){
       TeacherClassSubject::where('teacher_id', $request->teacher_id)->delete();
 
@@ -685,6 +693,9 @@ class UserController extends Controller
       $client = new EhlaGuzzleClient();
       $res = $client->post(config('variables.createAccount') . $access_token, $input);
 
+      $debug = new Debug();
+      $debug->context = 'Create Single Student '.json_encode($res);
+      $debug->save();
 
       if($res['success']){
         $scs = New StudentClassSubject();
@@ -830,6 +841,10 @@ class UserController extends Controller
       $client = new EhlaGuzzleClient();
       $res = $client->post(config('variables.updateUserInfo') . $access_token, $input);
 
+      $debug = new Debug();
+      $debug->context = 'Update Single Student '.json_encode($res);
+      $debug->save();
+
       if ($res['success']) {
         $scs = StudentClassSubject::where('student_id', $request->student_id)->first();
         $scs->class_id = $class_id;
@@ -944,6 +959,7 @@ class UserController extends Controller
   //Done Fetch students
   public function getStudents(Request $request)
   {
+    if (Auth::user()->can('view_students')) {
 
 
 //      $students = StudentClassSubject::get()->pluck('student_id');
@@ -974,7 +990,7 @@ class UserController extends Controller
 
       $result['data'] = $students;
       return Response()->json($result, 200);
-    
+    }
   }
 
   //Done Get class options from DB
@@ -987,6 +1003,7 @@ class UserController extends Controller
   //Done Fetch teachers
   public function getTeachers(Request $request)
   {
+    if (Auth::user()->can('view_teachers')) {
 
 
 //      $teachers = TeacherClassSubject::get()->pluck('teacher_id');
@@ -1032,7 +1049,7 @@ class UserController extends Controller
 
       $result['data'] = array_values($t);
       return Response()->json($result, 200);
-    
+    }
   }
 
 
