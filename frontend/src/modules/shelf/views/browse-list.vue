@@ -29,7 +29,7 @@
 
         <vi-table-col>
 
-            <vi-button @click="toggleReading(item)" color="brand" small outline class="mb-4" :disabled="item.chose">{{item.chose ? 'Added' : 'Add'}}</vi-button>
+            <vi-button @click="toggleReading(item)" :color="item.chose ? 'orange' : 'brand'" small outline class="mb-4">{{item.chose ? 'Remove' : 'Add'}}</vi-button>
             <vi-button @click="previewReading(item)" color="brand" small flat>Preview</vi-button>
         </vi-table-col>
       </div>
@@ -161,8 +161,8 @@
       async addReading (id) {
         if (this.isFull) {
           const message = this.isFull === 'cat' ?
-            'Your selection for this category has reach the maximum. You can still choose reading from other category' :
-            'Your total selection has reach the maximum'
+            'Your selection for this category has reached the maximum. You can still choose reading from other category' :
+            'Your total selection has reached the maximum'
           this.$messageBox({
             title: 'Cannot add more reading!',
             message: message,

@@ -7,7 +7,7 @@ import TopBar from '@/components/top-bar'
 import AppLayout from '../../layout/app-layout'
 import ShelfTopbar from './components/shelf-top-bar'
 import ShelfBottomBar from './components/shelf-bottom-bar'
-import BrowseBottomBar from './components/browse-bottom-bar'
+import BrowseNoticeBar from './components/browse-notice-bar'
 import PilotTopBar from './components/pilot-top-bar'
 import ItemFilter from './components/item-filter'
 import PilotIntroBar from './components/pilot-notice-bar'
@@ -119,7 +119,7 @@ export default [
           top: PilotTopBar,
           left: ItemFilter,
           default: BrowseList,
-          top2: BrowseBottomBar
+          top2: BrowseNoticeBar
         }
       }
     ]

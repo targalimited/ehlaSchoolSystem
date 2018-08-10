@@ -1,9 +1,7 @@
 <template>
-  <transition name="slide-y-reverse-transition">
+  <transition name="slide-x-reverse-transition">
     <div v-show="visible" class="vi-message" :class="classes">
-      <div class="vi-message__icon">
-        <vi-icon size="18" :name="iconName"/>
-      </div>
+      <vi-icon class="vi-message__icon" size="26" :name="iconName"/>
       <div class="vi-message__content">
         {{message}}
       </div>
@@ -18,32 +16,22 @@
       ViIcon
     },
 
-    // TODO: for the workaround way - message and type are as props, should be data
-    props: {
-      message: {
-        type: String,
-        required: true
-      },
-      type: {
-        type: String,
-        default: 'warning'
-      }
-    },
-
     data () {
       return {
         visible: false,
         duration: 3000,
         timer: null,
-        position: 'top'
+        position: 'top',
+        message: '',
+        type: 'success'
       }
     },
 
     computed: {
       classes () {
         return {
-          [`vi-message--${position}`]: true,
-          [`vi-message--${type}`]: true
+          [`vi-message--${this.position}`]: true,
+          [`vi-message--${this.type}`]: true
         }
       },
       iconName () {
@@ -79,9 +67,6 @@
 
     mounted() {
       this.visible = true
-      requestAnimationFrame(() => {
-        this.$el.style.marginLeft = - (this.$el.clientWidth / 2) + 'px'
-      })
       this.startTimer()
     }
   }

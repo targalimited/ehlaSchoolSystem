@@ -27,6 +27,13 @@
   export default {
     name: 'library-main-view',
 
+    created () {
+      this.$message({
+        type: 'success',
+        message: 'Added successfully'
+      })
+    },
+
     data () {
       return {
         school_level: this.$store.getters.user.school.edu_lv,
