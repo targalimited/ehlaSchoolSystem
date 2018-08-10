@@ -1,5 +1,5 @@
 <template>
-  <panel class="browse-list">
+  <panel class="browse-list" :loading="loading">
 
     <template slot="head">
       <vi-input v-model="search" placeholder="Search daily fun reading" prefix-icon="search"></vi-input>

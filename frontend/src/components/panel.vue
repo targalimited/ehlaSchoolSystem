@@ -1,5 +1,7 @@
 <template lang="pug">
   .panel(:class="{'panel--disabled': disabled}")
+    .panel__loading(v-if="loading")
+      vi-spinner
     .panel__head(v-if="$slots.head")
       slot(name="head")
     .panel__body
@@ -11,7 +13,8 @@
 <script>
   export default {
     props: {
-      disabled: Boolean
+      disabled: Boolean,
+      loading: Boolean
     }
   }
 </script>
@@ -24,6 +27,7 @@
     display flex
     flex-direction column
     background white
+    position relative
 
     &--disabled
       background #f9f9f9
@@ -47,4 +51,16 @@
     &__body
       flex 1
       overflow-y auto
+
+    &__loading
+      position absolute
+      top 0
+      left 0
+      right 0
+      bottom 0
+      display flex
+      align-items center
+      justify-content center
+      z-index 2
+      background rgba(255,255,255,0.8)
 </style>
