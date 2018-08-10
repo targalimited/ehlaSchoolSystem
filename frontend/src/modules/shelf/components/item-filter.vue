@@ -46,49 +46,66 @@
     <div v-if="themeOptions" class="search-panel__section">
       <vi-input-label>Filter by themes</vi-input-label>
       <div class="options-container">
-        <vi-checkbox
-          v-for="opt in themeOptions"
-          :key="opt.value"
-          :input-value="themeFilter"
-          :value="opt.value"
-          @input="v => {$store.commit('shelf/changeThemeFilter', v)}"
-          :label="opt.value_name_en"
-        />
+        <list-limit :items="themeOptions">
+          <vi-checkbox
+            slot="item" slot-scope="{item}"
+            :input-value="subthemeFilter"
+            :value="item.value"
+            @input="v => {$store.commit('shelf/changeThemeFilter', v)}"
+            :label="item.value_name_en"
+          />
+        </list-limit>
       </div>
     </div>
 
     <div v-if="subthemeOptions" class="search-panel__section">
       <vi-input-label>Filter by sub-themes</vi-input-label>
       <div class="options-container">
-        <vi-checkbox
-          v-for="opt in subthemeOptions"
-          :key="opt.value"
-          :input-value="subthemeFilter"
-          :value="opt.value"
-          @input="v => {$store.commit('shelf/changeSubthemeFilter', v)}"
-          :label="opt.value_name_en"
-        />
+        <list-limit :items="subthemeOptions">
+          <template slot="item" slot-scope="{item}">
+            <vi-checkbox
+              :input-value="subthemeFilter"
+              :value="item.value"
+              @input="v => {$store.commit('shelf/changeSubthemeFilter', v)}"
+              :label="item.value_name_en"
+            />
+          </template>
+        </list-limit>
       </div>
     </div>
 
     <div v-if="weaknessOptions" class="search-panel__section">
       <vi-input-label>Filter by weakness</vi-input-label>
-      <div class="options-container">
-        <vi-checkbox
-          v-for="opt in weaknessOptions"
-          :key="opt.value"
-          :input-value="weaknessFilter"
-          :value="opt.value"
-          @input="v => {$store.commit('shelf/changeWeaknessFilter', v)}"
-          :label="opt.value_name_en"
-        />
-      </div>
+      <vi-dialog v-model="weaknessDialog">
+        <vi-button color="green" small outline slot="activator">Weakness options</vi-button>
+        <div class="vi-dialog__header">Filter by weakness</div>
+        <div class="vi-dialog__body">
+          <div class="options-container">
+            <vi-checkbox
+              v-for="opt in weaknessOptions"
+              :key="opt.value"
+              :input-value="weaknessFilter"
+              :value="opt.value"
+              @input="v => {$store.commit('shelf/changeWeaknessFilter', v)}"
+              :label="opt.value_name_en"
+            />
+          </div>
+        </div>
+        <div class="vi-dialog__footer">
+          <vi-button @click="weaknessDialog = false">Confirm</vi-button>
+        </div>
+      </vi-dialog>
     </div>
   </div>
 </template>
 
 <script>
   export default {
+    data () {
+      return {
+        weaknessDialog: false
+      }
+    },
     computed: {
       levelFilter () {
         return this.$store.state.shelf.levelFilter

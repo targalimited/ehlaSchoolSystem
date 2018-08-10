@@ -54,6 +54,7 @@
       width 50px
       height 50px
       margin 12px 5px
+      border-radius 6px
 
     &__group
       background rgba(35,35,35,0.18)
