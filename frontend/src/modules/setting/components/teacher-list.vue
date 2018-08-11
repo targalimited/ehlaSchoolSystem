@@ -156,7 +156,6 @@
         } catch (e) {}
       },
       filterByClass (items) {
-        // console.log('filterByClass',items);
         if (this.classFilters.length === 0) return items
         return items.filter(teacher => {
           const classIds = teacher.classes.map(c => c.name)
@@ -168,7 +167,6 @@
       filterFunction (items, search, filter) {
         items = this.filterByClass(items)
         search = search.toString().toLowerCase()
-        console.log('filterFunction',search)
         if (search.trim() === '') return items
 
         return items.filter(i => (

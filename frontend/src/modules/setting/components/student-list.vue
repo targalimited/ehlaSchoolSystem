@@ -1,22 +1,22 @@
 <template>
   <panel class="student-view">
 
-    <div slot="head">
-      <vi-button @click="onExport" dark>
-        <vi-icon left name="add-thick" size="12"/>
-        Export
-      </vi-button>
-      <vi-button @click="onBatchImport" dark>
-        <vi-icon left name="add-thick" size="12"/>
-        Batch import
-      </vi-button>
-      <vi-button @click="onAddStudent" dark>
-        <vi-icon left name="add-thick" size="12"/>
+    <vi-row slot="head">
+      <vi-button @click="onAddStudent" color="green" outline small>
         Create student
       </vi-button>
-      <vi-input style="flex: 1" v-model="search" slot="action" prefix-icon="search" placeholder="Search student by name or class"/>
-      <vi-select :options="option_class" v-model="classFilters" placeholder="Filter by class" max-width="300" style="width: 160px" class="ml-8"/>
-    </div>
+
+      <vi-spacer/>
+
+      <vi-button @click="onExport" flat small>
+        Export
+      </vi-button>
+      <vi-button @click="onBatchImport" flat small>
+        Batch import
+      </vi-button>
+    </vi-row>
+
+    <vi-input v-model="search" prefix-icon="search" placeholder="Search student name" class="mx-16 my-16"/>
 
     <vi-data-table
       v-if="students"
@@ -26,12 +26,22 @@
       :sticky-header="130"
       :pagination.sync="pagination"
       :custom-filter="filterFunction"
+      no-header
+      divided
       :item-height="69">
 
       <div slot="item" slot-scope="{item}" class="vi-table__row">
 
         <vi-table-col>
-          {{item.student_id}}
+          <vi-item>
+            <vi-item-avatar>
+              <vi-avatar size="30"><vi-icon name="avatar"></vi-icon></vi-avatar>
+            </vi-item-avatar>
+            <vi-item-content>
+              <vi-item-title>{{item.student_detail.realname_en}}</vi-item-title>
+              <vi-item-subtitle>{{item.student_detail.realname_zh}}</vi-item-subtitle>
+            </vi-item-content>
+          </vi-item>
         </vi-table-col>
 
         <vi-table-col>
@@ -60,16 +70,13 @@
   import {studentDialog, batchImportDialog} from '../dialogs'
 
   export default {
-    name: 'student-view',
+    name: 'student-list',
 
     data() {
       return {
-        classFilters: '',
         items: [],
         search: '',
-        pagination: {
-          sortBy: 'name'
-        },
+        pagination: {},
         headers: [
           {
             text: 'Name',
@@ -97,6 +104,9 @@
         'option_class',
         'batch_create'
       ]),
+      classFilter () {
+        return this.$route.query.classes
+      }
     },
 
     methods: {
@@ -115,7 +125,6 @@
         studentDialog({
           OptionClass: this.option_class
         }).then(res => {
-          // console.log("response", res.fullname);
           if(res)
           this.$store.dispatch('STUDENT_CREATE', {
             realname_en: res.realname_en,
@@ -129,8 +138,6 @@
         })
       },
       onEdit (student) {
-        console.log(student);
-
         studentDialog({
           oldRealname_en: student.student_detail.realname_en,
           oldRealname_zh: student.student_detail.realname_zh,
@@ -152,23 +159,19 @@
             title: 'Delete student',
             message: `Are you sure you want to delete student ${student.student_detail.realname_en}`
           })
-          // TODO cal API
           this.$store.dispatch('STUDENT_DESTROY',{user_id:student.student_id})
         } catch (e) {}
       },
       filterByClass (items) {
-         // console.log('filterByClass',items);
-        if (!this.classFilters) return items
-        return items.filter(i => {
-          return this.classFilters === i.single_class.c_name
+        if (!this.classFilter) return items
+        return items.filter(student => {
+          return this.classFilter === student.single_class.c_name
         })
       },
       filterFunction (items, search, filter) {
         items = this.filterByClass(items)
         search = search.toString().toLowerCase()
         if (search.trim() === '') return items
-
-        // console.log('filter',filter);
         return items.filter(i => filter(i.student_detail.realname_en, search))
       },
     },
@@ -184,12 +187,6 @@
         })
       },
       deep: true
-    },
-
-    created () {
-      // this.items = genData()
-      const classQuery = this.$route.query.classes
-      if (classQuery) this.classFilters = classQuery
     },
 
     mounted (){

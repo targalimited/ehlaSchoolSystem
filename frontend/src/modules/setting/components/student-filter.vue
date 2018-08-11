@@ -1,29 +1,28 @@
 <template lang="pug">
-  .teacher-filter
+  .student-filter
     .filter-header Filter by class
-    vi-checkbox(v-for="opt in option_class" :value="opt" :label="opt" :key="opt" :input-value="classFilters" @input="onClassChange" multiple)
+    vi-checkbox(v-for="opt in option_class" :value="opt" :label="opt" :key="opt" :input-value="classFilters" @input="onClassChange")
 </template>
 
 <script>
   import { mapGetters } from 'vuex'
   export default {
-    name: 'teacher-filter',
+    name: 'student-filter',
     computed: {
       ...mapGetters([
         'option_class'
       ]),
       classFilters () {
-        return this.$route.query.classes || []
+        return this.$route.query.classes
       }
     },
     methods: {
       onClassChange (v) {
-        this.$router.replace({
-          name: 'settings-teacher',
-          query: {
-            classes: v
-          }
-        })
+        let route = { name: 'settings-student' }
+        if (v) {
+          route.query = { classes: v }
+        }
+        this.$router.replace(route)
       }
     }
   }

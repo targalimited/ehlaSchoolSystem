@@ -4,6 +4,7 @@ import ClassView from './components/class-list'
 import AppLayout from '@/layout/app-layout'
 import SettingTopBar from './components/setting-top-bar'
 import TeacherFilter from './components/teacher-filter'
+import StudentFilter from './components/student-filter'
 
 export default [
   {
@@ -31,7 +32,8 @@ export default [
         path: '/students',
         components: {
           top: SettingTopBar,
-          default: StudentView
+          default: StudentView,
+          left: StudentFilter
         },
         props: {
           top: {
