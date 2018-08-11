@@ -32,7 +32,7 @@
         <vi-table-col>
           <vi-item>
             <vi-item-avatar>
-              <vi-avatar size="40">{{item.realname_en | firstLetter}}</vi-avatar>
+              <vi-avatar size="30"><vi-icon name="avatar"/></vi-avatar>
             </vi-item-avatar>
             <vi-item-content>
               <vi-item-title>{{item.realname_en}}</vi-item-title>

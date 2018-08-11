@@ -11,7 +11,7 @@ export default [
     path: '/settings',
     component: AppLayout,
     props: {
-      type: 'menu'
+      type: 'single'
     },
     children: [
       {
@@ -26,7 +26,16 @@ export default [
             title: 'Class Setting'
           }
         }
-      },
+      }
+    ]
+  },
+  {
+    path: '/settings',
+    component: AppLayout,
+    props: {
+      type: 'menu'
+    },
+    children: [
       {
         name: 'settings-student',
         path: '/students',

@@ -1,7 +1,6 @@
 <template>
   <panel class="class-view">
-    <vi-button slot="head" @click="onAddClass" dark>
-      <vi-icon left name="add-thick" size="12"/>
+    <vi-button slot="head" @click="onAddClass" color="green" outline small>
       Create class
     </vi-button>
 
@@ -149,8 +148,7 @@
     width 660px
 
   .vi-card
-    background #dfeef6
-    height 200px
+    height 160px
     display flex
     flex-flow row wrap
     align-items center
