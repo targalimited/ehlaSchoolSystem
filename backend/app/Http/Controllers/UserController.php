@@ -497,9 +497,9 @@ class UserController extends Controller
     $client = new EhlaGuzzleClient();
     $res = $client->post(config('variables.createAccount') . $access_token, $input);
 
-    $debug = new Debug();
-    $debug->context = 'Create Single Teacher '.json_encode($res);
-    $debug->save();
+    //$debug = new Debug();
+    //$debug->context = 'Create Single Teacher '.json_encode($res);
+    //$debug->save();
 
     if($res['success']){
       foreach ($request->className as $k => $v) {
@@ -635,9 +635,9 @@ class UserController extends Controller
     $client = new EhlaGuzzleClient();
     $res = $client->post(config('variables.updateUserInfo') . $access_token, $input);
 
-    $debug = new Debug();
-    $debug->context = 'Update single teacher '.json_encode($res);
-    $debug->save();
+    //$debug = new Debug();
+    //$debug->context = 'Update single teacher '.json_encode($res);
+    //$debug->save();
 
     if($res['success']){
       TeacherClassSubject::where('teacher_id', $request->teacher_id)->delete();
@@ -693,9 +693,9 @@ class UserController extends Controller
       $client = new EhlaGuzzleClient();
       $res = $client->post(config('variables.createAccount') . $access_token, $input);
 
-      $debug = new Debug();
-      $debug->context = 'Create Single Student '.json_encode($res);
-      $debug->save();
+      //$debug = new Debug();
+      //$debug->context = 'Create Single Student '.json_encode($res);
+      //$debug->save();
 
       if($res['success']){
         $scs = New StudentClassSubject();
@@ -841,9 +841,9 @@ class UserController extends Controller
       $client = new EhlaGuzzleClient();
       $res = $client->post(config('variables.updateUserInfo') . $access_token, $input);
 
-      $debug = new Debug();
-      $debug->context = 'Update Single Student '.json_encode($res);
-      $debug->save();
+      //$debug = new Debug();
+      //$debug->context = 'Update Single Student '.json_encode($res);
+      //$debug->save();
 
       if ($res['success']) {
         $scs = StudentClassSubject::where('student_id', $request->student_id)->first();
