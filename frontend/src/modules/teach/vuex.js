@@ -70,10 +70,10 @@ export default {
 
     async getWeaknessList ({commit}, {classId}) {
       const res = await new AuthHttp().post('/get_class_weakness', {
-        academic_id: 1, // TODO hardcode
+        academic_id: 1,
         class_id: classId,
         subject_id: 1,
-        weakness_code: "MATCH"
+        weakness_code: "ALL"
       })
       const weakness_list = res.data
       commit('gotWeaknessList', {
@@ -87,7 +87,7 @@ export default {
         subject_id: 1,
         academic_id: 1,
         class_id: classId,
-        weakness_code: 'MATCH',
+        weakness_code: 'ALL',
         weakness_ids: weakness_ids
       })
       const weakness_report = res.data

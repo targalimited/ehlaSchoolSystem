@@ -2,7 +2,7 @@
   <panel class="library-list" :loading="loading">
     <vi-spinner v-if="!selectedItems"></vi-spinner>
 
-    <template v-if="selectedItems.length === 0">
+    <template v-else-if="selectedItems.length === 0">
       <vi-no-data v-if="state === 'unassigned'" icon="done" title="No unassigned item" content="You have no unassigned item"></vi-no-data>
       <vi-no-data v-else icon="shelf" title="No assigned item" content="You have no assigned item."></vi-no-data>
     </template>
