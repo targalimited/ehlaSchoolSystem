@@ -1,13 +1,17 @@
-import StudentView from './views/student-view'
-import TeacherView from './views/teacher-view'
-import ClassView from './views/class-view'
+import StudentView from './components/student-list'
+import TeacherView from './components/teacher-list'
+import ClassView from './components/class-list'
 import AppLayout from '@/layout/app-layout'
 import SettingTopBar from './components/setting-top-bar'
+import TeacherFilter from './components/teacher-filter'
 
 export default [
   {
     path: '/settings',
     component: AppLayout,
+    props: {
+      type: 'menu'
+    },
     children: [
       {
         name: 'settings-class',
@@ -40,7 +44,8 @@ export default [
         path: '/teachers',
         components: {
           top: SettingTopBar,
-          default: TeacherView
+          default: TeacherView,
+          left: TeacherFilter
         },
         props: {
           top: {

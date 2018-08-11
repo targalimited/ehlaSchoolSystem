@@ -15,3 +15,7 @@ Vue.filter('levelName', lv => {
 Vue.filter('join', array => {
   return array.join(', ')
 })
+
+Vue.filter('firstLetter', v => {
+  return v.charAt(0).toUpperCase()
+})

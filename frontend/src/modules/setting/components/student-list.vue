@@ -1,5 +1,5 @@
 <template>
-  <div class="teacher-view">
+  <panel class="student-view">
 
     <div slot="head">
       <vi-button @click="onExport" dark>
@@ -10,18 +10,18 @@
         <vi-icon left name="add-thick" size="12"/>
         Batch import
       </vi-button>
-      <vi-button @click="onAddTeacher" dark>
+      <vi-button @click="onAddStudent" dark>
         <vi-icon left name="add-thick" size="12"/>
-        Create teacher
+        Create student
       </vi-button>
-      <vi-input style="flex: 1" v-model="search" slot="action" prefix-icon="search" placeholder="Search teacher by name or class"/>
+      <vi-input style="flex: 1" v-model="search" slot="action" prefix-icon="search" placeholder="Search student by name or class"/>
       <vi-select :options="option_class" v-model="classFilters" placeholder="Filter by class" max-width="300" style="width: 160px" class="ml-8"/>
     </div>
 
     <vi-data-table
-      v-if="teachers"
+      v-if="students"
       :headers="headers"
-      :items="teachers"
+      :items="students"
       :search="search"
       :sticky-header="130"
       :pagination.sync="pagination"
@@ -31,16 +31,17 @@
       <div slot="item" slot-scope="{item}" class="vi-table__row">
 
         <vi-table-col>
-          {{item.realname_en}}
+          {{item.student_id}}
         </vi-table-col>
 
         <vi-table-col>
-          <vi-chip  v-for="(single_class, index) in item.classes" :key="index">
-            {{single_class.name}}
+          <vi-chip>
+            {{item.single_class.c_name}}
           </vi-chip>
         </vi-table-col>
 
         <vi-table-col>
+
           <vi-button @click="onEdit(item)" icon text>
             <vi-icon name="edit" size="22"/>
           </vi-button>
@@ -50,15 +51,16 @@
         </vi-table-col>
       </div>
     </vi-data-table>
-  </div>
+  </panel>
 </template>
 
 <script>
-  import { teacherDialog, batchImportDialog } from '../dialogs'
+
   import { mapGetters } from 'vuex'
+  import {studentDialog, batchImportDialog} from '../dialogs'
 
   export default {
-    name: 'teacher-view',
+    name: 'student-view',
 
     data() {
       return {
@@ -83,7 +85,7 @@
           },
           {
             text: '',
-            width: '100px'
+            width: '72px'
           }
         ]
       }
@@ -91,79 +93,83 @@
 
     computed: {
       ...mapGetters([
-        'teachers',
+        'students',
         'option_class',
         'batch_create'
-      ])
+      ]),
     },
 
     methods: {
       async onExport () {
-        this.$store.dispatch('EXPORT_TEACHER')
+        this.$store.dispatch('EXPORT_STUDENT')
       },
       async onBatchImport () {
         const file = await batchImportDialog()
         if (!file) return
-        this.$store.dispatch('TEACHER_BATCH_CREATE',file)
+        this.$store.dispatch('STUDENT_BATCH_CREATE',file).then(()=>{
+          // console.log(this.$store.getters.batch_create.message)
+        })
 
       },
-      async onAddTeacher () {
-        const res = await teacherDialog({
+      onAddStudent () {
+        studentDialog({
           OptionClass: this.option_class
         }).then(res => {
+          // console.log("response", res.fullname);
           if(res)
-          this.$store.dispatch('TEACHER_CREATE',res)
+          this.$store.dispatch('STUDENT_CREATE', {
+            realname_en: res.realname_en,
+            username: res.username,
+            password: res.password,
+            school_num: res.school_num,
+            realname_zh: res.realname_zh,
+            className: res.className,
+            classNo: res.classNo
+          })
         })
-        if (!res) return
-        console.log('create teacher API', res)
       },
-      async onEdit (teacher) {
-        console.log('onEdit',teacher)
-        const res = await teacherDialog({
-          oldRealname_zh: teacher.realname_zh,
-          oldRealname_en: teacher.realname_en,
-          oldUsername: teacher.username,
-          oldClass: teacher.classes,
-          OptionClass: this.option_class,
-          oldTeacher_num: teacher.school_num,
-          oldRole: teacher.role_id,
-        }).then(res=>{
-          res.teacher_id=teacher.teacher_id
-          if(res)
-          this.$store.dispatch('TEACHER_UPDATE',res)
-        })
+      onEdit (student) {
+        console.log(student);
 
-        if (!res) return
-        console.log('Edit teacher API', res)
+        studentDialog({
+          oldRealname_en: student.student_detail.realname_en,
+          oldRealname_zh: student.student_detail.realname_zh,
+          oldUsername: student.student_detail.username,
+          oldSchool_num: student.student_detail.school_num,
+          OptionClass: this.option_class,
+          oldClass: student.single_class.c_name,
+          oldClassNo: student.student_detail.class_no
+        }).then(res=>{
+          if(res) {
+            res.student_id = student.student_id
+            this.$store.dispatch('STUDENT_UPDATE', res)
+          }
+        })
       },
-      async onDelete (teacher) {
+      async onDelete (student) {
         try {
           await this.$messageBox({
-            title: 'Delete teacher',
-            message: `Are you sure you want to delete teacher ${teacher.name}`
+            title: 'Delete student',
+            message: `Are you sure you want to delete student ${student.student_detail.realname_en}`
           })
-          this.$store.dispatch('TEACHER_DESTROY',{user_id:teacher.teacher_id})
-
+          // TODO cal API
+          this.$store.dispatch('STUDENT_DESTROY',{user_id:student.student_id})
         } catch (e) {}
       },
       filterByClass (items) {
-        // console.log('filterByClass',items);
-        if (this.classFilters.length === 0) return items
+         // console.log('filterByClass',items);
+        if (!this.classFilters) return items
         return items.filter(i => {
-
-         return this.classFilters.includes(i.classes.name)
-
+          return this.classFilters === i.single_class.c_name
         })
       },
       filterFunction (items, search, filter) {
         items = this.filterByClass(items)
         search = search.toString().toLowerCase()
-        console.log('filterFunction',search)
         if (search.trim() === '') return items
 
-        return items.filter(i => (
-          filter(i.realname_en, search)
-        ))
+        // console.log('filter',filter);
+        return items.filter(i => filter(i.student_detail.realname_en, search))
       },
     },
 
@@ -185,11 +191,10 @@
       const classQuery = this.$route.query.classes
       if (classQuery) this.classFilters = classQuery
     },
+
     mounted (){
-      // console.log(this.teachers)
       this.$store.dispatch('FETCH_OPTIONCLASS')
-      this.$store.dispatch('FETCH_ROLE')
-      this.$store.dispatch('FETCH_TEACHER')
+      this.$store.dispatch('FETCH_STUDENT')
     }
   }
 </script>
