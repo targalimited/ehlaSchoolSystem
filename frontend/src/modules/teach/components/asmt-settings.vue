@@ -14,7 +14,19 @@
           .input-group
             label Remark
             vi-input.textarea(v-model="form.remark" placeholder="Remarks (optional)" type="textarea" @input="update" no-resize)
-      vi-col(xs6) yo
+      vi-col(xs6)
+        .px-16.py-16
+          vi-spinner(v-if="!students")
+          vi-no-data(v-else-if="students.length === 0" icon="alert" title="No students" content="This class has no students. Please contact the admin")
+          template(v-else)
+            h4.section-title {{students.length}} students in {{className}}
+            vi-item(v-for="student in students" :key="student.id" height="50" divided)
+              vi-item-avatar
+                vi-avatar(size="30")
+                  vi-icon(name="avatar")
+              vi-item-content
+                vi-item-title {{student.realname_en}}
+                vi-item-subtitle {{student.realname_zh}}
 </template>
 
 <script>
@@ -75,12 +87,22 @@
         else return moment(this.form.startDate).isAfter(this.form.endDate)
       },
       formInvalid () {
-        return !(this.form.startDate && this.form.endDate) || this.dateInValid
+        const noStudents = this.students && this.students.length === 0
+        return !(this.form.startDate && this.form.endDate) || this.dateInValid || noStudents
+      },
+      students () {
+        return this.$store.getters.getStudentsByClass(this.classId)
+      },
+      className () {
+        return this.$store.getters.getClassNameById(this.classId)
       }
     },
 
     methods: {
       async initFetch () {
+        this.$store.dispatch('getStudentsByClass', {
+          classId: this.classId
+        })
         await this.$store.dispatch('getItemById', {
           classId: this.classId,
           itemId: this.itemId
@@ -101,6 +123,12 @@
         this.startDate = this.prevSettings.start_date
         this.endDate = this.prevSettings.end_date
         this.remark = this.prevSettings.remark
+      }
+    },
+
+    watch: {
+      students () {
+        this.update()
       }
     }
   }
@@ -127,7 +155,7 @@
 
       label
         font-size 14px
-        color #2a739b
+        color $blue-text
         text-transform uppercase
         display block
         margin-bottom 4px
@@ -138,4 +166,9 @@
       .vi-input.textarea
         height 100px
 
+    .section-title
+      font-size 12px
+      text-transform: uppercase
+      color $blue-text
+      margin-bottom 16px
 </style>

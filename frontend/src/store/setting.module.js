@@ -19,18 +19,14 @@ const state = {
 const getters = {
   getField,
 
-  classes (state){
-    // console.log(state.classes)
-    return state.classes
-  },
-
+  classes: state => state.classes,
   students: state => state.students,
   teachers: state => state.teachers,
   option_class: state => state.option_class,
   roleOptions: state => state.roleOptions,
   batch_create: state => state.batch_create,
   single_class: state => id => state.classes.data.find(c => c.id === id),
-
+  studentsByClass: state => classId => state.students,
   levelOptions(state){
     if(state.summary){
       let all_level = state.summary.levels_translate
@@ -49,7 +45,6 @@ const getters = {
       return cus_level
     }
   },
-
 }
 
 const actions = {

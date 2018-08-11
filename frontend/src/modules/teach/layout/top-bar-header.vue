@@ -1,6 +1,6 @@
 <template lang="pug">
   .top-bar-header
-    template(v-if="classOption.length === 0") {{title}}
+    template(v-if="classOption && classOption.length === 0") {{title}}
     vi-select(
       v-else
       :options="classOption"

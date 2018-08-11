@@ -81,6 +81,10 @@ export default {
       if (!state.user) return
       return state.user.school.s_name
     },
-    teacherId: state => state.user && state.user.user_id
+    teacherId: state => state.user && state.user.user_id,
+    userGroupId: state => {
+      if (!state.user) return null
+      return parseInt(state.user.userGroup.id)
+    }
   }
 }

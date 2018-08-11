@@ -5,6 +5,7 @@ import AppLayout from '@/layout/app-layout'
 import SettingTopBar from './components/setting-top-bar'
 import TeacherFilter from './components/teacher-filter'
 import StudentFilter from './components/student-filter'
+import Store from '@/store'
 
 export default [
   {
@@ -27,13 +28,21 @@ export default [
           }
         }
       }
-    ]
+    ],
+    beforeEnter: (to, from, next) => {
+      if (Store.getters.userGroupId === 2) next()
+      else next('/home')
+    }
   },
   {
     path: '/settings',
     component: AppLayout,
     props: {
       type: 'menu'
+    },
+    beforeEnter: (to, from, next) => {
+      if (Store.getters.userGroupId === 2) next()
+      else next('/home')
     },
     children: [
       {
