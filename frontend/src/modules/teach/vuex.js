@@ -267,8 +267,9 @@ export default {
       return catObj && catObj.name_en
     },
     defaultClassId (state) {
-      if (!(state.classList && state.classList.length)) return
-      return state.classList[0].class_id
+      if (!state.classList) return
+      if (state.classList.length === 0) return -1
+      else return state.classList[0].class_id
     }
   }
 }

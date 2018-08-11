@@ -44,7 +44,7 @@
 
     &--single
       .app-view
-      overflow-y: hidden scroll
+        overflow-y scroll
 
       .app-view__l
         display none

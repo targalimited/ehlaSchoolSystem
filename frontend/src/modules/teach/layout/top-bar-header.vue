@@ -1,7 +1,9 @@
 <template lang="pug">
   .top-bar-header
+    template(v-if="classOption.length === 0") {{title}}
     vi-select(
-      :options="class_option"
+      v-else
+      :options="classOption"
       :value="classId"
       @input="onClassChange"
       option-name="c_name"
@@ -28,7 +30,7 @@
       }
     },
     computed: {
-      class_option () {
+      classOption () {
         return this.$store.state.teach.classList
       },
       classId () {

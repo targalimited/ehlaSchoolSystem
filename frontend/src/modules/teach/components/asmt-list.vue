@@ -1,20 +1,22 @@
 <template lang="pug">
   panel.asmt-list
-    template(slot="head")
-      vi-menu(v-if="!locked")
-        vi-button(slot="activator" color="green" outline small) new assignment
-        vi-item(v-for="cat in catList" :key="cat.key" @click="createAsmt(cat.key)" link) {{cat.name_en}}
-    template
-      vi-spinner(v-if="loading && asmtList.length === 0")
-      vi-no-data(v-else-if="asmtList.length === 0" title="no data")
-      asmt-item(
-        v-else
-        v-for="d in asmtList"
-        :key="d.batch_id"
-        :locked="locked"
-        :asmt-data="d"
-        @click.native="onSelect(d)"
-      )
+    vi-no-data(v-if="noClassAvailable" icon="alert" title="No class available" content="You are not in any class!")
+    template(v-else)
+      template(slot="head")
+        vi-menu(v-if="!locked")
+          vi-button(slot="activator" color="green" outline small) new assignment
+          vi-item(v-for="cat in catList" :key="cat.key" @click="createAsmt(cat.key)" link) {{cat.name_en}}
+      template
+        vi-spinner(v-if="loading && asmtList.length === 0")
+        vi-no-data(v-else-if="asmtList.length === 0" title="no data")
+        asmt-item(
+          v-else
+          v-for="d in asmtList"
+          :key="d.batch_id"
+          :locked="locked"
+          :asmt-data="d"
+          @click.native="onSelect(d)"
+        )
 </template>
 
 <script>
@@ -30,6 +32,9 @@
     computed: {
       $classId () {
         return this.$route.params.classId
+      },
+      noClassAvailable () {
+        return this.$classId < 0
       },
       asmtList () {
         const TYPE = this.locked ? 'lockedBatchList' : 'activeBatchList'
@@ -75,7 +80,6 @@
     },
     watch: {
       '$classId': function () {
-        console.log('fetch')
         this.initFetch()
       }
     }
