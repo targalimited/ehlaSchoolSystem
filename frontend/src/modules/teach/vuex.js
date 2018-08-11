@@ -221,6 +221,13 @@ export default {
       commit('updateEntities', entity, {root: true})
       return res.data
     },
+
+    async getStudentsByClass ({commit}, {classId}) {
+      const res = await new AuthHttp().post('/get_students_by_class_id', {
+        class_id: classId,
+        subject_id: 1
+      })
+    }
   },
 
   getters: {

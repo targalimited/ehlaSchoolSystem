@@ -17,7 +17,6 @@ import {ViSpacer, ViContainer, ViCol, ViRow, ViDivider} from './components/vi-gr
 import {ViDataTable, ViTableCol} from './components/vi-data-table'
 import ViMessage from './components/vi-message/vi-message.vue'
 import ViSwitch from './components/vi-switch'
-import ViSidebar from './components/vi-sidebar'
 import ViSpinner from './components/vi-spinner'
 import ViNoData from './components/vi-no-data'
 import {ViTabs, ViTab} from './components/vi-tabs'
@@ -27,8 +26,6 @@ import ViDatePicker from './components/vi-date-picker'
 import Sticky from './directives/sticky'
 import Scroll from './directives/scroll'
 import LoadingDots from './directives/loading-dots'
-
-// import './stylus/app.styl'
 import './components/vi-icon/collection'
 
 const Yolo = {
@@ -60,7 +57,6 @@ const Yolo = {
     Vue.component('vi-item-title', ViItemTitle)
     Vue.component('vi-item-subtitle', ViItemSubTitle)
     Vue.component('vi-select', ViSelect)
-    Vue.component('vi-sidebar', ViSidebar)
     Vue.component('vi-expansion-panel', ViExpansionPanel)
     Vue.component('vi-tooltip', ViTooltip)
     Vue.component('vi-spacer', ViSpacer)

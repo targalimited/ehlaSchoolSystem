@@ -10,14 +10,14 @@
     router-link(:to="{name: 'library-unassigned'}")
       vi-button(icon flat dark)
         vi-icon(name="shelf" size="30")
-    template(v-if="defaultClassId")
+    template(v-if="defaultClassId && userGroupId === 3")
       router-link(:to="{name: 'asmt-class-progress', params:{classId: defaultClassId}}")
         vi-button(icon flat dark)
           vi-icon(name="assignment" size="28")
       router-link(:to="{name: 'report-class-weakness', params:{classId: defaultClassId}}")
         vi-button(icon flat dark)
           vi-icon(name="report" size="28")
-    router-link(:to="{name: 'settings-class'}")
+    router-link(:to="{name: 'settings-class'}" v-if="userGroupId === 2")
       vi-button(icon flat dark)
         vi-icon(name="config" size="20")
     .sidebar__divider
@@ -36,6 +36,9 @@
     computed: {
       defaultClassId () {
         return this.$store.getters.defaultClassId
+      },
+      userGroupId () {
+        return this.$store.getters.userGroupId
       }
     }
   }

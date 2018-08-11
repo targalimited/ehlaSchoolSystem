@@ -81,6 +81,9 @@
 
     methods: {
       async initFetch () {
+        this.$store.dispatch('getStudentsByClass', {
+          classId: this.classId
+        })
         await this.$store.dispatch('getItemById', {
           classId: this.classId,
           itemId: this.itemId
