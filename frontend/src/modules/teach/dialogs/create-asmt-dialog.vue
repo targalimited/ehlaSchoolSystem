@@ -19,7 +19,7 @@
           vi-button(color="brand" :disabled="!selectedItemId" @click="step = 2") Next
         vi-button-row(v-if="step === 2")
           vi-button(outline @click="step = 1") Back
-          vi-button(color="brand" :disabled="!valid" @click="submit") Confirm
+          vi-button(color="brand" :disabled="!valid || loading" @click="submit") Confirm
 </template>
 
 <script>
@@ -49,6 +49,10 @@
         const startDate = this.form.startDate
         const endDate = this.form.endDate
         return !(startDate && endDate)
+      },
+      itemData () {
+        if (!this.selectedItemId) return null
+        return this.$store.getters.getItemById(this.selectedItemId)
       }
     },
 
@@ -57,13 +61,17 @@
         step: 1,
         selectedItemId: '',
         form: {},
-        valid: false
+        valid: false,
+        loading: false
       }
     },
 
     methods: {
       async submit () {
+        this.loading = true
         await this.$store.dispatch('setAssignment', this.form)
+        this.loading = false
+        this.$message(`${this.itemData.name_en} is assigned to ${this.className} successfully!`)
         this.$close()
       }
     }

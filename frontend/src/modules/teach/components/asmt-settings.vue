@@ -109,6 +109,7 @@
         })
 
         this.form.exercises = this.itemData.exercises.map(e => e.exercise_id)
+        if (this.itemData.videos) this.form.videos = this.itemData.videos.map(e => e.exercise_id)
         this.form.itemType = this.itemData.item_type
       },
       update () {

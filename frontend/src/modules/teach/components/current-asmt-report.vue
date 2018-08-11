@@ -1,5 +1,5 @@
 <template lang="pug">
-  panel(:disabled="!batch_id").asmt-report
+  panel(:disabled="!batch_id" :loading="locking").asmt-report
     // Empty: no batch ID is selected
     template(v-if="!batch_id")
       vi-row(justify-center mt-40)
@@ -71,6 +71,7 @@
     data() {
       return {
         loading: false,
+        locking: false,
         pagination: {}
       }
     },
@@ -134,10 +135,12 @@
           message: 'Once an assignment is locked, students cannot access and complete the assignemnt anymore'
         })
         if (!confirm) return
+        this.locking = true
         await this.$store.dispatch('lockAsmt', {
           batchId: this.batchData.batch_id,
           classId: this.$route.params.classId
         })
+        this.locking = false
         this.$message(`${this.batchData.name_en} has been locked successfully`)
       },
       deleteAsmt (asmtData) {

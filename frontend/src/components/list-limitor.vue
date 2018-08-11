@@ -56,7 +56,7 @@
     },
     render (h) {
       const children = this.genList()
-      children.push(this.genToggle())
+      if (this.items.length > this.limit) children.push(this.genToggle())
       return h('div', {
         staticClass: 'list-limitor'
       }, children)

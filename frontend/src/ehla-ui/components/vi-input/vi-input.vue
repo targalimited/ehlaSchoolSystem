@@ -172,7 +172,7 @@
       },
       handleKeydown (e) {
         if (this.clearable && e.keyCode === 27) this.$emit('input', '')
-        this.$emit('keydown', event)
+        this.$emit('keydown', e)
       },
       clear (e) {
         e.stopPropagation()

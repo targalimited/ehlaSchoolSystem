@@ -31,7 +31,7 @@
   @import '../../../project-ui/stylus/main.styl'
   .shelf-bottom-bar
     padding 20px
-    background #f0f0f0
+    background $pale-yellow
     width 100%
 
     .title

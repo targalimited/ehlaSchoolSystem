@@ -18,8 +18,8 @@
         </vi-item>
 
         <vi-button-row>
-          <vi-button v-if="cancel" @click="cancel" primary>{{cancelText}}</vi-button>
-          <vi-button @click="confirm">{{confirmText}}</vi-button>
+          <vi-button v-if="cancel" @click="cancel" outline>{{cancelText}}</vi-button>
+          <vi-button @click="confirm" color="brand">{{confirmText}}</vi-button>
         </vi-button-row>
       </vi-card-content>
     </vi-card>
@@ -69,4 +69,7 @@
 
     .vi-input__inner
       text-align center
+
+    .vi-button-row
+      margin-top 24px
 </style>

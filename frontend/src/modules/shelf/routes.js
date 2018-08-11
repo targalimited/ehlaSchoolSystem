@@ -6,13 +6,14 @@ import LibraryList from './views/library-list'
 import TopBar from '@/components/top-bar'
 import AppLayout from '../../layout/app-layout'
 import ShelfTopbar from './components/shelf-top-bar'
-import ShelfBottomBar from './components/shelf-bottom-bar'
+import ShelfBottomBar from './components/assigned-library-notice'
 import BrowseNoticeBar from './components/browse-notice-bar'
 import PilotTopBar from './components/pilot-top-bar'
 import ItemFilter from './components/item-filter'
 import PilotIntroBar from './components/pilot-notice-bar'
 import HomeIntroBar from './components/home-notice-bar'
 import EhlaRoot from './views/browse-ehla-root'
+import UnassignedLibraryNotice from './components/unassign-library-notice'
 
 export default [
   {
@@ -50,7 +51,7 @@ export default [
         components: {
           top: ShelfTopbar,
           default: LibraryList,
-          top2: ShelfBottomBar
+          top2: UnassignedLibraryNotice
         },
         props: {
           default: {

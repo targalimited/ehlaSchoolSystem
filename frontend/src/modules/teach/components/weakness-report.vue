@@ -1,6 +1,6 @@
 <template lang="pug">
   panel(:disabled="$weaknessIds && $weaknessIds.length === 0").weakness-report
-    vi-no-data(v-if="!$weaknessIds" icon="report" title="Weakness Report" content="Select up to 6 weakness to generate the weakness report")
+    vi-no-data(v-if="!$weaknessIds" icon="report" title="Weakness Report" content="Select up to 3 weakness to generate the weakness report")
     vi-spinner(v-else-if="loading && weakness_report.length === 0")
     vi-data-table(
       v-else

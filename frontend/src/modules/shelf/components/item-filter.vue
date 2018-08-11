@@ -49,7 +49,7 @@
         <list-limit :items="themeOptions">
           <vi-checkbox
             slot="item" slot-scope="{item}"
-            :input-value="subthemeFilter"
+            :input-value="themeFilter"
             :value="item.value"
             @input="v => {$store.commit('shelf/changeThemeFilter', v)}"
             :label="item.value_name_en"

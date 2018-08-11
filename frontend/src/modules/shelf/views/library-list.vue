@@ -1,6 +1,11 @@
 <template>
-  <panel class="library-list">
+  <panel class="library-list" :loading="loading">
     <vi-spinner v-if="!selectedItems"></vi-spinner>
+
+    <template v-if="selectedItems.length === 0">
+      <vi-no-data v-if="state === 'unassigned'" icon="done" title="No unassigned item" content="You have no unassigned item"></vi-no-data>
+      <vi-no-data v-else icon="shelf" title="No assigned item" content="You have no assigned item."></vi-no-data>
+    </template>
 
     <vi-data-table
       v-else
@@ -109,15 +114,12 @@
 
     methods: {
       async removeReading (item) {
-        this.loading = true
         const confirm = await this.$messageBox({
           title: 'Remove item',
           message: 'Do you want to remove this item?'
         })
-        if (!confirm) {
-          this.loading = false
-          return
-        }
+        if (!confirm) return
+        this.loading = true
         await this.$store.dispatch('shelf/remove', {
           id: item.id,
           cat: item.cat_grouper,
@@ -130,15 +132,13 @@
         const currentLevels = item.levels
         const newLevels = await levelDialog(currentLevels, item.cat_grouper)
         if (!newLevels) return
-        let loader = this.$loading.show()
-        this.$store.dispatch('shelf/assignLevels', {
+        this.loading = true
+        await this.$store.dispatch('shelf/assignLevels', {
           id: item.id,
           levels: newLevels
-        }).then(function(res){
-          loader.hide()
-        }).finally(function(){
-          loader.hide()
         })
+        this.loading = false
+        this.$message(`${item.name_en} is assigned to levels successfully`)
       },
       onConfirm () {
         this.$messageBox({

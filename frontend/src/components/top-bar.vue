@@ -73,6 +73,9 @@
       margin-right 16px
       border-bottom 4px solid transparent
       cursor pointer
+      white-space nowrap
+      overflow hidden
+      text-overflow ellipsis
 
       &--active, &.router-link-active
         border-color $brand
