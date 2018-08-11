@@ -1,6 +1,6 @@
 import {batchListSchema, itemListSchema} from './schema'
 import { normalize, denormalize } from 'normalizr'
-import {http, AuthHttp} from '../../http'
+import {AuthHttp} from '../../http'
 import Vue from 'vue'
 
 // TODO: move this to somewhere to share across module
@@ -31,7 +31,8 @@ export default {
     batchList: {}, // the assignment list of the class
     itemList: {}, // the assignable items for the class
     catList: catList,
-    selectedWeakness: null
+    selectedWeakness: null,
+    students: {}
   },
 
   mutations: {
@@ -50,6 +51,9 @@ export default {
     },
     updateSelectedWeakness (state, weakness) {
       state.selectedWeakness = weakness
+    },
+    gotStudentsByClass (state, {students, classId}) {
+      Vue.set(state.students, [classId], students)
     }
   },
 
@@ -227,6 +231,11 @@ export default {
         class_id: classId,
         subject_id: 1
       })
+      const students = res.data
+      commit('gotStudentsByClass', {
+        students, classId
+      })
+      return students
     }
   },
 
@@ -277,6 +286,7 @@ export default {
       if (!state.classList) return
       if (state.classList.length === 0) return -1
       else return state.classList[0].class_id
-    }
+    },
+    getStudentsByClass: state => classId => state.students[classId]
   }
 }
