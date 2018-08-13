@@ -132,7 +132,7 @@
       async lockAsmt () {
         const confirm = await this.$messageBox({
           title: 'Are you sure',
-          message: 'Once an assignment is locked, students cannot access and complete the assignemnt anymore'
+          message: 'Once an assignment is locked, students cannot access and complete the assignment anymore'
         })
         if (!confirm) return
         this.locking = true

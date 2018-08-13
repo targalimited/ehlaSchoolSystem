@@ -10,7 +10,7 @@
           .input-group
             label End Date
             vi-date-picker(v-model="form.endDate" placeholder="End Date" @input="update")
-            vi-input-error(v-if="dateInValid" class="mt-4") End date is eariler then start date
+            vi-input-error(v-if="dateInValid" class="mt-4") End date is earlier than start date
           .input-group
             label Remark
             vi-input.textarea(v-model="form.remark" placeholder="Remarks (optional)" type="textarea" @input="update" no-resize)
