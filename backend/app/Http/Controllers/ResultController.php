@@ -9,6 +9,7 @@ use App\Traits\TeacherClassSubjectTrait;
 use App\UsermodelApiServices;
 use App\ParamBasicServices;
 use App\PermissionControlServices;
+use App\UserInfo;
 use App\Homework;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -48,8 +49,39 @@ class ResultController extends Controller
 			//usermodel
 			$UAS = New UsermodelApiServices($request);
 			$result = $UAS->resultApiGetSchoolStatusReport($academicId, $studentIds, $itemId, $subjectId, $batchId);
-		
-			$output["data"] = $result["data"];
+			$studentDetails = $result["data"];
+			
+			$userInfos = UserInfo::whereIn('user_id',$studentIds)
+							->select('user_id','realname_zh','realname_en','school_num','class_no')
+							->orderBy('class_no')
+							->get()
+							->toArray();
+			
+			$userInfosMap = [];
+			foreach ($userInfos as $info) {
+				$userInfosMap[$info['user_id']] = $info;
+			}
+			
+			$data = [];
+			foreach ($studentDetails as $student) {
+				$obj = $student;
+				$obj["realname_en"] = "(empty)";
+				$obj["realname_zh"] = "(empty)";
+				$obj["school_num"]  = "(empty)";
+				$obj["class_no"]    = "(empty)";
+				
+				$sid = $student['id'];
+				
+				if (isset($userInfosMap[$sid])) {
+					$obj["realname_en"] = $userInfosMap[$sid]["realname_en"];
+					$obj["realname_zh"] = $userInfosMap[$sid]["realname_zh"];
+					$obj["school_num"]  = $userInfosMap[$sid]["school_num"];
+					$obj["class_no"]    = $userInfosMap[$sid]["class_no"];
+				}
+				array_push($data, $obj);
+			}
+			
+			$output["data"] = $data;
 			$output["metadata"] = $result["metadata"];
 		}
 		
@@ -90,7 +122,39 @@ class ResultController extends Controller
 			$UAS = New UsermodelApiServices($request);
 			$result = $UAS->resultApiGetSchoolWeaknessReport($academicId, $studentIds, $subjectId, $weaknessCode, $weaknessIds);	
 		
-			$output["data"] = $result["data"];
+			$studentDetails = $result["data"];
+			
+			$userInfos = UserInfo::whereIn('user_id',$studentIds)
+							->select('user_id','realname_zh','realname_en','school_num','class_no')
+							->orderBy('class_no')
+							->get()
+							->toArray();
+			
+			$userInfosMap = [];
+			foreach ($userInfos as $info) {
+				$userInfosMap[$info['user_id']] = $info;
+			}
+			
+			$data = [];
+			foreach ($studentDetails as $student) {
+				$obj = $student;
+				$obj["realname_en"] = "(empty)";
+				$obj["realname_zh"] = "(empty)";
+				$obj["school_num"]  = "(empty)";
+				$obj["class_no"]    = "(empty)";
+				
+				$sid = $student['id'];
+				
+				if (isset($userInfosMap[$sid])) {
+					$obj["realname_en"] = $userInfosMap[$sid]["realname_en"];
+					$obj["realname_zh"] = $userInfosMap[$sid]["realname_zh"];
+					$obj["school_num"]  = $userInfosMap[$sid]["school_num"];
+					$obj["class_no"]    = $userInfosMap[$sid]["class_no"];
+				}
+				array_push($data, $obj);
+			}
+			
+			$output["data"] = $data;
 			$output["metadata"] = $result["metadata"];
 		}
 		
