@@ -30,7 +30,7 @@ class PermissionControlServices extends Model {
 	}
 	
 	public function getTeacherClasses($teacherId, $subjectId) {
-		$sql  = " SELECT    DISTINCT class_id id, cs.c_name, cs.level, s.s_name_en, s.s_name_zh ";
+		$sql  = " SELECT    DISTINCT class_id id, cs.c_name, cs.level, s.s_name_en, s.s_name_zh, (CASE WHEN cs.lock IS NULL THEN 0 ELSE cs.lock END) AS is_confirmed ";
 		$sql .= " FROM      ".\DB::getTablePrefix()."teacher_class_subject tcs";
 		$sql .= " LEFT JOIN ".\DB::getTablePrefix()."classes cs";
 		$sql .= " ON        tcs.class_id = cs.id ";
