@@ -38,7 +38,7 @@
         const map = {
           'success': 'done',
           'warning': 'alert-circular',
-          'error': 'clear'
+          'error': 'alert-circular'
         }
         return map[this.type]
       }

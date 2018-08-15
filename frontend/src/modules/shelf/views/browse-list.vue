@@ -2,7 +2,7 @@
   <panel class="browse-list" :loading="loading">
 
     <template slot="head">
-      <vi-input v-model="search" placeholder="Search daily fun reading" prefix-icon="search"></vi-input>
+      <vi-input v-model="search" :placeholder="`Search ${catName}`" prefix-icon="search"></vi-input>
     </template>
 
     <vi-row v-if="!readings" justify-center style="margin-top: 40px">

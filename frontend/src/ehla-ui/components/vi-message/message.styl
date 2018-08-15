@@ -11,7 +11,7 @@
   max-width 500px
   position fixed
   bottom 24px
-  right -1PX
+  right -1px
   z-index 9999
 
   &__icon
@@ -24,5 +24,14 @@
 
     &:before
       background $success-color
+
+  &--error
+    .vi-message__icon
+      color $error-color
+
+    &:before
+      background $error-color
+
+
 
 

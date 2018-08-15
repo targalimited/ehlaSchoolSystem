@@ -3,41 +3,41 @@
     <vi-section-header>Change password</vi-section-header>
     <vi-input v-model="oldPw" placeholder="Enter your current password"/>
     <vi-input v-model="newPw" placeholder="Enter your new password"/>
-    <vi-button @click="changePW" color="brand">Submit</vi-button>
+    <vi-button @click="changePW" :disabled="loading || !(oldPw && newPw)" color="brand">Submit</vi-button>
   </div>
 </template>
 
 <script>
-
-import {messageBox} from '../dialogs'
-
 export default {
-
-  name: 'profile',
+  name: 'profile-view',
 
   data () {
     return {
       oldPw: '',
       newPw: '',
-      error: false
+      loading: false
     }
   },
 
   methods: {
     async changePW () {
-      let loader = this.$loading.show()
-      const res = await this.$store.dispatch('changepw', {
-        oldpw: this.oldPw,
-        newpw: this.newPw
-      })
+      this.loading = true
 
-      if (res) {
-        messageBox(res)
-        this.oldPw = ''
-        this.newPw = ''
-        this.error = true
+      try  {
+        await this.$store.dispatch('changepw', {
+          oldpw: this.oldPw,
+          newpw: this.newPw
+        })
+        this.$message('Password updated successfully')
+      } catch (e) {
+        this.$message({
+          type: 'error',
+          message: e.err_msg
+        })
       }
-      loader.hide()
+      this.loading = false
+      this.oldPw = ''
+      this.newPw = ''
     }
   }
 }

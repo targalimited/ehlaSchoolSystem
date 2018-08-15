@@ -68,7 +68,10 @@ export default {
           "newPw": newpw,
           "reType": newpw
       })
-      return res
+      if (res.success) return true
+      else {
+        return Promise.reject(res.debug)
+      }
     }
   },
 

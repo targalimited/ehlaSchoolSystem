@@ -8,6 +8,7 @@
       vi-no-data(v-else-if="weaknessList.length === 0" title="No weakness found" content="This class has no weakness")
       vi-data-table(
         v-else
+        :disableVirtualScroll="true"
         :items="weaknessList"
         :item-height="48"
         v-model="selected"
@@ -85,5 +86,5 @@
     .vi-input
       border none
       width 100%
-      box-shadow none
+      box-shadow none !important
 </style>

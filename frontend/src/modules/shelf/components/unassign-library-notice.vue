@@ -1,5 +1,5 @@
 <template lang="pug">
-  .unassigned-library-notice Assigned items are not yet accessible by teachers and students until you assign them to one (or move) levels
+  .unassigned-library-notice Assigned items are not yet accessible by teachers and students until you assign them to one (or more) levels
 </template>
 
 <style lang="stylus">

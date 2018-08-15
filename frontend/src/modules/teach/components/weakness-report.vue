@@ -8,6 +8,7 @@
       :item-height="68"
       :headers="headers"
       :pagination="pagination"
+      :disable-virtual-scroll="true"
       divided
     )
       template(slot="item" slot-scope="{item}")
