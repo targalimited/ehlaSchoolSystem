@@ -175,7 +175,7 @@ export default {
         item_id: itemId,
         item_type: itemType,
         exercise_assignments: exercise_assignments,
-        videos_assignments: video_assignments
+        video_assignments: video_assignments
       }
       const payload = {
         teacher_id: teacherId,

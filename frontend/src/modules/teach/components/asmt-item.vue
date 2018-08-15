@@ -8,8 +8,8 @@
         vi-avatar(:size="60" :src="asmtData.thumbnail_path")
       vi-item-content
         vi-item-title {{asmtData.name_en}}
-        vi-item-subtitle(v-if="asmtData.exercise_assignments") ({{asmtData.exercise_assignments.length}} exercises, 3 Videos)
-        vi-item-subtitle 16/20 std completed
+        vi-item-subtitle {{exercisesInfo}}
+        // vi-item-subtitle 16/20 std completed
 </template>
 
 
@@ -32,6 +32,13 @@
       isSelected () {
         const id = this.$route.query.batch_id
         return parseInt(this.asmtData.batch_id) === parseInt(id)
+      },
+      exercisesInfo () {
+        const exercises = this.asmtData.exercise_assignments
+        const videos = this.asmtData.video_assignments
+        if (exercises && videos) return `${exercises.length} exercises and ${videos.length} videos`
+        else if (exercises) return `${exercises.length} exercises`
+        else if (videos) return `${videos.length} videos`
       }
     }
   }
