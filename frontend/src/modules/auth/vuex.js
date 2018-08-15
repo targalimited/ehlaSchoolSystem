@@ -37,22 +37,27 @@ export default {
 
   actions: {
     async login ({commit, dispatch}, {password, username}) {
-      commit('login');
-      const res = await http.post('/userApi/login', {
-        password: password,
-        username: username
-      })
-      if(res){
-        localStorage.setItem("extoken", res['data']['ex_token'])
-        localStorage.setItem("school_id", res['data']['school_id'])
-        const userInfo = JSON.stringify(res['data']['user'])
-        localStorage.setItem("user", userInfo)
-        commit('login_success', res)
-        commit('gotUserInfo', userInfo)
-        // TODO: should also return classes in one single API
-        dispatch('getClasses')
+      commit('login')
+      try {
+        const res = await http.post('/userApi/login', {
+          password: password,
+          username: username
+        })
+
+        if (res) {
+          localStorage.setItem("extoken", res['data']['ex_token'])
+          localStorage.setItem("school_id", res['data']['school_id'])
+          const userInfo = JSON.stringify(res['data']['user'])
+          localStorage.setItem("user", userInfo)
+          commit('login_success', res)
+          commit('gotUserInfo', userInfo)
+          // TODO: should also return classes in one single API
+          dispatch('getClasses')
+        }
+        return res
+      } catch (e) {
+        return Promise.reject(e)
       }
-      return res
     },
 
     logout ({commit, dispatch}) {

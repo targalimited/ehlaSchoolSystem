@@ -47,10 +47,11 @@ class Http {
 
   handleException (e) {
     if (e.response.status === 401) {
-      router.replace('/login')
-      return
+      if (router.history.current.name === 'login') return Promise.reject(e)
+      else router.replace('/login')
+    } else {
+      return Promise.reject(e)
     }
-    return Promise.reject(e)
   }
 }
 

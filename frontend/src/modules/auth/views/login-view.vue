@@ -66,20 +66,18 @@ export default {
   methods: {
     async submit () {
       this.loading = true
-      let loader = this.$loading.show()
-      const res = await this.$store.dispatch('login', {
-        username: this.username,
-        password: this.password
-      })
-      if (res) {
+      try {
+        await this.$store.dispatch('login', {
+          username: this.username,
+          password: this.password
+        })
         this.$router.push({
           name: 'home'
         })
-      } else {
+      } catch (e) {
         this.error = true
       }
       this.loading = false
-      loader.hide()
     }
   }
 }
