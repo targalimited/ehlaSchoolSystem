@@ -1,8 +1,8 @@
 <template>
   <div>
     <vi-section-header>Change password</vi-section-header>
-    <vi-input v-model="oldPw" placeholder="Enter your current password"/>
-    <vi-input v-model="newPw" placeholder="Enter your new password"/>
+    <vi-input type="password" v-model="oldPw" placeholder="Enter your current password"/>
+    <vi-input type="password" v-model="newPw" placeholder="Enter your new password"/>
     <vi-button @click="changePW" :disabled="loading || !(oldPw && newPw)" color="brand">Submit</vi-button>
   </div>
 </template>
