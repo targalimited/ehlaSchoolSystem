@@ -6,6 +6,7 @@ use App\SchoolClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\UserInfo;
 use App\UsermodelApiServices;
 use App\ParamBasicServices;
 use App\PermissionControlServices;
@@ -48,10 +49,40 @@ class ClassController extends Controller
 		if (empty($studentIds)) {
 			$this->result['data'] = [];
 		} else {
+			$userInfos = UserInfo::whereIn('user_id',$studentIds)
+							->select('user_id','realname_zh','realname_en','school_num','class_no')
+							->orderBy('class_no')
+							->get()
+							->toArray();
+			
+			$userInfosMap = [];
+			foreach ($userInfos as $info) {
+				$userInfosMap[$info['user_id']] = $info;
+			}
+			
+			$data = [];
+			foreach ($studentIds as $sid) {
+				$obj = [];
+				$obj['id'] = $sid;
+				$obj["realname_en"] = "(empty)";
+				$obj["realname_zh"] = "(empty)";
+				$obj["school_num"]  = "(empty)";
+				$obj["class_no"]    = "(empty)";
+				
+				if (isset($userInfosMap[$sid])) {
+					$obj["realname_en"] = $userInfosMap[$sid]["realname_en"];
+					$obj["realname_zh"] = $userInfosMap[$sid]["realname_zh"];
+					$obj["school_num"]  = $userInfosMap[$sid]["school_num"];
+					$obj["class_no"]    = $userInfosMap[$sid]["class_no"];
+				}
+				array_push($data, $obj);
+			}
+			
+			$this->result['data'] = $data;
 			//usermodel
-			$UAS = New UsermodelApiServices($request);
+			/*$UAS = New UsermodelApiServices($request);
 			$feedback = $UAS->schoolApiGetSchoolUserBasic($studentIds);
-			$this->result['data'] = $feedback['data'];
+			$this->result['data'] = $feedback['data'];*/
 		}
 		
         return json($this->result,200);	
