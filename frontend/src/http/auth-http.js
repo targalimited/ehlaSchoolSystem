@@ -42,6 +42,7 @@ class AuthHttp {
   }
 
   async post(url, data) {
+    console.log(process.env.API_BASE_URL)
     try {
       const res = await this.http.post(url, {
         params: data
