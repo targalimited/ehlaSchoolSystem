@@ -53,6 +53,7 @@
         max-width 700px
         margin 0 auto
         padding 20px 20px 0 20px
+        width 100%
 
         &__default
           height 100% // TODO: how to stretch with 100%

@@ -2,8 +2,8 @@
   panel(:disabled="!batch_id" :loading="locking").asmt-report
     // Empty: no batch ID is selected
     template(v-if="!batch_id")
-      vi-row(justify-center mt-40)
-        vi-no-data(v-if="!batch_id" title="Assignment Report" content="Please select an assignment" icon="report")
+      vi-no-data(v-if="!batch_id" title="Assignment Report" content="Please select an assignment" icon="report")
+
     // Locked: if the batch is locked and the type is not locked
     template(v-else-if="!locked && batchData && batchData.is_locked == 1")
       vi-row(justify-center mt-40)

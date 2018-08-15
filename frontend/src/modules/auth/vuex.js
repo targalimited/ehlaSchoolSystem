@@ -25,7 +25,7 @@ export default {
       state.authStatus = 'fail'
       state.extoken = ''
       state.user = null
-      schoolName = ''
+      state.schoolName = ''
     },
     gotUserInfo (state, user) {
       if (!user) return

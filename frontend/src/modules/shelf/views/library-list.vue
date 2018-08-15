@@ -21,7 +21,7 @@
       <div slot="item" slot-scope="{item}" class="vi-table__row">
 
         <vi-table-col class="ellipsis">
-          <div>
+          <div style="width: 100%">
             <div>
               <vi-chip small class="mb-4">{{item.cat_type}}</vi-chip>
             </div>
