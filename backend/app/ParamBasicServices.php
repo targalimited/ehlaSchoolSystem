@@ -63,6 +63,31 @@ class ParamBasicServices extends Model {
 		}
 	}
 	
+	public function getUsersByUserIds($userIds) {
+		if (empty($userIds)) {
+			return [];
+		}
+		
+		$sql  = " SELECT *";
+		$sql .= " FROM ".\DB::getTablePrefix()."user_info ui";
+		$sql .= " WHERE user_id IN (".implode(',', $userIds).")";
+		
+		$result = DB::select($sql);
+		
+		$result = json_decode(json_encode($result), true);
+		return $result;
+	}
+	
+	public function getUsersMapByUserIds($userIds) {
+		$data = $this->getUsersByUserIds($userIds);
+		
+		$map = [];
+		foreach($data as $value) {
+			$map[$value['user_id']] = $value;
+		}
+		return $map;
+	}
+	
 	public function getUserBasic() {
 		return $this->userBasic;
 	}

@@ -243,7 +243,29 @@ class AssignmentController extends Controller
 				
 		$feedback = $UAS->schoolApiGetSchoolAssignment($params);
 		
-        $this->result['data'] = $feedback['data'];
+		$data = $feedback['data'];
+		
+		$teacherIds = [];
+		
+		foreach ($data as $value) {
+			if (isset($value['teacher_id'])) {
+				array_push($teacherIds, $value['teacher_id']);
+			}
+		}
+		
+		if (!empty($teacherIds)) {
+			$teacherMap = $PBS->getUsersMapByUserIds($teacherIds);
+			foreach ($data as &$value) {
+				$value['teacher_realname_en'] = "";
+				$value['teacher_realname_zh'] = "";
+				if (isset($teacherMap[$value['teacher_id']])) {
+					$value['teacher_realname_en'] = $teacherMap[$value['teacher_id']]['realname_en'];
+					$value['teacher_realname_zh'] = $teacherMap[$value['teacher_id']]['realname_zh'];
+				}
+			}
+		}
+		
+        $this->result['data'] = $data;
         return Response()->json($this->result,200);
 	}
 	
