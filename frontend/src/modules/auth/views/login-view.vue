@@ -32,20 +32,20 @@
           <vi-input-error class="mb-24" v-if="error">username / password is wrong</vi-input-error>
 
           <vi-button :disabled="loading" @click="submit" color="brand">{{loading ? 'Loggin in...' : 'Login'}}</vi-button>
-
-          <vi-row class="notice">
-            <vi-icon name="info-circular" size="32" class="no-shrink mr-20"/>
-            <div>
-              <p class="mb-20">We would like to draw your attention that we will gradually synchronize the reading packs
-                in school portal with those in the App. You please stay tuned for the new reading packs which will be
-                constantly uploaded to the school portal and the App. Thank you!</p>
-              <p>請您留意：我們將會逐步把EHLA學校應用端的閱讀套件與在學生應用App裏的套件進行同步。我們會不斷地把新的閱讀套件上載到學校應用端和App，請您繼續留意，謝謝！</p>
-            </div>
-          </vi-row>
         </form>
 
       </vi-card-content>
     </vi-card>
+
+    <vi-row class="notice">
+      <vi-icon name="info-circular" size="32" class="no-shrink mr-20"/>
+      <div>
+        <p class="mb-20">We would like to draw your attention that we will gradually synchronize the reading packs
+          in school portal with those in the App. You please stay tuned for the new reading packs which will be
+          constantly uploaded to the school portal and the App. Thank you!</p>
+        <p>請您留意：我們將會逐步把EHLA學校應用端的閱讀套件與在學生應用App裏的套件進行同步。我們會不斷地把新的閱讀套件上載到學校應用端和App，請您繼續留意，謝謝！</p>
+      </div>
+    </vi-row>
   </div>
 </template>
 
@@ -96,10 +96,8 @@ export default {
     bottom 0
     left 0
     right 0
-
-  .vi-toolbar-logo
-    display block
-    text-align center
+    overflow auto
+    min-width 640px
 
   .logo
     width 80px
@@ -110,7 +108,7 @@ export default {
 
   .vi-card
     width 360px
-    margin 80px auto
+    margin 80px auto 48px
     box-shadow 2px 2px 22px 0 rgba(0, 0, 0, 0.1)
 
   .vi-button
@@ -144,25 +142,17 @@ export default {
     font-style italic
     line-height 1
 
-  #layout-1 > polygon, #layout-1 > path
-    fill black
-
-  .vi-toolbar-logo
-    height 40px
-    margin-left 0
-
-    svg
-      width auto
-
   .notice
-    position fixed
-    bottom 0
-    left 0
-    right 0
     padding 20px 40px
-    background #a58d1c
+    background rgba(200,169,26,0.94)
     color white
-    font-size 16px
+    font-size 14px
+    margin 20px auto
+    border-radius 10px
+    max-width 600px
+
+    .vi-icon
+      color inherit
 
   .no-shrink
     flex-shrink 0

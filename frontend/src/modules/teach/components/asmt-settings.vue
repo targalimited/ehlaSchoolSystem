@@ -144,6 +144,9 @@
     .vi-row > .vi-col:last-child
       border-left 1px solid $border-color
 
+    .vi-row > .vi-col
+      overflow-y auto
+
     .reading-item
       padding 16px
 

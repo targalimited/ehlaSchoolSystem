@@ -68,6 +68,8 @@
       display flex
       height 30px
       font-size 13px
+      @media(max-width 860px)
+        max-width 600px
 
     &__tab
       margin-right 16px

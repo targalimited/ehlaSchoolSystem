@@ -1,7 +1,7 @@
 <template lang="pug">
   vi-app.app-layout
     dialogs-wrapper(wrapper-name="default")
-    .app-layout__side
+    .app-layout__side(v-if="$route.name !== 'login'")
       sidebar
     .app-layout__main
       router-view
@@ -17,12 +17,15 @@ export default {
 
 <style lang="stylus">
   body
-    overflow: hidden
+    overflow-y: hidden
+    overflow-x auto
+    min-width 750px
 
   .app-layout
     &__side
       width 60px
       position fixed
+      z-index 1
       top 0
       bottom 0
       left 0
