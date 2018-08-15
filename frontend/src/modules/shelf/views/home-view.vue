@@ -26,7 +26,7 @@ export default {
 
   data () {
     return {
-      school_level: this.$store.getters.user.school.edu_lv,
+      school_level: this.$store.getters.eduLv,
       resources: [
         {
           name_l1: "Pilot 100 programme",
