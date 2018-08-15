@@ -3,7 +3,7 @@
 
     <vi-row wrap>
       <vi-col v-for="(cat, i) in readingCategories" xs6 :key="i">
-        <router-link class="reading-item" :to="{name: 'browse-pilot-category', params: {catKey: cat.key}}">
+        <router-link class="reading-item" :class="{'disabled': accessNotAllow}" :to="{name: 'browse-pilot-category', params: {catKey: cat.key}}">
           <image-holder ratio="60%" :src="school_level === 'P' ? cat.image.primary : cat.image.secondary"></image-holder>
           <h3>{{cat.name_en}}</h3>
         </router-link>
@@ -43,6 +43,11 @@
     &:hover
       .image-holder
         box-shadow $box-shadow-2
+
+    &.disabled
+      pointer-events none
+      opacity 0.3
+      display block
 
   .image-holder
     transition box-shadow 0.3s

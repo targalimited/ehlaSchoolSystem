@@ -20,7 +20,7 @@
         <p>
           Thank you for your enrolment in EHLA’s ‘School Pilot 100’ Programme.
           Your journey starts here.
-          You may select teaching resources from the menu below
+          You may select teaching resources from the menu below.
         </p>
       </div>
     </div>
@@ -68,6 +68,7 @@
     .vi-icon
       flex-shrink 0
       margin-right 20px
+      color inherit
 
     a
       border-bottom 1px solid currentColor

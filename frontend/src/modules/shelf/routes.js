@@ -146,7 +146,7 @@ export default [
         },
         props: {
           top: {
-            title: 'Pilot 100'
+            title: 'Free Access Scheme'
           },
           top2: {
             type: 'free'

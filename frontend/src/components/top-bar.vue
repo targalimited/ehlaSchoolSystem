@@ -82,6 +82,10 @@
       &--active, &.router-link-active
         border-color $brand
 
+      &.disabled
+        pointer-events none
+        opacity 0.3
+
     .profile-btn
       max-width 100px
 
