@@ -3,7 +3,7 @@
 
     <vi-row wrap>
       <vi-col v-for="(cat, i) in readingCategories" xs6 :key="i">
-        <router-link class="reading-item" :to="{name: 'browse-pilot-category', params: {key: cat.key}}">
+        <router-link class="reading-item" :to="{name: 'browse-pilot-category', params: {catKey: cat.key}}">
           <image-holder ratio="60%" :src="school_level === 'P' ? cat.image.primary : cat.image.secondary"></image-holder>
           <h3>{{cat.name_en}}</h3>
         </router-link>

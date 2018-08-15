@@ -56,7 +56,7 @@
   }
 
   export default {
-    name: 'lib-view',
+    name: 'browse-list',
 
     data () {
       return {
@@ -95,7 +95,7 @@
         return this.$store.state.shelf.weaknessFilter
       },
       $key () {
-        return this.$route.params.key
+        return this.$route.params.catKey
       },
       catName () {
         return map[this.$key].name_en
@@ -203,7 +203,7 @@
     },
 
     watch: {
-      '$route.params.key': function () {
+      '$key': function () {
         this.initFetch()
       }
     }

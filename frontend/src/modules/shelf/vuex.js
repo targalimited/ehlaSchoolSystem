@@ -63,12 +63,12 @@ export default {
     selectedItems: null,
     summary: {},
     levels_translate: {},
-    levelOptions: [],
-    difficultyOptions: [],
-    texttypeOptions: [],
-    themeOptions: [],
-    subthemeOptions: [],
-    weaknessOptions: [],
+    levelOptions: null,
+    difficultyOptions: null,
+    texttypeOptions: null,
+    themeOptions: null,
+    subthemeOptions: null,
+    weaknessOptions: null,
     levelFilter: [],
     difficultyFilter: [],
     texttypeFilter: [],
@@ -95,6 +95,20 @@ export default {
     },
     changeWeaknessFilter (state, filters) {
       state.weaknessFilter = filters
+    },
+    clearAllFilter (state) {
+      state.levelFilter = []
+      state.difficultyFilter = []
+      state.texttypeFilter = []
+      state.themeFilter = []
+      state.subthemeFilter = []
+      state.weaknessFilter = []
+      state.levelOptions = null
+      state.difficultyOptions = null
+      state.texttypeOptions = null
+      state.themeOptions = null
+      state.subthemeOptions = null
+      state.weaknessOptions = null
     },
     reset (state) {
       state.summary = {}

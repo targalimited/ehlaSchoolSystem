@@ -114,8 +114,11 @@ export default [
     },
     children: [
       {
-        path: ':key',
+        path: ':catKey',
         name: 'browse-pilot-category',
+        props: {
+          left: true
+        },
         components: {
           top: PilotTopBar,
           left: ItemFilter,

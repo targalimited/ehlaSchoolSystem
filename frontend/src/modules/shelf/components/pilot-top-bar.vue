@@ -4,7 +4,7 @@
       router-link.top-bar__tab(
         v-for="tab in cats"
         :key="tab.key"
-        :to="{name: 'browse-pilot-category', params: {key: tab.key}}"
+        :to="{name: 'browse-pilot-category', params: {catKey: tab.key}}"
       ) {{tab.name_en}}
 </template>
 
