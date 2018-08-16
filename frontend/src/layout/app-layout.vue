@@ -41,6 +41,10 @@
 
     &__top
       position relative
+      flex 0 0 auto
+
+    &__top2
+      flex 0 0 auto
 
     &--single
       .app-view
@@ -90,8 +94,9 @@
 
   .app-view
     display flex
-    flex 1
+    flex 1 1 auto
     background #f9f9f9
+    overflow auto !important // otherwise the height will be out of the viewport in FF, and its children cannot scroll
 
     &__l
       flex-shrink 0
