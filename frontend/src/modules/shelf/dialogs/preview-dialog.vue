@@ -2,12 +2,13 @@
   <vi-dialog :value="true" width="600" content-class="preview-dialog">
     <vi-tabs :border="true">
       <vi-tab name="Preview">
-        <div v-if="html" v-html="html"></div>
+        <div ref="html" v-if="html" v-html="html"></div>
       </vi-tab>
       <vi-tab name="Article">
         <div class="article" v-html="article"></div>
       </vi-tab>
     </vi-tabs>
+    <button @click="close">close</button>
   </vi-dialog>
 </template>
 
@@ -25,8 +26,13 @@
     },
 
     methods: {
-      onSubmit () {
-        this.$close(this.newSelected)
+      close () {
+        const videos = document.getElementsByTagName('video') | []
+        console.log(videos)
+        videos.forEach(v => {
+          v.trigger('pause');
+        })
+        this.$close()
       }
     },
 
@@ -36,7 +42,6 @@
       }).then(res => {
         this.html = res.preview_en
         this.article = res.article || res.article_web
-        // TODO remove the style that will break the site layout from body tag div {margin-left: 10px}
       })
     }
   }

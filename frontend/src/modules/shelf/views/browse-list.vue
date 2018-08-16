@@ -29,7 +29,7 @@
 
         <vi-table-col>
 
-            <vi-button @click="toggleReading(item)" :color="item.chose ? 'orange' : 'brand'" small outline class="mb-4">{{item.chose ? 'Remove' : 'Add'}}</vi-button>
+            <vi-button :disabled="!isAdmin" @click="toggleReading(item)" :color="item.chose ? 'orange' : 'brand'" small outline class="mb-4">{{item.chose ? 'Remove' : 'Add'}}</vi-button>
             <vi-button @click="previewReading(item)" color="brand" small flat>Preview</vi-button>
         </vi-table-col>
       </div>
@@ -116,6 +116,9 @@
         if (this.catChosen >= this.catMax) return 'cat'
         else if (this.$store.getters['shelf/isFull']) return 'total'
         else return false
+      },
+      isAdmin () {
+        return this.$store.getters.isAdmin
       }
     },
 

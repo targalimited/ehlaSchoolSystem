@@ -94,6 +94,9 @@ export default {
     userGroupId: state => {
       if (!state.user) return null
       return parseInt(state.user.userGroup.id)
+    },
+    isAdmin: (state, getters) => {
+      return getters.userGroupId === 2
     }
   }
 }
