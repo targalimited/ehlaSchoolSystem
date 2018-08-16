@@ -121,7 +121,7 @@ export default {
       return [
         {
           icon: 'pilot',
-          name: 'Browse',
+          name: 'Pilot',
           content: 'Browse and select the item',
           route: {
             name: 'browse-pilot-root'

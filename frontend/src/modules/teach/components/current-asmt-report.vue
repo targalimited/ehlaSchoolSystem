@@ -27,17 +27,19 @@
           vi-col(xs6)
             vi-item
               vi-item-avatar
-                vi-avatar C
+                vi-avatar
+                  vi-icon(name="avatar")
               vi-item-content
                 vi-item-subtitle Assigned by:
-                vi-item-title Teacher {{batchData.teacher_id}}
+                vi-item-title {{batchData.teacher_realname_en}}
           vi-col(xs6)
             vi-item
               vi-item-avatar
-                vi-avatar C
+                vi-avatar
+                  vi-icon(name="calendar")
               vi-item-content
-                vi-item-subtitle Due Date:
-                vi-item-title {{batchData.end_date | formatDate}}
+                vi-item-subtitle Date:
+                vi-item-title {{batchData.start_date | formatDate}} - {{batchData.end_date | formatDate}}
       vi-spinner(v-if="loading && students.length === 0")
       vi-data-table(
         v-else
