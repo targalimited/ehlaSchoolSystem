@@ -182,7 +182,8 @@ export default {
   },
 
   actions: {
-    async add ({commit, getters, dispatch}, {id, cat}) {
+    async add ({commit, getters, dispatch, rootGetters}, {id, cat}) {
+      if (!rootGetters.isAdmin) return
       if (getters.isFull) return
 
       try {
@@ -199,9 +200,9 @@ export default {
       } catch (e) {}
     },
 
-    async remove ({commit, dispatch}, {id, cat, withLevels}) {
+    async remove ({commit, dispatch, rootGetters}, {id, cat, withLevels}) {
+      if (!rootGetters.isAdmin) return
       if (withLevels) {
-        console.log('need to rm lebels first')
         await dispatch('assignLevels', {
           id: id,
           levels: []
@@ -221,7 +222,8 @@ export default {
       } catch (e) {}
     },
 
-    async assignLevels ({commit, dispatch}, {id, levels}) {
+    async assignLevels ({commit, dispatch, rootGetters}, {id, levels}) {
+      if (!rootGetters.isAdmin) return
       try {
         await new AuthHttp().post('/choose_item_for_level', {
           item_id: id,

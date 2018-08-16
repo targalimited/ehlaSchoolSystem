@@ -13,7 +13,10 @@
   import Topbar from '@/components/top-bar'
   export default {
     props: {
-      title: String
+      title: {
+        type: String,
+        default: 'Pilot 100'
+      }
     },
     components: {
       Topbar

@@ -29,7 +29,7 @@
 
         <vi-table-col>
 
-            <vi-button @click="toggleReading(item)" :color="item.chose ? 'orange' : 'brand'" small outline class="mb-4">{{item.chose ? 'Remove' : 'Add'}}</vi-button>
+            <vi-button :disabled="!isAdmin" @click="toggleReading(item)" :color="item.chose ? 'orange' : 'brand'" small outline class="mb-4">{{item.chose ? 'Remove' : 'Add'}}</vi-button>
             <vi-button @click="previewReading(item)" color="brand" small flat>Preview</vi-button>
         </vi-table-col>
       </div>
@@ -116,6 +116,9 @@
         if (this.catChosen >= this.catMax) return 'cat'
         else if (this.$store.getters['shelf/isFull']) return 'total'
         else return false
+      },
+      isAdmin () {
+        return this.$store.getters.isAdmin
       }
     },
 
@@ -133,10 +136,9 @@
       filterBySearch (items, search, filter) {
         search = search.toString().toLowerCase()
         if (search.trim() === '') return items
-
-        return items.filter(i => (
-          Object.keys(i).some(j => filter(i[j], search))
-        ))
+        return items.filter(i => {
+          return filter(i.name_en, search) || filter(i.info_en, search)|| filter(i.info_nd_en, search)
+        })
       },
       filterByType (items, type) {
         if (this[`${type}Filter`] && this[`${type}Filter`].length === 0) return items

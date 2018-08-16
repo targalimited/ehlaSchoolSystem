@@ -32,7 +32,7 @@
         <vi-table-col>
           <div>
             <template v-if="item.levels.length === 0">
-              <vi-button small outline color="brand" @click="chooseLevel(item)">Assign level(s)</vi-button>
+              <vi-button :disabled="!isAdmin" small outline color="brand" @click="chooseLevel(item)">Assign level(s)</vi-button>
             </template>
             <template v-else>
               <div class="level-label" v-for="lv in item.levels">{{lv | levelName}}</div>
@@ -41,7 +41,7 @@
         </vi-table-col>
 
         <vi-table-col>
-          <vi-menu left min-width="200">
+          <vi-menu v-if="isAdmin" left min-width="200">
             <vi-button
               slot="activator"
               :disabled="loading"
@@ -72,6 +72,7 @@
 
 <script>
   import {levelDialog} from '../dialogs'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'library-list',
@@ -109,7 +110,8 @@
       },
       readingCategories () {
         return this.$store.getters['shelf/categories']
-      }
+      },
+      ...mapGetters(['isAdmin'])
     },
 
     methods: {

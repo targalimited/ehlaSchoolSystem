@@ -1,5 +1,5 @@
 <template>
-  <button @click="onClick" class="vi-button" :style="computedStyle" :class="computedClasses">
+  <button @click="onClick" class="vi-button" :style="computedStyle" :class="computedClasses" :disabled="disabled">
     <span class="vi-button__content"><slot></slot></span>
   </button>
 </template>

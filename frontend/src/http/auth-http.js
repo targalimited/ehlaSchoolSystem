@@ -42,7 +42,6 @@ class AuthHttp {
   }
 
   async post(url, data) {
-    console.log(process.env.API_BASE_URL)
     try {
       const res = await this.http.post(url, {
         params: data
@@ -80,7 +79,6 @@ class AuthHttp {
       );
       return res.data
     } catch (e) {
-      console.log(e.message);
       return this.handleException(e)
     }
 

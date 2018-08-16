@@ -1,7 +1,7 @@
 <template lang="pug">
   .asmt-item(:class="{'asmt-item--active': isSelected}")
     vi-row(justify-space-between mb-8)
-      .asmt-item__teacher From: Teacher {{asmtData.teacher_id}}
+      .asmt-item__teacher From: {{asmtData.teacher_realname_en}}
       .asmt-item__date {{asmtData.start_date | formatDate}} - {{asmtData.end_date | formatDate}}
     vi-item(height="70")
       vi-item-avatar
@@ -9,7 +9,7 @@
       vi-item-content
         vi-item-title {{asmtData.name_en}}
         vi-item-subtitle {{exercisesInfo}}
-        // vi-item-subtitle 16/20 std completed
+        vi-item-subtitle {{asmtData.ttl_stu_cpt}}/{{asmtData.ttl_stu}} std completed
 </template>
 
 
