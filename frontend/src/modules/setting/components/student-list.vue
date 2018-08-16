@@ -8,10 +8,10 @@
 
       <vi-spacer/>
 
-      <vi-button @click="onExport" flat small>
+      <vi-button :disabled="!isSuperAdmin" @click="onExport" flat small>
         Export
       </vi-button>
-      <vi-button @click="onBatchImport" flat small>
+      <vi-button :disabled="!isSuperAdmin" @click="onBatchImport" flat small class="ml-8">
         Batch import
       </vi-button>
     </vi-row>
@@ -65,7 +65,6 @@
 </template>
 
 <script>
-
   import { mapGetters } from 'vuex'
   import {studentDialog, batchImportDialog} from '../dialogs'
 
@@ -102,7 +101,8 @@
       ...mapGetters([
         'students',
         'option_class',
-        'batch_create'
+        'batch_create',
+        'isSuperAdmin'
       ]),
       classFilter () {
         return this.$route.query.classes
@@ -111,14 +111,14 @@
 
     methods: {
       async onExport () {
+        if (!this.isSuperAdmin) return
         this.$store.dispatch('EXPORT_STUDENT')
       },
       async onBatchImport () {
+        if (!this.isSuperAdmin) return
         const file = await batchImportDialog()
         if (!file) return
-        this.$store.dispatch('STUDENT_BATCH_CREATE',file).then(()=>{
-          // console.log(this.$store.getters.batch_create.message)
-        })
+        this.$store.dispatch('STUDENT_BATCH_CREATE',file)
 
       },
       onAddStudent () {

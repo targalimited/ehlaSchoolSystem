@@ -97,6 +97,9 @@ export default {
     },
     isAdmin: (state, getters) => {
       return getters.userGroupId === 2
-    }
+    },
+    isSuperAdmin: (state, getters) => {
+      return getters.userGroupId === 1
+}
   }
 }
