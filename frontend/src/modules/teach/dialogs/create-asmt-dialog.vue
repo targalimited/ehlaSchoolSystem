@@ -45,11 +45,6 @@
       catName () {
         return this.$store.getters.getCatNameById(this.catId)
       },
-      invalid () {
-        const startDate = this.form.startDate
-        const endDate = this.form.endDate
-        return !(startDate && endDate)
-      },
       itemData () {
         if (!this.selectedItemId) return null
         return this.$store.getters.getItemById(this.selectedItemId)
@@ -69,7 +64,29 @@
     methods: {
       async submit () {
         this.loading = true
-        await this.$store.dispatch('setAssignment', this.form)
+        const exercises = this.form.exercises.filter(ex => ex.students.length > 0).map(ex => {
+          return {
+            exercise_id: ex.exercise_id,
+            students: ex.students
+          }
+        })
+        const videos = this.form.videos.filter(ex => ex.students.length > 0).map(ex => {
+          return {
+            exercise_id: ex.exercise_id,
+            students: ex.students
+          }
+        })
+        const form = {
+          classId: this.form.classId,
+          itemId: this.form.itemId,
+          itemType: this.form.itemType,
+          remark: this.form.remark,
+          startDate: this.form.startDate,
+          endDate: this.form.endDate,
+          exercises: exercises,
+          videos: videos
+        }
+        await this.$store.dispatch('setAssignment', form)
         this.loading = false
         this.$message(`${this.itemData.name_en} is assigned to ${this.className} successfully!`)
         this.$close()

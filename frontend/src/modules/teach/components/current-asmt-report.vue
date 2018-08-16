@@ -46,6 +46,7 @@
         :table-height="500"
         :headers="headers"
         :pagination="pagination"
+        :disable-virtual-scroll="true"
       )
         template(slot="item" slot-scope="{item}")
           vi-table-col {{item.realname_en}}

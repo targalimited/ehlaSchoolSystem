@@ -161,21 +161,11 @@ export default {
 
     async setAssignment ({commit, rootState, dispatch}, {classId, itemId, batchId, itemType, startDate, endDate, remark, exercises, videos}) {
       const teacherId = rootState.auth.user.user_id
-      const exercise_assignments = exercises.map(e => {
-        return {
-          exercise_id: e
-        }
-      })
-      const video_assignments = videos.map(v => {
-        return {
-          exercise_id: v
-        }
-      })
       const item = {
         item_id: itemId,
         item_type: itemType,
-        exercise_assignments: exercise_assignments,
-        video_assignments: video_assignments
+        exercise_assignments: exercises,
+        video_assignments: videos
       }
       const payload = {
         teacher_id: teacherId,
