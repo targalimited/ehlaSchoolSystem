@@ -136,10 +136,9 @@
       filterBySearch (items, search, filter) {
         search = search.toString().toLowerCase()
         if (search.trim() === '') return items
-
-        return items.filter(i => (
-          Object.keys(i).some(j => filter(i[j], search))
-        ))
+        return items.filter(i => {
+          return filter(i.name_en, search) || filter(i.info_en, search)|| filter(i.info_nd_en, search)
+        })
       },
       filterByType (items, type) {
         if (this[`${type}Filter`] && this[`${type}Filter`].length === 0) return items
