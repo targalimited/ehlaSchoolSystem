@@ -46,7 +46,7 @@ class LoginController extends Controller
         return Response()->json($result,406);
       }
 
-      if($userData['userGroup']['id'] == 2 || $userData['userGroup']['id'] == 3){
+      if($userData['userGroup']['id'] == 1 || $userData['userGroup']['id'] == 2 || $userData['userGroup']['id'] == 3){
 
         $user = User::where('id', $userData['user_id'])->with('roles')->first();
 
