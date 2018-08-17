@@ -96,7 +96,7 @@ export default {
       return parseInt(state.user.userGroup.id)
     },
     isAdmin: (state, getters) => {
-      return getters.userGroupId === 2
+      return (getters.userGroupId === 2 || getters.userGroupId === 1)
     },
     isSuperAdmin: (state, getters) => {
       return getters.userGroupId === 1
