@@ -19,7 +19,7 @@
       </div>
 
       <div v-if="difficultyOptions" class="search-panel__section">
-        <vi-input-label>Filter by difficulties</vi-input-label>
+        <vi-input-label>Filter by difficulty level</vi-input-label>
         <div class="options-container">
           <vi-checkbox
             v-for="opt in difficultyOptions"
