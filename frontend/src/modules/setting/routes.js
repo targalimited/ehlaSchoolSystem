@@ -30,7 +30,7 @@ export default [
       }
     ],
     beforeEnter: (to, from, next) => {
-      if (Store.getters.userGroupId === 2) next()
+      if (Store.getters.userGroupId === 2 || Store.getters.userGroupId === 1) next()
       else next('/home')
     }
   },
@@ -41,7 +41,7 @@ export default [
       type: 'menu'
     },
     beforeEnter: (to, from, next) => {
-      if (Store.getters.userGroupId === 2) next()
+      if (Store.getters.userGroupId === 2 || Store.getters.userGroupId === 1) next()
       else next('/home')
     },
     children: [

@@ -22,7 +22,7 @@
         vi-button(icon flat dark)
           vi-icon(name="report" size="28")
         .name Report
-    router-link.menu-link(:to="{name: 'settings-class'}" v-if="userGroupId === 2")
+    router-link.menu-link(:to="{name: 'settings-class'}" v-if="userGroupId === 1 || userGroupId === 2")
       vi-button(icon flat dark)
         vi-icon(name="config" size="20")
       .name Settings
