@@ -15,7 +15,7 @@
     <div class="welcome" v-if="type === 'pilot'">
       <div class="welcome__main">
         <div class="welcome__head">
-          Journeys begin.
+          Journey begins.
         </div>
         <p>
           Thank you for your enrolment in EHLA’s ‘School Pilot 100’ Programme.
