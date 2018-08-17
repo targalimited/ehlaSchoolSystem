@@ -50,8 +50,7 @@ return [
 	'schoolApiGetSchoolUserBasicUrl' => env('USERMODEL_URL').'v1/schoolApi/get_school_user_basic',
 	
 	
-	'schoolApiConfirmItemsUrl' => env('USERMODEL_URL').'v1/schoolApi/confirm_item',
-	'schoolApiConfirmItemForLevelUrl' => env('USERMODEL_URL').'v1/schoolApi/confirm_item_for_level',
+	'schoolApiConfirmItemUrl' => env('USERMODEL_URL').'v1/schoolApi/confirm_item',
 	
 	'schoolApiEditSchoolAssignmentUrl' => env('USERMODEL_URL').'v1/schoolApi/edit_school_assignment',
 	

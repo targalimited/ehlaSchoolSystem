@@ -161,17 +161,9 @@ class UsermodelApiServices extends Model {
 	
 	
 	
-	
-	public function schoolApiConfirmItems($params) {
+	public function schoolApiConfirmItem($params) {
 		$inputs = $params;
-		$result = $this->client->post(config('variables.schoolApiConfirmItemsUrl').$this->suffix, $inputs);				
-		return $result;
-	}
-	
-	public function schoolApiConfirmItemForLevel($params) {
-		$inputs = $params;
-		
-		$result = $this->client->post(config('variables.schoolApiConfirmItemForLevelUrl').$this->suffix, $inputs);				
+		$result = $this->client->post(config('variables.schoolApiConfirmItemUrl').$this->suffix, $inputs);				
 		return $result;
 	}
 	

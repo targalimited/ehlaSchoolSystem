@@ -75,8 +75,7 @@ Route::group(['prefix' => 'v1'], function () {
 	Route::post('get_by_category','ItemController@get_by_category');
     Route::post('get_selected_item','ItemController@get_selected_item');
 	
-    Route::post('confirm_items','ItemController@choose_items');
-    Route::post('confirm_item_for_level','ItemController@choose_item_for_level');	
+    Route::post('confirm_item','ItemController@confirm_item');
 	
 	
     Route::post('choose_items','ItemController@choose_items');

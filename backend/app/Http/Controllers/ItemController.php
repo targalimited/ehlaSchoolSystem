@@ -210,7 +210,8 @@ class ItemController extends Controller {
 		return json($output);	
 	}
 	
-	public function confirm_items (Request $request) {
+	
+	public function confirm_item (Request $request) {
 		//params
 		$params = $request->params;
 		//params basic
@@ -224,41 +225,12 @@ class ItemController extends Controller {
 		//usermodel
 		$UAS = new UsermodelApiServices($request);
 		
-		$result = $UAS->schoolApiConfirmItems($params);
+		$result = $UAS->schoolApiConfirmItem($params);
 		
 		$output["success"] = $result["data"]['success'];
 		$output['message'] = $result["data"]['msg'];
 		
 		return json($output);	
-	}
-	
-	
-	public function choose_items_for_level (Request $request) {
-		//params
-		$params = $request->params;
-		//params basic
-		$PBS = new ParamBasicServices($request);
-		$user = $PBS->getUserBasic();
-		
-		//permission
-		$PCS = new PermissionControlServices($request);
-		$permission = $PCS->checkUserPermission($user);
-		
-		//data		
-		$catGrouper = $params['cat_grouper'];
-		$addLvItemList = $params['add_lv_item_list'];
-		$removeLvItemList = $params['remove_lv_item_list'];
-		$page = $params['page'];
-		$limit = $params['limit'];
-
-		//usermodel
-		$UAS = new UsermodelApiServices($request);
-		
-		$result = $UAS->schoolApiChooseItemsForLevel($catGrouper, $addLvItemList, $removeLvItemList, $limit, $page);
-		$output["data"] = $result["data"];
-		$output["metadata"] = $result["metadata"];
-	
-		return json($output);		
 	}
 	
 	public function choose_item_for_level (Request $request) {
