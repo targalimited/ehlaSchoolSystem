@@ -227,8 +227,8 @@ class ItemController extends Controller {
 		
 		$result = $UAS->schoolApiConfirmItem($params);
 		
-		$output["success"] = $result["data"]['success'];
-		$output['message'] = $result["data"]['msg'];
+		$output["success"] = true;
+		$output['message'] = "success";
 		
 		return json($output);	
 	}
