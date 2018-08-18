@@ -2,7 +2,7 @@
   <panel class="student-view">
 
     <vi-row slot="head">
-      <vi-button @click="onAddStudent" color="green" outline small>
+      <vi-button :disabled="!isSuperAdmin" @click="onAddStudent" color="green" outline small>
         Create student
       </vi-button>
 

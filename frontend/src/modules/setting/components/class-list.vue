@@ -1,6 +1,6 @@
 <template>
   <panel class="class-view">
-    <vi-button slot="head" @click="onAddClass" color="green" outline small>
+    <vi-button :disabled="!isSuperAdmin" slot="head" @click="onAddClass" color="green" outline small>
       Create class
     </vi-button>
 
@@ -82,6 +82,7 @@
         'levelOptions',
         'classes',
         'single_class',
+        'isSuperAdmin'
       ]),
       ...mapFields([
         'single_class.c_name',

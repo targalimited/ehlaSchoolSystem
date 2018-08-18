@@ -2,7 +2,7 @@
   <panel class="teacher-list">
 
     <vi-row slot="head">
-      <vi-button @click="onAddTeacher" color="green" outline small>
+      <vi-button :disabled="!isSuperAdmin" @click="onAddTeacher" color="green" outline small>
         Create teacher
       </vi-button>
       <vi-spacer></vi-spacer>
