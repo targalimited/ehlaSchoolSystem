@@ -68,12 +68,12 @@ export default {
       return classes
     },
 
-    async getWeaknessList ({commit}, {classId}) {
+    async getWeaknessList ({commit}, {classId, weaknessCode}) {
       const res = await new AuthHttp().post('/get_class_weakness', {
         academic_id: 1,
         class_id: classId,
         subject_id: 1,
-        weakness_code: "ALL"
+        weakness_code: weaknessCode
       })
       const weakness_list = res.data
       commit('gotWeaknessList', {

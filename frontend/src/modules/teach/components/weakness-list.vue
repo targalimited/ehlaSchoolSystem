@@ -4,6 +4,7 @@
     template(v-else)
       template(slot="head")
         vi-input(v-model="search" placeholder="Search weakness" prefix-icon="search")
+      vi-select.cat-selection-box(:options="weaknessCats" v-model="selectedCat" @input="onCatChange")
       vi-spinner(v-if="loading && !weaknessList")
       vi-no-data(v-else-if="weaknessList.length === 0" title="No weakness found" content="This class has no weakness")
       vi-data-table(
@@ -35,6 +36,7 @@
         selected: [],
         loading: false,
         search: '',
+        selectedCat: 'SPELL',
         headers: [
           {
             text: '',
@@ -46,7 +48,25 @@
             align: 'right'
           }
         ],
-        pagination: {}
+        pagination: {},
+        weaknessCats: [
+          {
+            name: 'Vocabulary Spelling',
+            value: 'SPELL'
+          },
+          {
+            name: 'Vocabulary Matching',
+            value: 'MATCH'
+          },
+          {
+            name: 'Vocabulary Usage',
+            value: 'USAGE'
+          },
+          {
+            name: 'Reading',
+            value: 'ALL'
+          }
+        ]
       }
     },
     computed: {
@@ -61,10 +81,15 @@
       onSelect () {
         this.$store.commit('updateSelectedWeakness', this.selected)
       },
+      onCatChange () {
+        this.$store.commit('updateSelectedWeakness', null)
+        this.fetch()
+      },
       async fetch () {
         this.loading = true
-        await  this.$store.dispatch('getWeaknessList', {
-          classId: this.classId
+        await this.$store.dispatch('getWeaknessList', {
+          classId: this.classId,
+          weaknessCode: this.selectedCat
         })
         this.loading = true
       }
@@ -87,4 +112,8 @@
       border none
       width 100%
       box-shadow none !important
+
+    .cat-selection-box
+      border-bottom 1px solid #e1e1e1
+      padding 0 16px
 </style>

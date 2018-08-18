@@ -73,7 +73,8 @@
       this.initFetch()
     },
     watch: {
-      $weaknessIds () {
+      $weaknessIds (v) {
+        if (v.length === 0) return
         this.initFetch()
       }
     }
