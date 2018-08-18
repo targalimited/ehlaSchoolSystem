@@ -29,7 +29,7 @@
 
         <vi-table-col>
 
-            <vi-button :disabled="!isAdmin" @click="toggleReading(item)" :color="item.chose ? 'orange' : 'brand'" small outline class="mb-4">{{item.chose ? 'Remove' : 'Add'}}</vi-button>
+            <vi-button :disabled="!isAdmin || item.confirm_lock" @click="toggleReading(item)" :color="item.chose ? 'orange' : 'brand'" small outline class="mb-4">{{item.chose ? 'Remove' : 'Add'}}</vi-button>
             <vi-button @click="previewReading(item)" color="brand" small flat>Preview</vi-button>
         </vi-table-col>
       </div>

@@ -261,12 +261,21 @@ export default {
           // add `item.levels`
           const lv = []
           for (let i = 1; i <= 6; i++) {
-            if (item['p' + i].tick) lv.push('p' + i)
+            lv.push({
+              level_id: 'p' + i,
+              confirm_lock: item['p' + i].confirm_lock,
+              tick: item['p' + i].tick
+            })
           }
           for (let i = 1; i <= 6; i++) {
-            if (item['s' + i].tick) lv.push('s' + i)
+            lv.push({
+              level_id: 's' + i,
+              confirm_lock: item['s' + i].confirm_lock,
+              tick: item['s' + i].tick
+            })
           }
           item.levels = lv
+          item.levels_assigned = item.levels.filter(level => level.tick)
         })
 
         commit('gotSelectedItems', result)

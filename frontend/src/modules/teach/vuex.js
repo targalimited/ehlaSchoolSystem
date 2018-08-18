@@ -185,6 +185,14 @@ export default {
       })
     },
 
+    async confirmItem ({commit}, {itemId, classId}) {
+      await new AuthHttp().post('/confirm_item', {
+        item_id: itemId,
+        class_id: classId
+      })
+      return true
+    },
+
     async lockAsmt ({dispatch}, {batchId, classId}) {
       await new AuthHttp().post('lock_school_assignment', {
         batch_id: batchId

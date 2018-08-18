@@ -12,10 +12,11 @@
             <vi-checkbox
               :value="level.level"
               :label="level.level | levelName"
-              :disabled="isDisabled(level)"
+              :disabled="isDisabled(level) || level.confirm_lock"
               v-model="newSelected"/>
             <!-- TODO: this message is hardcode-->
             <span class="note" v-if="isCatDisabled(level)">You have already assigned 3 Reading Comprehension Diagnosis to this level</span>
+            <span class="note" v-if="level.locked">The item is already assigned to {{level.level | levelName}} level</span>
           </vi-row>
         </div>
 
@@ -42,7 +43,12 @@
 
     computed: {
       levels () {
-        return this.$store.getters['shelf/levelsQuota'](this.cat)
+        let options = this.$store.getters['shelf/levelsQuota'](this.cat)
+        return options.map(option => {
+          return Object.assign({}, option, {
+            confirm_lock: this.isLocked(option)
+          })
+        })
       }
     },
 
@@ -56,12 +62,16 @@
       },
       onSubmit () {
         this.$close(this.newSelected)
+      },
+      isLocked (option) {
+        const obj = this.selected.find(level => level.level_id === option.level)
+        return obj && obj.confirm_lock
       }
     },
 
     created () {
       if (Array.isArray(this.newSelected)) {
-        this.newSelected = this.selected
+        this.newSelected = this.selected.map(lv => lv.level_id)
       }
     }
   }

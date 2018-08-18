@@ -31,11 +31,11 @@
 
         <vi-table-col>
           <div>
-            <template v-if="item.levels.length === 0">
+            <template v-if="item.levels_assigned.length === 0">
               <vi-button :disabled="!isAdmin" small outline color="brand" @click="chooseLevel(item)">Assign level(s)</vi-button>
             </template>
             <template v-else>
-              <div class="level-label" v-for="lv in item.levels">{{lv | levelName}}</div>
+              <div class="level-label" v-for="lv in item.levels_assigned">{{lv.level_id | levelName}}</div>
             </template>
           </div>
         </vi-table-col>
@@ -53,7 +53,7 @@
               <vi-item-avatar>
                 <vi-icon name="edit"/>
               </vi-item-avatar>
-              <vi-item-content>{{item.levels.length === 0 ? 'Assign' : 'Edit'}} level(s)</vi-item-content>
+              <vi-item-content>{{item.levels_assigned.length === 0 ? 'Assign' : 'Edit'}} level(s)</vi-item-content>
             </vi-item>
 
             <vi-item @click="removeReading(item)" :link="true">
@@ -125,13 +125,13 @@
         await this.$store.dispatch('shelf/remove', {
           id: item.id,
           cat: item.cat_grouper,
-          withLevels: item.levels.length > 0
+          withLevels: item.levels_assigned.length > 0
         })
         this.loading = false
         this.$message('Reading removed')
       },
       async chooseLevel (item) {
-        const currentLevels = item.levels
+        const currentLevels = item.levels_assigned
         const newLevels = await levelDialog(currentLevels, item.cat_grouper)
         if (!newLevels) return
         this.loading = true

@@ -64,16 +64,25 @@
     methods: {
       async submit () {
         this.loading = true
+        // prompt the user when the item is firstly assigned
+        if (!this.itemData.confirm_lock) {
+          if (window.confirm('are you sure to assign - it will be locked')) {
+            this.$store.dispatch('confirmItem', {
+              itemId: this.itemData.id,
+              classId: this.form.classId
+            })
+          }
+        }
         const exercises = this.form.exercises.filter(ex => ex.students.length > 0).map(ex => {
           return {
             exercise_id: ex.exercise_id,
-            students: ex.students
+            student_ids: ex.students
           }
         })
         const videos = this.form.videos.filter(ex => ex.students.length > 0).map(ex => {
           return {
             exercise_id: ex.exercise_id,
-            students: ex.students
+            student_ids: ex.students
           }
         })
         const form = {
