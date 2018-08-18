@@ -71,6 +71,8 @@
               itemId: this.itemData.id,
               classId: this.form.classId
             })
+          } else {
+            return
           }
         }
         const exercises = this.form.exercises.filter(ex => ex.students.length > 0).map(ex => {
