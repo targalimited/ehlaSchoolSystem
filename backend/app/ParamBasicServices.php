@@ -42,6 +42,18 @@ class ParamBasicServices extends Model {
 		return $students;
 	}
 	
+	public function getClassLevelById($classId) {
+		$subjectId = $this->userBasic['subject_id'];
+		
+		$sql  = " SELECT level ";
+		$sql .= " FROM   ".\DB::getTablePrefix()."classes c";;
+		$sql .= " WHERE id = ".$classId;
+		
+		$result = DB::select($sql);
+		
+		return $result[0]->level;
+	}
+	
 	public function getStudents() {
 		$classId = $this->userBasic['class_id'];
 		$subjectId = $this->userBasic['subject_id'];

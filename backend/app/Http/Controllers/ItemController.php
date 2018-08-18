@@ -225,6 +225,9 @@ class ItemController extends Controller {
 		//usermodel
 		$UAS = new UsermodelApiServices($request);
 		
+		if (!isset($params['level'])) {
+			$params['level'] = $PBS->getClassLevelById($params['class_id']);
+		}
 		$result = $UAS->schoolApiConfirmItem($params);
 		
 		$output["success"] = true;
