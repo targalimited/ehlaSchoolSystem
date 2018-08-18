@@ -25,7 +25,7 @@
                 vi-item-title {{ex.title_en}}
                 vi-item-subtitle {{ex.students.length}} students assigned
               vi-item-action
-                vi-switch(:value="ex.students.length > 0" @input="toggleEx(ex)" :sync="true")
+                // vi-switch(:value="ex.students.length > 0" @input="toggleEx(ex)" :sync="true")
           .input-group(v-if="form.videos")
             label Videos
             vi-spinner(v-if="form.videos.length === 0")
@@ -41,7 +41,7 @@
                 vi-item-title {{ex.name_en}}
                 vi-item-subtitle {{ex.students.length}} students assigned
               vi-item-action
-                vi-switch(:value="ex.students.length > 0" @input="toggleEx(ex)" :sync="true")
+                // vi-switch(:value="ex.students.length > 0" @input="toggleEx(ex)" :sync="true")
           .input-group
             label Remark
             vi-input.textarea(v-model="form.remark" placeholder="Remarks (optional)" type="textarea" @input="update" no-resize)
@@ -74,7 +74,7 @@
                 vi-item-title {{student.realname_en}}
                 vi-item-subtitle {{student.realname_zh}}
               vi-item-action(v-if="inspectingEx")
-                vi-checkbox(:input-value="isStudentSelected(student)")
+                // vi-checkbox(:input-value="isStudentSelected(student)")
 </template>
 
 <script>
@@ -196,14 +196,15 @@
         return ex.exercise_id === this.inspectingEx.exercise_id
       },
       toggleStudent (studentId) {
-        if (!this.inspectingEx) return
-        const studentIds = this.inspectingEx.students
-        if (studentIds.includes(studentId)) {
-          studentIds.splice(studentIds.indexOf(studentId), 1)
-        } else {
-          studentIds.push(studentId)
-        }
-        this.update()
+        // TODO: disable individual assignment feature temporarily
+        // if (!this.inspectingEx) return
+        // const studentIds = this.inspectingEx.students
+        // if (studentIds.includes(studentId)) {
+        //   studentIds.splice(studentIds.indexOf(studentId), 1)
+        // } else {
+        //   studentIds.push(studentId)
+        // }
+        // this.update()
       },
       toggleEx (ex) {
         let students = ex.students
