@@ -107,7 +107,7 @@ class UserController extends Controller
     foreach ($sheet as $v) {
       $this->import_validate_class($v);
       $this->import_validate_realname_en($v);
-      $this->import_validat_from_sheet($type);
+      //$this->import_validate_from_sheet($type);
       if($type == 'Teacher'){
         $this->import_validate_subject($v);
         $this->import_validate_teacher_no($v);
@@ -129,13 +129,13 @@ class UserController extends Controller
     }
   }
 
-  private function import_validat_from_sheet($type){
-    foreach (array_count_values($this->_school_no_from_sheet) as $k=>$v){
-      if($v>1){
-        $this->errors[] = $type.' No. cannot be duplicated ' . $k;
-      }
-    }
-  }
+//  private function import_validate_from_sheet($type){
+//    foreach (array_count_values($this->_school_no_from_sheet) as $k=>$v){
+//      if($v>1){
+//        $this->errors[] = $type.' No. cannot be duplicated ' . $k;
+//      }
+//    }
+//  }
 
   private function import_validate_student($v){
     if (!empty($this->_students_no))
@@ -214,12 +214,8 @@ class UserController extends Controller
     }
     else if ($request->type =='teacher') {
       $ids = TeacherClassSubject::get()->pluck('teacher_id');
-      $school_list = UserInfo::whereIn('user_id', $ids)->get();
+      $school_list = UserInfo::whereIn('user_id', $ids)->select('username','default_password','realname_en','realname_zh','school_num as teacher number')->get();
     }
-
-
-
-
 
     $myFile =  Excel::create('school_list', function ($excel) use ($school_list) {
       $excel->sheet('sheet_1', function ($sheet) use ($school_list) {
@@ -253,13 +249,10 @@ class UserController extends Controller
         $title = ['teacher_no', 'realname_en', 'realname_zh', 'class', 'subject'];
 
         $this->header_validate($title,$teacher_sheet[0]);
-
+        $this->import_validate($teacher_sheet,'Teacher');
         if (!$this->errors) {
-
-
-
               foreach ($teacher_sheet as $k => $v) {
-                $this->_school_no_from_sheet[] = (int)$v['teacher_no'];
+//                $this->_school_no_from_sheet[] = (int)$v['teacher_no'];
                 $teacher[$v['teacher_no']]['school_num'] = $v['teacher_no'];
                 $teacher[$v['teacher_no']]['realname_en'] = $v['realname_en'];
                 $teacher[$v['teacher_no']]['realname_zh'] = (isset($v['realname_zh']))?$v['realname_zh']:'';
@@ -268,7 +261,7 @@ class UserController extends Controller
                 $new_teacher_set[$k]['subject_id'] = array_search(strtolower($v['subject']), $this->subject);
 
               }
-          $this->import_validate($teacher_sheet,'Teacher');
+
 
           if(!$this->errors){
               $teachers = array_values($teacher);
@@ -372,18 +365,20 @@ class UserController extends Controller
             }
           }
 
+            $this->import_validate($student_sheet,'Student');
 
+
+
+          if(!$this->errors){
 
               foreach ($student_sheet as $k => $v) {
-                if(isset($v['english']) && $v['english']==='Y') {
-                  $this->_school_no_from_sheet[] = $v['student_no'];
-                  $student[$v['student_no']]['school_num'] = $v['student_no'];
-                  $student[$v['student_no']]['realname_en'] = $v['realname_en'];
-                  $student[$v['student_no']]['realname_zh'] = (isset($v['realname_zh'])) ? $v['realname_zh'] : '';
-                }
+                  if(isset($v['english']) && $v['english']==='Y') {
+//                  $this->_school_no_from_sheet[] = $v['student_no'];
+                      $student[$v['student_no']]['school_num'] = $v['student_no'];
+                      $student[$v['student_no']]['realname_en'] = $v['realname_en'];
+                      $student[$v['student_no']]['realname_zh'] = (isset($v['realname_zh'])) ? $v['realname_zh'] : '';
+                  }
               }
-          $this->import_validate($student_sheet,'Student');
-          if(!$this->errors){
               $students = array_values($student);
 
     //          $debug = New Debug();
