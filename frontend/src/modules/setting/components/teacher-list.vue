@@ -100,7 +100,8 @@
         'teachers',
         'option_class',
         'batch_create',
-        'isSuperAdmin'
+        'isSuperAdmin',
+          'roleOptions'
       ]),
       classFilters () {
         return this.$route.query.classes || []
@@ -121,7 +122,8 @@
       },
       async onAddTeacher () {
         const res = await teacherDialog({
-          OptionClass: this.option_class
+          OptionClass: this.option_class,
+            oldRole: this.roleOptions[0].id
         }).then(res => {
           if(res)
           this.$store.dispatch('TEACHER_CREATE',res)
