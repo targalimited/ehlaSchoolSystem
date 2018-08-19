@@ -16,7 +16,7 @@
               v-model="newSelected"/>
             <!-- TODO: this message is hardcode-->
             <span class="note" v-if="isCatDisabled(level)">You have already assigned 3 Reading Comprehension Diagnosis to this level</span>
-            <span class="note" v-if="level.locked">The item is already assigned to {{level.level | levelName}} level</span>
+            <span class="note" v-if="level.confirm_lock">The item is already assigned to {{level.level | levelName}} level</span>
           </vi-row>
         </div>
 
@@ -92,4 +92,5 @@
     color red
     line-height 1.2
     margin-left 12px
+    margin-top 10px
 </style>
