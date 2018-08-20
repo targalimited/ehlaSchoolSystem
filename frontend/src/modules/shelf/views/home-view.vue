@@ -1,7 +1,7 @@
 <template lang="pug">
   .home-view
     .home-view__header
-      h2 Hi, {{$store.getters.username}} from School {{$store.getters.schoolName}}
+      h2 Hi, {{$store.getters.username}} from {{$store.getters.schoolName}}
       p Let's get started!
     vi-row.board-section
       vi-col(xs6 md3 v-for="(link,i) in links" :key="i")

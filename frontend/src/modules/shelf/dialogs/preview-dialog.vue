@@ -8,7 +8,9 @@
         <div class="article" v-html="article"></div>
       </vi-tab>
     </vi-tabs>
-    <button @click="close">close</button>
+    <vi-button-row>
+      <vi-button @click="close">close</vi-button>
+    </vi-button-row>
   </vi-dialog>
 </template>
 
@@ -27,11 +29,7 @@
 
     methods: {
       close () {
-        const videos = document.getElementsByTagName('video') | []
-        console.log(videos)
-        videos.forEach(v => {
-          v.trigger('pause');
-        })
+        // TODO stop all the videos playing
         this.$close()
       }
     },
@@ -49,7 +47,7 @@
 
 <style lang="stylus" scoped>
   .vi-button-row
-    margin-top 24px
+    padding 16px
 
   .input-group
     margin-bottom 24px
