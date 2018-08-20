@@ -41,6 +41,9 @@
       $weaknessIds () {
         return this.$store.state.teach.selectedWeakness
       },
+	  $weaknessCode () {
+        return this.$store.state.teach.selectedWeaknessCode
+	  },
       headers () {
         if (!(this.weakness_report && this.weakness_report[0])) return
         let headers = this.weakness_report[0].weakness.map(ex => ex.name_en)
@@ -64,6 +67,7 @@
         const res = await this.$store.dispatch('getClassWeaknessReport', {
           classId: this.$classId,
           weakness_ids: this.$weaknessIds,
+          weaknessCode: this.$weaknessCode,
         })
         this.weakness_report = res
         this.loading = false
