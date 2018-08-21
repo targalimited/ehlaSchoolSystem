@@ -102,6 +102,50 @@ export default {
              primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Reading+section.pdf",
              secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/aSchool/pdf/Reading+section.pdf",
           }
+        },
+        {
+          name_l1: "EHLA School Portal User Guide",
+          cover: {
+            primary: "https://ehla-media-bucket.s3.amazonaws.com/images_20180201/schoolportalguidecover-04-1534822367624.jpg",
+            secondary: "https://ehla-media-bucket.s3.amazonaws.com/images_20180201/schoolportalguidecover-04-1534822367624.jpg",
+          },
+          source: {
+             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/pdf/EHLA+School+Portal+User+guide.pdf",
+             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/pdf/EHLA+School+Portal+User+guide.pdf",
+          }
+        },
+        {
+          name_l1: "Excel User Guide: How to register for student/teacher accounts",
+          cover: {
+            primary: "https://ehla-media-bucket.s3.amazonaws.com/images_20180201/schoolportalguidecover-03-1534822371721.jpg",
+            secondary: "https://ehla-media-bucket.s3.amazonaws.com/images_20180201/schoolportalguidecover-03-1534822371721.jpg",
+          },
+          source: {
+             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/pdf/How+to+register+for+accounts.pdf",
+             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/pdf/How+to+register+for+accounts.pdf",
+          }
+        },
+        {
+          name_l1: "Teacher Sample",
+          cover: {
+            primary: "https://ehla-media-bucket.s3.amazonaws.com/images_20180201/schoolportalguidecover-01-1534822511494.jpg",
+            secondary: "https://ehla-media-bucket.s3.amazonaws.com/images_20180201/schoolportalguidecover-01-1534822511494.jpg",
+          },
+          source: {
+             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/pdf/teacher_sample.xlsx",
+             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/pdf/teacher_sample.xlsx",
+          }
+        },
+        {
+          name_l1: "Student Sample",
+          cover: {
+            primary: "https://ehla-media-bucket.s3.amazonaws.com/images_20180201/schoolportalguidecover-02-1534822507654.jpg",
+            secondary: "https://ehla-media-bucket.s3.amazonaws.com/images_20180201/schoolportalguidecover-02-1534822507654.jpg",
+          },
+          source: {
+             primary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/pdf/student_sample.xlsx",
+             secondary: "https://s3-ap-southeast-1.amazonaws.com/ehla-media-bucket/pdf/student_sample.xlsx",
+          }
         }
       ]
     }
