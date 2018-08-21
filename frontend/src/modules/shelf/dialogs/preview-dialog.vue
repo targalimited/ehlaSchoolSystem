@@ -30,7 +30,8 @@
     methods: {
       close () {
         // TODO stop all the videos playing
-        this.$close()
+        this.$destroy()
+        // this.$close()
       }
     },
 

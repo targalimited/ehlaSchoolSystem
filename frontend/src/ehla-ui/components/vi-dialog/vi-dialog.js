@@ -85,6 +85,7 @@ export default {
       if (val) {
         this.show()
       } else {
+        this.$destroy()
         this.removeOverlay()
         this.unbind()
       }
