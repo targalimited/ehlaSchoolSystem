@@ -414,7 +414,7 @@ export default {
     },
 
     isPilot (state) {
-      return state.summary.is_pilot
+      return (state.summary.is_pilot === '1') ? true : false
     },
 
     unassignedItems (state) {
