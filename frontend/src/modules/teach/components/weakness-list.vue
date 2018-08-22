@@ -91,6 +91,7 @@
           classId: this.classId,
           weaknessCode: this.selectedCat
         })
+        this.$store.commit('updateSelectedWeaknessCode', this.selectedCat)
         this.loading = true
       }
     },

@@ -517,7 +517,7 @@ class UserController extends Controller
         'realname_en' =>$request->realname_en,
         'school_num' =>$request->school_num,
         'default_password' =>$request->password,
-        'username' => $request->username,
+        'username' => $res['data'][0]['username'],
       ];
 
       $this->createUserInfo($data);

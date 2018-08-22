@@ -35,8 +35,8 @@
               <vi-avatar size="30"><vi-icon name="avatar"/></vi-avatar>
             </vi-item-avatar>
             <vi-item-content>
-              <vi-item-title>{{item.realname_en}}</vi-item-title>
-              <vi-item-subtitle>{{item.realname_zh}}</vi-item-subtitle>
+              <vi-item-title>{{item.username}}</vi-item-title>
+              <vi-item-subtitle>{{item.realname_en}}</vi-item-subtitle>
             </vi-item-content>
           </vi-item>
         </vi-table-col>

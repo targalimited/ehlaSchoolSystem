@@ -32,6 +32,7 @@ export default {
     itemList: {}, // the assignable items for the class
     catList: catList,
     selectedWeakness: null,
+    selectedWeaknessCode: 'ALL',
     students: {}
   },
 
@@ -51,6 +52,9 @@ export default {
     },
     updateSelectedWeakness (state, weakness) {
       state.selectedWeakness = weakness
+    },
+    updateSelectedWeaknessCode (state, weaknessCode) {
+      state.selectedWeaknessCode = weaknessCode
     },
     gotStudentsByClass (state, {students, classId}) {
       Vue.set(state.students, [classId], students)
@@ -82,12 +86,12 @@ export default {
       return weakness_list
     },
 
-    async getClassWeaknessReport ({}, {classId, weakness_ids}) {
+    async getClassWeaknessReport ({}, {classId, weakness_ids, weaknessCode}) {
       const res = await new AuthHttp().post('/get_school_weakness_report', {
         subject_id: 1,
         academic_id: 1,
         class_id: classId,
-        weakness_code: 'ALL',
+        weakness_code: weaknessCode,
         weakness_ids: weakness_ids
       })
       const weakness_report = res.data

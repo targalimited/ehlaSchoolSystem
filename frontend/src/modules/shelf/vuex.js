@@ -342,10 +342,11 @@ export default {
         let selected = 0
         let selectedItemInCat = 0
         state.selectedItems.forEach(item => {
-          if (item.levels.includes(lv)) {
+          const levelsAssigned = item.levels_assigned.map(lv => lv.level_id)
+          if (levelsAssigned.includes(lv)) {
             selected++
           }
-          if (cat && item.levels.includes(lv) && item.cat_grouper === cat) {
+          if (cat && levelsAssigned.includes(lv) && item.cat_grouper === cat) {
             selectedItemInCat++
           }
         })
@@ -413,7 +414,7 @@ export default {
     },
 
     isPilot (state) {
-      return state.summary.is_pilot
+      return (state.summary.is_pilot === '1') ? true : false
     },
 
     unassignedItems (state) {

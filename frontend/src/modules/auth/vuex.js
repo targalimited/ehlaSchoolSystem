@@ -30,7 +30,7 @@ export default {
     gotUserInfo (state, user) {
       if (!user) return
       user = JSON.parse(user)
-      const schoolName = user && user.school && user.school.s_name
+      const schoolName = user && user.school && user.school.s_name_en
       if (schoolName) state.schoolName = schoolName
     }
   },
@@ -88,7 +88,7 @@ export default {
     eduLv: state => state.user && state.user.school.edu_lv,
     schoolName: state => {
       if (!state.user) return
-      return state.user.school.s_name
+      return state.user.school.s_name_en
     },
     teacherId: state => state.user && state.user.user_id,
     userGroupId: state => {
